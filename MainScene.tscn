@@ -1,0 +1,435 @@
+[gd_scene load_steps=272 format=2]
+
+[ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Hand.gd" type="Script" id=3]
+[ext_resource path="res://Scripts/Discard.gd" type="Script" id=4]
+[ext_resource path="res://Play.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/CardLibrary.gd" type="Script" id=6]
+[ext_resource path="res://Images/CardArt/CardBack/frame011.png" type="Texture" id=7]
+[ext_resource path="res://Images/CardArt/CardBack/frame079.png" type="Texture" id=8]
+[ext_resource path="res://Images/CardArt/CardBack/frame112.png" type="Texture" id=9]
+[ext_resource path="res://Images/CardArt/CardBack/frame014.png" type="Texture" id=10]
+[ext_resource path="res://Images/CardArt/CardBack/frame042.png" type="Texture" id=11]
+[ext_resource path="res://Images/CardArt/CardBack/frame049.png" type="Texture" id=12]
+[ext_resource path="res://Images/CardArt/CardBack/frame019.png" type="Texture" id=13]
+[ext_resource path="res://Images/CardArt/CardBack/frame093.png" type="Texture" id=14]
+[ext_resource path="res://Images/CardArt/CardBack/frame067.png" type="Texture" id=15]
+[ext_resource path="res://Images/CardArt/CardBack/frame101.png" type="Texture" id=16]
+[ext_resource path="res://Images/CardArt/CardBack/frame107.png" type="Texture" id=17]
+[ext_resource path="res://Images/CardArt/CardBack/frame036.png" type="Texture" id=18]
+[ext_resource path="res://Images/CardArt/CardBack/frame039.png" type="Texture" id=19]
+[ext_resource path="res://Images/CardArt/CardBack/frame009.png" type="Texture" id=20]
+[ext_resource path="res://Images/CardArt/CardBack/frame047.png" type="Texture" id=21]
+[ext_resource path="res://Images/CardArt/CardBack/frame043.png" type="Texture" id=22]
+[ext_resource path="res://Images/CardArt/CardBack/frame010.png" type="Texture" id=23]
+[ext_resource path="res://Images/CardArt/CardBack/frame098.png" type="Texture" id=24]
+[ext_resource path="res://Images/CardArt/CardBack/frame024.png" type="Texture" id=25]
+[ext_resource path="res://Images/CardArt/CardBack/frame086.png" type="Texture" id=26]
+[ext_resource path="res://Images/CardArt/CardBack/frame089.png" type="Texture" id=27]
+[ext_resource path="res://Images/CardArt/CardBack/frame090.png" type="Texture" id=28]
+[ext_resource path="res://Images/CardArt/CardBack/frame092.png" type="Texture" id=29]
+[ext_resource path="res://Images/CardArt/CardBack/frame072.png" type="Texture" id=30]
+[ext_resource path="res://Images/CardArt/CardBack/frame076.png" type="Texture" id=31]
+[ext_resource path="res://Images/CardArt/CardBack/frame003.png" type="Texture" id=32]
+[ext_resource path="res://Images/CardArt/CardBack/frame108.png" type="Texture" id=33]
+[ext_resource path="res://Images/CardArt/CardBack/frame103.png" type="Texture" id=34]
+[ext_resource path="res://Images/CardArt/CardBack/frame118.png" type="Texture" id=35]
+[ext_resource path="res://Images/CardArt/CardBack/frame064.png" type="Texture" id=36]
+[ext_resource path="res://Images/CardArt/CardBack/frame006.png" type="Texture" id=37]
+[ext_resource path="res://Images/CardArt/CardBack/frame007.png" type="Texture" id=38]
+[ext_resource path="res://Images/CardArt/CardBack/frame008.png" type="Texture" id=39]
+[ext_resource path="res://Images/CardArt/CardBack/frame012.png" type="Texture" id=40]
+[ext_resource path="res://Images/CardArt/CardBack/frame015.png" type="Texture" id=41]
+[ext_resource path="res://Images/CardArt/CardBack/frame075.png" type="Texture" id=42]
+[ext_resource path="res://Images/CardArt/CardBack/frame035.png" type="Texture" id=43]
+[ext_resource path="res://Images/CardArt/CardBack/frame109.png" type="Texture" id=44]
+[ext_resource path="res://Images/CardArt/CardBack/frame111.png" type="Texture" id=45]
+[ext_resource path="res://Images/CardArt/CardBack/frame052.png" type="Texture" id=46]
+[ext_resource path="res://Images/CardArt/CardBack/frame058.png" type="Texture" id=47]
+[ext_resource path="res://Images/CardArt/CardBack/frame059.png" type="Texture" id=48]
+[ext_resource path="res://Images/CardArt/CardBack/frame062.png" type="Texture" id=49]
+[ext_resource path="res://Images/CardArt/CardBack/frame044.png" type="Texture" id=50]
+[ext_resource path="res://Images/CardArt/CardBack/frame100.png" type="Texture" id=51]
+[ext_resource path="res://Images/CardArt/CardBack/frame125.png" type="Texture" id=52]
+[ext_resource path="res://Images/CardArt/CardBack/frame115.png" type="Texture" id=53]
+[ext_resource path="res://Images/CardArt/CardBack/frame073.png" type="Texture" id=54]
+[ext_resource path="res://Images/CardArt/CardBack/frame120.png" type="Texture" id=55]
+[ext_resource path="res://Images/CardArt/CardBack/frame061.png" type="Texture" id=56]
+[ext_resource path="res://Images/CardArt/CardBack/frame119.png" type="Texture" id=57]
+[ext_resource path="res://Images/CardArt/CardBack/frame088.png" type="Texture" id=58]
+[ext_resource path="res://Images/CardArt/CardBack/frame048.png" type="Texture" id=59]
+[ext_resource path="res://Images/CardArt/CardBack/frame085.png" type="Texture" id=60]
+[ext_resource path="res://Images/CardArt/CardBack/frame053.png" type="Texture" id=61]
+[ext_resource path="res://Images/CardArt/CardBack/frame099.png" type="Texture" id=62]
+[ext_resource path="res://Images/CardArt/CardBack/frame095.png" type="Texture" id=63]
+[ext_resource path="res://Images/CardArt/CardBack/frame034.png" type="Texture" id=64]
+[ext_resource path="res://Images/CardArt/CardBack/frame083.png" type="Texture" id=65]
+[ext_resource path="res://Images/CardArt/CardBack/frame121.png" type="Texture" id=66]
+[ext_resource path="res://Images/CardArt/CardBack/frame004.png" type="Texture" id=67]
+[ext_resource path="res://Images/CardArt/CardBack/frame001.png" type="Texture" id=68]
+[ext_resource path="res://Images/CardArt/CardBack/frame013.png" type="Texture" id=69]
+[ext_resource path="res://Images/CardArt/CardBack/frame023.png" type="Texture" id=70]
+[ext_resource path="res://Images/CardArt/CardBack/frame082.png" type="Texture" id=71]
+[ext_resource path="res://Images/CardArt/CardBack/frame084.png" type="Texture" id=72]
+[ext_resource path="res://Images/CardArt/CardBack/frame097.png" type="Texture" id=73]
+[ext_resource path="res://Images/CardArt/CardBack/frame102.png" type="Texture" id=74]
+[ext_resource path="res://Images/CardArt/CardBack/frame105.png" type="Texture" id=75]
+[ext_resource path="res://Images/CardArt/CardBack/frame110.png" type="Texture" id=76]
+[ext_resource path="res://Images/CardArt/CardBack/frame113.png" type="Texture" id=77]
+[ext_resource path="res://Images/CardArt/CardBack/frame114.png" type="Texture" id=78]
+[ext_resource path="res://Images/CardArt/CardBack/frame116.png" type="Texture" id=79]
+[ext_resource path="res://Images/CardArt/CardBack/frame122.png" type="Texture" id=80]
+[ext_resource path="res://Images/CardArt/CardBack/frame025.png" type="Texture" id=81]
+[ext_resource path="res://Images/CardArt/CardBack/frame030.png" type="Texture" id=82]
+[ext_resource path="res://Images/CardArt/CardBack/frame031.png" type="Texture" id=83]
+[ext_resource path="res://Images/CardArt/CardBack/frame037.png" type="Texture" id=84]
+[ext_resource path="res://Images/CardArt/CardBack/frame041.png" type="Texture" id=85]
+[ext_resource path="res://Images/CardArt/CardBack/frame045.png" type="Texture" id=86]
+[ext_resource path="res://Images/CardArt/CardBack/frame046.png" type="Texture" id=87]
+[ext_resource path="res://Images/CardArt/CardBack/frame050.png" type="Texture" id=88]
+[ext_resource path="res://Images/CardArt/CardBack/frame060.png" type="Texture" id=89]
+[ext_resource path="res://Images/CardArt/CardBack/frame066.png" type="Texture" id=90]
+[ext_resource path="res://Images/CardArt/CardBack/frame070.png" type="Texture" id=91]
+[ext_resource path="res://Images/CardArt/CardBack/frame018.png" type="Texture" id=92]
+[ext_resource path="res://Images/CardArt/CardBack/frame123.png" type="Texture" id=93]
+[ext_resource path="res://Images/CardArt/CardBack/frame124.png" type="Texture" id=94]
+[ext_resource path="res://Images/CardArt/CardBack/frame068.png" type="Texture" id=95]
+[ext_resource path="res://Images/CardArt/CardBack/frame069.png" type="Texture" id=96]
+[ext_resource path="res://Images/CardArt/CardBack/frame002.png" type="Texture" id=97]
+[ext_resource path="res://Images/CardArt/CardBack/frame026.png" type="Texture" id=98]
+[ext_resource path="res://Images/CardArt/CardBack/frame027.png" type="Texture" id=99]
+[ext_resource path="res://Images/CardArt/CardBack/frame028.png" type="Texture" id=100]
+[ext_resource path="res://Images/CardArt/CardBack/frame005.png" type="Texture" id=101]
+[ext_resource path="res://Images/CardArt/CardBack/frame022.png" type="Texture" id=102]
+[ext_resource path="res://Images/CardArt/CardBack/frame094.png" type="Texture" id=103]
+[ext_resource path="res://Images/CardArt/CardBack/frame051.png" type="Texture" id=104]
+[ext_resource path="res://Images/CardArt/CardBack/frame054.png" type="Texture" id=105]
+[ext_resource path="res://Images/CardArt/CardBack/frame055.png" type="Texture" id=106]
+[ext_resource path="res://Images/CardArt/CardBack/frame056.png" type="Texture" id=107]
+[ext_resource path="res://Images/CardArt/CardBack/frame057.png" type="Texture" id=108]
+[ext_resource path="res://Images/CardArt/CardBack/frame096.png" type="Texture" id=109]
+[ext_resource path="res://Images/CardArt/CardBack/frame063.png" type="Texture" id=110]
+[ext_resource path="res://Images/CardArt/CardBack/frame065.png" type="Texture" id=111]
+[ext_resource path="res://Images/CardArt/CardBack/frame074.png" type="Texture" id=112]
+[ext_resource path="res://Images/CardArt/CardBack/frame033.png" type="Texture" id=113]
+[ext_resource path="res://Images/CardArt/CardBack/frame038.png" type="Texture" id=114]
+[ext_resource path="res://Images/CardArt/CardBack/frame040.png" type="Texture" id=115]
+[ext_resource path="res://Images/CardArt/CardBack/frame080.png" type="Texture" id=116]
+[ext_resource path="res://Images/CardArt/CardBack/frame081.png" type="Texture" id=117]
+[ext_resource path="res://Images/CardArt/CardBack/frame087.png" type="Texture" id=118]
+[ext_resource path="res://Images/CardArt/CardBack/frame091.png" type="Texture" id=119]
+[ext_resource path="res://Images/CardArt/CardBack/frame000.png" type="Texture" id=120]
+[ext_resource path="res://Images/CardArt/CardBack/frame029.png" type="Texture" id=121]
+[ext_resource path="res://Images/CardArt/CardBack/frame032.png" type="Texture" id=122]
+[ext_resource path="res://Images/CardArt/CardBack/frame077.png" type="Texture" id=123]
+[ext_resource path="res://Images/CardArt/CardBack/frame078.png" type="Texture" id=124]
+[ext_resource path="res://Images/CardArt/CardBack/frame104.png" type="Texture" id=125]
+[ext_resource path="res://Images/CardArt/CardBack/frame106.png" type="Texture" id=126]
+[ext_resource path="res://Images/CardArt/CardBack/frame016.png" type="Texture" id=127]
+[ext_resource path="res://Images/CardArt/CardBack/frame017.png" type="Texture" id=128]
+[ext_resource path="res://Images/CardArt/CardBack/frame020.png" type="Texture" id=129]
+[ext_resource path="res://Images/CardArt/CardBack/frame021.png" type="Texture" id=130]
+[ext_resource path="res://Images/CardArt/CardBack/frame117.png" type="Texture" id=131]
+[ext_resource path="res://Images/CardArt/CardBack/frame071.png" type="Texture" id=132]
+[ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=133]
+[ext_resource path="res://Scripts/CardChoice.gd" type="Script" id=134]
+[ext_resource path="res://Images/CardChoiceBack2.png" type="Texture" id=135]
+[ext_resource path="res://Images/SkipButton.png" type="Texture" id=136]
+[ext_resource path="res://Scripts/Voided.gd" type="Script" id=137]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame112.png" type="Texture" id=138]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame108.png" type="Texture" id=139]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame116.png" type="Texture" id=140]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame008.png" type="Texture" id=141]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame014.png" type="Texture" id=142]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame019.png" type="Texture" id=143]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame000.png" type="Texture" id=144]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame009.png" type="Texture" id=145]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame011.png" type="Texture" id=146]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame040.png" type="Texture" id=147]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame015.png" type="Texture" id=148]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame085.png" type="Texture" id=149]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame105.png" type="Texture" id=150]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame032.png" type="Texture" id=151]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame028.png" type="Texture" id=152]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame030.png" type="Texture" id=153]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame007.png" type="Texture" id=154]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame006.png" type="Texture" id=155]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame082.png" type="Texture" id=156]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame084.png" type="Texture" id=157]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame001.png" type="Texture" id=158]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame010.png" type="Texture" id=159]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame012.png" type="Texture" id=160]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame002.png" type="Texture" id=161]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame106.png" type="Texture" id=162]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame033.png" type="Texture" id=163]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame016.png" type="Texture" id=164]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame042.png" type="Texture" id=165]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame043.png" type="Texture" id=166]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame044.png" type="Texture" id=167]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame045.png" type="Texture" id=168]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame046.png" type="Texture" id=169]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame047.png" type="Texture" id=170]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame048.png" type="Texture" id=171]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame004.png" type="Texture" id=172]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame094.png" type="Texture" id=173]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame095.png" type="Texture" id=174]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame096.png" type="Texture" id=175]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame075.png" type="Texture" id=176]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame076.png" type="Texture" id=177]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame078.png" type="Texture" id=178]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame079.png" type="Texture" id=179]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame080.png" type="Texture" id=180]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame088.png" type="Texture" id=181]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame092.png" type="Texture" id=182]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame020.png" type="Texture" id=183]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame021.png" type="Texture" id=184]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame022.png" type="Texture" id=185]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame023.png" type="Texture" id=186]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame024.png" type="Texture" id=187]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame025.png" type="Texture" id=188]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame026.png" type="Texture" id=189]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame027.png" type="Texture" id=190]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame090.png" type="Texture" id=191]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame013.png" type="Texture" id=192]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame056.png" type="Texture" id=193]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame057.png" type="Texture" id=194]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame058.png" type="Texture" id=195]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame065.png" type="Texture" id=196]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame066.png" type="Texture" id=197]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame068.png" type="Texture" id=198]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame069.png" type="Texture" id=199]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame036.png" type="Texture" id=200]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame087.png" type="Texture" id=201]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame099.png" type="Texture" id=202]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame005.png" type="Texture" id=203]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame103.png" type="Texture" id=204]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame003.png" type="Texture" id=205]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame017.png" type="Texture" id=206]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame037.png" type="Texture" id=207]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame104.png" type="Texture" id=208]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame038.png" type="Texture" id=209]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame097.png" type="Texture" id=210]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame098.png" type="Texture" id=211]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame052.png" type="Texture" id=212]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame018.png" type="Texture" id=213]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame029.png" type="Texture" id=214]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame031.png" type="Texture" id=215]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame034.png" type="Texture" id=216]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame035.png" type="Texture" id=217]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame039.png" type="Texture" id=218]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame041.png" type="Texture" id=219]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame051.png" type="Texture" id=220]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame055.png" type="Texture" id=221]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame059.png" type="Texture" id=222]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame060.png" type="Texture" id=223]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame061.png" type="Texture" id=224]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame062.png" type="Texture" id=225]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame063.png" type="Texture" id=226]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame064.png" type="Texture" id=227]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame070.png" type="Texture" id=228]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame071.png" type="Texture" id=229]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame072.png" type="Texture" id=230]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame073.png" type="Texture" id=231]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame074.png" type="Texture" id=232]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame077.png" type="Texture" id=233]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame089.png" type="Texture" id=234]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame100.png" type="Texture" id=235]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame102.png" type="Texture" id=236]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame107.png" type="Texture" id=237]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame109.png" type="Texture" id=238]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame110.png" type="Texture" id=239]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame111.png" type="Texture" id=240]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame113.png" type="Texture" id=241]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame114.png" type="Texture" id=242]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame115.png" type="Texture" id=243]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame118.png" type="Texture" id=244]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame120.png" type="Texture" id=245]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame121.png" type="Texture" id=246]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame124.png" type="Texture" id=247]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame125.png" type="Texture" id=248]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame119.png" type="Texture" id=249]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame054.png" type="Texture" id=250]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame101.png" type="Texture" id=251]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame086.png" type="Texture" id=252]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame081.png" type="Texture" id=253]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame053.png" type="Texture" id=254]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame083.png" type="Texture" id=255]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame122.png" type="Texture" id=256]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame067.png" type="Texture" id=257]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame117.png" type="Texture" id=258]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame123.png" type="Texture" id=259]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame050.png" type="Texture" id=260]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame049.png" type="Texture" id=261]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame091.png" type="Texture" id=262]
+[ext_resource path="res://Images/CardArt/EnergyIcon/frame093.png" type="Texture" id=263]
+[ext_resource path="res://Scripts/Energy.gd" type="Script" id=264]
+[ext_resource path="res://Images/EndTurn.png" type="Texture" id=265]
+[ext_resource path="res://Fonts/ElMessiri-Bold.ttf" type="DynamicFontData" id=266]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 120 ), ExtResource( 68 ), ExtResource( 97 ), ExtResource( 32 ), ExtResource( 67 ), ExtResource( 101 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 7 ), ExtResource( 40 ), ExtResource( 69 ), ExtResource( 10 ), ExtResource( 41 ), ExtResource( 127 ), ExtResource( 128 ), ExtResource( 92 ), ExtResource( 13 ), ExtResource( 129 ), ExtResource( 130 ), ExtResource( 102 ), ExtResource( 70 ), ExtResource( 25 ), ExtResource( 81 ), ExtResource( 98 ), ExtResource( 99 ), ExtResource( 100 ), ExtResource( 121 ), ExtResource( 82 ), ExtResource( 83 ), ExtResource( 122 ), ExtResource( 113 ), ExtResource( 64 ), ExtResource( 43 ), ExtResource( 18 ), ExtResource( 84 ), ExtResource( 114 ), ExtResource( 19 ), ExtResource( 115 ), ExtResource( 85 ), ExtResource( 11 ), ExtResource( 22 ), ExtResource( 50 ), ExtResource( 86 ), ExtResource( 87 ), ExtResource( 21 ), ExtResource( 59 ), ExtResource( 12 ), ExtResource( 88 ), ExtResource( 104 ), ExtResource( 46 ), ExtResource( 61 ), ExtResource( 105 ), ExtResource( 106 ), ExtResource( 107 ), ExtResource( 108 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 89 ), ExtResource( 56 ), ExtResource( 49 ), ExtResource( 110 ), ExtResource( 36 ), ExtResource( 111 ), ExtResource( 90 ), ExtResource( 15 ), ExtResource( 95 ), ExtResource( 96 ), ExtResource( 91 ), ExtResource( 132 ), ExtResource( 30 ), ExtResource( 54 ), ExtResource( 112 ), ExtResource( 42 ), ExtResource( 31 ), ExtResource( 123 ), ExtResource( 124 ), ExtResource( 8 ), ExtResource( 116 ), ExtResource( 117 ), ExtResource( 71 ), ExtResource( 65 ), ExtResource( 72 ), ExtResource( 60 ), ExtResource( 26 ), ExtResource( 118 ), ExtResource( 58 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 119 ), ExtResource( 29 ), ExtResource( 14 ), ExtResource( 103 ), ExtResource( 63 ), ExtResource( 109 ), ExtResource( 73 ), ExtResource( 24 ), ExtResource( 62 ), ExtResource( 51 ), ExtResource( 16 ), ExtResource( 74 ), ExtResource( 34 ), ExtResource( 125 ), ExtResource( 75 ), ExtResource( 126 ), ExtResource( 17 ), ExtResource( 33 ), ExtResource( 44 ), ExtResource( 76 ), ExtResource( 45 ), ExtResource( 9 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 53 ), ExtResource( 79 ), ExtResource( 131 ), ExtResource( 35 ), ExtResource( 57 ), ExtResource( 55 ), ExtResource( 66 ), ExtResource( 80 ), ExtResource( 93 ), ExtResource( 94 ), ExtResource( 52 ) ],
+"loop": true,
+"name": "default",
+"speed": 30.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 510.515, 358.64 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 144 ), ExtResource( 158 ), ExtResource( 161 ), ExtResource( 205 ), ExtResource( 172 ), ExtResource( 203 ), ExtResource( 155 ), ExtResource( 154 ), ExtResource( 141 ), ExtResource( 145 ), ExtResource( 159 ), ExtResource( 146 ), ExtResource( 160 ), ExtResource( 192 ), ExtResource( 142 ), ExtResource( 148 ), ExtResource( 164 ), ExtResource( 206 ), ExtResource( 213 ), ExtResource( 143 ), ExtResource( 183 ), ExtResource( 184 ), ExtResource( 185 ), ExtResource( 186 ), ExtResource( 187 ), ExtResource( 188 ), ExtResource( 189 ), ExtResource( 190 ), ExtResource( 152 ), ExtResource( 214 ), ExtResource( 153 ), ExtResource( 215 ), ExtResource( 151 ), ExtResource( 163 ), ExtResource( 216 ), ExtResource( 217 ), ExtResource( 200 ), ExtResource( 207 ), ExtResource( 209 ), ExtResource( 218 ), ExtResource( 147 ), ExtResource( 219 ), ExtResource( 165 ), ExtResource( 166 ), ExtResource( 167 ), ExtResource( 168 ), ExtResource( 169 ), ExtResource( 170 ), ExtResource( 171 ), ExtResource( 261 ), ExtResource( 260 ), ExtResource( 220 ), ExtResource( 212 ), ExtResource( 254 ), ExtResource( 250 ), ExtResource( 221 ), ExtResource( 193 ), ExtResource( 194 ), ExtResource( 195 ), ExtResource( 222 ), ExtResource( 223 ), ExtResource( 224 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 196 ), ExtResource( 197 ), ExtResource( 257 ), ExtResource( 198 ), ExtResource( 199 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 176 ), ExtResource( 177 ), ExtResource( 233 ), ExtResource( 178 ), ExtResource( 179 ), ExtResource( 180 ), ExtResource( 253 ), ExtResource( 156 ), ExtResource( 255 ), ExtResource( 157 ), ExtResource( 149 ), ExtResource( 252 ), ExtResource( 201 ), ExtResource( 181 ), ExtResource( 234 ), ExtResource( 191 ), ExtResource( 262 ), ExtResource( 182 ), ExtResource( 263 ), ExtResource( 173 ), ExtResource( 174 ), ExtResource( 175 ), ExtResource( 210 ), ExtResource( 211 ), ExtResource( 202 ), ExtResource( 235 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 204 ), ExtResource( 208 ), ExtResource( 150 ), ExtResource( 162 ), ExtResource( 237 ), ExtResource( 139 ), ExtResource( 238 ), ExtResource( 239 ), ExtResource( 240 ), ExtResource( 138 ), ExtResource( 241 ), ExtResource( 242 ), ExtResource( 243 ), ExtResource( 140 ), ExtResource( 258 ), ExtResource( 244 ), ExtResource( 249 ), ExtResource( 245 ), ExtResource( 246 ), ExtResource( 256 ), ExtResource( 259 ), ExtResource( 247 ), ExtResource( 248 ) ],
+"loop": true,
+"name": "default",
+"speed": 30.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+size = 144
+font_data = ExtResource( 266 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 531.325, 222.946 )
+
+[node name="Controller" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Play" type="Node2D" parent="."]
+script = ExtResource( 5 )
+
+[node name="Deck" type="Node2D" parent="."]
+scale = Vector2( 1.5, 1.5 )
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Deck"]
+position = Vector2( 114.937, 638.055 )
+scale = Vector2( 0.0873401, 0.0873401 )
+frames = SubResource( 1 )
+frame = 78
+playing = true
+
+[node name="Count" type="RichTextLabel" parent="Deck"]
+margin_left = 85.0
+margin_top = 617.333
+margin_right = 364.0
+margin_bottom = 872.333
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]10[/center]"
+text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hand" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Discard" type="Node2D" parent="."]
+scale = Vector2( 1.5, 1.5 )
+script = ExtResource( 4 )
+
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="Discard"]
+position = Vector2( 1165.33, 635.991 )
+scale = Vector2( 0.0873401, 0.0873401 )
+frames = SubResource( 1 )
+frame = 77
+playing = true
+
+[node name="Count" type="RichTextLabel" parent="Discard"]
+margin_left = 1136.33
+margin_top = 615.667
+margin_right = 1415.33
+margin_bottom = 862.667
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]10[/center]"
+text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Library" type="Node2D" parent="."]
+position = Vector2( -238.157, 985.841 )
+script = ExtResource( 6 )
+
+[node name="Choice" type="Node2D" parent="."]
+script = ExtResource( 134 )
+
+[node name="CardChoiceBack2" type="Sprite" parent="Choice"]
+position = Vector2( 965.848, 349.493 )
+scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 135 )
+
+[node name="SkipButton" type="Sprite" parent="Choice"]
+position = Vector2( 970.728, 744.253 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 136 )
+
+[node name="Area2D" type="Area2D" parent="Choice/SkipButton"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Choice/SkipButton/Area2D"]
+position = Vector2( -15.6426, -17.0645 )
+shape = SubResource( 2 )
+
+[node name="Voided" type="Node2D" parent="."]
+script = ExtResource( 137 )
+
+[node name="Sprite" type="Sprite" parent="Voided"]
+position = Vector2( 1721.42, 739.118 )
+
+[node name="Count" type="RichTextLabel" parent="Voided"]
+margin_left = 1700.18
+margin_top = 719.131
+margin_right = 1979.18
+margin_bottom = 966.131
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]10[/center]"
+text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Energy" type="AnimatedSprite" parent="."]
+position = Vector2( 174.145, 748.516 )
+scale = Vector2( 0.1, 0.1 )
+frames = SubResource( 3 )
+frame = 41
+playing = true
+script = ExtResource( 264 )
+
+[node name="Count" type="RichTextLabel" parent="Energy"]
+margin_left = -487.498
+margin_top = -359.496
+margin_right = -208.498
+margin_bottom = -112.496
+rect_scale = Vector2( 3.5, 3.5 )
+custom_fonts/normal_font = SubResource( 4 )
+custom_colors/default_color = Color( 0.341176, 0.0666667, 0.0313726, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]10[/center]"
+text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EndTurn" type="Sprite" parent="."]
+position = Vector2( 1700.75, 707.998 )
+scale = Vector2( 0.2, 0.2 )
+texture = ExtResource( 265 )
+
+[node name="EndTurnButton" type="Area2D" parent="EndTurn"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EndTurn/EndTurnButton"]
+position = Vector2( -8.05566, 68.4614 )
+shape = SubResource( 5 )
+[connection signal="input_event" from="Choice/SkipButton/Area2D" to="Choice" method="_on_Area2D_input_event"]
+[connection signal="input_event" from="EndTurn/EndTurnButton" to="." method="_on_EndTurnButton_input_event"]

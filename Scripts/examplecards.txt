@@ -1,0 +1,13 @@
+repeat(do(draw,(3),true),1)
+if(count(type, location) > 3,result)
+trigger(triggername, action) ;
+
+types(
+trigger(play, if((count(attack, Play) > 3),do(draw,(count(Play, wind)))),false);
+removetrigger(endofturn, count(wind, Play) > 2, 5)
+
+
+
+
+
+[trigger, [play, if, [hastype, [ argv[0], wind], ], do, [draw, [count, [wind, Play], ], false], ], ]

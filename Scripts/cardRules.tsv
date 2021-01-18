@@ -1,0 +1,39 @@
+Input	Out(Text)	out(Code)	
+$SmallNum	{1/2/3/4/5}	{1/2/3/4/5}	
+$Num	{$SmallNum/$MedNum/$LargeNum}	{$SmallNum/$MedNum/$LargeNum}	
+$BasicAction	Draw $SmallNum	["draw", [$SmallNum], 1]	
+$BasicAction	Deal $Num $DamageTypes Damage to $Target on $Range $Times	["attack", [$Num, $DamageTypes, $Target, $Range], $Times]	
+$BasicAction	Gain $Num Block $Times	["block", [$Num],$Times]	
+$BasicAction	Heal $SmallNum health $Times	["heal", [$SmallNum], $Times]	
+$Times		1	
+$BasicAction	Gain $SmallNum Armor $Times	["armor",[$Num],$Times]	
+$Times	For each $CardType Card in $Location	["count",[$CardType,$Location],1]	
+$SmallNum	the number of $CardType cards in $Location as	["count",[$CardType,$Location],1]	
+$BasicAction	Move to $Range	["move", [$Range]]	
+$Range	Any $TileType tile	100,$TileType	
+$Range	A tile within $Distance	$Distance,"Any"	
+$Range	A $TileType tile within $Distance	$Distance,$TileType	
+$TileType	{Grass/Stone/Water}	{"grass"/"stone"/"water"}	
+$Distance	$1to10 tiles	$1to10	
+$CardType	{Attack/Block/$MagicalType}	{"Attack"/"Block"/$MagicalType}	
+$DamageTypes	$MundaneType {/$MagicalType} $DamageModifiers	$MundaneType {/$MagicalType} $DamageModifiers	
+$DamageModifiers	$DamageModifiers $DamageModifiers	$DamageModifiers$DamageModifiers	
+$DamageModifiers	{/piercing/undodgeable}	{/"piercing"/"undodgeable"}	
+$MundaneType	{slash/crush/stab}	{"slash"/"crush"/"stab"}	
+$MagicalType	{fire/ice/shadow}	{"fire"/"ice"/"shadow"}	
+$Trigger1	{On Draw/ On Discard/ When removed from play/ When played}	{"onMove", ["Deck","Hand"]/"onMove",["Hand","Discard"]/"onMove",["Play","Any"]/"onPlay",[]}	
+$Trigger2	When you gain {Armor/Block}	{"Armor",[]/"Block",[]}	
+$Target	{All Enemies/$SmallNum random enemies/an enemy}	{"All"/$SmallNum/"1"}	//TODO add enemy types
+$Start	{$Action2/$Action1\n$Action2/$Action1\n$Action1\n$Action2} 	{$Action2/$Action1$Action2/$Action1$Action1$Action2} 	
+$Action1	$Trigger1 $BasicAction 	$Trigger1$BasicAction	
+$RemoveTrigger1	⌛︎$1to10	["discardFromPlay",$1to10]	//TODO
+$Action2	$Trigger2 $BasicAction \n$RemoveTrigger2	$Trigger2$BasicAction$RemoveTrigger2	
+$RemoveTrigger2	{↳$SmallMedNum/$RemoveTrigger1}	["discardFromPlay",{$SmallMedNum/$RemoveTrigger1}]	//TODO
+$BasicAction	Purge	["purge",[],1]	
+$Times	{2/3/4/5} times 	{2/3/4/5}	
+$SmallMedNum	{$SmallNum/$MedNum}	{$SmallNum/$MedNum}	
+$MedNum	{6/7/8/9}	{6/7/8/9}	
+$MedNum	1{0/1/2/3/4/5/6/7/8/9}	1{0/1/2/3/4/5/6/7/8/9}	
+$LargeNum	{2/3}{0/1/2/3/4/5/6/7/8/9}	{2/3}{0/1/2/3/4/5/6/7/8/9}	
+$Location	{your deck/your hand/the discard/play}	{"Deck"/"Hand"/"Discard"/"Play"}	
+$1to10	{1/2/3/4/5/6/7/8/9/10}	{1/2/3/4/5/6/7/8/9/10}	
