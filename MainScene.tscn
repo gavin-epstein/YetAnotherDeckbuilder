@@ -1,4 +1,4 @@
-[gd_scene load_steps=272 format=2]
+[gd_scene load_steps=275 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -266,8 +266,13 @@
 [ext_resource path="res://Scripts/Energy.gd" type="Script" id=264]
 [ext_resource path="res://Images/EndTurn.png" type="Texture" id=265]
 [ext_resource path="res://Fonts/ElMessiri-Bold.ttf" type="DynamicFontData" id=266]
+[ext_resource path="res://Scripts/MeshInstance2D.gd" type="Script" id=267]
+[ext_resource path="res://Images/maptexture.png" type="Texture" id=268]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 948.302, 431.506 )
+
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 120 ), ExtResource( 68 ), ExtResource( 97 ), ExtResource( 32 ), ExtResource( 67 ), ExtResource( 101 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 7 ), ExtResource( 40 ), ExtResource( 69 ), ExtResource( 10 ), ExtResource( 41 ), ExtResource( 127 ), ExtResource( 128 ), ExtResource( 92 ), ExtResource( 13 ), ExtResource( 129 ), ExtResource( 130 ), ExtResource( 102 ), ExtResource( 70 ), ExtResource( 25 ), ExtResource( 81 ), ExtResource( 98 ), ExtResource( 99 ), ExtResource( 100 ), ExtResource( 121 ), ExtResource( 82 ), ExtResource( 83 ), ExtResource( 122 ), ExtResource( 113 ), ExtResource( 64 ), ExtResource( 43 ), ExtResource( 18 ), ExtResource( 84 ), ExtResource( 114 ), ExtResource( 19 ), ExtResource( 115 ), ExtResource( 85 ), ExtResource( 11 ), ExtResource( 22 ), ExtResource( 50 ), ExtResource( 86 ), ExtResource( 87 ), ExtResource( 21 ), ExtResource( 59 ), ExtResource( 12 ), ExtResource( 88 ), ExtResource( 104 ), ExtResource( 46 ), ExtResource( 61 ), ExtResource( 105 ), ExtResource( 106 ), ExtResource( 107 ), ExtResource( 108 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 89 ), ExtResource( 56 ), ExtResource( 49 ), ExtResource( 110 ), ExtResource( 36 ), ExtResource( 111 ), ExtResource( 90 ), ExtResource( 15 ), ExtResource( 95 ), ExtResource( 96 ), ExtResource( 91 ), ExtResource( 132 ), ExtResource( 30 ), ExtResource( 54 ), ExtResource( 112 ), ExtResource( 42 ), ExtResource( 31 ), ExtResource( 123 ), ExtResource( 124 ), ExtResource( 8 ), ExtResource( 116 ), ExtResource( 117 ), ExtResource( 71 ), ExtResource( 65 ), ExtResource( 72 ), ExtResource( 60 ), ExtResource( 26 ), ExtResource( 118 ), ExtResource( 58 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 119 ), ExtResource( 29 ), ExtResource( 14 ), ExtResource( 103 ), ExtResource( 63 ), ExtResource( 109 ), ExtResource( 73 ), ExtResource( 24 ), ExtResource( 62 ), ExtResource( 51 ), ExtResource( 16 ), ExtResource( 74 ), ExtResource( 34 ), ExtResource( 125 ), ExtResource( 75 ), ExtResource( 126 ), ExtResource( 17 ), ExtResource( 33 ), ExtResource( 44 ), ExtResource( 76 ), ExtResource( 45 ), ExtResource( 9 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 53 ), ExtResource( 79 ), ExtResource( 131 ), ExtResource( 35 ), ExtResource( 57 ), ExtResource( 55 ), ExtResource( 66 ), ExtResource( 80 ), ExtResource( 93 ), ExtResource( 94 ), ExtResource( 52 ) ],
 "loop": true,
@@ -275,10 +280,10 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 510.515, 358.64 )
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 144 ), ExtResource( 158 ), ExtResource( 161 ), ExtResource( 205 ), ExtResource( 172 ), ExtResource( 203 ), ExtResource( 155 ), ExtResource( 154 ), ExtResource( 141 ), ExtResource( 145 ), ExtResource( 159 ), ExtResource( 146 ), ExtResource( 160 ), ExtResource( 192 ), ExtResource( 142 ), ExtResource( 148 ), ExtResource( 164 ), ExtResource( 206 ), ExtResource( 213 ), ExtResource( 143 ), ExtResource( 183 ), ExtResource( 184 ), ExtResource( 185 ), ExtResource( 186 ), ExtResource( 187 ), ExtResource( 188 ), ExtResource( 189 ), ExtResource( 190 ), ExtResource( 152 ), ExtResource( 214 ), ExtResource( 153 ), ExtResource( 215 ), ExtResource( 151 ), ExtResource( 163 ), ExtResource( 216 ), ExtResource( 217 ), ExtResource( 200 ), ExtResource( 207 ), ExtResource( 209 ), ExtResource( 218 ), ExtResource( 147 ), ExtResource( 219 ), ExtResource( 165 ), ExtResource( 166 ), ExtResource( 167 ), ExtResource( 168 ), ExtResource( 169 ), ExtResource( 170 ), ExtResource( 171 ), ExtResource( 261 ), ExtResource( 260 ), ExtResource( 220 ), ExtResource( 212 ), ExtResource( 254 ), ExtResource( 250 ), ExtResource( 221 ), ExtResource( 193 ), ExtResource( 194 ), ExtResource( 195 ), ExtResource( 222 ), ExtResource( 223 ), ExtResource( 224 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 196 ), ExtResource( 197 ), ExtResource( 257 ), ExtResource( 198 ), ExtResource( 199 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 176 ), ExtResource( 177 ), ExtResource( 233 ), ExtResource( 178 ), ExtResource( 179 ), ExtResource( 180 ), ExtResource( 253 ), ExtResource( 156 ), ExtResource( 255 ), ExtResource( 157 ), ExtResource( 149 ), ExtResource( 252 ), ExtResource( 201 ), ExtResource( 181 ), ExtResource( 234 ), ExtResource( 191 ), ExtResource( 262 ), ExtResource( 182 ), ExtResource( 263 ), ExtResource( 173 ), ExtResource( 174 ), ExtResource( 175 ), ExtResource( 210 ), ExtResource( 211 ), ExtResource( 202 ), ExtResource( 235 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 204 ), ExtResource( 208 ), ExtResource( 150 ), ExtResource( 162 ), ExtResource( 237 ), ExtResource( 139 ), ExtResource( 238 ), ExtResource( 239 ), ExtResource( 240 ), ExtResource( 138 ), ExtResource( 241 ), ExtResource( 242 ), ExtResource( 243 ), ExtResource( 140 ), ExtResource( 258 ), ExtResource( 244 ), ExtResource( 249 ), ExtResource( 245 ), ExtResource( 246 ), ExtResource( 256 ), ExtResource( 259 ), ExtResource( 247 ), ExtResource( 248 ) ],
 "loop": true,
@@ -286,35 +291,51 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="DynamicFont" id=5]
 size = 144
 font_data = ExtResource( 266 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 531.325, 222.946 )
 
-[node name="Controller" type="Node2D"]
+[node name="Scene" type="Node2D"]
+
+[node name="Map" type="Node2D" parent="."]
+position = Vector2( 960, 428 )
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Map"]
+texture = ExtResource( 268 )
+script = ExtResource( 267 )
+
+[node name="MapArea" type="Area2D" parent="Map/MeshInstance2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MeshInstance2D/MapArea"]
+shape = SubResource( 1 )
+
+[node name="EnemyController" type="Node2D" parent="."]
+
+[node name="CardController" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
-[node name="Play" type="Node2D" parent="."]
+[node name="Play" type="Node2D" parent="CardController"]
 script = ExtResource( 5 )
 
-[node name="Deck" type="Node2D" parent="."]
+[node name="Deck" type="Node2D" parent="CardController"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="Deck"]
-position = Vector2( 114.937, 638.055 )
+[node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Deck"]
+position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
-frames = SubResource( 1 )
-frame = 78
+frames = SubResource( 2 )
+frame = 30
 playing = true
 
-[node name="Count" type="RichTextLabel" parent="Deck"]
-margin_left = 85.0
-margin_top = 617.333
-margin_right = 364.0
-margin_bottom = 872.333
+[node name="Count" type="RichTextLabel" parent="CardController/Deck"]
+margin_left = 41.6667
+margin_top = 642.0
+margin_right = 320.667
+margin_bottom = 897.0
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -325,25 +346,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Hand" type="Node2D" parent="."]
+[node name="Hand" type="Node2D" parent="CardController"]
 script = ExtResource( 3 )
 
-[node name="Discard" type="Node2D" parent="."]
+[node name="Discard" type="Node2D" parent="CardController"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 4 )
 
-[node name="AnimatedSprite2" type="AnimatedSprite" parent="Discard"]
-position = Vector2( 1165.33, 635.991 )
+[node name="AnimatedSprite2" type="AnimatedSprite" parent="CardController/Discard"]
+position = Vector2( 1181.33, 662.658 )
 scale = Vector2( 0.0873401, 0.0873401 )
-frames = SubResource( 1 )
-frame = 77
+frames = SubResource( 2 )
+frame = 29
 playing = true
 
-[node name="Count" type="RichTextLabel" parent="Discard"]
-margin_left = 1136.33
-margin_top = 615.667
-margin_right = 1415.33
-margin_bottom = 862.667
+[node name="Count" type="RichTextLabel" parent="CardController/Discard"]
+margin_left = 1152.33
+margin_top = 642.334
+margin_right = 1431.33
+margin_bottom = 889.334
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -354,40 +375,40 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Library" type="Node2D" parent="."]
+[node name="Library" type="Node2D" parent="CardController"]
 position = Vector2( -238.157, 985.841 )
 script = ExtResource( 6 )
 
-[node name="Choice" type="Node2D" parent="."]
+[node name="Choice" type="Node2D" parent="CardController"]
 script = ExtResource( 134 )
 
-[node name="CardChoiceBack2" type="Sprite" parent="Choice"]
+[node name="CardChoiceBack2" type="Sprite" parent="CardController/Choice"]
 position = Vector2( 965.848, 349.493 )
 scale = Vector2( 0.3, 0.3 )
 texture = ExtResource( 135 )
 
-[node name="SkipButton" type="Sprite" parent="Choice"]
+[node name="SkipButton" type="Sprite" parent="CardController/Choice"]
 position = Vector2( 970.728, 744.253 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 136 )
 
-[node name="Area2D" type="Area2D" parent="Choice/SkipButton"]
+[node name="Area2D" type="Area2D" parent="CardController/Choice/SkipButton"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Choice/SkipButton/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/Choice/SkipButton/Area2D"]
 position = Vector2( -15.6426, -17.0645 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
-[node name="Voided" type="Node2D" parent="."]
+[node name="Voided" type="Node2D" parent="CardController"]
 script = ExtResource( 137 )
 
-[node name="Sprite" type="Sprite" parent="Voided"]
-position = Vector2( 1721.42, 739.118 )
+[node name="Sprite" type="Sprite" parent="CardController/Voided"]
+position = Vector2( 1769.42, 763.118 )
 
-[node name="Count" type="RichTextLabel" parent="Voided"]
-margin_left = 1700.18
-margin_top = 719.131
-margin_right = 1979.18
-margin_bottom = 966.131
+[node name="Count" type="RichTextLabel" parent="CardController/Voided"]
+margin_left = 1748.18
+margin_top = 743.131
+margin_right = 2027.18
+margin_bottom = 990.131
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -398,21 +419,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Energy" type="AnimatedSprite" parent="."]
-position = Vector2( 174.145, 748.516 )
+[node name="Energy" type="AnimatedSprite" parent="CardController"]
+position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
-frames = SubResource( 3 )
-frame = 41
+frames = SubResource( 4 )
+frame = 119
 playing = true
 script = ExtResource( 264 )
 
-[node name="Count" type="RichTextLabel" parent="Energy"]
+[node name="Count" type="RichTextLabel" parent="CardController/Energy"]
 margin_left = -487.498
 margin_top = -359.496
 margin_right = -208.498
 margin_bottom = -112.496
 rect_scale = Vector2( 3.5, 3.5 )
-custom_fonts/normal_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
 custom_colors/default_color = Color( 0.341176, 0.0666667, 0.0313726, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]10[/center]"
@@ -421,15 +442,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EndTurn" type="Sprite" parent="."]
-position = Vector2( 1700.75, 707.998 )
+[node name="EndTurn" type="Sprite" parent="CardController"]
+position = Vector2( 1700.75, 835.998 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 265 )
 
-[node name="EndTurnButton" type="Area2D" parent="EndTurn"]
+[node name="EndTurnButton" type="Area2D" parent="CardController/EndTurn"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EndTurn/EndTurnButton"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
 position = Vector2( -8.05566, 68.4614 )
-shape = SubResource( 5 )
-[connection signal="input_event" from="Choice/SkipButton/Area2D" to="Choice" method="_on_Area2D_input_event"]
-[connection signal="input_event" from="EndTurn/EndTurnButton" to="." method="_on_EndTurnButton_input_event"]
+shape = SubResource( 6 )
+[connection signal="input_event" from="Map/MeshInstance2D/MapArea" to="Map/MeshInstance2D" method="_on_MapArea_input_event"]
+[connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
+[connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]

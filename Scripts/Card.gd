@@ -2,8 +2,8 @@ extends Node2D
 class_name Card
 var controller
 #constants
-var zoomoffset = Vector2(0,-100)
-var speed  = 10
+const zoomoffset = Vector2(0,-100)
+const speed  = 10
 #vars
 var triggers = {}
 var interruptions ={}

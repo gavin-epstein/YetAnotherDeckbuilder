@@ -16,7 +16,7 @@ func _ready() -> void:
 func updateDisplay():
 	var startx= 300
 	var x = startx
-	var y = 550
+	var y = 600
 	for card in cards:
 		card.moveTo(Vector2(x,y), Vector2(.25,.25))
 		card.visible = true

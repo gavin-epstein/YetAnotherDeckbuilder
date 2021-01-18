@@ -16,7 +16,7 @@ func is_full() -> bool:
 func updateDisplay():
 	if cards.size() == 0:
 		return
-	var pos = Vector2(318,800)
+	var pos = Vector2(300,860)
 	var xsep = min(1000/cards.size(), 150)
 	for card in cards:
 		card.visible = true
