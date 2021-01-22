@@ -1,0 +1,9 @@
+scene("res://Units/Monolith.tscn")
+difficulty(0)
+spawnable(stone,grass,sand)
+name("Monolith")
+
+scene("res://Units/Tumbleweed.tscn")
+difficulty(1)
+spawnable(grass,sand)
+name("Tumbleweed")

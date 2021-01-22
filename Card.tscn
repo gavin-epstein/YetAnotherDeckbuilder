@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/Card.gd" type="Script" id=1]
 [ext_resource path="res://Images/CardArt/Placeholder.png" type="Texture" id=2]
 [ext_resource path="res://Images/CardArt/CardFrame.png" type="Texture" id=3]
 [ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Images/CardArt/CardHighlight.png" type="Texture" id=6]
 [ext_resource path="res://Images/CardArt/hourglass.png" type="Texture" id=132]
 [ext_resource path="res://Images/CardArt/ReactionArrow.png" type="Texture" id=133]
 [ext_resource path="res://Images/CardArt/Endless.png" type="Texture" id=134]
@@ -59,6 +60,12 @@ playback_speed = 5.0
 anims/Grow = SubResource( 1 )
 
 [node name="Resizer" type="Node2D" parent="."]
+
+[node name="CardHighlight" type="Sprite" parent="Resizer"]
+visible = false
+position = Vector2( 371.286, 516.583 )
+scale = Vector2( 1.04252, 1.02655 )
+texture = ExtResource( 6 )
 
 [node name="CardArt" type="Sprite" parent="Resizer"]
 position = Vector2( 369.166, 319.764 )

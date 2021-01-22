@@ -20,9 +20,9 @@ var modifiers = {}
 var removetype
 var target_scale
 var target_position
-
+var highlighted = false
 var rarity
-
+var debug
 var mouseoverdelay = 0
 var mouseon
 
@@ -42,17 +42,7 @@ func _process(delta: float) -> void:
 					scale = target_scale
 		if target_scale != null:
 			self.scale = self.scale.linear_interpolate(target_scale,speed*delta)
-#	else:
-#		mouseoverdelay +=delta
-#		if target_position != null:
-#			self.position = self.position.linear_interpolate(target_position+zoomoffset, speed*delta)
-#			if (position-(target_position+zoomoffset)).length_squared() < 9:
-#				self.position = target_position+zoomoffset
-#				if target_scale != null:
-#					scale = target_scale*1.5
-#		if target_scale != null:
-#			self.scale = self.scale.linear_interpolate(target_scale*1.5,speed*delta)	
-#
+
 	
 	#zoom on mouseover
 	#var rect = $CardFrame/Area2D/CollisionShape2D
@@ -73,7 +63,9 @@ func Triggered(method, argv, results) -> Dictionary:
 		if method == "endofturn":
 			print("triggering "+ method + " on " + title)
 		for code in triggers[method]:
-			execute(code, argv)
+			var res = execute(code, argv)
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
 	self.updateDisplay();
 	return results
 func Interrupts(method, args) -> bool:
@@ -132,16 +124,31 @@ func execute(code, argv):
 	
 	if code is String:
 		return code
+	while code is GDScriptFunctionState:
+		yield(controller, "resumeExecution")
+		code  = code.resume()
 	if not code[0] is String:
 		assert(false, str(code[0]) + " is not a valid command" )
 	if code [0] == "count":
 		var arg1 = processArgs(code[1][0], argv)
+		while arg1 is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			arg1  = arg1.resume()
 		var arg2 = processArgs(code[1][1], argv)
+		while arg2 is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			arg2  = arg2.resume()
 		var result = controller.countTypes(code[1][0],code[1][1])
 		return result
 	elif code[0] == "countName":
 		var arg1 = processArgs(code[1][0], argv)
+		while arg1 is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			arg1  = arg1.resume()
 		var arg2 = processArgs(code[1][1], argv)
+		while arg2 is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			arg2  = arg2.resume()
 		var result = controller.countNames(code[1][0],code[1][1])
 		return result
 	elif code[0] =="if":
@@ -151,6 +158,7 @@ func execute(code, argv):
 		else:
 			condition = code[1][0]
 		var command = code[1][1]
+		#Check if it is a comparison
 		if condition is Array:
 			var comp = condition.find(">")
 			var compsymb = ">"
@@ -166,33 +174,77 @@ func execute(code, argv):
 				var after  = condition.slice(comp+1,condition.size()-1)
 				if before.size() > 1:
 					before = execute(before, argv)
+					while before is GDScriptFunctionState:
+						yield(controller, "resumeExecution")
+						before  = before.resume()
 				else:
 					before = before[0]
 				if after.size() > 1:
 					after = execute(after, argv)
+					while after is GDScriptFunctionState:
+						yield(controller, "resumeExecution")
+						after  = after.resume()
 				else:
 					after = after[0]
 				if (compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after):
-					return execute(command, argv)
+					var ex = execute(command, argv)
+					if ex is GDScriptFunctionState:
+						ex = yield(ex, "completed")
+					return ex
 			else:
-				if execute(condition, argv):
-					return execute(command, argv)
+				#no comparator found
+				var cond = processArgs(condition, argv)
+				while cond is GDScriptFunctionState:
+					yield(controller, "resumeExecution")
+					cond  = cond.resume()
+				if cond:
+					var ex = execute(code[1].split(0,1), argv)
+					while ex is GDScriptFunctionState:
+						yield(controller, "resumeExecution")
+						ex  = ex.resume()
+					return ex
 		elif condition is bool:
 			if condition:
-				return execute(command, argv)
+				var ex = execute(code[1].split(0,1), argv)
+				while ex is GDScriptFunctionState:
+					yield(controller, "resumeExecution")
+					ex  = ex.resume()
+				return ex
 		else:
-			if processArgs(condition, argv):
-				return execute(command, argv)
+			#Simple condition
+			var cond = processArgs(condition, argv)
+			while cond is GDScriptFunctionState:
+				yield(controller, "resumeExecution")
+				cond  = cond.resume()
+			if cond:
+				var ex = execute(command, argv)
+				while ex is GDScriptFunctionState:
+					yield(controller, "resumeExecution")
+					ex  = ex.resume()
+				return ex
 	elif code[0] == "repeat":
 		var times = processArgs(code[1][2],argv)
+		while times is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			times  = times.resume()
 		for i in range(times):
-			execute(code[1].split(0,1), argv)
+			var ex = execute(code[1].split(0,1), argv)
+			while ex is GDScriptFunctionState:
+				yield(controller, "resumeExecution")
+				ex  = ex.resume()
 	elif code[0] == "do":
 		var args = []
 		for arg in code[1][1]:
-			args.append(processArgs(arg,argv))
+			arg = processArgs(arg,argv)
+			if arg is GDScriptFunctionState:
+				arg =  yield(arg, "completed")
+			args.append(arg)
 		
 		var silence = processArgs(code[1][2], argv)
+		while silence is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			silence  = silence.resume()
+		self.debug = args
 		Utility.extendDict(results, controller.Action(code[1][0], args, silence))
 	elif code[0] == "decrementRemoveCount":
 		removecount -=1
@@ -204,14 +256,42 @@ func execute(code, argv):
 	elif code[0] == "hastype":
 		var args = []
 		for arg in code[1]:
-			args.append(processArgs(arg,argv))
+			arg = processArgs(arg,argv)
+			while arg is GDScriptFunctionState:
+				yield(controller, "resumeExecution")
+				arg  = arg.resume()
+			args.append(arg)
 		return args[0].hasType(args[1])
 	elif code[0] == "hasname":
 		var args = []
-		for arg in code[1][1]:
-			args.append(processArgs(arg,argv))
+		for arg in code[1]:
+			arg = processArgs(arg,argv)
+			while arg is GDScriptFunctionState:
+				yield(controller, "resumeExecution")
+				arg  = arg.resume()
+			args.append(arg)
 		return args[0].hasName(args[1])
-		
+	elif code[0] =="select":
+		var args = []
+		var arg = processArgs(code[1][0],argv)
+		while arg is GDScriptFunctionState:
+			yield(controller, "resumeExecution")
+			arg  = arg.resume()
+		args.append(arg)
+		args.append(code[1][1])
+		arg = processArgs(code[1][2],argv)
+		if arg is GDScriptFunctionState:
+			arg = yield(arg, "completed")
+		args.append(arg)
+		if code[1].size()>3:
+			arg = processArgs(code[1][3],argv)
+			while arg is GDScriptFunctionState:
+				yield(controller, "resumeExecution")
+				arg  = arg.resume()
+		controller.callv("select", args)
+		yield(controller, "resumeExecution")
+		debug = controller.selectedCard
+		return controller.selectedCard
 	else:
 		#assert(false, code[0] + " not a valid command")
 		return code
@@ -227,7 +307,12 @@ func processArgs(arg, argv):
 			return false
 		return arg
 	elif arg is Array:
-		return execute(arg, argv)
+		var ret = execute(arg, argv)
+		if ret is GDScriptFunctionState:
+			ret = yield(ret, "completed");
+			
+		self.debug = ret
+		return ret
 	else:
 		return arg
 func updateDisplay():
@@ -273,27 +358,17 @@ func moveTo(pos:Vector2, size = null):
 		self.target_scale = size
 		self.target_position = pos
 	
-		
+func highlight():
+	self.highlighted = true
+	$Resizer/CardHighlight.visible = true
+func dehighlight():
+	self.highlighted = false
+	$Resizer/CardHighlight.visible = false
 func zoom() -> void:
 	if $Resizer.scale.x == 1.5:
 		$AnimationPlayer.play_backwards("Grow")
 	elif $Resizer.scale.x == 1:
 		$AnimationPlayer.play("Grow")
-
-func _on_Area2D_mouse_entered() -> void:
-	#mouseon = true
-#	if target_position == null:
-#		target_position  = position
-#	if target_scale == null:
-#		target_scale = scale
-	#get_parent().get_parent().updateDisplay()
-	#self.z_index+=1
-	pass
-	#zoom()
-		
-	
-	#moveTo(self.target_position+Vector2(0,-100), self.target_scale*1.5)
-	
 
 
 

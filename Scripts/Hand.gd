@@ -36,3 +36,5 @@ func returnCard(target):
 func cardClicked(card):
 	if get_parent().inputAllowed:
 		get_parent().Action("play", [card])
+	elif card.highlighted:
+		get_parent().cardClicked(card)

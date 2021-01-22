@@ -1,13 +1,14 @@
 extends MeshInstance2D
 class_name Map
-var maxFailedAttempts = 20
-const width = 960
-const height = 500
+
+const maxFailedAttempts = 40
+const width = 960*.8
+const height = 500*.8
 const radius =1.5*max(width, height)
 #0 = cicrumcenter, 1 = centroid
 const CCinter = .33
-const minSqDist = 4000
-const maxSqDist = 16000
+const minSqDist = 4000 *3
+const maxSqDist = minSqDist*1.2
 var nodes = []
 var verts = PoolVector2Array()
 var uvs = PoolVector2Array()
@@ -25,11 +26,15 @@ var pausetime = 0.0
 var acceptinput = false
 var gridNodeTemplate
 var cardController
+var enemyController
+var sentinels=[]
+var physics_on  = false
 
 func _ready() -> void:
 	randomize()
 	gridNodeTemplate = load("res://Scripts/GridNode.gd");
 	cardController = get_node("../../CardController");
+	enemyController = get_node("../../EnemyController");
 func _process(delta: float) -> void:
 	
 	
@@ -40,6 +45,7 @@ func _process(delta: float) -> void:
 				lastStep = generate()
 				
 			else:
+				
 				done = true
 				acceptinput = true
 	else:
@@ -62,28 +68,50 @@ func _process(delta: float) -> void:
 func generate() -> void:
 	
 	var failedAttempts = 0
-	var nodeCount = 0
+	for x in range(-width, width,sqrt(maxSqDist)):
+		var pos = Vector2(x,-height-40)
+		var color  = -1
+		sentinels.append(addGridNode(pos, color,true))
+		pos = Vector2(x,height+40)
+		
+		sentinels.append(addGridNode(pos, color,true))
+		#second row
+		pos = Vector2(x,-height-140)
+		addGridNode(pos, color,true)
+		pos = Vector2(x,height+140)
+		addGridNode(pos, color,true)
+	for y in range(-height, height, sqrt(maxSqDist)):
+		var pos = Vector2(-width-40, y)
+		var color  = -1
+		sentinels.append(addGridNode(pos, color,true))
+		pos = Vector2(width+40, y)
+		color  = -1
+		sentinels.append(addGridNode(pos, color,true))
+		#outer row
+		pos = Vector2(-width-140, y)	
+		addGridNode(pos, color,true)
+		pos = Vector2(width+140, y)
+		addGridNode(pos, color,true)
 	#var startTime = OS.get_ticks_msec()
 	while failedAttempts < maxFailedAttempts:
 		var tooclose = false
-		var pos = Vector2(rand_range(0,radius), 0).rotated(rand_range(0,2*PI))
+		#var pos = Vector2(rand_range(0,radius), 0).rotated(rand_range(0,2*PI))
+		var pos = Vector2(rand_range(-width,width), rand_range(-height,height))
 		for node in nodes:
 				if Utility.sqDistToNode(pos, node) < minSqDist:
 					failedAttempts+=1
 					tooclose= true
 					break
 		if not tooclose:
-			var color = getRandomColor()
-			
+			var color  = getTerrain()
 			addGridNode(pos, color)	
-			nodeCount +=1
+			
 			#print("Node %3d in %3.f ms after %2d attempts"%[nodeCount,(OS.get_ticks_msec() - startTime), failedAttempts])
 			failedAttempts = 0
 			#print('Node at %.3f,%.3f'% [pos.x, pos.y])		
 			yield()
 	triangulate()
-	for node in nodes:
-		node.physics_on = true
+	
 func triangulate() -> void:	
 	centerCache = {}
 	var verts = PoolVector2Array()
@@ -151,24 +179,32 @@ func getCenterIndex(A:Node2D,B:Node2D,C:Node2D) -> int:
 		return centerCache[key]
 		
 
-func addGridNode(pos:Vector2, uvCoords:Vector2) -> Node2D:
+func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 	var newNode = gridNodeTemplate.new()
 	newNode.added(pos) 
-	newNode.uvCoords = uvCoords
-	add_child(newNode)
+	newNode.uvCoords = getTerrainColor(terrain)
+	newNode.terrain =  terrain
+	add_child(newNode) #this is necessary so physics process gets called on children
 	nodes.append(newNode)
+	if not sentinel:
+		enemyController.nodeSpawned(newNode)
+	else:
+		newNode.sentinel = true
 	return newNode
 
-
-func getRandomColor() -> Vector2:
-	var angle =PI/18 * (randi()%8)-.01
+func getTerrain() -> int:
+	return randi()%Utility.Terrain.size();
+func getTerrainColor(terrain:int) -> Vector2:
+	if terrain < 0:
+		return Vector2(0,0)
+	var angle = PI/2 - (PI/18 * (terrain)) -.005
 	return Vector2(.5*cos(angle),.5*sin(angle))
 
 
 func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if acceptinput:
 		if cardController.takeFocus(self):
-			if event.is_action("left_click"):
+			if  event.is_action_pressed("left_click"):
 				var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
 				var closest = nodes[0]
 				for node in nodes:
@@ -178,8 +214,12 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 				closest.popNode()
 				closest.uvCoords=Vector2(0,0)
 				nodes.erase(closest)
-				var newpos = Vector2(radius, 0).rotated(rand_range(0,2*PI))
-				addGridNode(newpos, getRandomColor())	
+				var newpos = rand_range(.95,.8)* (sentinels[randi()%sentinels.size()].position)
+				addGridNode(newpos, getTerrain())	
 				triangulate()
+			
+				self.physics_on  = true
+				yield(get_tree().create_timer(1.0), "timeout")
+				self.physics_on = false
 			cardController.releaseFocus(self)
 				

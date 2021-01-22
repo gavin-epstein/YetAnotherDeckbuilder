@@ -1,22 +1,22 @@
+title(Adventurer);
+text("At the end of turn, set your energy to 3, discard your hand. At the start of turn draw 5\n eternal \nsilent")
+trigger(endofturn, do(setEnergy,(3),true));
+trigger(endofturn, do(discardAll,(true),true));
+trigger(startofturn, do(draw, (5), true));
+removetrigger(never, true,0);
+modifiers(eternal);
+rarity(0);
+image("res://Images/CardArt/Adventurer2.png");
+cost("-");
+
 title("Wind Walker");
 text("When you play a wind card, draw a card for each wind card in play");
 trigger(play, if((hastype(argv[0],wind)),(do(draw,((count(Play, wind))),false))));
 types(wind, enchantment);
 removetrigger(play,(hastype(argv[0],wind)),6);
 image("res://Images/CardArt/WindWalk.png");
-rarity(2);
+rarity(3);
 cost(1);
-
-title(Adventurer);
-text("At the end of turn, set your energy to 3, discard your hand. At the start of turn draw 5\n eternal \nsilent")
-trigger(endofturn, do(setEnergy,(3),true));
-trigger(endofturn, do(discardAll,(),true));
-trigger(startofturn, do(draw, (5), true));
-removetrigger(never, true,0);
-modifiers(eternal);
-rarity(0);
-image("res://Images/CardArt/Adventurer2.png");
-cost(0);
 
 title(Wind Blast);
 text(Deal 3 wind damage to all enemies);
@@ -24,7 +24,7 @@ trigger(onPlay, do(damage, (3,(wind),(all),50),false));
 removetrigger(endofturn, true, 1);
 types(wind, attack, spell);
 image("res://Images/CardArt/WindBlast.png");
-rarity(4)
+rarity(6)
 cost(1)
 
 title(Shadow Slice);
@@ -35,12 +35,12 @@ trigger(onPlay, do(move, (Play, Discard, self), true));
 types(attack, slash, shadow, melee);
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/ShadowSlice.png");
-rarity(5);
+rarity(7);
 
 title(Dark Recipe);
 types(shadow, culinary, healing, ritual);
 text("When you have 4 or more shadow cards in play, heal 5 and discard this card");
-rarity(3);
+rarity(4);
 trigger(play,if((count(Play, shadow) > 3), (do(heal,(5),false))));
 removetrigger(play, (count(Play, shadow) > 3), 1);
 image("res://Images/CardArt/DarkRecipe.png");
@@ -81,6 +81,7 @@ modifiers(unique);
 types(ritual,avian,meme);
 removetrigger(never, true,0);
 cost(2);
+image("res://Images/CardArt/BirdMask.png");
 
 title(Black Lettuce);
 text("Gain 3 energy.\nExhaust.");
@@ -90,3 +91,59 @@ trigger(onPlay, do(voided,(self, Play),false));
 removetrigger(endofturn, true, 0);
 types(light,shadow,fire,earth,water,meme);
 cost(0);
+
+title(Whirlwind);
+text("Discard your hand, draw 5 cards");
+cost(1);
+trigger(onPlay, do(discardAll,(),true));
+trigger(onPlay, do(draw, (5), true));
+types(wind);
+rarity(4);
+removetrigger(endofturn,true,1);
+
+title(Undying Ember);
+text("On draw, gain 1 energy\n Unplayable.");
+cost(-);
+trigger(onDraw, do(gainEnergy,(1), false));
+types(fire,energy);
+modifiers(unplayable);
+rarity(3);
+removetrigger(never, true, 0);
+image("res://Images/CardArt/UndyingEmber.png");
+
+title(Wind Power);
+types(wind, mechanical,energy)
+text("when you discard 3 cards, draw a card, gain an energy, and purge this card");
+removetrigger(discard, true, 3);
+trigger(onRemoveFromPlay, do(gainEnergy,(1), false));
+trigger(onRemoveFromPlay, do(draw,(1),false));
+trigger(onRemoveFromPlay, do(purge, (self), false));
+cost(-);
+rarity(0);
+
+title(Wind Turbine);
+types(wind,mechanical);
+cost(4);
+trigger(startofturn, do(create,("Wind Power",Play),false));
+removetrigger(endofturn,true,6);
+text("At the start of your turn, add a Wind Power to play");
+rarity(2);
+
+title(Feather Cloak);
+types(wind,armor,avian);
+cost(1);
+trigger(onPlay,do(armor,(2),false));
+trigger(onDiscard,do(armor,(1),false));
+text("Gain 2 armor when played, or 1 when discarded");
+rarity(5);
+removetrigger(endofturn,true,2);
+image("res://Images/CardArt/FeatherCloak.png");
+
+title(Ignite);
+types(fire);
+cost(1);
+trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
+trigger(startofturn, do(gainEnergy,(1),false));
+removetrigger(endofturn, true,3);
+text("At the start of your next three turns, void a card in your hand and gain an energy");
+rarity(4);

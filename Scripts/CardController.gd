@@ -1,5 +1,6 @@
 extends Node2D
 enum Results {Interrupt, CardDrawn, CardPlayed, CardDiscarded, EnergySpent, CardMoved, CardPurged, Success}
+signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -12,6 +13,7 @@ var Energy
 var inputdelay = 0
 var inputAllowed = true
 var focus
+var selectedCard
 class_name CardController
 
 func _ready()-> void:
@@ -32,6 +34,7 @@ func _ready()-> void:
 		Deck.add_card(Library.getCardByName("Common Loot"))
 	shuffle()
 	Action("draw",[5])
+	#connect("cardSelected",self,"select")
 	
 func _process(delta: float) -> void:
 	inputdelay += delta
@@ -56,7 +59,10 @@ func Action(method:String, argv:Array, silent = false) -> Dictionary:
 			var ind = 0
 			while Play.cards.size() > ind:
 				var card = Play.cards[ind]
-				Utility.extendDict(results,card.Triggered(method, argv, results))
+				var res = card.Triggered(method, argv, results)
+				if res is GDScriptFunctionState:
+					res = yield(res,"completed")
+				Utility.extendDict(results,res)
 				if card in Play.cards:
 					ind+=1
 	updateDisplay()
@@ -79,6 +85,7 @@ func draw(x)->Dictionary:
 		Deck.remove_card_at(0)
 		Hand.add_card_at(card, 0)
 		Utility.extendDict(results, card.Triggered("onMove", ["Deck", "Hand"], results))
+		Utility.extendDict(results, card.Triggered("onDraw", [], results))
 		Utility.addtoDict(results, Results.CardDrawn, card)
 		results[Results.Success] = true;
 	return results
@@ -105,6 +112,9 @@ func play(card)->Dictionary:
 	Hand.remove_card(card)
 	Play.add_card(card)
 	var results = card.Triggered("onPlay",[card],{})
+	if results is GDScriptFunctionState:
+		results = yield(results,"completed")
+		
 	Energy -= card.cost
 	$Energy.updateDisplay()
 	Utility.addtoDict(results, Results.CardPlayed, card)
@@ -136,8 +146,8 @@ func move(loc1, loc2, card):
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
 		loc2.add_card(card)
-	return {Results.CardMoved:[loc1,loc2,card], Results.Success:true}
-		
+		return {Results.CardMoved:[loc1,loc2,card], Results.Success:true}
+	return {Results.Interrupt:"Card Not Found"}	
 func setEnergy(num):
 	Energy = num
 	$Energy.updateDisplay()
@@ -147,14 +157,16 @@ func discardAll(silent = false):
 	while Hand.cards.size() >ind:
 		var card = Hand.cards[0]
 		if not card.modifiers.has("retain"):
-			if not silent:
-				card.Triggered("onDiscard", [card],{})
-			move("Hand", "Discard", card)
+			Action("discard", [card, silent]);
 		else:
 			ind+=1
 	return {Results.Success:true}
-func discard():
-	pass
+	
+func discard(card, silent = false):
+	if not silent:
+		card.Triggered("onDiscard", [card],{})
+	move("Hand", "Discard", card)
+	return {Results.Success:true}
 	
 func updateDisplay():
 	Hand.updateDisplay()
@@ -209,8 +221,8 @@ func gainEnergy(num):
 	return {Results.Success:true}
 	
 func voided(card, loc):
-	move(loc, "Voided", card)
-	return {Results.Success:true}
+	return move(loc, "Voided", card)
+	
 
 func endofturn():
 	return {Results.Success:true}
@@ -226,3 +238,27 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 		#Enemies go here
 		Action("startofturn", [], false)
 		
+func select(loc, predicate,message,num = 1):
+	inputAllowed = false
+	loc = get_node(loc)
+	for card in loc.cards:
+		if card.processArgs(predicate, []):
+			card.highlight()
+	selectedCard = null
+	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
+	$Message.visible = true
+	yield(self, "resumeExecution")
+	$Message.visible = false
+	return selectedCard
+func cardClicked(card):
+	selectedCard = card
+	inputAllowed  = true
+	for card in Hand.cards:
+		card.dehighlight()
+	for card in Play.cards:
+		card.dehighlight()
+	emit_signal("resumeExecution")
+	
+		
+
+	

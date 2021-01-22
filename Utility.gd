@@ -1,5 +1,5 @@
 class_name Utility
-
+enum Terrain{Grass, Stone, Water}
 
 static func parseCardCode(string):
 	var regex = RegEx.new()
@@ -73,6 +73,8 @@ static func getCircumcenter(A:Node2D, B:Node2D, C:Node2D) -> Vector2:
 	var y2 = B.position.y
 	var y3 = C.position.y
 	var a = det3lastcolis1(x1,y1,x2,y2,x3,y3)
+	if a == 0:
+		return getCentroid(A,B,C)
 	var sq1 = x1*x1+y1*y1
 	var sq2 = x2*x2+y2*y2
 	var sq3 = x3*x3+y3*y3
@@ -102,9 +104,17 @@ static func getAngle(a:Node2D, b:Node2D, c:Node2D) -> float:
 	if angle > PI:
 		return angle - 2 * PI
 	return angle
-static func angleSum(A:Node2D, B:Node2D, C:Node2D,D:Node2D ) -> float:
-	return abs(getAngle(B,A,C)) + abs(getAngle(B,D,C))	
+#static func angleSum(A:Node2D, B:Node2D, C:Node2D,D:Node2D ) -> float:
+#	return abs(getAngle(B,A,C)) + abs(getAngle(B,D,C))	
 static func sqDistToNode(pixel:Vector2, node) -> float:
 	var xDist = pixel.x   - node.position.x
 	var yDist = pixel.y   - node.position.y
 	return xDist*xDist + yDist * yDist
+static func interpretTerrain(name)->int:
+	if name == "grass":
+		return 0
+	elif name == "stone":
+		return 1
+	elif name == "water":
+		return 2
+	return -1
