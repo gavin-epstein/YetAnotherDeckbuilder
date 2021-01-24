@@ -1,5 +1,5 @@
 extends Node2D
-enum Results {Interrupt, CardDrawn, CardPlayed, CardDiscarded, EnergySpent, CardMoved, CardPurged, Success}
+enum Results {Interrupt, CardDrawn, CardPlayed, CardDiscarded, EnergySpent, CardMoved, CardPurged, Success, DamageDealt}
 signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
@@ -285,3 +285,34 @@ func movePlayer(dist,terrains = ["any"]):
 		tile = yield(tile, "completed")
 	enemyController.move(enemyController.Player, tile)
 	return {Results.Success: true}
+func damage(amount, types, targets,distance):
+	var enemies = []
+	var tile = enemyController.Player.tile
+	var property
+	var terrains
+	if targets.size() < 3:
+		property = "notPlayer"
+	else:
+		property = targets[2]
+	if targets.size() < 2:
+		terrains = ["any"]
+	else:
+		terrains = targets[1]
+	if targets[0] == "all":	
+		enemies = map.selectAll(tile,distance,property,terrains)
+	elif targets[0]=="any":
+		var enemy = map.select(tile,distance,property,terrains,"Pick a target")
+		if enemy is GDScriptFunctionState:
+			enemy = yield(enemy,"completed")
+		enemies.append(enemy)
+	elif targets[0] is int:
+		for _i in range(targets[0]):
+			enemies.append(map.selectRandom(tile,distance,property,terrains))
+	var results = {Results.Success:true}
+	for node in enemies:
+		var dmg = node.occupants[0].takeDamage(amount,types,enemyController.Player)
+		Utility.extendDict(results, {Results.DamageDealt:dmg})
+	return results
+
+func heal(amount):
+	enemyController.Player.heal(amount)

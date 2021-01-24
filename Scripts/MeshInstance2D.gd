@@ -224,7 +224,7 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 							closest = node
 					selectedNode = closest
 					emit_signal("nodeSelected")
-
+			cardController.releaseFocus(self)
 func doPhysics(time):
 	cardController.takeFocus(self)
 	self.physics_on  = true
@@ -246,7 +246,8 @@ func destroyNodeAndSpawn(node):
 	triangulate()
 	doPhysics(1.5)
 	
-func select(tile,dist,property,terrains, message):
+	
+func getTiles(tile,dist,property,terrains):
 	var possible
 	selectableNodes  = []
 	if dist > 20:
@@ -273,6 +274,9 @@ func select(tile,dist,property,terrains, message):
 	if selectableNodes.size() ==0:
 		assert(false, "Implement this case")
 	
+	
+func select(tile,dist,property,terrains, message):
+	getTiles(tile,dist,property,terrains)
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
 	
@@ -281,3 +285,14 @@ func select(tile,dist,property,terrains, message):
 	for node in selectableNodes:
 		node.dehighlight()
 	return selectedNode
+func selectRandom(tile,dist,property,terrains):
+	getTiles(tile,dist,property,terrains)
+	for node in selectableNodes:
+		node.dehighlight()
+	return selectableNodes[randi()%selectableNodes.size()]
+	
+func selectAll(tile,dist,property,terrains):
+	getTiles(tile,dist,property,terrains)
+	for node in selectableNodes:
+		node.dehighlight()
+	return selectableNodes
