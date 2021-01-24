@@ -42,7 +42,7 @@ func getRandom(maxRarity:int = 100, types = ["any"]):
 	for card in cards:
 		for type in types:
 			if card.hasType(type) and card.rarity <= maxRarity:
-				for i in range(card.rarity):
+				for _i in range(card.rarity):
 					select.append(card)
 	if select.size() == 0:
 		return getRandom(maxRarity)

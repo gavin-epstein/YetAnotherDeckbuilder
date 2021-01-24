@@ -7,3 +7,13 @@ scene("res://Units/Tumbleweed.tscn")
 difficulty(1)
 spawnable(grass,sand)
 name("Tumbleweed")
+
+scene("res://Units/Player.tscn")
+difficulty(-1)
+spawnable(any)
+name("Player")
+
+scene("res://Units/TheVoid.tscn")
+difficulty(-1)
+spawnable(any)
+name("Void")

@@ -1,0 +1,96 @@
+[gd_scene load_steps=72 format=2]
+
+[ext_resource path="res://Scripts/UnitScripts/TheVoid.gd" type="Script" id=1]
+[ext_resource path="res://Images/CardArt/TheVoid/frame030.png" type="Texture" id=3]
+[ext_resource path="res://Images/CardArt/TheVoid/frame045.png" type="Texture" id=4]
+[ext_resource path="res://Images/CardArt/TheVoid/frame029.png" type="Texture" id=27]
+[ext_resource path="res://Images/CardArt/TheVoid/frame060.png" type="Texture" id=53]
+[ext_resource path="res://Images/CardArt/TheVoid/frame031.png" type="Texture" id=73]
+[ext_resource path="res://Images/CardArt/TheVoid/frame033.png" type="Texture" id=76]
+[ext_resource path="res://Images/CardArt/TheVoid/frame018.png" type="Texture" id=91]
+[ext_resource path="res://Images/CardArt/TheVoid/frame019.png" type="Texture" id=92]
+[ext_resource path="res://Images/CardArt/TheVoid/frame020.png" type="Texture" id=93]
+[ext_resource path="res://Images/CardArt/TheVoid/frame022.png" type="Texture" id=94]
+[ext_resource path="res://Images/CardArt/TheVoid/frame023.png" type="Texture" id=95]
+[ext_resource path="res://Images/CardArt/TheVoid/frame024.png" type="Texture" id=96]
+[ext_resource path="res://Images/CardArt/TheVoid/frame025.png" type="Texture" id=97]
+[ext_resource path="res://Images/CardArt/TheVoid/frame026.png" type="Texture" id=98]
+[ext_resource path="res://Images/CardArt/TheVoid/frame027.png" type="Texture" id=99]
+[ext_resource path="res://Images/CardArt/TheVoid/frame032.png" type="Texture" id=109]
+[ext_resource path="res://Images/CardArt/TheVoid/frame035.png" type="Texture" id=111]
+[ext_resource path="res://Images/CardArt/TheVoid/frame036.png" type="Texture" id=112]
+[ext_resource path="res://Images/CardArt/TheVoid/frame037.png" type="Texture" id=113]
+[ext_resource path="res://Images/CardArt/TheVoid/frame038.png" type="Texture" id=114]
+[ext_resource path="res://Images/CardArt/TheVoid/frame039.png" type="Texture" id=115]
+[ext_resource path="res://Images/CardArt/TheVoid/frame040.png" type="Texture" id=116]
+[ext_resource path="res://Images/CardArt/TheVoid/frame041.png" type="Texture" id=117]
+[ext_resource path="res://Images/CardArt/TheVoid/frame043.png" type="Texture" id=118]
+[ext_resource path="res://Images/CardArt/TheVoid/frame044.png" type="Texture" id=119]
+[ext_resource path="res://Images/CardArt/TheVoid/frame046.png" type="Texture" id=120]
+[ext_resource path="res://Images/CardArt/TheVoid/frame047.png" type="Texture" id=121]
+[ext_resource path="res://Images/CardArt/TheVoid/frame048.png" type="Texture" id=122]
+[ext_resource path="res://Images/CardArt/TheVoid/frame049.png" type="Texture" id=123]
+[ext_resource path="res://Images/CardArt/TheVoid/frame050.png" type="Texture" id=124]
+[ext_resource path="res://Images/CardArt/TheVoid/frame051.png" type="Texture" id=125]
+[ext_resource path="res://Images/CardArt/TheVoid/frame052.png" type="Texture" id=126]
+[ext_resource path="res://Images/CardArt/TheVoid/frame053.png" type="Texture" id=127]
+[ext_resource path="res://Images/CardArt/TheVoid/frame054.png" type="Texture" id=128]
+[ext_resource path="res://Images/CardArt/TheVoid/frame055.png" type="Texture" id=129]
+[ext_resource path="res://Images/CardArt/TheVoid/frame056.png" type="Texture" id=130]
+[ext_resource path="res://Images/CardArt/TheVoid/frame057.png" type="Texture" id=131]
+[ext_resource path="res://Images/CardArt/TheVoid/frame058.png" type="Texture" id=132]
+[ext_resource path="res://Images/CardArt/TheVoid/frame059.png" type="Texture" id=133]
+[ext_resource path="res://Images/CardArt/TheVoid/frame061.png" type="Texture" id=134]
+[ext_resource path="res://Images/CardArt/TheVoid/frame063.png" type="Texture" id=135]
+[ext_resource path="res://Images/CardArt/TheVoid/frame064.png" type="Texture" id=136]
+[ext_resource path="res://Images/CardArt/TheVoid/frame065.png" type="Texture" id=137]
+[ext_resource path="res://Images/CardArt/TheVoid/frame067.png" type="Texture" id=138]
+[ext_resource path="res://Images/CardArt/TheVoid/frame068.png" type="Texture" id=139]
+[ext_resource path="res://Images/CardArt/TheVoid/frame070.png" type="Texture" id=140]
+[ext_resource path="res://Images/CardArt/TheVoid/frame071.png" type="Texture" id=141]
+[ext_resource path="res://Images/CardArt/TheVoid/frame073.png" type="Texture" id=142]
+[ext_resource path="res://Images/CardArt/TheVoid/frame074.png" type="Texture" id=143]
+[ext_resource path="res://Images/CardArt/TheVoid/frame075.png" type="Texture" id=144]
+[ext_resource path="res://Images/CardArt/TheVoid/frame076.png" type="Texture" id=145]
+[ext_resource path="res://Images/CardArt/TheVoid/frame077.png" type="Texture" id=146]
+[ext_resource path="res://Images/CardArt/TheVoid/frame078.png" type="Texture" id=147]
+[ext_resource path="res://Images/CardArt/TheVoid/frame079.png" type="Texture" id=148]
+[ext_resource path="res://Images/CardArt/TheVoid/frame080.png" type="Texture" id=149]
+[ext_resource path="res://Images/CardArt/TheVoid/frame081.png" type="Texture" id=150]
+[ext_resource path="res://Images/CardArt/TheVoid/frame084.png" type="Texture" id=151]
+[ext_resource path="res://Images/CardArt/TheVoid/frame086.png" type="Texture" id=152]
+[ext_resource path="res://Images/CardArt/TheVoid/frame034.png" type="Texture" id=167]
+[ext_resource path="res://Images/CardArt/TheVoid/frame042.png" type="Texture" id=168]
+[ext_resource path="res://Images/CardArt/TheVoid/frame062.png" type="Texture" id=169]
+[ext_resource path="res://Images/CardArt/TheVoid/frame066.png" type="Texture" id=170]
+[ext_resource path="res://Images/CardArt/TheVoid/frame069.png" type="Texture" id=171]
+[ext_resource path="res://Images/CardArt/TheVoid/frame072.png" type="Texture" id=172]
+[ext_resource path="res://Images/CardArt/TheVoid/frame082.png" type="Texture" id=173]
+[ext_resource path="res://Images/CardArt/TheVoid/frame085.png" type="Texture" id=174]
+[ext_resource path="res://Images/CardArt/TheVoid/frame028.png" type="Texture" id=186]
+[ext_resource path="res://Images/CardArt/TheVoid/frame021.png" type="Texture" id=188]
+[ext_resource path="res://Images/CardArt/TheVoid/frame083.png" type="Texture" id=195]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 91 ), ExtResource( 92 ), ExtResource( 93 ), ExtResource( 188 ), ExtResource( 94 ), ExtResource( 95 ), ExtResource( 96 ), ExtResource( 97 ), ExtResource( 98 ), ExtResource( 99 ), ExtResource( 186 ), ExtResource( 27 ), ExtResource( 3 ), ExtResource( 73 ), ExtResource( 109 ), ExtResource( 76 ), ExtResource( 167 ), ExtResource( 111 ), ExtResource( 112 ), ExtResource( 113 ), ExtResource( 114 ), ExtResource( 115 ), ExtResource( 116 ), ExtResource( 117 ), ExtResource( 168 ), ExtResource( 118 ), ExtResource( 119 ), ExtResource( 4 ), ExtResource( 120 ), ExtResource( 121 ), ExtResource( 122 ), ExtResource( 123 ), ExtResource( 124 ), ExtResource( 125 ), ExtResource( 126 ), ExtResource( 127 ), ExtResource( 128 ), ExtResource( 129 ), ExtResource( 130 ), ExtResource( 131 ), ExtResource( 132 ), ExtResource( 133 ), ExtResource( 53 ), ExtResource( 134 ), ExtResource( 169 ), ExtResource( 135 ), ExtResource( 136 ), ExtResource( 137 ), ExtResource( 170 ), ExtResource( 138 ), ExtResource( 139 ), ExtResource( 171 ), ExtResource( 140 ), ExtResource( 141 ), ExtResource( 172 ), ExtResource( 142 ), ExtResource( 143 ), ExtResource( 144 ), ExtResource( 145 ), ExtResource( 146 ), ExtResource( 147 ), ExtResource( 148 ), ExtResource( 149 ), ExtResource( 150 ), ExtResource( 173 ), ExtResource( 195 ), ExtResource( 151 ), ExtResource( 174 ), ExtResource( 152 ) ],
+"loop": true,
+"name": "default",
+"speed": 15.0
+} ]
+
+[node name="The Void" type="Node2D"]
+script = ExtResource( 1 )
+health = 200
+status = {
+"immovable": true
+}
+title = "The Void"
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( -1.27783, -132.85 )
+scale = Vector2( 1.55866, 1.55866 )
+frames = SubResource( 1 )
+frame = 62
+speed_scale = 0.5
+playing = true

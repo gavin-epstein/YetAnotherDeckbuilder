@@ -314,12 +314,38 @@ extents = Vector2( 531.325, 222.946 )
 [node name="Scene" type="Node2D"]
 
 [node name="Map" type="Node2D" parent="."]
-position = Vector2( 960, 428 )
+position = Vector2( 960, 410 )
 
 [node name="MeshInstance2D" type="MeshInstance2D" parent="Map"]
 material = SubResource( 1 )
 texture = ExtResource( 268 )
 script = ExtResource( 267 )
+
+[node name="Message" type="ColorRect" parent="Map/MeshInstance2D"]
+visible = false
+margin_left = -560.114
+margin_top = 308.633
+margin_right = 590.89
+margin_bottom = 546.633
+color = Color( 0.541176, 0.541176, 0.541176, 0.556863 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message" type="RichTextLabel" parent="Map/MeshInstance2D/Message"]
+margin_left = 3.0
+margin_top = 58.2299
+margin_right = 2311.0
+margin_bottom = 579.23
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Choose a card[/center]"
+text = "Choose a card"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="MapArea" type="Area2D" parent="Map/MeshInstance2D"]
 position = Vector2( 0, -120 )
@@ -379,7 +405,7 @@ script = ExtResource( 2 )
 position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 12
+frame = 51
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -408,7 +434,7 @@ script = ExtResource( 4 )
 position = Vector2( 1181.33, 662.658 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 11
+frame = 50
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -475,7 +501,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 101
+frame = 14
 playing = true
 script = ExtResource( 264 )
 

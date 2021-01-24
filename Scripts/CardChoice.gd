@@ -46,7 +46,7 @@ func generateReward(rarity, count = 3):
 			types.append(type)
 	if types == []:
 		types = ["any"]
-	for i in range(count):
+	for _i in range(count):
 		var card  = get_parent().Library.getRandom(rarity, types)
 		self.add_card(card)
 	self.visible = true

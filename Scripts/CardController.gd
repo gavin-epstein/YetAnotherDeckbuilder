@@ -14,6 +14,8 @@ var inputdelay = 0
 var inputAllowed = true
 var focus
 var selectedCard
+var map
+var enemyController
 class_name CardController
 
 func _ready()-> void:
@@ -30,11 +32,13 @@ func _ready()-> void:
 	Discard.updateDisplay()
 	Energy = 3
 	$Energy.updateDisplay()
-	for i in range(10):
+	for _i in range(10):
 		Deck.add_card(Library.getCardByName("Common Loot"))
 	shuffle()
 	Action("draw",[5])
-	#connect("cardSelected",self,"select")
+	yield(get_parent(), "ready")
+	map = get_parent().get_node("Map/MeshInstance2D")
+	enemyController = get_parent().get_node("EnemyController")
 	
 func _process(delta: float) -> void:
 	inputdelay += delta
@@ -51,7 +55,10 @@ func Action(method:String, argv:Array, silent = false) -> Dictionary:
 	if not interrupted:
 		
 		if self.has_method(method):
-			Utility.extendDict( results , self.callv(method, argv))
+			var res =  self.callv(method, argv)
+			if res is GDScriptFunctionState:
+				res = yield(res,"completed")
+			Utility.extendDict( results , res)
 		else:
 			print("attempting to " + method)
 		if not silent and results.has(Results.Success):
@@ -71,7 +78,7 @@ func Action(method:String, argv:Array, silent = false) -> Dictionary:
 
 func draw(x)->Dictionary:
 	var results = {}
-	for i in range(x):
+	for _i in range(x):
 		if Hand.is_full():
 			Utility.addtoDict(results, Results.Interrupt, "Hand Full")
 			break
@@ -142,6 +149,8 @@ func countNames(loc, name) -> int:
 			count+=1
 	return count
 func move(loc1, loc2, card):
+	if card is Dictionary:
+		return card
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
@@ -241,9 +250,19 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 func select(loc, predicate,message,num = 1):
 	inputAllowed = false
 	loc = get_node(loc)
+	var selectcount = 0
 	for card in loc.cards:
 		if card.processArgs(predicate, []):
 			card.highlight()
+			selectcount+=1
+	if selectcount == 1:
+		for card in loc.cards:
+			if card.highlighted:
+				cardClicked(card)
+				return card
+		print("Selectable Card has Moved?")
+	elif selectcount == 0:
+		return null
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
@@ -259,6 +278,10 @@ func cardClicked(card):
 		card.dehighlight()
 	emit_signal("resumeExecution")
 	
-		
-
-	
+func movePlayer(dist,terrains = ["any"]):
+	takeFocus(map);
+	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to");
+	if tile is GDScriptFunctionState:
+		tile = yield(tile, "completed")
+	enemyController.move(enemyController.Player, tile)
+	return {Results.Success: true}

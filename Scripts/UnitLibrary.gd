@@ -30,7 +30,7 @@ func loadUnitsFromFile(fname):
 			if line[0] =="scene":
 				unit.sceneName = line[1][0]
 			elif line[0] == "difficulty":
-				unit.difficulty = line[1][0]
+				unit.difficulty = int(line[1][0])
 			elif line[0] == "spawnable":
 				unit.spawns = []
 				for string in line[1]:
@@ -40,4 +40,5 @@ func loadUnitsFromFile(fname):
 		elif line =="" and unit.size()!=0:
 			units[unit.name] = unit
 			unit = {}
-		
+func getUnitByName(name):
+	return units[name].sceneName

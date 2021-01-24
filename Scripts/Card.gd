@@ -227,7 +227,7 @@ func execute(code, argv):
 		while times is GDScriptFunctionState:
 			yield(controller, "resumeExecution")
 			times  = times.resume()
-		for i in range(times):
+		for _i in range(times):
 			var ex = execute(code[1].split(0,1), argv)
 			while ex is GDScriptFunctionState:
 				yield(controller, "resumeExecution")
@@ -241,11 +241,13 @@ func execute(code, argv):
 			args.append(arg)
 		
 		var silence = processArgs(code[1][2], argv)
-		while silence is GDScriptFunctionState:
-			yield(controller, "resumeExecution")
-			silence  = silence.resume()
+		if silence is GDScriptFunctionState:
+			silence = yield(silence, "completed")
 		self.debug = args
-		Utility.extendDict(results, controller.Action(code[1][0], args, silence))
+		var res = controller.Action(code[1][0], args, silence)
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
+		Utility.extendDict(results, res )
 	elif code[0] == "decrementRemoveCount":
 		removecount -=1
 		if removecount == 0:
@@ -257,10 +259,11 @@ func execute(code, argv):
 		var args = []
 		for arg in code[1]:
 			arg = processArgs(arg,argv)
-			while arg is GDScriptFunctionState:
-				yield(controller, "resumeExecution")
-				arg  = arg.resume()
+			if arg is GDScriptFunctionState:
+				arg = yield(arg, "complete")
 			args.append(arg)
+		if not args[0].has_method("isCard"):
+			return false
 		return args[0].hasType(args[1])
 	elif code[0] == "hasname":
 		var args = []
@@ -270,13 +273,15 @@ func execute(code, argv):
 				yield(controller, "resumeExecution")
 				arg  = arg.resume()
 			args.append(arg)
+		if not args[0].has_method("isCard"):
+			return false
 		return args[0].hasName(args[1])
 	elif code[0] =="select":
 		var args = []
 		var arg = processArgs(code[1][0],argv)
-		while arg is GDScriptFunctionState:
-			yield(controller, "resumeExecution")
-			arg  = arg.resume()
+		if arg is GDScriptFunctionState:
+			arg = yield(arg, "completed")
+		
 		args.append(arg)
 		args.append(code[1][1])
 		arg = processArgs(code[1][2],argv)
@@ -290,7 +295,9 @@ func execute(code, argv):
 				arg  = arg.resume()
 		controller.callv("select", args)
 		yield(controller, "resumeExecution")
-		debug = controller.selectedCard
+		var ret = controller.selectedCard
+		if ret == null:
+			return {controller.Results.Interrupt:"No valid selection"}
 		return controller.selectedCard
 	else:
 		#assert(false, code[0] + " not a valid command")
@@ -386,4 +393,6 @@ func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 		if get_parent().has_method("cardClicked"):
 			get_parent().cardClicked(self)
 		controller.inputdelay = 0
-	
+func isCard():
+	return true	
+

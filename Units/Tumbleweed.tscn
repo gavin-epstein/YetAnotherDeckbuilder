@@ -10,6 +10,7 @@ health = 10
 status = {
 "flammable": true
 }
+title = "Tumbleweed"
 
 [node name="Tumbleweed" type="Sprite" parent="."]
 position = Vector2( 17.7878, -149.253 )

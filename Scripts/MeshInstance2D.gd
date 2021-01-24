@@ -1,14 +1,17 @@
 extends MeshInstance2D
 class_name Map
 
-const maxFailedAttempts = 40
-const width = 960*.8
-const height = 500*.8
+const maxFailedAttempts = 150
+const width = 960
+const height = 400
 const radius =1.5*max(width, height)
 #0 = cicrumcenter, 1 = centroid
 const CCinter = .33
-const minSqDist = 4000 *3
+const minSqDist = 4000 *2
 const maxSqDist = minSqDist*1.2
+signal mapGenerated
+signal nodeSelected
+var highlightTemplate = preload("res://Units/Highlight.tscn")
 var nodes = []
 var verts = PoolVector2Array()
 var uvs = PoolVector2Array()
@@ -29,15 +32,15 @@ var cardController
 var enemyController
 var sentinels=[]
 var physics_on  = false
-
+var voidNode
+var selectableNodes = []
+var selectedNode
 func _ready() -> void:
 	randomize()
 	gridNodeTemplate = load("res://Scripts/GridNode.gd");
 	cardController = get_node("../../CardController");
 	enemyController = get_node("../../EnemyController");
 func _process(delta: float) -> void:
-	
-	
 	if not lastStep is GDScriptFunctionState:
 			if not started:
 				print("call to generate")
@@ -45,9 +48,11 @@ func _process(delta: float) -> void:
 				lastStep = generate()
 				
 			else:
+				if not done:
+					done = true
+					doPhysics(2);
+					acceptinput = true
 				
-				done = true
-				acceptinput = true
 	else:
 		
 		#print("Vertices:" , verts.size())
@@ -68,6 +73,7 @@ func _process(delta: float) -> void:
 func generate() -> void:
 	
 	var failedAttempts = 0
+	voidNode = addGridNode(Vector2(0,0),-1, true)
 	for x in range(-width, width,sqrt(maxSqDist)):
 		var pos = Vector2(x,-height-40)
 		var color  = -1
@@ -111,6 +117,7 @@ func generate() -> void:
 			#print('Node at %.3f,%.3f'% [pos.x, pos.y])		
 			yield()
 	triangulate()
+	emit_signal("mapGenerated")
 	
 func triangulate() -> void:	
 	centerCache = {}
@@ -186,6 +193,10 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 	newNode.terrain =  terrain
 	add_child(newNode) #this is necessary so physics process gets called on children
 	nodes.append(newNode)
+	var highlight =  highlightTemplate.instance()
+	newNode.add_child(highlight)
+	highlight.visible = false
+	highlight.name = "Highlight"
 	if not sentinel:
 		enemyController.nodeSpawned(newNode)
 	else:
@@ -204,22 +215,69 @@ func getTerrainColor(terrain:int) -> Vector2:
 func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if acceptinput:
 		if cardController.takeFocus(self):
-			if  event.is_action_pressed("left_click"):
+			if event.is_action_pressed("left_click"):
 				var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
-				var closest = nodes[0]
-				for node in nodes:
-					node.resetDest()
-					if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
-						closest = node
-				closest.popNode()
-				closest.uvCoords=Vector2(0,0)
-				nodes.erase(closest)
-				var newpos = rand_range(.95,.8)* (sentinels[randi()%sentinels.size()].position)
-				addGridNode(newpos, getTerrain())	
-				triangulate()
-			
-				self.physics_on  = true
-				yield(get_tree().create_timer(1.0), "timeout")
-				self.physics_on = false
-			cardController.releaseFocus(self)
-				
+				if selectableNodes.size() > 0:
+					var closest = selectableNodes[0]
+					for node in selectableNodes:
+						if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
+							closest = node
+					selectedNode = closest
+					emit_signal("nodeSelected")
+
+func doPhysics(time):
+	cardController.takeFocus(self)
+	self.physics_on  = true
+	yield(get_tree().create_timer(time), "timeout")
+	self.physics_on = false
+	cardController.releaseFocus(self)
+func getRandomEmptyNode(terrains):
+	var possible = []
+	for node in nodes:
+		if node.hasTerrain(terrains) and node.occupants.size() == 0 and not node.sentinel:
+			possible.append(node)
+	return possible[randi()%possible.size()]
+
+func destroyNodeAndSpawn(node):
+	node.popNode()
+	nodes.erase(node)
+	var newpos = rand_range(.95,.8)* (sentinels[randi()%sentinels.size()].position)
+	addGridNode(newpos, getTerrain())	
+	triangulate()
+	doPhysics(1.5)
+	
+func select(tile,dist,property,terrains, message):
+	var possible
+	selectableNodes  = []
+	if dist > 20:
+		possible = nodes
+	else:
+		possible = []
+		for node in nodes:
+			node.dist = null #god i love null as a special value its probly bad
+		#bfs
+		tile.dist = 0
+		var q = [tile]
+		while q.size()>0:
+			var next = q.pop_front()
+			possible.append(next)
+			if next.dist < dist:
+				for neigh in next.neighs:
+					if not neigh.sentinel and neigh.dist  == null:
+						neigh.dist = next.dist+1
+						q.append(neigh)
+	for node in possible:
+		if node.hasTerrain(terrains) and node.hasOccupant(property):
+			node.highlight()
+			selectableNodes.append(node)
+	if selectableNodes.size() ==0:
+		assert(false, "Implement this case")
+	
+	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
+	$Message.visible = true
+	
+	yield(self,"nodeSelected")
+	$Message.visible = false
+	for node in selectableNodes:
+		node.dehighlight()
+	return selectedNode

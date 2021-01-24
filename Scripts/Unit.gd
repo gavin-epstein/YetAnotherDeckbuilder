@@ -2,6 +2,8 @@ extends Node2D
 export var difficulty: int
 export var health: int
 export var status = {}
+export var title:String
+var speed = 5
 var spawnableTerrains = {}
 var healthBarTemplate = preload("res://HealthBar.tscn")
 var healthBar
@@ -11,7 +13,7 @@ func _ready() -> void:
 	addHealthBar()
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
-		self.position  += (tile.position - self.position)*delta
+		self.position  += (tile.position - self.position)*speed*delta
 	self.z_index = (500+position.y)/10;
 
 func takeTurn():
@@ -28,3 +30,11 @@ func addHealthBar():
 	add_child(healthBar)
 	healthBar.get_node("Number").bbcode_text = "[center]"+str(health)+"[/center]"
 	
+func hasProperty(prop):
+	if prop == 'any' or prop == "exists":
+		return true
+	elif prop == self.title:
+		return true
+	elif status.has(prop):
+		return true
+	return false

@@ -18,7 +18,7 @@ func updateDisplay():
 	var x = startx
 	var y = 600
 	for card in cards:
-		card.moveTo(Vector2(x,y), Vector2(.25,.25))
+		card.moveTo(Vector2(x,y), Vector2(.15,.15))
 		card.visible = true
 		card.z_index = 0
 		card.updateDisplay()

@@ -6,6 +6,10 @@
 [node name="Monolith" type="Node2D"]
 script = ExtResource( 2 )
 health = 200
+status = {
+"immovable": true
+}
+title = "Monolith"
 
 [node name="Monolith" type="Sprite" parent="."]
 position = Vector2( 11.1324, -174.828 )
