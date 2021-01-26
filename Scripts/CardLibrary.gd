@@ -15,6 +15,8 @@ func loadallcards() -> void:
 	var cardcode = ""
 	while not f.eof_reached():
 		var line = f.get_line()
+		if line[0] == "#":
+			continue
 		if line =="" and cardcode != "":
 			var card = cardtemplate.instance()
 			card.loadCardFromString(cardcode)

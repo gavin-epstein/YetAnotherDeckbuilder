@@ -12,7 +12,8 @@ var block = 0
 var armor = 0
 var maxHealth
 var tile
-# Called when the node enters the scene tree for the first time.
+var nextTurn =[]
+#n the node enters the scene tree for the first time.
 func _ready()-> void:
 	onSummon()
 func onSummon()->void:
@@ -24,17 +25,34 @@ func _process(delta: float) -> void:
 	self.z_index = (500+position.y)/10;
 
 func takeTurn():
+	print(self.title + " " + str(nextTurn))
+	for move in nextTurn:
+		if move[0] == "move":
+			if move[1].occupants.size()==0:
+				get_parent().move(self, move[1])
+		elif move[0] == "attack":
+			var types = move[2]
+			var damage = move[3]
+			if status.has("flaming"):
+				types.append("fire")
+				damage = damage*1.5
+			if move[1].occupants.size()!=0:
+				move[1].occupants[0].takeDamage(damage,types,self)
+		elif move[0] == "takeDamage":
+			takeDamage(move[1], move[2], null)
+#Eg. [move, tile]
+#[attack, tile, [fire],3]
+#[takeDamage, amount, types]
+func getNextTurn():
 	pass
 
 
-func move(direction:Vector2, distance):
-	pass
 func Damaged(amount,types):
 	pass
 func addHealthBar():
 	healthBar  = healthBarTemplate.instance()
 	healthBar.scale = Vector2(.65,.65);
-	healthBar.position = Vector2(220,220);
+	healthBar.position = Vector2(0,220);
 	add_child(healthBar)
 	updateDisplay()
 	
@@ -63,6 +81,16 @@ func takeDamage(amount,types, attacker):
 	for type in types:
 		if status.has("vulnerable") and type in status.vulnerable:
 			amount = amount*1.5
+	if armor > 0:
+		amount -= armor
+		armor -=1
+	if block >amount:
+		block -=floor(amount)
+		amount = 0
+	elif block > 0:
+		amount -= block
+		block = 0
+		
 	health -= floor(amount)
 	self.Damaged(amount,types)
 	if health <= 0:
@@ -77,7 +105,22 @@ func endOfTurn():
 	pass
 
 func updateDisplay():
-	healthBar.get_node("Number").bbcode_text = "[center]"+str(health)+"[/center]"
+	healthBar.get_node("Heart/Number").bbcode_text = "[center]"+str(health)+"[/center]"
+	healthBar.get_node("Block/Number").bbcode_text = "[center]"+str(block)+"[/center]"
+	healthBar.get_node("Armor/Number").bbcode_text = "[center]"+str(armor)+"[/center]"
+	healthBar.get_node("Attack/Number").bbcode_text = "[center]"+str(strength)+"[/center]"
+	if block > 0:
+		healthBar.get_node("Block").visible = true
+	else:
+		healthBar.get_node("Block").visible = false
+	if armor > 0:
+		healthBar.get_node("Armor").visible = true
+	else:
+		healthBar.get_node("Armor").visible = false
+	if  strength > 0:
+		healthBar.get_node("Attack").visible = true
+	else:
+		healthBar.get_node("Attack").visible = false
 func die(attacker):
 	if status.has("supplying"):
 		attacker.gainStrength(self.strength)
@@ -90,3 +133,16 @@ func die(attacker):
 	self.visible = false
 	tile.occupants.erase(self)
 	get_parent().units.erase(self)
+func gainMaxHealth(amount):
+	self.maxHealth +=amount
+	self.health += amount
+	updateDisplay()
+func gainStrength(amount):
+	self.strength+=amount
+	updateDisplay()
+func addArmor(amount):
+	armor+=amount
+	updateDisplay()
+func addBlock(amount):
+	block+=amount
+	updateDisplay()

@@ -20,13 +20,12 @@ func nodeSpawned(node):
 func addPlayerAndVoid():
 	yield(map, "mapGenerated");
 	var unit  = load($UnitLibrary.getUnitByName("Void")).instance()
-	unit.scale = Vector2(.15,.15);
 	var node = map.voidNode
 	addUnit(unit,node)
 	unit = load($UnitLibrary.getUnitByName("Player")).instance()
-	unit.scale = Vector2(.15,.15);
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
+	units.erase(Player)
 func addUnit(unit, node):
 	unit.scale = Vector2(.15,.15);
 	node.occupants.append(unit);
@@ -36,6 +35,17 @@ func addUnit(unit, node):
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
-	unit.tile.occupants.erase(unit)
-	unit.tile =  node
-	node.occupants.append(unit)
+	if not node.sentinel:
+		unit.tile.occupants.erase(unit)
+		unit.tile =  node
+		node.occupants.append(unit)
+
+func enemyTurn():
+	for unit in units:
+		unit.getNextTurn()
+		unit.startOfTurn()
+	for unit in units:
+		unit.takeTurn()
+	for unit in units:
+		unit.endOfTurn()	
+	

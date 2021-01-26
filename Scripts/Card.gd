@@ -128,7 +128,8 @@ func execute(code, argv):
 		yield(controller, "resumeExecution")
 		code  = code.resume()
 	if not code[0] is String:
-		assert(false, str(code[0]) + " is not a valid command" )
+		return code
+		#assert(false, str(code[0]) + " is not a valid command" )
 	if code [0] == "count":
 		var arg1 = processArgs(code[1][0], argv)
 		while arg1 is GDScriptFunctionState:
@@ -194,11 +195,11 @@ func execute(code, argv):
 			else:
 				#no comparator found
 				var cond = processArgs(condition, argv)
-				while cond is GDScriptFunctionState:
-					yield(controller, "resumeExecution")
-					cond  = cond.resume()
+				if cond is GDScriptFunctionState:
+					cond = yield(cond, "completed")
+					
 				if cond:
-					var ex = execute(code[1].split(0,1), argv)
+					var ex = execute(code[1][1], argv)
 					while ex is GDScriptFunctionState:
 						yield(controller, "resumeExecution")
 						ex  = ex.resume()
@@ -223,12 +224,11 @@ func execute(code, argv):
 					ex  = ex.resume()
 				return ex
 	elif code[0] == "repeat":
-		var times = processArgs(code[1][2],argv)
-		while times is GDScriptFunctionState:
-			yield(controller, "resumeExecution")
-			times  = times.resume()
+		var times = processArgs(code[1][1],argv)
+		if times is GDScriptFunctionState:
+			times = yield(times, "complete")
 		for _i in range(times):
-			var ex = execute(code[1].split(0,1), argv)
+			var ex = execute(code[1][0], argv)
 			while ex is GDScriptFunctionState:
 				yield(controller, "resumeExecution")
 				ex  = ex.resume()
@@ -396,3 +396,8 @@ func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -
 func isCard():
 	return true	
 
+func isIdentical(other):
+	if self.title != other.title:
+		return false
+	#todo add modified values here
+	return true

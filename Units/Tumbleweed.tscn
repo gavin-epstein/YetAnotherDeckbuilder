@@ -11,6 +11,7 @@ status = {
 "flammable": true
 }
 title = "Tumbleweed"
+strength = 5
 
 [node name="Tumbleweed" type="Sprite" parent="."]
 position = Vector2( 17.7878, -149.253 )

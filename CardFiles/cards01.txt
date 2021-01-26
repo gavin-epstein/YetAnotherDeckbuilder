@@ -157,12 +157,39 @@ removetrigger(endofturn,true,2);
 trigger(onPlay, do(movePlayer,(1),false))
 trigger(onPlay, do(draw,(1),false))
 text("Move 1, draw a card")
+image("res://Images/CardArt/Quickstep.png")
 
 title(Carrot Seeds);
 cost(1);
 types(culinary, summon, plant, agriculture)
-rarity(3);
+rarity(4);
 removetrigger(endofturn,true,0);
 text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
+
+title(Sifting Breath);
+cost(1);
+types(wind);
+rarity(3);
+removetrigger(endofturn,true,6);
+text("When you would draw cards, draw one extra then discard a card");
+trigger(draw, do(draw,(1),true));
+trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
+
+title(Bountiful Soil);
+cost(1);
+types(earth);
+text("when you draw an unplayable card, draw 1 more card");
+#trigger(draw, if(results,do(draw,(1),false)));#need to use results here
+removetrigger(endofturn, true, 6)
+rarity(2);
+
+title(Lump of Coal);
+cost("-");
+types(earth,fire);
+text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
+trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(do(draw,(3),false))))
+trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(do(gainEnergy,(2),false))))
+trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(repeat((do(voided,( (select(Hand,(hasName(self,"Lump of Coal")),"Void a lump of Coal")),Hand),false)),3))));
+

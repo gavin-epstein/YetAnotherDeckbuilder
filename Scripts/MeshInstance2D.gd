@@ -296,3 +296,17 @@ func selectAll(tile,dist,property,terrains):
 	for node in selectableNodes:
 		node.dehighlight()
 	return selectableNodes
+func getTileInDirection(tile,dir):
+	dir = dir.normalized()
+	var closest = tile.neighs[0]
+	var closedist = tileInDirectionDistance(tile, closest, dir)
+	for node in tile.neighs:
+		var dist = tileInDirectionDistance(tile, node, dir)
+		if dist < closedist:
+			closest = node
+	return closest	
+#unfortunately this uses two sqrts. 
+#would love a different comparison
+func tileInDirectionDistance(tile1,tile2,dir):
+	var towards = (tile2.position - tile1.position).length() * dir 
+	return (towards - tile2.position).length()

@@ -32,13 +32,14 @@ func _ready()-> void:
 	Discard.updateDisplay()
 	Energy = 3
 	$Energy.updateDisplay()
+	yield(get_parent(), "ready")
+	map = get_parent().get_node("Map/MeshInstance2D")
+	enemyController = get_parent().get_node("EnemyController")
 	for _i in range(10):
 		Deck.add_card(Library.getCardByName("Common Loot"))
 	shuffle()
 	Action("draw",[5])
-	yield(get_parent(), "ready")
-	map = get_parent().get_node("Map/MeshInstance2D")
-	enemyController = get_parent().get_node("EnemyController")
+	
 	
 func _process(delta: float) -> void:
 	inputdelay += delta
@@ -184,6 +185,8 @@ func updateDisplay():
 	Deck.updateDisplay()
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
+	if enemyController.Player != null:
+		enemyController.Player.updateDisplay()
 	
 func cardreward(rarity, count):
 	inputAllowed = false
@@ -245,6 +248,7 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 		inputdelay = 0
 		Action("endofturn",[],false)
 		#Enemies go here
+		enemyController.enemyTurn()
 		Action("startofturn", [], false)
 		
 func select(loc, predicate,message,num = 1):
@@ -263,6 +267,20 @@ func select(loc, predicate,message,num = 1):
 		print("Selectable Card has Moved?")
 	elif selectcount == 0:
 		return null
+	else:
+		var prototype = null
+		var alltheSame = true
+		for card in loc.cards:
+			if card.highlighted:
+				if prototype == null:
+					prototype = card
+				else:
+					if not prototype.isIndentical(card):
+						alltheSame = false
+						break
+		if alltheSame:
+			cardClicked(prototype)
+			return prototype
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
@@ -298,16 +316,17 @@ func damage(amount, types, targets,distance):
 		terrains = ["any"]
 	else:
 		terrains = targets[1]
-	if targets[0] == "all":	
+	if targets[0] is int:
+		for _i in range(targets[0]):
+			enemies.append(map.selectRandom(tile,distance,property,terrains))
+	elif targets[0] == "all":	
 		enemies = map.selectAll(tile,distance,property,terrains)
 	elif targets[0]=="any":
 		var enemy = map.select(tile,distance,property,terrains,"Pick a target")
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		enemies.append(enemy)
-	elif targets[0] is int:
-		for _i in range(targets[0]):
-			enemies.append(map.selectRandom(tile,distance,property,terrains))
+	
 	var results = {Results.Success:true}
 	for node in enemies:
 		var dmg = node.occupants[0].takeDamage(amount,types,enemyController.Player)
@@ -316,3 +335,36 @@ func damage(amount, types, targets,distance):
 
 func heal(amount):
 	enemyController.Player.heal(amount)
+
+func summon(unitName, targets, distance) :
+	var terrains
+	var locs = []
+	var tile = enemyController.Player.tile
+	if targets.size() < 2:
+		terrains = ["any"]
+	else:
+		terrains = targets[1]
+	if targets[0] is int:
+		for _i in range(targets[0]):
+			locs.append(map.selectRandom(tile,distance,"empty",terrains))
+	elif targets[0] == "all":	
+		locs = map.selectAll(tile,distance,"empty",terrains)
+	elif targets[0]=="any":
+		var loc = map.select(tile,distance,"empty",terrains,"Pick a location to summon")
+		if loc is GDScriptFunctionState:
+			loc = yield(loc,"completed")
+		locs.append(loc)
+	else:
+		assert(false, "invalid Target")
+	var unitScene = load(enemyController.get_node("UnitLibrary").getUnitByName(unitName))
+	if locs.size() == 0:
+		return {Results.Interrupt: "No Valid Location"}
+	for node in locs:
+		enemyController.addUnit(unitScene.instance(),node)
+	return {Results.Success: true}
+func armor(amount):
+	enemyController.Player.addArmor(amount)
+	return {Results.Success:true}
+func block(amount):
+	enemyController.Player.addBlock(amount)
+	return {Results.Success:true}

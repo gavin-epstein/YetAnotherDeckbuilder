@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scripts/Unit.gd" type="Script" id=1]
+[ext_resource path="res://Images/UnitArt/Carrot.png" type="Texture" id=2]
+
+[node name="Carrot" type="Node2D"]
+script = ExtResource( 1 )
+health = 5
+status = {
+"nourishing": 5
+}
+
+[node name="Carrot" type="Sprite" parent="."]
+position = Vector2( 6.45148, -521.623 )
+scale = Vector2( 0.650934, 0.650934 )
+texture = ExtResource( 2 )

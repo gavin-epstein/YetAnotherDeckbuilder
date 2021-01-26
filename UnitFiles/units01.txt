@@ -17,3 +17,8 @@ scene("res://Units/TheVoid.tscn")
 difficulty(-1)
 spawnable(any)
 name("Void")
+
+scene("res://Units/Carrot.tscn")
+difficulty(-1)
+spawnable(grass)
+name("Carrot")

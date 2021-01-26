@@ -13,7 +13,7 @@ static func parseCardCode(string):
 		if letter == ")":
 			parenstack -= 1
 		
-		if parenstack > 0 or regex.search(letter) or letter in ["[","]"] :
+		if parenstack > 0 or regex.search(letter) or letter in ["[","]","-"] :
 			currenttoken+=letter #if its a letter, or in parenthesis, smash on the current token
 		elif instring:
 			if not letter == '"':
@@ -110,11 +110,17 @@ static func sqDistToNode(pixel:Vector2, node) -> float:
 	var xDist = pixel.x   - node.position.x
 	var yDist = pixel.y   - node.position.y
 	return xDist*xDist + yDist * yDist
-static func interpretTerrain(name)->int:
-	if name == "grass":
-		return 0
-	elif name == "stone":
-		return 1
-	elif name == "water":
-		return 2
-	return -1
+static func interpretTerrain(name):
+	if name is String:
+		if name == "grass":
+			return 0
+		elif name == "stone":
+			return 1
+		elif name == "water":
+			return 2
+		return -1
+	else:
+		for key in Terrain:
+			if Terrain[key] ==name:
+				return  key.to_lower()
+		return "unknown"
