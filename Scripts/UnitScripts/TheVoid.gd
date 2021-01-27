@@ -5,7 +5,7 @@ var target;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	addArmor(100)
+	addArmor(10)
 	status["retaliate"] = true
 	onSummon()
 

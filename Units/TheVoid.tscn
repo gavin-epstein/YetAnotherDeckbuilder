@@ -91,6 +91,6 @@ title = "The Void"
 position = Vector2( -1.27783, -132.85 )
 scale = Vector2( 1.55866, 1.55866 )
 frames = SubResource( 1 )
-frame = 59
+frame = 38
 speed_scale = 0.5
 playing = true

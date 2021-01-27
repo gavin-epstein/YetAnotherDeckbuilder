@@ -24,7 +24,8 @@ func loadallcards() -> void:
 			card.controller = get_parent()
 			cardcode = ""
 			yield(get_tree().create_timer(.05), "timeout")
-		if not ";" in line:
+			
+		if not ";" in line and line!="":
 			line = line+";"
 		cardcode+=line
 	

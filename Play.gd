@@ -26,4 +26,4 @@ func updateDisplay():
 			
 func cardClicked(card):
 	if card.highlighted:
-		get_parent().cardClicked()
+		get_parent().cardClicked(card)

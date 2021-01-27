@@ -16,6 +16,9 @@ func Load():
 		step = yield(step,"completed")
 	
 func nodeSpawned(node):
+	totaldifficulty = 0
+	for unit in units:
+		totaldifficulty += unit.difficulty
 	var unitTemplateString = $UnitLibrary.getRandomEnemy(maxdifficulty - totaldifficulty,node.terrain);
 	if unitTemplateString!=null:
 		var unit = load(unitTemplateString).instance()

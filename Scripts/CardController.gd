@@ -1,5 +1,5 @@
 extends Node2D
-enum Results {Interrupt, CardDrawn, CardPlayed, CardDiscarded, EnergySpent, CardMoved, CardPurged, Success, DamageDealt}
+
 signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
@@ -16,6 +16,7 @@ var focus
 var selectedCard
 var map
 var enemyController
+var lastPlayed
 class_name CardController
 
 func Load()-> void:
@@ -47,96 +48,91 @@ func Load()-> void:
 		yield(step,"completed")
 	
 	
+	
 func _process(delta: float) -> void:
 	inputdelay += delta
 	
-func Action(method:String, argv:Array, silent = false) -> Dictionary:
+func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
-	var results = {}
+	var res
 	print(method +" "+ Utility.join(" ", argv))
 	if not silent:
 		for card in Play.cards:
 			if card.Interrupts(method, argv):
 				interrupted = true
-				Utility.addtoDict(results, Results.Interrupt , card)
 	if not interrupted:
 		
 		if self.has_method(method):
-			var res =  self.callv(method, argv)
+			res =  self.callv(method, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res,"completed")
-			Utility.extendDict( results , res)
+			
 		else:
 			print("attempting to " + method)
-		if not silent and results.has(Results.Success):
+		if not silent and res:
 			#look through play, if card is removed from play don't increment index
 			var ind = 0
 			while Play.cards.size() > ind:
 				var card = Play.cards[ind]
-				var res = card.Triggered(method, argv, results)
-				if res is GDScriptFunctionState:
-					res = yield(res,"completed")
-				Utility.extendDict(results,res)
+				var res2 = card.Triggered(method, argv)
+				if res2 is GDScriptFunctionState:
+					res2 = yield(res2,"completed")
+				
 				if card in Play.cards:
 					ind+=1
 	updateDisplay()
-	return results
+	return res
 	
 
-func draw(x)->Dictionary:
+func draw(x)->bool:
 	var results = {}
 	for i in range(x):
 
 		if Hand.is_full():
-			Utility.addtoDict(results, Results.Interrupt, "Hand Full")
-			break
+			return i==0
+
 		if Deck.size() == 0:
 			if Discard.size() ==0:
-				Utility.addtoDict(results, Results.Interrupt, "Deck Empty")
-				return results
+				return i==0
 			else:
 				Action("reshuffle",[])
 		var card = Deck.getCard(0)
 		move("Deck","Hand",card)
-		
-		Utility.extendDict(results, card.Triggered("onMove", ["Deck", "Hand"], results))
-		Utility.extendDict(results, card.Triggered("onDraw", [], results))
-		Utility.addtoDict(results, Results.CardDrawn, card)
-		results[Results.Success] = true;
-	return results
+		if card in Hand.cards:
+			card.Triggered("onDraw",[x])
+			for other in Play.cards:
+				other.Triggered("cardDrawn",[card])
+	return true
 
-func reshuffle()->Dictionary:
+func reshuffle()->bool:
 	if Discard.size()==0:
-		return {Results.Interrupt:["Discard Empty"]}
+		return false
 	Deck.cards +=Discard.cards
 	Deck.cards.shuffle()
 	Discard.cards = []
-	return {Results.Success:true}
-func shuffle()->Dictionary:
+	return true
+func shuffle()->bool:
 	if Deck.size() ==0:
-		return {Results.Interrupt:["Deck Empty"]}
+		return false
 	Deck.cards.shuffle()
-	return {Results.Success:true}
+	return true
 
-func play(card)->Dictionary:
+func play(card)->bool:
+	lastPlayed = card
 	print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
-		return {Results.Interrupt:["unplayable"]}
+		return false
 	if card.cost > Energy:
-		return{Results.Interrupt:["outOfEnergy"]}
+		return false
 	Hand.remove_card(card)
 	Play.add_card(card)
-	var results = card.Triggered("onPlay",[card],{})
+	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
-		
+	
 	Energy -= card.cost
-	$Energy.updateDisplay()
-	Utility.addtoDict(results, Results.CardPlayed, card)
-	Utility.addtoDict(results, Results.EnergySpent, card.cost)
-	results[Results.Success] = true;
-	Play.updateDisplay()
-	return results
+	updateDisplay()
+	return true
 	
 
 #location must be capitalized	 
@@ -156,6 +152,13 @@ func countNames(loc, name) -> int:
 		if card.hasName(name):
 			count+=1
 	return count
+func countModifiers(loc, mod) -> int:
+	loc = get_node(loc)
+	var count = 0
+	for card in loc.cards:
+		if card.hasModifier(mod):
+			count+=1
+	return count
 func move(loc1, loc2, card):
 	if card is Dictionary:
 		return card
@@ -163,12 +166,12 @@ func move(loc1, loc2, card):
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
 		loc2.add_card(card)
-		return {Results.CardMoved:[loc1,loc2,card], Results.Success:true}
-	return {Results.Interrupt:"Card Not Found"}	
+		return true
+	return false
 func setEnergy(num):
 	Energy = num
 	$Energy.updateDisplay()
-	return {Results.Success:true}
+	return true
 func discardAll(silent = false):
 	var ind =0;
 	while Hand.cards.size() >ind:
@@ -177,13 +180,13 @@ func discardAll(silent = false):
 			Action("discard", [card, silent]);
 		else:
 			ind+=1
-	return {Results.Success:true}
+	return true
 	
 func discard(card, silent = false):
 	if not silent:
-		card.Triggered("onDiscard", [card],{})
+		card.Triggered("onDiscard", [card])
 	move("Hand", "Discard", card)
-	return {Results.Success:true}
+	return true
 	
 func updateDisplay():
 	Hand.updateDisplay()
@@ -198,14 +201,13 @@ func updateDisplay():
 func cardreward(rarity, count):
 	inputAllowed = false
 	Choice.generateReward(rarity, count)
-	return {Results.Success:true}
+	return true
 
 func purge(card):
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card):
-		var ret = {Results.CardPurged : [card.title],Results.Success:true }
 		card.queue_free()
-		return ret
-	return {Results.Interrupt:"Card Not Found"}
+		return true
+	return false
 
 func takeFocus(item) -> bool:
 	if Choice.visible and not item in Choice.cards:
@@ -232,28 +234,28 @@ func create(card, loc):
 		added = cardtemplate.instance();
 		card.deepcopy(added)
 	loc.add_card(added)
-	return {Results.Success:true}
+	return true
 func createByMod(modifiers, loc):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
 	
 	loc.add_card(added)
-	return {Results.Success:true}
+	return true
 	
 func gainEnergy(num):
 	Energy += num
 	$Energy.updateDisplay()
-	return {Results.Success:true}
+	return true
 	
 func voided(card, loc):
 	return move(loc, "Voided", card)
 	
 
 func endofturn():
-	return {Results.Success:true}
+	return true
 
 func startofturn():
-	return {Results.Success:true}
+	return true
 
 
 func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
@@ -297,6 +299,7 @@ func select(loc, predicate,message,num = 1):
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
+	updateDisplay()
 	yield(self, "resumeExecution")
 	$Message.visible = false
 	return selectedCard
@@ -315,14 +318,14 @@ func movePlayer(dist,terrains = ["any"]):
 	if tile is GDScriptFunctionState:
 		tile = yield(tile, "completed")
 	enemyController.move(enemyController.Player, tile)
-	return {Results.Success: true}
+	return true
 func damage(amount, types, targets,distance):
 	var enemies = []
 	var tile = enemyController.Player.tile
 	var property
 	var terrains
 	if targets.size() < 3:
-		property = "notPlayer"
+		property = "-Player"
 	else:
 		property = targets[2]
 	if targets.size() < 2:
@@ -340,22 +343,27 @@ func damage(amount, types, targets,distance):
 			enemy = yield(enemy,"completed")
 		enemies.append(enemy)
 	
-	var results = {Results.Success:true}
+	
 	for node in enemies:
-		var dmg = node.occupants[0].takeDamage(amount,types,enemyController.Player)
-		Utility.extendDict(results, {Results.DamageDealt:dmg})
-	return results
+		var unit =  node.occupants[0]
+		var dmg = unit.takeDamage(amount,types,enemyController.Player)
+		if dmg.size() > 1 and dmg[1] == "kill":
+			lastPlayed.Triggered("slay",[unit])
+		if dmg.size()>0:
+			lastPlayed.Triggered("attack",dmg)
+			 
+	return true
 
 func heal(amount):
 	enemyController.Player.heal(amount)
 func setVar(card, varname, amount):
 	card.vars["$" + varname] = amount
-	return {Results.Success : true}
+	return true
 func addVar(card, varname, amount):
 	if card.vars.has("$"  +varname):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount
-		return {Results.Success : true}
-	return {Results.Interrupt: "Variable does not exist"}
+		return true
+	return false
 func getVar(card, varname):
 	return card.vars("$"+varname);
 func summon(unitName, targets, distance) :
@@ -380,18 +388,23 @@ func summon(unitName, targets, distance) :
 		assert(false, "invalid Target")
 	var unitScene = load(enemyController.get_node("UnitLibrary").getUnitByName(unitName))
 	if locs.size() == 0:
-		return {Results.Interrupt: "No Valid Location"}
+		return false
 	for node in locs:
 		enemyController.addUnit(unitScene.instance(),node)
-	return {Results.Success: true}
+	return true
 func armor(amount):
 	enemyController.Player.addArmor(amount)
-	return {Results.Success:true}
+	return true
 func block(amount):
 	enemyController.Player.addBlock(amount)
-	return {Results.Success:true}
+	return true
 func consume():
+	
+	enemyController.theVoid.Consume()
+	return true
+func triggerAll(trigger, argv):
+	for card in Play.cards:
+		card.Triggered(trigger,argv)
+func devoidAll():
 	for card in $Voided.cards:
 		move("Voided", "Discard",card)
-	enemyController.theVoid.Consume()
-	return {Results.Success:true}
