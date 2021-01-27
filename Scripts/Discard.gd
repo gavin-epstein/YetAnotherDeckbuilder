@@ -6,13 +6,11 @@ extends CardLocation
 # var b: String = "text"
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+
 func updateDisplay():
 	for card in cards:
 		card.visible = false
-		card.moveTo($AnimatedSprite2.position,$AnimatedSprite2.scale)
+		card.moveTo($AnimatedSprite2.position)
 	get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 
 

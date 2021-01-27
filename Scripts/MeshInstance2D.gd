@@ -21,8 +21,6 @@ var Vverts
 var Vindices
 var Vuvs
 var Vnormals
-var started = false
-var done  =false
 var lastStep
 var centerCache = {}
 var pausetime = 0.0
@@ -35,39 +33,24 @@ var physics_on  = false
 var voidNode
 var selectableNodes = []
 var selectedNode
-func _ready() -> void:
+
+func Load():
 	randomize()
 	gridNodeTemplate = load("res://Scripts/GridNode.gd");
 	cardController = get_node("../../CardController");
 	enemyController = get_node("../../EnemyController");
+	var step = generate()
+	if step is GDScriptFunctionState:
+		step = yield(step, "completed")
+	
+
 func _process(delta: float) -> void:
-	if not lastStep is GDScriptFunctionState:
-			if not started:
-				print("call to generate")
-				started = true
-				lastStep = generate()
-				
-			else:
-				if not done:
-					done = true
-					doPhysics(2);
-					acceptinput = true
-				
-	else:
-		
-		#print("Vertices:" , verts.size())
-			lastStep = lastStep.resume()
-			triangulate()
-			pausetime = 0
-		
 	if pausetime > .1:
 		pausetime = 0
 		triangulate()
 	else:
 		pausetime += delta
-	
-	
-	
+
 	# Assign arrays to mesh array.
 		
 func generate() -> void:
@@ -112,12 +95,19 @@ func generate() -> void:
 			var color  = getTerrain()
 			addGridNode(pos, color)	
 			
-			#print("Node %3d in %3.f ms after %2d attempts"%[nodeCount,(OS.get_ticks_msec() - startTime), failedAttempts])
+			
 			failedAttempts = 0
-			#print('Node at %.3f,%.3f'% [pos.x, pos.y])		
-			yield()
+			
+			yield(get_tree().create_timer(.05), "timeout")
 	triangulate()
+func Load2():
+	var step = doPhysics(2);
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	acceptinput = true
+	enemyController.addPlayerAndVoid()
 	emit_signal("mapGenerated")
+	
 	
 func triangulate() -> void:	
 	centerCache = {}
@@ -226,6 +216,7 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 					emit_signal("nodeSelected")
 			cardController.releaseFocus(self)
 func doPhysics(time):
+	print("Physics going")
 	cardController.takeFocus(self)
 	self.physics_on  = true
 	yield(get_tree().create_timer(time), "timeout")
@@ -264,7 +255,7 @@ func getTiles(tile,dist,property,terrains):
 			possible.append(next)
 			if next.dist < dist:
 				for neigh in next.neighs:
-					if not neigh.sentinel and neigh.dist  == null:
+					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null:
 						neigh.dist = next.dist+1
 						q.append(neigh)
 	for node in possible:

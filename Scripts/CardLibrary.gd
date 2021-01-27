@@ -15,7 +15,7 @@ func loadallcards() -> void:
 	var cardcode = ""
 	while not f.eof_reached():
 		var line = f.get_line()
-		if line[0] == "#":
+		if line!= "" and line[0] == "#":
 			continue
 		if line =="" and cardcode != "":
 			var card = cardtemplate.instance()
@@ -23,7 +23,9 @@ func loadallcards() -> void:
 			self.cards.append(card)
 			card.controller = get_parent()
 			cardcode = ""
-		if not ";" in line:
+			yield(get_tree().create_timer(.05), "timeout")
+			
+		if not ";" in line and line!="":
 			line = line+";"
 		cardcode+=line
 	
@@ -50,7 +52,16 @@ func getRandom(maxRarity:int = 100, types = ["any"]):
 		return getRandom(maxRarity)
 	var ret = cardtemplate.instance()
 	return select[CardRng.randi() % select.size()].deepcopy(ret)
-
+func getRandomByModifier(mods):
+	if mods.size() ==0:
+		mods= ["any"]
+	var select = []
+	for card in cards:
+		for mod in mods:
+			if card.hasModifier(mod):
+				select.append(card)
+	var ret = cardtemplate.instance()
+	return select[CardRng.randi() % select.size()].deepcopy(ret)	
 func removeUnique(title):
 	for card in cards:
 		if card.title == title:
