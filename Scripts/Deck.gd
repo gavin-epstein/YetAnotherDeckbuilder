@@ -6,14 +6,10 @@ extends CardLocation
 # var b: String = "text"
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
 func updateDisplay():
 	for card in cards:
 		card.visible = false
-		card.moveTo($AnimatedSprite.position,$AnimatedSprite.scale)
+		card.moveTo($AnimatedSprite.position)
 	get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=283 format=2]
+[gd_scene load_steps=284 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -275,6 +275,7 @@
 [ext_resource path="res://Scripts/EnemyController.gd" type="Script" id=273]
 [ext_resource path="res://Images/MapArt/Water.png" type="Texture" id=274]
 [ext_resource path="res://Scripts/Reaction.gd" type="Script" id=275]
+[ext_resource path="res://Scripts/MainScene.gd" type="Script" id=276]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -312,6 +313,7 @@ font_data = ExtResource( 266 )
 extents = Vector2( 531.325, 222.946 )
 
 [node name="Scene" type="Node2D"]
+script = ExtResource( 276 )
 
 [node name="Map" type="Node2D" parent="."]
 position = Vector2( 960, 410 )
@@ -405,7 +407,7 @@ script = ExtResource( 2 )
 position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 3
+frame = 91
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -434,7 +436,7 @@ script = ExtResource( 4 )
 position = Vector2( 1181.33, 662.658 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 2
+frame = 90
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -501,7 +503,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 92
+frame = 54
 playing = true
 script = ExtResource( 264 )
 

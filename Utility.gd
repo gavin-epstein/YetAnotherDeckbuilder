@@ -13,7 +13,7 @@ static func parseCardCode(string):
 		if letter == ")":
 			parenstack -= 1
 		
-		if parenstack > 0 or regex.search(letter) or letter in ["[","]","-"] :
+		if parenstack > 0 or regex.search(letter) or letter in ["[","]","-","$"] :
 			currenttoken+=letter #if its a letter, or in parenthesis, smash on the current token
 		elif instring:
 			if not letter == '"':
@@ -124,3 +124,7 @@ static func interpretTerrain(name):
 			if Terrain[key] ==name:
 				return  key.to_lower()
 		return "unknown"
+
+static func choice(array:Array):
+	if array.size() > 0:
+		return array[randi()%array.size()]

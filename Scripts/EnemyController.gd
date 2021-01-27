@@ -5,13 +5,20 @@ var maxdifficulty = 3;
 var map
 var units=[]
 var Player
+var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	yield(get_parent(), "ready")
+func Load():
+	yield(get_parent(),"ready")
 	map = get_parent().get_node("Map/MeshInstance2D")
-	addPlayerAndVoid()
+	var step = $UnitLibrary.Load()
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	
 func nodeSpawned(node):
+	totaldifficulty = 0
+	for unit in units:
+		totaldifficulty += unit.difficulty
 	var unitTemplateString = $UnitLibrary.getRandomEnemy(maxdifficulty - totaldifficulty,node.terrain);
 	if unitTemplateString!=null:
 		var unit = load(unitTemplateString).instance()
@@ -21,6 +28,7 @@ func addPlayerAndVoid():
 	yield(map, "mapGenerated");
 	var unit  = load($UnitLibrary.getUnitByName("Void")).instance()
 	var node = map.voidNode
+	theVoid = unit
 	addUnit(unit,node)
 	unit = load($UnitLibrary.getUnitByName("Player")).instance()
 	Player = unit

@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	self.z_index = (500+position.y)/10;
 
 func takeTurn():
-	print(self.title + " " + str(nextTurn))
+	print(title+" " +str(armor))
 	for move in nextTurn:
 		if move[0] == "move":
 			if move[1].occupants.size()==0:
@@ -47,7 +47,7 @@ func getNextTurn():
 	pass
 
 
-func Damaged(amount,types):
+func Damaged(amount,types,attacker):
 	pass
 func addHealthBar():
 	healthBar  = healthBarTemplate.instance()
@@ -56,14 +56,24 @@ func addHealthBar():
 	add_child(healthBar)
 	updateDisplay()
 	
-func hasProperty(prop):
-	if prop == 'any' or prop == "exists" or prop == "notPlayer":
-		return true
+func hasProperty(prop:String):
+	var negate = false
+	var ret
+	if prop[0] == "-":
+		negate = true
+		prop = prop.substr(1)
+	if prop == 'any' or prop == "exists":
+		ret =true
 	elif prop == self.title:
-		return true
+		ret = true
 	elif status.has(prop):
-		return true
-	return false
+		ret = true
+	else:
+		ret = false
+	if negate:
+		return not ret
+	else:
+		return ret
 func takeDamage(amount,types, attacker):
 	#set enemies on fire, if they are flammable and in water
 	if "fire" in types and status.has("flammable") and not Utility.interpretTerrain("water") == tile.terrain:
@@ -81,26 +91,33 @@ func takeDamage(amount,types, attacker):
 	for type in types:
 		if status.has("vulnerable") and type in status.vulnerable:
 			amount = amount*1.5
-	if armor > 0:
-		amount -= armor
-		armor -=1
-	if block >amount:
-		block -=floor(amount)
-		amount = 0
-	elif block > 0:
-		amount -= block
-		block = 0
+	if amount > 0:
+		if armor > 0:
+			amount =max(amount -  armor, 0)
+			armor -=1
+		if block >amount:
+			block -=floor(amount)
+			amount = 0
+		elif block > 0:
+			amount -= block
+			block = 0
+	
 		
 	health -= floor(amount)
-	self.Damaged(amount,types)
+	self.Damaged(amount,types,attacker)
 	if health <= 0:
+		
+		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
 		die(attacker)
+		return [amount,"kill"]
 	else:
 		updateDisplay()
-	return amount
+	get_parent().map.cardController.triggerAll("damageDealt",[self,amount,types,attacker])
+	return [amount]
 func startOfTurn():
 	if status.has("flaming") and not status.has("fireproof"):
 		takeDamage(floor(health/2),["fire"],null)
+	block = 0;
 func endOfTurn():
 	pass
 
@@ -122,9 +139,9 @@ func updateDisplay():
 	else:
 		healthBar.get_node("Attack").visible = false
 func die(attacker):
-	if status.has("supplying"):
+	if status.has("supplying") and attacker != null:
 		attacker.gainStrength(self.strength)
-	if status.has("nourishing"):
+	if status.has("nourishing") and attacker != null:
 		attacker.gainMaxHealth(self.maxHealth)
 	if status.has("explosive"):
 		#damage all adjacent enemies
@@ -133,6 +150,8 @@ func die(attacker):
 	self.visible = false
 	tile.occupants.erase(self)
 	get_parent().units.erase(self)
+	yield(get_tree().create_timer(1),"timeout")
+	queue_free()
 func gainMaxHealth(amount):
 	self.maxHealth +=amount
 	self.health += amount

@@ -11,7 +11,6 @@ var cost
 var unmodifiedCost
 var removecount
 var defaultremovecount
-var results:Dictionary
 var types = {}
 var text
 var image
@@ -25,6 +24,7 @@ var rarity
 var debug
 var mouseoverdelay = 0
 var mouseon
+var vars = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,17 +57,15 @@ func _process(delta: float) -> void:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
 		controller.releaseFocus(self)
-func Triggered(method, argv, results) -> Dictionary:
-	results = {}
+func Triggered(method, argv):
+	
 	if triggers.has(method):
-		if method == "endofturn":
-			print("triggering "+ method + " on " + title)
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
 	self.updateDisplay();
-	return results
+
 func Interrupts(method, args) -> bool:
 	return false
 
@@ -82,7 +80,18 @@ func hasType(type)->bool:
 func hasName(string)->bool:
 	return self.title.find(string)!=-1
 	
-
+func hasModifier(string) -> bool:
+	if string == "any":
+		return true
+	if modifiers.has(string):
+		return true
+	return false
+func hasVariable(string) ->bool:
+	if string == "any":
+		return true
+	if vars.has("$"+string):
+		return true
+	return false
 func loadCardFromString(string):
 	var lines = string.split(";")
 	for line in lines:
@@ -118,15 +127,15 @@ func loadCardFromString(string):
 			self.title = Utility.join(" ",parsed[1])
 		elif parsed[0] == "rarity":
 			self.rarity = int(parsed[1][0])
-			
+		elif parsed[0][0] =="$":
+			vars[parsed[0]] = parsed[2]
 	#self.updateDisplay()
 func execute(code, argv):
 	
 	if code is String:
 		return code
-	while code is GDScriptFunctionState:
-		yield(controller, "resumeExecution")
-		code  = code.resume()
+	if code is GDScriptFunctionState:
+		code = yield(code, "completed")
 	if not code[0] is String:
 		return code
 		#assert(false, str(code[0]) + " is not a valid command" )
@@ -143,14 +152,23 @@ func execute(code, argv):
 		return result
 	elif code[0] == "countName":
 		var arg1 = processArgs(code[1][0], argv)
-		while arg1 is GDScriptFunctionState:
-			yield(controller, "resumeExecution")
-			arg1  = arg1.resume()
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
 		var arg2 = processArgs(code[1][1], argv)
-		while arg2 is GDScriptFunctionState:
-			yield(controller, "resumeExecution")
-			arg2  = arg2.resume()
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
 		var result = controller.countNames(code[1][0],code[1][1])
+		return result
+	elif code[0] =="countModifier":
+		var arg1 = processArgs(code[1][0], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[1][1], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		var result = controller.countModifiers(code[1][0],code[1][1])
 		return result
 	elif code[0] =="if":
 		var condition
@@ -175,18 +193,18 @@ func execute(code, argv):
 				var after  = condition.slice(comp+1,condition.size()-1)
 				if before.size() > 1:
 					before = execute(before, argv)
-					while before is GDScriptFunctionState:
-						yield(controller, "resumeExecution")
+					if before is GDScriptFunctionState:
+						before = yield(before, "competed")
 						before  = before.resume()
 				else:
-					before = before[0]
+					before = processArgs(before[0],argv)
 				if after.size() > 1:
 					after = execute(after, argv)
-					while after is GDScriptFunctionState:
-						yield(controller, "resumeExecution")
-						after  = after.resume()
+					if after is GDScriptFunctionState:
+						after = yield(after, "completed")
+						
 				else:
-					after = after[0]
+					after = processArgs(after[0],argv)
 				if (compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after):
 					var ex = execute(command, argv)
 					if ex is GDScriptFunctionState:
@@ -239,19 +257,20 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg =  yield(arg, "completed")
 			args.append(arg)
+		var silence = false
+		if code[1].size()>2:
+			silence = processArgs(code[1][2], argv)
+			if silence is GDScriptFunctionState:
+				silence = yield(silence, "completed")
 		
-		var silence = processArgs(code[1][2], argv)
-		if silence is GDScriptFunctionState:
-			silence = yield(silence, "completed")
-		self.debug = args
 		var res = controller.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
-		Utility.extendDict(results, res )
+		
 	elif code[0] == "decrementRemoveCount":
 		removecount -=1
 		if removecount == 0:
-			self.Triggered("onRemoveFromPlay",argv,results)
+			self.Triggered("onRemoveFromPlay",argv)
 			controller.Action("move",["Play","Discard",self])
 			self.cost = unmodifiedCost
 			self.removecount = defaultremovecount
@@ -269,13 +288,32 @@ func execute(code, argv):
 		var args = []
 		for arg in code[1]:
 			arg = processArgs(arg,argv)
-			while arg is GDScriptFunctionState:
-				yield(controller, "resumeExecution")
-				arg  = arg.resume()
+			if arg is GDScriptFunctionState:
+				arg = yield(arg, "complete")
 			args.append(arg)
 		if not args[0].has_method("isCard"):
 			return false
 		return args[0].hasName(args[1])
+	elif code[0] == "hasModifier" or code[0] == "hasmod":
+		var args = []
+		for arg in code[1]:
+			arg = processArgs(arg,argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg, "complete")
+			args.append(arg)
+		if not args[0].has_method("isCard"):
+			return false
+		return args[0].hasModifier(args[1])
+	elif code[0] == "hasVariable" or code[0] == "hasvar":
+		var args = []
+		for arg in code[1]:
+			arg = processArgs(arg,argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg, "complete")
+			args.append(arg)
+		if not args[0].has_method("isCard"):
+			return false
+		return args[0].hasVariable(args[1])
 	elif code[0] =="select":
 		var args = []
 		var arg = processArgs(code[1][0],argv)
@@ -293,12 +331,11 @@ func execute(code, argv):
 			while arg is GDScriptFunctionState:
 				yield(controller, "resumeExecution")
 				arg  = arg.resume()
-		controller.callv("select", args)
-		yield(controller, "resumeExecution")
-		var ret = controller.selectedCard
-		if ret == null:
-			return {controller.Results.Interrupt:"No valid selection"}
-		return controller.selectedCard
+		var ret = controller.callv("select", args)
+		if ret is GDScriptFunctionState:
+			ret = yield(ret, "completed")
+		return ret
+		
 	else:
 		#assert(false, code[0] + " not a valid command")
 		return code
@@ -312,13 +349,13 @@ func processArgs(arg, argv):
 			return true
 		if arg =="false":
 			return false
+		if arg[0] == "$" and vars.has(arg):
+			return vars[arg]
 		return arg
 	elif arg is Array:
 		var ret = execute(arg, argv)
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed");
-			
-		self.debug = ret
 		return ret
 	else:
 		return arg
@@ -326,7 +363,10 @@ func updateDisplay():
 	
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(cost) + "[/center]";
 	get_node("Resizer/CardFrame/Title").bbcode_text= "[center]" + title+ "[/center]";
-	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+text+ "[/center]";
+	var displaytext = text
+	for key in vars:
+		displaytext = displaytext.replace(key, vars[key])
+	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(removecount) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
 	get_node("Resizer/CardFrame/hourglass").visible = false
@@ -346,12 +386,20 @@ func deepcopy(other)-> Card:
 	for prop in properties:
 		var name = prop.name;
 		var val = self.get(name);
-		if val == null or not val is Object:
+		if val is Array or val is Dictionary:
+			other.set(name,val.duplicate(true))
+		elif val == null or not val is Object:
 			other.set(name, val);
-		elif not val is NodePath and val.has_method("duplicate"):
-			val = val.duplicate(true)
+		else:
+			pass
+			#print(val)
+			
 	other.image = self.image
 	other.controller = self.controller
+	if other.modifiers.has("void"):
+		other.get_node("Resizer/FrameSprite").modulate = Color(.5,0,.5)
+	elif other.modifiers.has("unique"):
+		other.get_node("Resizer/FrameSprite").modulate = Color(.5,.5,1)
 	return other
 		
 func moveTo(pos:Vector2, size = null):

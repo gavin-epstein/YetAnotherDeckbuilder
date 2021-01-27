@@ -7,6 +7,7 @@
 script = ExtResource( 1 )
 health = 5
 status = {
+"friendly": true,
 "nourishing": 5
 }
 
