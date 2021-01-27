@@ -47,7 +47,7 @@ func getNextTurn():
 	pass
 
 
-func Damaged(amount,types):
+func Damaged(amount,types,attacker):
 	pass
 func addHealthBar():
 	healthBar  = healthBarTemplate.instance()
@@ -82,7 +82,7 @@ func takeDamage(amount,types, attacker):
 		if status.has("vulnerable") and type in status.vulnerable:
 			amount = amount*1.5
 	if armor > 0:
-		amount -= armor
+		amount =max(amount -  armor, 0)
 		armor -=1
 	if block >amount:
 		block -=floor(amount)
@@ -90,9 +90,10 @@ func takeDamage(amount,types, attacker):
 	elif block > 0:
 		amount -= block
 		block = 0
+	
 		
 	health -= floor(amount)
-	self.Damaged(amount,types)
+	self.Damaged(amount,types,attacker)
 	if health <= 0:
 		die(attacker)
 	else:
@@ -122,9 +123,9 @@ func updateDisplay():
 	else:
 		healthBar.get_node("Attack").visible = false
 func die(attacker):
-	if status.has("supplying"):
+	if status.has("supplying") and attacker != null:
 		attacker.gainStrength(self.strength)
-	if status.has("nourishing"):
+	if status.has("nourishing") and attacker != null:
 		attacker.gainMaxHealth(self.maxHealth)
 	if status.has("explosive"):
 		#damage all adjacent enemies

@@ -18,27 +18,33 @@ var map
 var enemyController
 class_name CardController
 
-func _ready()-> void:
-	var screen_size = OS.get_screen_size()
-	OS.set_window_size(screen_size)#
+func Load()-> void:
 	Deck = get_node("Deck")
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
 	Library = get_node("Library")
 	Choice = get_node("Choice")
-	Library.loadallcards()
+	var step = Library.loadallcards()
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	print("Cards loaded")
 	Play.add_card(Library.getCardByName("Adventurer"))
-	Discard.updateDisplay()
+	Play.add_card(Library.getRandomByModifier(["void"]))
 	Energy = 3
-	$Energy.updateDisplay()
-	yield(get_parent(), "ready")
 	map = get_parent().get_node("Map/MeshInstance2D")
 	enemyController = get_parent().get_node("EnemyController")
+	self.updateDisplay()
+	yield(get_tree().create_timer(1),"timeout")
 	for _i in range(10):
+		print("loot added")
 		Deck.add_card(Library.getCardByName("Common Loot"))
-	shuffle()
-	Action("draw",[5])
+		Deck.updateDisplay()
+		yield(get_tree().create_timer(.1),"timeout")
+	#shuffle()
+	step = Action("draw",[5])
+	if step is GDScriptFunctionState:
+		yield(step,"completed")
 	
 	
 func _process(delta: float) -> void:
@@ -47,7 +53,7 @@ func _process(delta: float) -> void:
 func Action(method:String, argv:Array, silent = false) -> Dictionary:
 	var interrupted = false
 	var results = {}
-	print(method + Utility.join(" ", argv))
+	print(method +" "+ Utility.join(" ", argv))
 	if not silent:
 		for card in Play.cards:
 			if card.Interrupts(method, argv):
@@ -79,7 +85,9 @@ func Action(method:String, argv:Array, silent = false) -> Dictionary:
 
 func draw(x)->Dictionary:
 	var results = {}
-	for _i in range(x):
+	for i in range(x):
+		print("Draw # " +str(i))
+		yield(get_tree().create_timer(.1),"timeout");
 		if Hand.is_full():
 			Utility.addtoDict(results, Results.Interrupt, "Hand Full")
 			break
@@ -90,8 +98,8 @@ func draw(x)->Dictionary:
 			else:
 				Action("reshuffle",[])
 		var card = Deck.getCard(0)
-		Deck.remove_card_at(0)
-		Hand.add_card_at(card, 0)
+		move("Deck","Hand",card)
+		updateDisplay()
 		Utility.extendDict(results, card.Triggered("onMove", ["Deck", "Hand"], results))
 		Utility.extendDict(results, card.Triggered("onDraw", [], results))
 		Utility.addtoDict(results, Results.CardDrawn, card)
@@ -179,13 +187,14 @@ func discard(card, silent = false):
 	return {Results.Success:true}
 	
 func updateDisplay():
+	print("updatingDisplay")
 	Hand.updateDisplay()
 	Discard.updateDisplay()
 	Play.updateDisplay()
 	Deck.updateDisplay()
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
-	if enemyController.Player != null:
+	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
 	
 func cardreward(rarity, count):
@@ -226,7 +235,13 @@ func create(card, loc):
 		card.deepcopy(added)
 	loc.add_card(added)
 	return {Results.Success:true}
-
+func createByMod(modifiers, loc):
+	loc = get_node(loc)
+	var added = Library.getRandomByModifier(modifiers)
+	
+	loc.add_card(added)
+	return {Results.Success:true}
+	
 func gainEnergy(num):
 	Energy += num
 	$Energy.updateDisplay()
@@ -275,7 +290,7 @@ func select(loc, predicate,message,num = 1):
 				if prototype == null:
 					prototype = card
 				else:
-					if not prototype.isIndentical(card):
+					if not prototype.isIdentical(card):
 						alltheSame = false
 						break
 		if alltheSame:
@@ -335,7 +350,16 @@ func damage(amount, types, targets,distance):
 
 func heal(amount):
 	enemyController.Player.heal(amount)
-
+func setVar(card, varname, amount):
+	card.vars["$" + varname] = amount
+	return {Results.Success : true}
+func addVar(card, varname, amount):
+	if card.vars.has("$"  +varname):
+		card.vars["$" + varname] = card.vars["$" + varname]  + amount
+		return {Results.Success : true}
+	return {Results.Interrupt: "Variable does not exist"}
+func getVar(card, varname):
+	return card.vars("$"+varname);
 func summon(unitName, targets, distance) :
 	var terrains
 	var locs = []
@@ -367,4 +391,9 @@ func armor(amount):
 	return {Results.Success:true}
 func block(amount):
 	enemyController.Player.addBlock(amount)
+	return {Results.Success:true}
+func consume():
+	for card in $Voided.cards:
+		move("Voided", "Discard",card)
+	enemyController.theVoid.Consume()
 	return {Results.Success:true}

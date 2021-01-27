@@ -25,6 +25,7 @@ var rarity
 var debug
 var mouseoverdelay = 0
 var mouseon
+var vars = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -58,10 +59,8 @@ func _process(delta: float) -> void:
 			$AnimationPlayer.play_backwards("Grow")
 		controller.releaseFocus(self)
 func Triggered(method, argv, results) -> Dictionary:
-	results = {}
+	self.results = {}
 	if triggers.has(method):
-		if method == "endofturn":
-			print("triggering "+ method + " on " + title)
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
@@ -82,7 +81,18 @@ func hasType(type)->bool:
 func hasName(string)->bool:
 	return self.title.find(string)!=-1
 	
-
+func hasModifier(string) -> bool:
+	if string == "any":
+		return true
+	if modifiers.has(string):
+		return true
+	return false
+func hasVariable(string) ->bool:
+	if string == "any":
+		return true
+	if vars.has("$"+string):
+		return true
+	return false
 func loadCardFromString(string):
 	var lines = string.split(";")
 	for line in lines:
@@ -118,7 +128,8 @@ func loadCardFromString(string):
 			self.title = Utility.join(" ",parsed[1])
 		elif parsed[0] == "rarity":
 			self.rarity = int(parsed[1][0])
-			
+		elif parsed[0][0] =="$":
+			vars[parsed[0]] = parsed[2]
 	#self.updateDisplay()
 func execute(code, argv):
 	
@@ -239,11 +250,12 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg =  yield(arg, "completed")
 			args.append(arg)
+		var silence = false
+		if code.size()>2:
+			silence = processArgs(code[1][2], argv)
+			if silence is GDScriptFunctionState:
+				silence = yield(silence, "completed")
 		
-		var silence = processArgs(code[1][2], argv)
-		if silence is GDScriptFunctionState:
-			silence = yield(silence, "completed")
-		self.debug = args
 		var res = controller.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
@@ -299,6 +311,26 @@ func execute(code, argv):
 		if ret == null:
 			return {controller.Results.Interrupt:"No valid selection"}
 		return controller.selectedCard
+	elif code[0] == "resultsHas":
+		var key = controller.Results[code[1][0]]
+		if results[key] is Array:
+			var pred = code[1][1]
+			for card in results[key]:
+				if card.has_method("processArgs"):
+					var res = card.processArgs(pred,argv)
+					if res is GDScriptFunctionState:
+						res = yield(res,"completed")
+					if res == true:
+						return true
+			return false
+		else:
+			var arg2 = processArgs(code[1][1],argv)
+			if arg2 is GDScriptFunctionState:
+				arg2 = yield(arg2,"completed")
+			if results[key] == arg2:
+				return true
+			return false 
+		
 	else:
 		#assert(false, code[0] + " not a valid command")
 		return code
@@ -312,13 +344,13 @@ func processArgs(arg, argv):
 			return true
 		if arg =="false":
 			return false
+		if arg[0] == "$" and vars.has(arg):
+			return vars[arg]
 		return arg
 	elif arg is Array:
 		var ret = execute(arg, argv)
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed");
-			
-		self.debug = ret
 		return ret
 	else:
 		return arg
@@ -326,7 +358,10 @@ func updateDisplay():
 	
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(cost) + "[/center]";
 	get_node("Resizer/CardFrame/Title").bbcode_text= "[center]" + title+ "[/center]";
-	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+text+ "[/center]";
+	var displaytext = text
+	for key in vars:
+		displaytext = displaytext.replace(key, vars[key])
+	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(removecount) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
 	get_node("Resizer/CardFrame/hourglass").visible = false
@@ -346,12 +381,18 @@ func deepcopy(other)-> Card:
 	for prop in properties:
 		var name = prop.name;
 		var val = self.get(name);
-		if val == null or not val is Object:
+		if val is Array or val is Dictionary:
+			other.set(name,val.duplicate(true))
+		elif val == null or not val is Object:
 			other.set(name, val);
-		elif not val is NodePath and val.has_method("duplicate"):
-			val = val.duplicate(true)
+		else:
+			pass
+			#print(val)
+			
 	other.image = self.image
 	other.controller = self.controller
+	if other.modifiers.has("void"):
+		other.get_node("Resizer/FrameSprite").modulate = Color(.5,0,.5)
 	return other
 		
 func moveTo(pos:Vector2, size = null):

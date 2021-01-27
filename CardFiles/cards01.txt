@@ -1,10 +1,12 @@
 title(Adventurer);
-text("At the end of turn, set your energy to 3, discard your hand. At the start of turn draw 5\n eternal \nsilent")
-trigger(endofturn, do(setEnergy,(3),true));
+text("At the end of turn, set your energy to $Energy, discard your hand. At the start of turn draw $Draw\n eternal \nsilent")
+trigger(endofturn, do(setEnergy,($Energy),true));
 trigger(endofturn, do(discardAll,(true),true));
-trigger(startofturn, do(draw, (5), true));
+trigger(startofturn, do(draw, ($Draw), true));
 removetrigger(never, true,0);
 modifiers(eternal);
+$Energy=3;
+$Draw=5;
 rarity(0);
 image("res://Images/CardArt/Adventurer2.png");
 cost("-");
@@ -19,8 +21,9 @@ rarity(3);
 cost(1);
 
 title(Wind Blast);
-text(Deal 3 wind damage to all enemies);
-trigger(onPlay, do(damage, (3,(wind),(all),50),false));
+$Damage=1
+text(Deal $Damage wind damage to all enemies);
+trigger(onPlay, do(damage, ($Damage,(wind),(all),50),false));
 removetrigger(endofturn, true, 1);
 types(wind, attack, spell);
 image("res://Images/CardArt/WindBlast.png");
@@ -28,20 +31,22 @@ rarity(6)
 cost(1)
 
 title(Shadow Slice);
-text("Deal 6 shadow slash damage to an adjacent enemy, silently\n Discard from play immediately");
+text("Deal $Damage shadow slash damage to an adjacent enemy, silently\n Discard from play immediately");
 cost(0);
-trigger(onPlay, do(damage, (6,(shadow,slash),(any),1),true))
+trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),1),true))
 trigger(onPlay, do(move, (Play, Discard, self), true));
 types(attack, slash, shadow, melee);
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/ShadowSlice.png");
 rarity(7);
+$Damage=6
 
 title(Dark Recipe);
+$Heal=5
 types(shadow, culinary, healing, ritual);
-text("When you have 4 or more shadow cards in play, heal 5 and discard this card");
+text("When you have 4 or more shadow cards in play, heal $Heal and discard this card");
 rarity(4);
-trigger(play,if((count(Play, shadow) > 3), (do(heal,(5),false))));
+trigger(play,if((count(Play, shadow) > 3), (do(heal,($Heal),false))));
 removetrigger(play, (count(Play, shadow) > 3), 1);
 image("res://Images/CardArt/DarkRecipe.png");
 cost(2);
@@ -61,10 +66,11 @@ types(ritual);
 image("res://Images/CardArt/RitualComponent.png");
 rarity(1);
 cost(0);
+$Draw=1
 removetrigger(endofturn, true, 2);
-trigger(onPlay, do(draw,(1),false));
+trigger(onPlay, do(draw,($Draw),false));
 trigger(onPlay, if((countName(Play,"Ritual Components")< 2),(do( create,(self,Discard),false))));
-text("Draw 1 card.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
+text("Draw $Draw.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
 
 title(Ritual of Creation);
 types(ritual);
@@ -85,27 +91,30 @@ cost(2);
 image("res://Images/CardArt/BirdMask.png");
 
 title(Black Lettuce);
-text("Gain 3 energy.\nExhaust.");
+text("Gain $Energy energy.\nExhaust.");
+$Energy=3
 rarity(1);
-trigger(onPlay, do(gainEnergy,(3),false));
+trigger(onPlay, do(gainEnergy,($Energy),false));
 trigger(onPlay, do(voided,(self, Play),false));
 removetrigger(endofturn, true, 0);
 types(light,shadow,fire,earth,water,meme);
 cost(0);
 
 title(Whirlwind);
-text("Discard your hand, draw 5 cards");
+$Draw=5
+text("Discard your hand, draw $Draw cards");
 cost(1);
 trigger(onPlay, do(discardAll,(),true));
-trigger(onPlay, do(draw, (5), true));
+trigger(onPlay, do(draw, ($Draw), true));
 types(wind);
 rarity(4);
 removetrigger(endofturn,true,1);
 
 title(Undying Ember);
-text("On draw, gain 1 energy\n Unplayable.");
+$Energy=1
+text("On draw, gain $Energy energy\n Unplayable.");
 cost(-);
-trigger(onDraw, do(gainEnergy,(1), false));
+trigger(onDraw, do(gainEnergy,($Energy), false));
 types(fire,energy);
 modifiers(unplayable);
 rarity(3);
@@ -113,18 +122,20 @@ removetrigger(never, true, 0);
 image("res://Images/CardArt/UndyingEmber.png");
 
 title(Wind Power);
+$Energy=1
+$Draw=1
 types(wind, mechanical,energy)
-text("when you discard 3 cards, draw a card, gain an energy, and purge this card");
+text("when you discard 3 cards, draw $Draw, gain $Energy energy, and purge this card");
 removetrigger(discard, true, 3);
-trigger(onRemoveFromPlay, do(gainEnergy,(1), false));
-trigger(onRemoveFromPlay, do(draw,(1),false));
+trigger(onRemoveFromPlay, do(gainEnergy,($Energy), false));
+trigger(onRemoveFromPlay, do(draw,($Draw),false));
 trigger(onRemoveFromPlay, do(purge, (self), false));
 cost(-);
 rarity(0);
 
 title(Wind Turbine);
 types(wind,mechanical);
-cost(4);
+cost(2);
 trigger(startofturn, do(create,("Wind Power",Play),false));
 removetrigger(endofturn,true,6);
 text("At the start of your turn, add a Wind Power to play");
@@ -133,9 +144,11 @@ rarity(2);
 title(Feather Cloak);
 types(wind,armor,avian);
 cost(1);
-trigger(onPlay,do(armor,(2),false));
-trigger(onDiscard,do(armor,(1),false));
-text("Gain 2 armor when played, or 1 when discarded");
+$Armor=1
+trigger(onPlay,do(armor,($Armor),false));
+trigger(onPlay,do(armor,($Armor),true));
+trigger(onDiscard,do(armor,($Armor),false));
+text("Gain $Armor armor when discarded. Gain twice that when played");
 rarity(5);
 removetrigger(endofturn,true,2);
 image("res://Images/CardArt/FeatherCloak.png");
@@ -143,20 +156,23 @@ image("res://Images/CardArt/FeatherCloak.png");
 title(Ignite);
 types(fire);
 cost(1);
+$Energy=1
 trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
-trigger(startofturn, do(gainEnergy,(1),false));
+trigger(startofturn, do(gainEnergy,($Energy),false));
 removetrigger(endofturn, true,3);
-text("At the start of your next three turns, void a card in your hand and gain an energy");
+text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
 rarity(4);
 
 title(Quickstep);
 cost(0);
 types(movement);
 rarity(10);
+$Move=1
+$Draw=1
 removetrigger(endofturn,true,2);
-trigger(onPlay, do(movePlayer,(1),false))
-trigger(onPlay, do(draw,(1),false))
-text("Move 1, draw a card")
+trigger(onPlay, do(movePlayer,($Move),false))
+trigger(onPlay, do(draw,($Draw),false))
+text("Move $Move, draw $Draw")
 image("res://Images/CardArt/Quickstep.png")
 
 title(Carrot Seeds);
@@ -172,16 +188,18 @@ title(Sifting Breath);
 cost(1);
 types(wind);
 rarity(3);
+$Draw=1
 removetrigger(endofturn,true,6);
-text("When you would draw cards, draw one extra then discard a card");
-trigger(draw, do(draw,(1),true));
+text("When you would draw cards, draw $Draw extra then discard a card");
+trigger(draw, do(draw,($Draw),true));
 trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
 
 title(Bountiful Soil);
 cost(1);
 types(earth);
-text("when you draw an unplayable card, draw 1 more card");
-#trigger(draw, if(results,do(draw,(1),false)));#need to use results here
+$Draw=1
+text("when you draw an unplayable card, draw $Draw more");
+trigger(draw, if(resultsHas(CardDrawn,(hasModifier(self,unplayable)),do(draw($Draw)))));
 removetrigger(endofturn, true, 6)
 rarity(2);
 
@@ -191,5 +209,83 @@ types(earth,fire);
 text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
 trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(do(draw,(3),false))))
 trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(do(gainEnergy,(2),false))))
-trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(repeat((do(voided,( (select(Hand,(hasName(self,"Lump of Coal")),"Void a lump of Coal")),Hand),false)),3))));
+trigger(onDraw,if((countNames(Hand,"Lump of Coal")),(repeat((do(voided,( (select(Hand,(hasName(self,"Lump of Coal")),"Void a Lump of Coal")),Hand),false)),3))));
+rarity(0);
 
+title(The Void);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(endofturn,do(consume()));
+removetrigger(consume,true,5);
+text("At the end of your turn, the void grows");
+rarity(0);
+image("res://Images/CardArt/TheVoid/frame001.png")
+
+title(The Void);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(play,if((hastype(argv[0],attack)),do(consume())));
+trigger(onRemoveFromPlay,do(purge(self)));
+removetrigger(consume,true,5);
+text("When you play an attack, the void grows");
+rarity(0);
+image("res://Images/CardArt/TheVoid/frame000.png")
+
+title(Rock Smash);
+cost(2);
+types(earth, attack);
+$Damage=3
+$Increment=2
+rarity(4);
+trigger(onPlay,do(damage, ($Damage,(crush,earth),(any),1)));
+trigger(onPlay,do(addVar(self,Damage,$Increment)));
+text("Deal $Damage earth crush damage to an adjacent unit, then increase this cards damage by $Increment");
+removetrigger(endofturn,true,4);
+
+title("Blacksmith's Hammer");
+cost(1);
+types(hammer, attack);
+$Damage=2
+$Increment=3
+rarity(1);
+trigger(onPlay,do(damage,($Damage,(crush),(1),40)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to upgrade")),Damage,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Deal $Damage damage to a random enemy, then permanently add $Increment damage to an attack in play.\nPurge");
+removetrigger(endofturn, true, 0);
+
+title("Earth Hammer");
+cost(2);
+types(earth, hammer)
+$Damage=0
+$Range=2
+rarity(1)
+trigger(addVar,if((argv[1]=Damage),do(addVar,(self,Damage,argv[2]),true)))
+trigger(onPlay, do(damage, ($Damage,(crush,earth),(any),$Range),true))
+text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
+removetrigger(endofturn,true,2);
+
+title("Char");
+cost(1);
+types(fire);
+text("When you void a card, add a Lump of Coal to your discard pile");
+rarity(4);
+trigger(void,do(create,("Lump of Coal",Discard)));
+removetrigger(void,true,7);
+
+title("Wind Hammer");
+cost(1);
+types(hammer, wind);
+$Draw=1
+$Increment=1
+rarity(1);
+trigger(onPlay,do(draw,($Draw)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Draw $Draw, then permanently add $Increment draw to a draw number of a card in play.\nPurge");
+removetrigger(endofturn, true, 0);
