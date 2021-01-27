@@ -59,12 +59,12 @@ func _process(delta: float) -> void:
 			$AnimationPlayer.play_backwards("Grow")
 		controller.releaseFocus(self)
 func Triggered(method, argv, results) -> Dictionary:
-	self.results = {}
+	results = {}
 	if triggers.has(method):
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
-				res = yield(res, "completed")
+				res = yield(results, "completed")
 	self.updateDisplay();
 	return results
 func Interrupts(method, args) -> bool:
@@ -311,25 +311,25 @@ func execute(code, argv):
 		if ret == null:
 			return {controller.Results.Interrupt:"No valid selection"}
 		return controller.selectedCard
-	elif code[0] == "resultsHas":
-		var key = controller.Results[code[1][0]]
-		if results[key] is Array:
-			var pred = code[1][1]
-			for card in results[key]:
-				if card.has_method("processArgs"):
-					var res = card.processArgs(pred,argv)
-					if res is GDScriptFunctionState:
-						res = yield(res,"completed")
-					if res == true:
-						return true
-			return false
-		else:
-			var arg2 = processArgs(code[1][1],argv)
-			if arg2 is GDScriptFunctionState:
-				arg2 = yield(arg2,"completed")
-			if results[key] == arg2:
-				return true
-			return false 
+#	elif code[0] == "resultsHas":
+#		var key = controller.Results[code[1][0]]
+#		if results[key] is Array:
+#			var pred = code[1][1]
+#			for card in results[key]:
+#				if card.has_method("processArgs"):
+#					var res = card.processArgs(pred,argv)
+#					if res is GDScriptFunctionState:
+#						res = yield(res,"completed")
+#					if res == true:
+#						return true
+#			return false
+#		else:
+#			var arg2 = processArgs(code[1][1],argv)
+#			if arg2 is GDScriptFunctionState:
+#				arg2 = yield(arg2,"completed")
+#			if results[key] == arg2:
+#				return true
+#			return false 
 		
 	else:
 		#assert(false, code[0] + " not a valid command")

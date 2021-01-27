@@ -36,8 +36,7 @@ func getCardByName(title):
 	
 			
 func updateDisplay():
-	for card in cards:
-		card.visible = false
+	pass
 	
 func getRandom(maxRarity:int = 100, types = ["any"]):
 	if types.size() ==0:

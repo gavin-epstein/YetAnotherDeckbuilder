@@ -407,7 +407,7 @@ script = ExtResource( 2 )
 position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 119
+frame = 16
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -436,7 +436,7 @@ script = ExtResource( 4 )
 position = Vector2( 1181.33, 662.658 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 118
+frame = 15
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -503,7 +503,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 82
+frame = 105
 playing = true
 script = ExtResource( 264 )
 

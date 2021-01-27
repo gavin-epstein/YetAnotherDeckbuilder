@@ -86,8 +86,7 @@ func Action(method:String, argv:Array, silent = false) -> Dictionary:
 func draw(x)->Dictionary:
 	var results = {}
 	for i in range(x):
-		print("Draw # " +str(i))
-		yield(get_tree().create_timer(.1),"timeout");
+
 		if Hand.is_full():
 			Utility.addtoDict(results, Results.Interrupt, "Hand Full")
 			break
@@ -99,7 +98,7 @@ func draw(x)->Dictionary:
 				Action("reshuffle",[])
 		var card = Deck.getCard(0)
 		move("Deck","Hand",card)
-		updateDisplay()
+		
 		Utility.extendDict(results, card.Triggered("onMove", ["Deck", "Hand"], results))
 		Utility.extendDict(results, card.Triggered("onDraw", [], results))
 		Utility.addtoDict(results, Results.CardDrawn, card)
@@ -187,7 +186,6 @@ func discard(card, silent = false):
 	return {Results.Success:true}
 	
 func updateDisplay():
-	print("updatingDisplay")
 	Hand.updateDisplay()
 	Discard.updateDisplay()
 	Play.updateDisplay()

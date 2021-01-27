@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 	self.z_index = (500+position.y)/10;
 
 func takeTurn():
-	print(self.title + " " + str(nextTurn))
+	
 	for move in nextTurn:
 		if move[0] == "move":
 			if move[1].occupants.size()==0:
