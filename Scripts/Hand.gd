@@ -15,10 +15,11 @@ func updateDisplay():
 	if cards.size() == 0:
 		return
 	var pos = Vector2(300,860)
-	var xsep = min(1000/cards.size(), 150)
+	var xsep = min(1000/cards.size(), 160)
 	for card in cards:
 		card.visible = true
 		card.z_index = 0
+		card.updateDisplay()
 		card.moveTo(pos, Vector2(.2,.2))
 		move_child(card, get_child_count()-1)
 		pos += Vector2(xsep,0)

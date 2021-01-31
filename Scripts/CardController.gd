@@ -36,12 +36,10 @@ func Load()-> void:
 	map = get_parent().get_node("Map/MeshInstance2D")
 	enemyController = get_parent().get_node("EnemyController")
 	self.updateDisplay()
-	yield(get_tree().create_timer(1),"timeout")
 	for _i in range(10):
-		print("loot added")
+		
 		Deck.add_card(Library.getCardByName("Common Loot"))
-		Deck.updateDisplay()
-		yield(get_tree().create_timer(.1),"timeout")
+		
 	#shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -100,8 +98,7 @@ func draw(x)->bool:
 		move("Deck","Hand",card)
 		if card in Hand.cards:
 			card.Triggered("onDraw",[x])
-			for other in Play.cards:
-				other.Triggered("cardDrawn",[card])
+			self.triggerAll("cardDrawn",[card])
 	return true
 
 func reshuffle()->bool:
@@ -234,6 +231,7 @@ func create(card, loc):
 		added = cardtemplate.instance();
 		card.deepcopy(added)
 	loc.add_card(added)
+	added.updateDisplay()
 	return true
 func createByMod(modifiers, loc):
 	loc = get_node(loc)
@@ -252,19 +250,24 @@ func voided(card, loc):
 	
 
 func endofturn():
+	enemyController.maxdifficulty+=1
+	enemyController.Player.endOfTurn()
 	return true
 
 func startofturn():
+	enemyController.Player.startOfTurn()
 	return true
 
 
 func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event.is_action("left_click") and inputdelay > .2:
+	if event.is_action("left_click") and inputdelay > .2 and takeFocus(self):
+		releaseFocus(self)
 		inputdelay = 0
 		Action("endofturn",[],false)
 		#Enemies go here
 		enemyController.enemyTurn()
 		Action("startofturn", [], false)
+		
 		
 func select(loc, predicate,message,num = 1):
 	inputAllowed = false
@@ -317,6 +320,8 @@ func movePlayer(dist,terrains = ["any"]):
 	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to");
 	if tile is GDScriptFunctionState:
 		tile = yield(tile, "completed")
+	if tile == null:
+		return false
 	enemyController.move(enemyController.Player, tile)
 	return true
 func damage(amount, types, targets,distance):
@@ -341,10 +346,16 @@ func damage(amount, types, targets,distance):
 		var enemy = map.select(tile,distance,property,terrains,"Pick a target")
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
+		if enemy ==null:
+			return false
 		enemies.append(enemy)
 	
-	
+	if enemies == null or enemies.size()== 0:
+		return false
 	for node in enemies:
+		if node.occupants.size() == 0:
+			#Enemy has been removed by another effect
+			continue
 		var unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
 		if dmg.size() > 1 and dmg[1] == "kill":
@@ -357,14 +368,20 @@ func damage(amount, types, targets,distance):
 func heal(amount):
 	enemyController.Player.heal(amount)
 func setVar(card, varname, amount):
+	if card == null:
+		return false
 	card.vars["$" + varname] = amount
 	return true
 func addVar(card, varname, amount):
+	if card == null:
+		return false
 	if card.vars.has("$"  +varname):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount
 		return true
 	return false
 func getVar(card, varname):
+	if card == null:
+		return false
 	return card.vars("$"+varname);
 func summon(unitName, targets, distance) :
 	var terrains
@@ -387,7 +404,7 @@ func summon(unitName, targets, distance) :
 	else:
 		assert(false, "invalid Target")
 	var unitScene = load(enemyController.get_node("UnitLibrary").getUnitByName(unitName))
-	if locs.size() == 0:
+	if locs == null or locs.size() == 0:
 		return false
 	for node in locs:
 		enemyController.addUnit(unitScene.instance(),node)

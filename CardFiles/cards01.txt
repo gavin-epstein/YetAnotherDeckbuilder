@@ -3,9 +3,9 @@ text("At the end of turn, set your energy to $EternalEnergy, discard your hand. 
 trigger(endofturn, do(setEnergy,($EternalEnergy),true));
 trigger(endofturn, do(discardAll,(true),true));
 trigger(startofturn, do(draw, ($EternalDraw), true));
-trigger(death,do(create("Common Loot",Discard)));
+#trigger(death,do(create("Common Loot",Discard)));
 removetrigger(never, true,0);
-modifiers(eternal);
+modifiers(eternal,unique);
 $EternalEnergy=3;
 $EternalDraw=5;
 rarity(0);
@@ -163,6 +163,7 @@ trigger(startofturn, do(gainEnergy,($Energy),false));
 removetrigger(endofturn, true,3);
 text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
 rarity(4);
+image("res://Images/CardArt/Ignite.png")
 
 title(Quickstep);
 cost(0);
@@ -184,6 +185,7 @@ removetrigger(endofturn,true,0);
 text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
+image("res://Images/CardArt/CarrotSeeds.png")
 
 title(Sifting Breath);
 cost(1);
@@ -236,7 +238,7 @@ trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(devoidAll()));
-removetrigger(consume,true,13);
+removetrigger(consume,true,10);
 text("When you play an attack, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/TheVoid/frame000.png")
@@ -246,7 +248,7 @@ cost(-);
 types(void);
 modifiers(void);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
-trigger(death,(do(consume())));
+trigger(death,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(devoidAll()));
 removetrigger(consume,true,4);
@@ -259,7 +261,7 @@ cost(2);
 types(earth, attack);
 $Damage=3
 $Increment=2
-rarity(4);
+rarity(3);
 trigger(onPlay,do(damage, ($Damage,(crush,earth),(any),1)));
 trigger(onPlay,do(addVar(self,Damage,$Increment)));
 text("Deal $Damage earth crush damage to an adjacent unit, then increase this cards damage by $Increment");
@@ -283,7 +285,7 @@ types(earth, hammer)
 $Damage=0
 $Range=2
 rarity(1)
-trigger(addVar,if((argv[1]=Damage),do(addVar,(self,Damage,argv[2]),true)))
+trigger(addVar,if((argv[1]=Damage),(do(addVar,(self,Damage,argv[2]),true))))
 trigger(onPlay, do(damage, ($Damage,(crush,earth),(any),$Range),true))
 text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
 removetrigger(endofturn,true,2);
@@ -326,3 +328,91 @@ text("On draw gain $Block block. \n Unplayable");
 rarity(0);
 removetrigger(never, true, 0);
 trigger(onDraw, do(block,($Block), false));
+
+title("Knife Block");
+cost("1");
+types(culinary);
+text("When you gain block add a random kitchen knife to your hand");
+rarity(4);
+trigger(block,do(createByMod,(("kitchenknife"), Hand)));
+removetrigger(block,true,4);
+
+title("Paring Knife");
+cost("0");
+$Damage=4
+$Range=4
+types(culinary,attack);
+text("Deal $Damage culinary slash damage at $Range range. Purge");
+trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(kitchenknife);
+rarity(0);
+
+title("Meat Cleaver");
+cost("1");
+$Damage=14
+$Range=1
+types(culinary,attack);
+text("Deal $Damage culinary slash damage at $Range range. Purge");
+trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(kitchenknife);
+rarity(0);
+
+title("Bread Knife");
+cost("1");
+$Damage=5
+$Range=2
+$Times=2
+types(culinary,attack);
+text("Deal $Damage culinary slash damage at $Range range $Times times. Purge");
+trigger(onPlay, repeat((do(damage, ($Damage,(culinary,slash),(any),$Range),false)),$Times));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(kitchenknife);
+rarity(0);
+
+title("Cutting Board");
+cost("0");
+$Block=4
+types(culinary)
+trigger(onPlay,do(block($Block)));
+trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
+removetrigger(endofturn, true, 1);
+text("Gain $Block block and add a random kitchen knife to your hand");
+rarity(2);
+
+title("Cheese Grater");
+cost("1")
+types(culinary,attack);
+$Times=10
+$Damage=1
+$Range=3
+trigger(onPlay,repeat((do(damage,($Damage,(culinary,slash),(1),$Range))),$Times));
+text("Deal $Damage damage to a random unit within in $Range tiles $Times times");
+rarity(2);
+removetrigger(endofturn, true, 3);
+
+title("Healing Potion");
+cost(0);
+$Heal=20
+trigger(onPlay,do(heal($Heal)))
+trigger(onPlay, do(purge(self)));
+text("Heal $Heal, purge");
+types(healing, potion);
+removetrigger(endofturn, true, 0);
+modifiers(potion);
+rarity(3);
+
+title("Stonewall");
+cost(1);
+$Block=3
+$Increment=3
+trigger(onPlay,do(block($Block)));
+trigger(death,do(addVar(self,Block,$Increment)));
+rarity(2);
+types(earth);
+text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
+removetrigger(endofturn, true, 2);

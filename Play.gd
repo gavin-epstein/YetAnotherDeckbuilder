@@ -13,14 +13,14 @@ var ysep = 150
 func updateDisplay():
 	var startx= 300
 	var x = startx
-	var y = 600
+	var y = 750
 	for card in cards:
 		card.moveTo(Vector2(x,y), Vector2(.15,.15))
 		card.visible = true
 		card.z_index = 0
 		card.updateDisplay()
 		x+=xsep
-		if x > startx + xsep*7:
+		if x > startx + xsep*13:
 			x = startx
 			y += ysep
 			

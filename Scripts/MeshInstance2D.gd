@@ -263,11 +263,17 @@ func getTiles(tile,dist,property,terrains):
 			node.highlight()
 			selectableNodes.append(node)
 	if selectableNodes.size() ==0:
-		assert(false, "Implement this case")
+		return null
+		#assert(false, "Implement this case")
 	
 	
 func select(tile,dist,property,terrains, message):
 	getTiles(tile,dist,property,terrains)
+	if selectableNodes.size()==0:
+		return null
+	elif selectableNodes.size()==1:
+		selectableNodes[0].dehighlight()
+		return selectableNodes[0]
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
 	
@@ -280,6 +286,8 @@ func selectRandom(tile,dist,property,terrains):
 	getTiles(tile,dist,property,terrains)
 	for node in selectableNodes:
 		node.dehighlight()
+	if selectableNodes.size()==0:
+		return null
 	return selectableNodes[randi()%selectableNodes.size()]
 	
 func selectAll(tile,dist,property,terrains):
@@ -288,16 +296,22 @@ func selectAll(tile,dist,property,terrains):
 		node.dehighlight()
 	return selectableNodes
 func getTileInDirection(tile,dir):
-	dir = dir.normalized()
+	dir = tile.position + dir*300
 	var closest = tile.neighs[0]
-	var closedist = tileInDirectionDistance(tile, closest, dir)
+	var closedist = Utility.sqDistToNode(dir, tile)
 	for node in tile.neighs:
-		var dist = tileInDirectionDistance(tile, node, dir)
+		var dist = Utility.sqDistToNode(dir,node)
 		if dist < closedist:
 			closest = node
+			closedist = dist
 	return closest	
-#unfortunately this uses two sqrts. 
-#would love a different comparison
-func tileInDirectionDistance(tile1,tile2,dir):
-	var towards = (tile2.position - tile1.position).length() * dir 
-	return (towards - tile2.position).length()
+
+func getTileClosestTo(tile, pos):
+	var closest = tile.neighs[0]
+	var closedist = Utility.sqDistToNode(pos, tile)
+	for node in tile.neighs:
+		var dist = Utility.sqDistToNode(pos,node)
+		if dist < closedist:
+			closest = node
+			closedist = dist
+	return closest	
