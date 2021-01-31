@@ -10,6 +10,7 @@ status = {
 "friendly": true,
 "nourishing": 5
 }
+title = "Carrot"
 
 [node name="Carrot" type="Sprite" parent="."]
 position = Vector2( 6.45148, -521.623 )

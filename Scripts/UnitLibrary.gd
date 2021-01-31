@@ -12,8 +12,7 @@ func getRandomEnemy(difficulty, terrain):
 	if (rand_range(0,difficulty) < 1):
 		return null
 	var possible = []
-	for unit in units.values():
-		
+	for unit in units.values():	
 		if unit.difficulty <= difficulty and unit.difficulty != -1 and (terrain in unit.spawns or "any" in unit.spawns):
 			possible.append(unit)
 	if possible.size() > 0:
@@ -36,7 +35,10 @@ func loadUnitsFromFile(fname):
 			elif line[0] == "spawnable":
 				unit.spawns = []
 				for string in line[1]:
-					unit.spawns.append(Utility.interpretTerrain(string) )
+					if string =="any":
+						unit.spawns.append("any")
+					else:
+						unit.spawns.append(Utility.interpretTerrain(string) )
 			elif line[0] == "name":
 				unit.name = line[1][0]
 		elif line =="" and unit.size()!=0:

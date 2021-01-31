@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Card.gd" type="Script" id=1]
 [ext_resource path="res://Images/CardArt/Placeholder.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Images/CardArt/CardHighlight.png" type="Texture" id=6]
+[ext_resource path="res://Scripts/TypeIcons.gd" type="Script" id=7]
 [ext_resource path="res://Images/CardArt/hourglass.png" type="Texture" id=132]
 [ext_resource path="res://Images/CardArt/ReactionArrow.png" type="Texture" id=133]
 [ext_resource path="res://Images/CardArt/Endless.png" type="Texture" id=134]
@@ -194,6 +195,10 @@ position = Vector2( -373.649, -518.946 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Resizer/CardFrame/Area2D"]
 position = Vector2( 371.857, 515.279 )
 shape = SubResource( 2 )
+
+[node name="TypeIcons" type="Node2D" parent="Resizer"]
+position = Vector2( 682.133, 93.9558 )
+scale = Vector2( 0.158, 0.158 )
+z_index = 1
+script = ExtResource( 7 )
 [connection signal="input_event" from="Resizer/CardFrame/Area2D" to="." method="_on_Area2D_input_event"]
-[connection signal="mouse_entered" from="Resizer/CardFrame/Area2D" to="." method="_on_Area2D_mouse_entered"]
-[connection signal="mouse_exited" from="Resizer/CardFrame/Area2D" to="." method="_on_Area2D_mouse_exited"]

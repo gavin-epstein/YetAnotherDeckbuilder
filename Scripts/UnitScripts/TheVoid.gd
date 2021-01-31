@@ -7,11 +7,15 @@ var target;
 func _ready() -> void:
 	addArmor(10)
 	status["retaliate"] = true
-	onSummon()
-
 
 func Consume() -> void:
-	var consumed = Utility.choice(tile.neighs)
+	var possible = []
+	for other in tile.neighs:
+		if other.occupants.size()==0:
+			possible.append(other)
+		elif randf() < .4:
+			possible.append(other)
+	var consumed = Utility.choice(possible)
 	if consumed.occupants.size()>0:
 		for thing in consumed.occupants:
 			thing.die(self)

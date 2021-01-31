@@ -19,6 +19,24 @@ func _ready()-> void:
 func onSummon()->void:
 	addHealthBar()
 	maxHealth  = health
+	if status.has("lifelink"):
+		var sumMaxHealth = self.maxHealth
+		var sumHealth = self.health
+		for unit in get_parent().units:
+			if unit.title == self.title:
+				sumMaxHealth +=unit.maxHealth
+				sumHealth += unit.health
+				break
+		print(sumHealth, "/",sumMaxHealth)
+		self.maxHealth = sumMaxHealth
+		self.health = sumHealth
+		self.updateDisplay()
+		for unit in get_parent().units:
+			if unit.title == self.title:
+				unit.maxHealth = sumMaxHealth
+				unit.health = sumHealth
+				unit.updateDisplay()
+			
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  += (tile.position - self.position)*speed*delta
@@ -40,9 +58,7 @@ func takeTurn():
 				move[1].occupants[0].takeDamage(damage,types,self)
 		elif move[0] == "takeDamage":
 			takeDamage(move[1], move[2], null)
-#Eg. [move, tile]
-#[attack, tile, [fire],3]
-#[takeDamage, amount, types]
+
 func getNextTurn():
 	pass
 
@@ -51,8 +67,8 @@ func Damaged(amount,types,attacker):
 	pass
 func addHealthBar():
 	healthBar  = healthBarTemplate.instance()
-	healthBar.scale = Vector2(.65,.65);
-	healthBar.position = Vector2(0,220);
+	healthBar.scale = Vector2(.6,.6);
+	healthBar.position = Vector2(0,190);
 	add_child(healthBar)
 	updateDisplay()
 	
@@ -81,15 +97,19 @@ func takeDamage(amount,types, attacker):
 	#put out fire
 	if ("water" in types or "ice" in types) and status.has("flaming"):
 		status.erase("flaming")
-	for type in types:
-		if status.has("immune") and type in status.immune:
+	#thorns
+	if (status.has("thorns") and status.thorns is int and attacker !=null):
+		attacker.takeDamage(status.thorns, ["thorns"],null)
+	for atype in types:
+		if status.has("immune:"+atype):
 			amount = 0
 			break
-		if status.has("resistant") and type in status.resistant:
+	for atype in types:
+		if status.has("resistant:"+atype):
 			amount = amount/2.0
 			break
-	for type in types:
-		if status.has("vulnerable") and type in status.vulnerable:
+	for atype in types:
+		if status.has("vulnerable:"+atype):
 			amount = amount*1.5
 	if amount > 0:
 		if armor > 0:
@@ -104,10 +124,20 @@ func takeDamage(amount,types, attacker):
 	
 		
 	health -= floor(amount)
+	if status.has("lifelink"):
+		for unit in get_parent().units:
+			if unit != null and unit.title == self.title:
+				unit.health = self.health
+				unit.updateDisplay()
+				
 	self.Damaged(amount,types,attacker)
 	if health <= 0:
 		
 		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
+		if status.has("lifelink"):
+			for unit in get_parent().units:
+				if unit.title == self.title and unit != self:
+					unit.die(null)
 		die(attacker)
 		return [amount,"kill"]
 	else:
@@ -119,8 +149,12 @@ func startOfTurn():
 		takeDamage(floor(health/2),["fire"],null)
 	block = 0;
 func endOfTurn():
-	pass
-
+	for key in status:
+		if status[key] is int:
+			status[key] = status[key]-1
+			if status[key] <= 0:
+				status.erase(key)
+		
 func updateDisplay():
 	healthBar.get_node("Heart/Number").bbcode_text = "[center]"+str(health)+"[/center]"
 	healthBar.get_node("Block/Number").bbcode_text = "[center]"+str(block)+"[/center]"
@@ -139,6 +173,8 @@ func updateDisplay():
 	else:
 		healthBar.get_node("Attack").visible = false
 func die(attacker):
+	if self.difficulty > 0:
+		get_parent().cardController.Action("create",["Common Loot","Discard"])
 	if status.has("supplying") and attacker != null:
 		attacker.gainStrength(self.strength)
 	if status.has("nourishing") and attacker != null:
@@ -147,8 +183,11 @@ func die(attacker):
 		#damage all adjacent enemies
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
 			node.occupants[0].takeDamage(status.explosive,("explosive"),self)
+	
 	self.visible = false
 	tile.occupants.erase(self)
+	if get_parent().units.find(self)==-1:
+		assert(false, "failure to die properly" )
 	get_parent().units.erase(self)
 	yield(get_tree().create_timer(1),"timeout")
 	queue_free()

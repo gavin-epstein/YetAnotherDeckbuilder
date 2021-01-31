@@ -2,6 +2,7 @@ extends CardLocation
 var cardtemplate = preload("res://Card.tscn");
 class_name CardLibrary
 var CardRng = RandomNumberGenerator.new()
+var icons = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -28,13 +29,30 @@ func loadallcards() -> void:
 		if not ";" in line and line!="":
 			line = line+";"
 		cardcode+=line
+	loadIcons()
+func loadIcons():
+	var dir = Directory.new()
+	dir.open("res://Images/Icons/")
+	dir.list_dir_begin()
+
+	while true:
+		var fname = dir.get_next()
+		if fname == "":
+			break
+		elif fname.ends_with(".png"):
+			print(fname.substr(0,fname.length()-4))
+			icons[fname.substr(0,fname.length()-4)] = load("res://Images/Icons/"+fname)
+
+	dir.list_dir_end()
+
 	
 func getCardByName(title):
 	var ret = cardtemplate.instance()
 	for card in cards:
 		if card.title == title:
-			return card.deepcopy(ret)
-	
+			card.deepcopy(ret)
+			ret.updateDisplay()
+			return ret
 			
 func updateDisplay():
 	pass

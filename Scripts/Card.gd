@@ -20,12 +20,12 @@ var removetype
 var target_scale
 var target_position
 var highlighted = false
-var rarity
+var rarity = 0
 var debug
 var mouseoverdelay = 0
 var mouseon
 var vars = {}
-
+var iconsdone = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if self.image!=null:
@@ -52,10 +52,12 @@ func _process(delta: float) -> void:
 	if mousedist.x < extents.x and mousedist.y < extents.y and mousedist.x > 0 and mousedist.y > 0:
 		if controller.takeFocus(self):
 			if $Resizer.scale.x ==1:
+				z_index = 20
 				$AnimationPlayer.play("Grow")
 	else:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
+			z_index = 0
 		controller.releaseFocus(self)
 func Triggered(method, argv):
 	
@@ -247,9 +249,9 @@ func execute(code, argv):
 			times = yield(times, "complete")
 		for _i in range(times):
 			var ex = execute(code[1][0], argv)
-			while ex is GDScriptFunctionState:
-				yield(controller, "resumeExecution")
-				ex  = ex.resume()
+			if ex is GDScriptFunctionState:
+				ex = yield(ex, "completed")
+				
 	elif code[0] == "do":
 		var args = []
 		for arg in code[1][1]:
@@ -381,6 +383,9 @@ func updateDisplay():
 		get_node("Resizer/CardFrame/arrow").visible =true
 	if $Resizer.scale.x > 1.1:
 		$AnimationPlayer.play_backwards("Grow")
+	if not iconsdone:
+		iconsdone = true
+		$Resizer/TypeIcons.generate()
 func deepcopy(other)-> Card:
 	var properties = self.get_property_list()
 	for prop in properties:
@@ -393,13 +398,14 @@ func deepcopy(other)-> Card:
 		else:
 			pass
 			#print(val)
-			
+	
 	other.image = self.image
 	other.controller = self.controller
 	if other.modifiers.has("void"):
 		other.get_node("Resizer/FrameSprite").modulate = Color(.5,0,.5)
 	elif other.modifiers.has("unique"):
 		other.get_node("Resizer/FrameSprite").modulate = Color(.5,.5,1)
+	other.updateDisplay()
 	return other
 		
 func moveTo(pos:Vector2, size = null):
@@ -419,18 +425,7 @@ func highlight():
 func dehighlight():
 	self.highlighted = false
 	$Resizer/CardHighlight.visible = false
-func zoom() -> void:
-	if $Resizer.scale.x == 1.5:
-		$AnimationPlayer.play_backwards("Grow")
-	elif $Resizer.scale.x == 1:
-		$AnimationPlayer.play("Grow")
 
-
-
-func _on_Area2D_mouse_exited() -> void:
-	#mouseon = false
-	#zoom()
-	pass
 		
 func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	#mouseon = true
