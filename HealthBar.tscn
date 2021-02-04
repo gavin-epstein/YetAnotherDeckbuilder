@@ -1,15 +1,21 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Images/Heart.png" type="Texture" id=1]
 [ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Images/Armor.png" type="Texture" id=3]
 [ext_resource path="res://Images/Block.png" type="Texture" id=4]
 [ext_resource path="res://Images/Attack.png" type="Texture" id=5]
+[ext_resource path="res://Images/StatusIcons/lifelink.png" type="Texture" id=6]
+[ext_resource path="res://Images/StatusIcons/hardenedcarapace.png" type="Texture" id=7]
+[ext_resource path="res://Images/StatusIcons/fuse.png" type="Texture" id=8]
+[ext_resource path="res://Images/StatusIcons/explosive.png" type="Texture" id=9]
+[ext_resource path="res://Scripts/Statuses.gd" type="Script" id=10]
 
 [node name="Bar" type="Node2D"]
+z_index = 1
 
 [node name="Heart" type="Sprite" parent="."]
-position = Vector2( 598.744, 56.2011 )
+position = Vector2( 598.744, 57.1185 )
 scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 1 )
 
@@ -35,8 +41,10 @@ scale = Vector2( 0.6, 0.6 )
 texture = ExtResource( 4 )
 
 [node name="Number" type="RichTextLabel" parent="Block"]
-anchor_left = 0.00141974
-anchor_right = 0.00141974
+anchor_left = -0.00163815
+anchor_top = 1.06812e-07
+anchor_right = -0.00163815
+anchor_bottom = 1.06812e-07
 margin_left = -421.111
 margin_top = -137.666
 margin_right = 0.889008
@@ -57,11 +65,13 @@ texture = ExtResource( 3 )
 
 [node name="Number" type="RichTextLabel" parent="Armor"]
 anchor_left = 0.00141974
+anchor_top = 0.00262094
 anchor_right = 0.00141974
+anchor_bottom = 0.00262094
 margin_left = -244.979
-margin_top = -111.0
+margin_top = -112.31
 margin_right = 37.0212
-margin_bottom = 139.0
+margin_bottom = 137.69
 rect_scale = Vector2( 1.714, 1.714 )
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
@@ -91,3 +101,38 @@ text = "122"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Statuses" type="Node2D" parent="."]
+scale = Vector2( 0.5, 0.5 )
+z_index = 4
+script = ExtResource( 10 )
+
+[node name="lifelink" type="Sprite" parent="Statuses"]
+position = Vector2( 197.6, 840.957 )
+texture = ExtResource( 6 )
+
+[node name="hardenedcarapace" type="Sprite" parent="Statuses"]
+position = Vector2( -839.779, 1401.36 )
+texture = ExtResource( 7 )
+
+[node name="fuse" type="Sprite" parent="Statuses"]
+position = Vector2( -478.706, 840.246 )
+texture = ExtResource( 8 )
+
+[node name="Number2" type="RichTextLabel" parent="Statuses"]
+modulate = Color( 0.913725, 0.898039, 0.894118, 1 )
+margin_left = -963.0
+margin_top = 832.0
+margin_right = -703.0
+margin_bottom = 1006.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/normal_font = ExtResource( 2 )
+text = "5555"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="explosive" type="Sprite" parent="Statuses"]
+position = Vector2( -1159.19, 817.349 )
+z_index = -1
+texture = ExtResource( 9 )

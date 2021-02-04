@@ -1,6 +1,6 @@
 extends "res://Scripts/Unit.gd"
 export var movespeed = 1
-export var damagetypes:Array
+
 
 # Declare member variables here. Examples:
 # var a: int = 2

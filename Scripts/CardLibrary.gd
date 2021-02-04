@@ -9,10 +9,29 @@ func _ready() -> void:
 	CardRng.randomize()
 	pass
 	
+func Load():
+	loadIcons()
+	var dir = Directory.new()
+	dir.open("res://Cardfiles/")
+	dir.list_dir_begin()
+
+	while true:
+		var fname = dir.get_next()
+		
+		if fname == "":
+			break
+		elif fname.ends_with(".txt"):
+			var count = loadallcards(fname)
+			if count is GDScriptFunctionState:
+				count = yield(count,"completed")
+			print("Loaded " + str(count) + " from "+fname )
+
+	dir.list_dir_end()
 	
-func loadallcards() -> void:
+func loadallcards(fname) -> int:
+	var count = 0
 	var f = File.new()
-	f.open("res://CardFiles/cards01.txt", File.READ)
+	f.open("res://CardFiles/"+fname, File.READ)
 	var cardcode = ""
 	while not f.eof_reached():
 		var line = f.get_line()
@@ -22,6 +41,7 @@ func loadallcards() -> void:
 			var card = cardtemplate.instance()
 			card.loadCardFromString(cardcode)
 			self.cards.append(card)
+			count+=1
 			card.controller = get_parent()
 			cardcode = ""
 			yield(get_tree().create_timer(.05), "timeout")
@@ -29,7 +49,7 @@ func loadallcards() -> void:
 		if not ";" in line and line!="":
 			line = line+";"
 		cardcode+=line
-	loadIcons()
+	return count
 func loadIcons():
 	var dir = Directory.new()
 	dir.open("res://Images/Icons/")
@@ -79,6 +99,8 @@ func getRandomByModifier(mods):
 			if card.hasModifier(mod):
 				select.append(card)
 	var ret = cardtemplate.instance()
+	if select.size() == 0:
+		return false
 	return select[CardRng.randi() % select.size()].deepcopy(ret)	
 func removeUnique(title):
 	for card in cards:

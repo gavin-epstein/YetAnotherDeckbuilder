@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Images/UnitArt/boombloom.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Unit.gd" type="Script" id=2]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 2 )
+health = 5
+status = {
+"explosive": 5,
+"fuse": 3
+}
+
+[node name="boombloom" type="Sprite" parent="."]
+position = Vector2( 16.1573, -427.418 )
+scale = Vector2( 1.03774, 1.03774 )
+texture = ExtResource( 1 )

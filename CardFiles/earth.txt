@@ -1,0 +1,53 @@
+title("Fortress");
+cost(1);
+$Block=3
+$Increment=3
+trigger(onPlay,do(block($Block)));
+trigger(death,do(addVar(self,Block,$Increment)));
+rarity(2);
+types(earth);
+text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
+removetrigger(endofturn, true, 2);
+
+title("Earthen Hammer");
+cost(2);
+types(earth, hammer)
+$Damage=0
+$Range=2
+rarity(1)
+trigger(addVar,if((argv[1]=Damage),(do(addVar,(self,Damage,argv[2]),true))))
+trigger(onPlay, do(damage, ($Damage,(crush,earth),(any),$Range),true))
+text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
+removetrigger(endofturn,true,2);
+modifiers(unique);
+image("res://Images/CardArt/EarthenHammer.png")
+
+title("Stone");
+cost(-);
+types(earth);
+$Block=2
+text("On draw gain $Block block. \n Unplayable");
+rarity(0);
+removetrigger(never, true, 0);
+trigger(onDraw, do(block,($Block), false));
+
+title(Rock Smash);
+cost(2);
+types(earth, attack);
+$Damage=3
+$Increment=2
+rarity(3);
+trigger(onPlay,do(damage, ($Damage,(crush,earth),(any),1)));
+trigger(onPlay,do(addVar(self,Damage,$Increment)));
+text("Deal $Damage earth crush damage to an adjacent unit, then increase this cards damage by $Increment");
+removetrigger(endofturn,true,4);
+
+title(Bountiful Soil);
+cost(1);
+types(earth,plant);
+$Draw=1
+text("when you draw an unplayable card, draw $Draw more");
+trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(draw($Draw)))));
+removetrigger(endofturn, true, 6)
+rarity(2);
+image("res://Images/CardArt/BountifulSoil.png")

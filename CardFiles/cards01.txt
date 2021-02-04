@@ -1,95 +1,14 @@
-title(Adventurer);
-text("At the end of turn, set your energy to $EternalEnergy, discard your hand. At the start of turn draw $EternalDraw\n eternal \nsilent")
-trigger(endofturn, do(setEnergy,($EternalEnergy),true));
-trigger(endofturn, do(discardAll,(true),true));
-trigger(startofturn, do(draw, ($EternalDraw), true));
-#trigger(death,do(create("Common Loot",Discard)));
-removetrigger(never, true,0);
-modifiers(eternal,unique);
-$EternalEnergy=3;
-$EternalDraw=5;
-rarity(0);
-image("res://Images/CardArt/Adventurer2.png");
-cost("-");
-
-title("Wind Walker");
-text("When you play a wind card, draw a card for each wind card in play");
-trigger(play, if((hastype(argv[0],wind)),(do(draw,((count(Play, wind))),false))));
-types(wind, enchantment);
-removetrigger(play,(hastype(argv[0],wind)),6);
-image("res://Images/CardArt/WindWalk.png");
-rarity(3);
-cost(1);
-
-title(Wind Blast);
-$Damage=1
-text(Deal $Damage wind damage to all enemies);
-trigger(onPlay, do(damage, ($Damage,(wind),(all),50),false));
-removetrigger(endofturn, true, 1);
-types(wind, attack, spell);
-image("res://Images/CardArt/WindBlast.png");
-rarity(6)
-cost(1)
-
 title(Shadow Slice);
 text("Deal $Damage shadow slash damage to an adjacent enemy, silently\n Discard from play immediately");
 cost(0);
-trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),1),true))
+trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),$Range),true))
 trigger(onPlay, do(move, (Play, Discard, self), true));
 types(attack, slash, shadow, melee);
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/ShadowSlice.png");
 rarity(7);
 $Damage=6
-
-title(Dark Recipe);
-$Heal=5
-types(shadow, culinary, healing, ritual);
-text("When you have 4 or more shadow cards in play, heal $Heal and discard this card");
-rarity(4);
-trigger(play,if((count(Play, shadow) > 3), (do(heal,($Heal),false))));
-removetrigger(play, (count(Play, shadow) > 3), 1);
-image("res://Images/CardArt/DarkRecipe.png");
-cost(2);
-
-title(Common Loot);
-types(loot);
-image("res://Images/CardArt/Treasure.png");
-rarity(0);
-cost(1);
-text("Choose 1 of 3 cards to add to your hand \n purge");
-trigger(onPlay, do(cardreward,(100,3),false));
-trigger(onPlay, do(purge,(self),false));
-removetrigger(endofturn, true, 0)
-
-title(Ritual Components);
-types(ritual);
-image("res://Images/CardArt/RitualComponent.png");
-rarity(1);
-cost(0);
-$Draw=1
-removetrigger(endofturn, true, 2);
-trigger(onPlay, do(draw,($Draw),false));
-trigger(onPlay, if((countName(Play,"Ritual Components")< 2),(do( create,(self,Discard),false))));
-text("Draw $Draw.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
-
-title(Ritual of Creation);
-types(ritual);
-rarity(2);
-text("When you have 12 ritual cards in play, recieve a rare card reward, and discard this card");
-trigger(play,if((count(Play, ritual) > 11), (do(cardreward,(2,3), false))));
-removetrigger(play, (count(Play, ritual) > 11), 1);
-cost(2);
-image("res://Images/CardArt/RitualOfCreation.png");
-
-title(Bird Mask);
-text("CAW CAAAAAWWWW");
-rarity(1);
-modifiers(unique);
-types(ritual,avian,meme);
-removetrigger(never, true,0);
-cost(2);
-image("res://Images/CardArt/BirdMask.png");
+$Range=1
 
 title(Black Lettuce);
 text("Gain $Energy energy.\nVoid.");
@@ -100,172 +19,7 @@ trigger(onPlay, do(voided,(self, Play),false));
 removetrigger(endofturn, true, 0);
 types(light,shadow,fire,earth,water,meme);
 cost(0);
-
-title(Whirlwind);
-$Draw=5
-text("Discard your hand, draw $Draw cards");
-cost(1);
-trigger(onPlay, do(discardAll,(),true));
-trigger(onPlay, do(draw, ($Draw), true));
-types(wind);
-rarity(4);
-removetrigger(endofturn,true,1);
-
-title(Undying Ember);
-$Energy=1
-text("On draw, gain $Energy energy\n Unplayable.");
-cost(-);
-trigger(onDraw, do(gainEnergy,($Energy), false));
-types(fire,energy);
-modifiers(unplayable);
-rarity(3);
-removetrigger(never, true, 0);
-image("res://Images/CardArt/UndyingEmber.png");
-
-title(Wind Power);
-$Energy=1
-$Draw=1
-types(wind, mechanical,energy)
-text("when you discard 3 cards, draw $Draw, gain $Energy energy, and purge this card");
-removetrigger(discard, true, 3);
-trigger(onRemoveFromPlay, do(gainEnergy,($Energy), false));
-trigger(onRemoveFromPlay, do(draw,($Draw),false));
-trigger(onRemoveFromPlay, do(purge, (self), false));
-cost(-);
-rarity(0);
-
-title(Wind Turbine);
-types(wind,mechanical);
-cost(2);
-trigger(startofturn, do(create,("Wind Power",Play),false));
-removetrigger(endofturn,true,6);
-text("At the start of your turn, add a Wind Power to play");
-rarity(2);
-
-title(Feather Cloak);
-types(wind,armor,avian);
-cost(1);
-$Armor=1
-trigger(onPlay,do(armor,($Armor),false));
-trigger(onPlay,do(armor,($Armor),true));
-trigger(onDiscard,do(armor,($Armor),false));
-text("Gain $Armor armor when discarded. Gain twice that when played");
-rarity(5);
-removetrigger(endofturn,true,2);
-image("res://Images/CardArt/FeatherCloak.png");
-
-title(Ignite);
-types(fire);
-cost(1);
-$Energy=1
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
-trigger(startofturn, do(gainEnergy,($Energy),false));
-removetrigger(endofturn, true,3);
-text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
-rarity(4);
-image("res://Images/CardArt/Ignite.png")
-
-title(Quickstep);
-cost(0);
-types(movement,wind);
-rarity(10);
-$Move=1
-$Draw=1
-removetrigger(endofturn,true,2);
-trigger(onPlay, do(movePlayer,($Move),false))
-trigger(onPlay, do(draw,($Draw),false))
-text("Move $Move, draw $Draw")
-image("res://Images/CardArt/Quickstep.png")
-
-title(Carrot Seeds);
-cost(1);
-types(culinary, summon, plant, agriculture)
-rarity(4);
-removetrigger(endofturn,true,0);
-text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
-trigger(onPlay, do(voided,(self, Play),false));
-trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
-image("res://Images/CardArt/CarrotSeeds.png")
-
-title(Sifting Breath);
-cost(1);
-types(wind);
-rarity(3);
-$Draw=1
-removetrigger(endofturn,true,6);
-text("When you would draw cards, draw $Draw extra then discard a card");
-trigger(draw, do(draw,($Draw),true));
-trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
-
-title(Bountiful Soil);
-cost(1);
-types(earth);
-$Draw=1
-text("when you draw an unplayable card, draw $Draw more");
-trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(draw($Draw)))));
-removetrigger(endofturn, true, 6)
-rarity(2);
-
-title(Lump of Coal);
-cost("-");
-types(earth,fire);
-text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(draw,(3),false))))
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(gainEnergy,(2),false))))
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(repeat((do(voided,( (select(Hand,(hasname(self,"Lump of Coal")),"Void a Lump of Coal")),Hand),false)),3))));
-rarity(0);
-modifiers(unplayable)
-removetrigger(never, true, 0);
-
-title(Void of Patience);
-cost(-);
-types(void);
-modifiers(void);
-trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
-trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
-trigger(endofturn,do(consume()));
-removetrigger(consume,true,7);
-text("At the end of your turn, The Void grows. On discard from play, transform");
-rarity(0);
-image("res://Images/CardArt/TheVoid/frame001.png")
-
-title(Void of Anger);
-cost(-);
-types(void);
-modifiers(void);
-trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
-trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
-trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
-removetrigger(consume,true,10);
-text("When you play an attack, The Void grows. On discard from play, transform");
-rarity(0);
-image("res://Images/CardArt/TheVoid/frame000.png")
-
-title(Void of Death);
-cost(-);
-types(void);
-modifiers(void);
-trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
-trigger(death,do(consume()));
-trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
-removetrigger(consume,true,4);
-text("When a unit dies, The Void grows. On discard from play, transform");
-rarity(0);
-image("res://Images/CardArt/TheVoid/frame000.png")
-
-title(Rock Smash);
-cost(2);
-types(earth, attack);
-$Damage=3
-$Increment=2
-rarity(3);
-trigger(onPlay,do(damage, ($Damage,(crush,earth),(any),1)));
-trigger(onPlay,do(addVar(self,Damage,$Increment)));
-text("Deal $Damage earth crush damage to an adjacent unit, then increase this cards damage by $Increment");
-removetrigger(endofturn,true,4);
+image("res://Images/CardArt/BlackLettuce.png");
 
 title("Blacksmith's Hammer");
 cost(1);
@@ -278,122 +32,7 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to
 trigger(onPlay,do(purge(self)));
 text("Deal $Damage damage to a random enemy, then permanently add $Increment damage to an attack in play.\nPurge");
 removetrigger(endofturn, true, 0);
-
-title("Earthen Hammer");
-cost(2);
-types(earth, hammer)
-$Damage=0
-$Range=2
-rarity(1)
-trigger(addVar,if((argv[1]=Damage),(do(addVar,(self,Damage,argv[2]),true))))
-trigger(onPlay, do(damage, ($Damage,(crush,earth),(any),$Range),true))
-text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
-removetrigger(endofturn,true,2);
-modifiers(unique);
-
-title("Char");
-cost(1);
-types(fire);
-text("When you void a card, add a Lump of Coal to your discard pile");
-rarity(4);
-trigger(voided,do(create,("Lump of Coal",Discard)));
-removetrigger(voided,true,7);
-
-title("Wind Hammer");
-cost(1);
-types(hammer, wind);
-$Draw=1
-$Increment=1
-rarity(1);
-trigger(onPlay,do(draw,($Draw)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
-trigger(onPlay,do(purge(self)));
-text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
-removetrigger(endofturn, true, 0);
-
-title("Fly");
-cost(0);
-types(avian,movement);
-trigger(onPlay, do(movePlayer,(40),false));
-text("Move anywhere.\n Void");
-trigger(onPlay, do(voided,(self, Play),false));
-removetrigger(endofturn, true, 0);
-rarity(2);
-
-title("Stone");
-cost(-);
-types(earth);
-$Block=2
-text("On draw gain $Block block. \n Unplayable");
-rarity(0);
-removetrigger(never, true, 0);
-trigger(onDraw, do(block,($Block), false));
-
-title("Knife Block");
-cost("1");
-types(culinary);
-text("When you gain block add a random kitchen knife to your hand");
-rarity(4);
-trigger(block,do(createByMod,(("kitchenknife"), Hand)));
-removetrigger(block,true,4);
-
-title("Paring Knife");
-cost("0");
-$Damage=4
-$Range=4
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range. Purge");
-trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
-trigger(onPlay, do(purge(self)));
-removetrigger(endofturn, true, 0);
-modifiers(kitchenknife);
-rarity(0);
-
-title("Meat Cleaver");
-cost("1");
-$Damage=14
-$Range=1
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range. Purge");
-trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
-trigger(onPlay, do(purge(self)));
-removetrigger(endofturn, true, 0);
-modifiers(kitchenknife);
-rarity(0);
-
-title("Bread Knife");
-cost("1");
-$Damage=5
-$Range=2
-$Times=2
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range $Times times. Purge");
-trigger(onPlay, repeat((do(damage, ($Damage,(culinary,slash),(any),$Range),false)),$Times));
-trigger(onPlay, do(purge(self)));
-removetrigger(endofturn, true, 0);
-modifiers(kitchenknife);
-rarity(0);
-
-title("Cutting Board");
-cost("0");
-$Block=4
-types(culinary)
-trigger(onPlay,do(block($Block)));
-trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
-removetrigger(endofturn, true, 1);
-text("Gain $Block block and add a random kitchen knife to your hand");
-rarity(2);
-
-title("Cheese Grater");
-cost("1")
-types(culinary,attack);
-$Times=10
-$Damage=1
-$Range=3
-trigger(onPlay,repeat((do(damage,($Damage,(culinary,slash),(1),$Range))),$Times));
-text("Deal $Damage damage to a random unit within in $Range tiles $Times times");
-rarity(2);
-removetrigger(endofturn, true, 3);
+image("res://Images/CardArt/Blacksmith'sHammer.png")
 
 title("Healing Potion");
 cost(0);
@@ -406,13 +45,13 @@ removetrigger(endofturn, true, 0);
 modifiers(potion);
 rarity(3);
 
-title("Stonewall");
+title("Cleansing Water");
 cost(1);
-$Block=3
-$Increment=3
-trigger(onPlay,do(block($Block)));
-trigger(death,do(addVar(self,Block,$Increment)));
+$Range=2
+types(water, potion)
+text("remove all status effects from a target.\n Range $Range. \nPurge")
 rarity(2);
-types(earth);
-text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
-removetrigger(endofturn, true, 2);
+modifiers(potion)
+removetrigger(endofturn, true, 0);
+trigger(onPlay,do(clearAllStatus((do(selectTiles(("any",["any"],"exists"),$Range,Player))))))
+trigger(onPlay, do(purge(self)));

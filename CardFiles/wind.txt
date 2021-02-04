@@ -1,0 +1,88 @@
+title("Wind Walker");
+text("When you play a wind card, draw a card for each wind card in play");
+trigger(play, if((hastype(argv[0],wind)),(do(draw,((count(Play, wind))),false))));
+types(wind, enchantment);
+removetrigger(play,(hastype(argv[0],wind)),6);
+image("res://Images/CardArt/WindWalk.png");
+rarity(3);
+cost(1);
+
+title(Wind Blast);
+$Damage=1
+$Move=1
+text(Deal $Damage wind damage to all enemies and push them $Move tile);
+trigger(onPlay, do(damage, ($Damage,(wind),(all),50),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+removetrigger(endofturn, true, 1);
+types(wind, attack, spell);
+image("res://Images/CardArt/WindBlast.png");
+rarity(6)
+cost(1)
+
+title(Whirlwind);
+$Draw=5
+text("Discard your hand, draw $Draw cards");
+cost(1);
+trigger(onPlay, do(discardAll,(),true));
+trigger(onPlay, do(draw, ($Draw), true));
+types(wind);
+rarity(4);
+removetrigger(endofturn,true,1);
+image("res://Images/CardArt/Whirlwind.png");
+
+title(Wind Power);
+$Energy=1
+$Draw=1
+types(wind, mechanical,energy)
+text("when you discard 3 cards, draw $Draw, gain $Energy energy, and purge this card");
+removetrigger(discard, true, 3);
+trigger(onRemoveFromPlay, do(gainEnergy,($Energy), false));
+trigger(onRemoveFromPlay, do(draw,($Draw),false));
+trigger(onRemoveFromPlay, do(purge, (self), false));
+cost(-);
+rarity(0);
+image("res://Images/CardArt/WindPower.png");
+
+title(Wind Turbine);
+types(wind,mechanical);
+cost(2);
+trigger(startofturn, do(create,("Wind Power",Play),false));
+removetrigger(endofturn,true,6);
+text("At the start of your turn, add a Wind Power to play");
+rarity(2);
+image("res://Images/CardArt/WindTurbine.png");
+
+title(Sifting Breath);
+cost(1);
+types(wind);
+rarity(3);
+$Draw=1
+removetrigger(endofturn,true,6);
+text("When you would draw cards, draw $Draw extra then discard a card");
+trigger(draw, do(draw,($Draw),true));
+trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
+
+title("Wind Hammer");
+cost(1);
+types(hammer, wind);
+$Draw=1
+$Increment=1
+rarity(1);
+trigger(onPlay,do(draw,($Draw)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
+removetrigger(endofturn, true, 0);
+
+title(Quickstep);
+cost(0);
+types(movement,wind);
+rarity(10);
+$Move=1
+$Draw=1
+removetrigger(endofturn,true,2);
+trigger(onPlay, do(movePlayer,($Move),false))
+trigger(onPlay, do(draw,($Draw),false))
+text("Move $Move, draw $Draw")
+image("res://Images/CardArt/Quickstep.png")
+

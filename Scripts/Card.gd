@@ -35,7 +35,7 @@ func _process(delta: float) -> void:
 	#normal movement 
 	if not mouseon:
 		if target_position != null:
-			self.position = self.position.linear_interpolate(target_position, speed*delta)
+			self.position = self.position.linear_interpolate(target_position, min(1,speed*delta))
 			if (position-target_position).length_squared() < 9:
 				self.position = target_position
 				if target_scale != null:
@@ -272,7 +272,9 @@ func execute(code, argv):
 	elif code[0] == "decrementRemoveCount":
 		removecount -=1
 		if removecount == 0:
-			self.Triggered("onRemoveFromPlay",argv)
+			var res = self.Triggered("onRemoveFromPlay",argv)
+			if res is GDScriptFunctionState:
+				yield(res, "completed")
 			controller.Action("move",["Play","Discard",self])
 			self.cost = unmodifiedCost
 			self.removecount = defaultremovecount
@@ -362,9 +364,12 @@ func processArgs(arg, argv):
 	else:
 		return arg
 func updateDisplay():
-	
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(cost) + "[/center]";
-	get_node("Resizer/CardFrame/Title").bbcode_text= "[center]" + title+ "[/center]";
+	var titlebox = get_node("Resizer/CardFrame/Title")
+	titlebox.bbcode_text= "[center]" + title+ "[/center]";
+	var titlescale = min(.5,8.0/title.length())
+	titlebox.rect_scale = Vector2(titlescale,titlescale)
+	titlebox.rect_size = Vector2(583.0/titlescale,211)
 	var displaytext = text
 	for key in vars:
 		displaytext = displaytext.replace(key, vars[key])
@@ -429,13 +434,11 @@ func dehighlight():
 		
 func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	#mouseon = true
-#	if $Resizer.scale.x == 1:
-#		$AnimationPlayer.play("Grow")
-	if event.is_action("left_click") and controller.inputdelay > .2:
-		
+	if event.is_action_pressed("left_click") and controller.inputdelay > .2:
+		print("Click on "+ self.title)
+		controller.inputdelay = 0
 		if get_parent().has_method("cardClicked"):
 			get_parent().cardClicked(self)
-		controller.inputdelay = 0
 func isCard():
 	return true	
 

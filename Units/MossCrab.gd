@@ -16,7 +16,10 @@ func _ready() -> void:
 			crabcount+=1
 	print("crabcount: "+str(crabcount))
 	if crabcount%2 ==0:
-		for other in tile.neighs:
-			if !other.sentinel and other.occupants.size==0:
+		print("trying to summon")
+		for other in self.tile.neighs:
+			if !other.sentinel and other.occupants.size()==0:
 				get_parent().summon(other, "Moss Crab")
 				break
+			else:
+				print(other.occupants.size())
