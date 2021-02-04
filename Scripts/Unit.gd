@@ -13,6 +13,7 @@ var armor = 0
 var maxHealth
 var tile
 var nextTurn =[]
+export var damagetypes:Array
 #n the node enters the scene tree for the first time.
 func _ready()-> void:
 	onSummon()
@@ -41,9 +42,9 @@ func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  += (tile.position - self.position)*speed*delta
 	self.z_index = (500+position.y)/10;
-
+#Rework this
 func takeTurn():
-	print(title+" " +str(armor))
+	
 	for move in nextTurn:
 		if move[0] == "move":
 			if move[1].occupants.size()==0:
@@ -91,6 +92,8 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	if self.health <=0:
+		return false
 	#set enemies on fire, if they are flammable and in water
 	if "fire" in types and status.has("flammable") and not Utility.interpretTerrain("water") == tile.terrain:
 		status["flaming"] = true
@@ -145,10 +148,14 @@ func takeDamage(amount,types, attacker):
 	get_parent().map.cardController.triggerAll("damageDealt",[self,amount,types,attacker])
 	return [amount]
 func startOfTurn():
-	if status.has("flaming") and not status.has("fireproof"):
+	if status.has("flaming"):
 		takeDamage(floor(health/2),["fire"],null)
 	block = 0;
+	if status.has("fuse"):
+		addStatus("explosive",1)
 func endOfTurn():
+	if status.has("fuse") and status.fuse ==1:
+		die(null)
 	for key in status:
 		if status[key] is int:
 			status[key] = status[key]-1
@@ -172,6 +179,7 @@ func updateDisplay():
 		healthBar.get_node("Attack").visible = true
 	else:
 		healthBar.get_node("Attack").visible = false
+	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
 func die(attacker):
 	if self.difficulty > 0:
 		get_parent().cardController.Action("create",["Common Loot","Discard"])
@@ -182,7 +190,8 @@ func die(attacker):
 	if status.has("explosive"):
 		#damage all adjacent enemies
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
-			node.occupants[0].takeDamage(status.explosive,("explosive"),self)
+			if node.occupants[0] != self:
+				node.occupants[0].takeDamage(status.explosive,("explosive"),self)
 	
 	self.visible = false
 	tile.occupants.erase(self)
@@ -204,3 +213,18 @@ func addArmor(amount):
 func addBlock(amount):
 	block+=amount
 	updateDisplay()
+func addStatus(stat, val):
+	if val is int and val ==0:
+		return false
+	if not stat in status or val is bool:
+		status[stat] = val
+	elif val is int and status[stat] is int:
+		status[stat] = status[stat] + val
+		if status[stat] ==0:
+			status.erase(stat)
+func setStatus(stat, val):
+	if val is int and val ==0 or val is bool and val == false:
+		status.erase(stat)
+	else:
+		status[stat] = val
+

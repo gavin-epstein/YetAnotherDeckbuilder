@@ -1,0 +1,73 @@
+title("Katachronophlogiston");
+types(fire,potion);
+text("Purge your hand. \nPurge");
+modifiers(potion);
+trigger(onPlay, repeat((do(purge((select(Hand,true,"",1,true))))),10));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+rarity(1);
+cost(0);
+
+title("Fireball!");
+cost(6);
+types(fire, attack)
+$Damage=20
+$Range=2
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range")
+trigger(onPlay, do(damage($Damage, fire, (splash,(any),exists,((any,(any),any),1,Player)),$Range)))
+removetrigger(endofturn, true, 1);
+rarity(3);
+types(fire,attack);
+
+title("Clothed in Flames");
+cost("X");
+$X="X"
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+trigger(onPlay, do(armor($X)))
+text("Gain X armor");
+types("fire");
+removetrigger(endofturn, true, 4);
+rarity(2);
+
+title(Lump of Coal);
+cost("-");
+types(earth,fire);
+text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
+trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(draw,(3),false))))
+trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(gainEnergy,(2),false))))
+trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(repeat((do(voided,( (select(Hand,(hasname(self,"Lump of Coal")),"Void a Lump of Coal")),Hand),false)),3))));
+rarity(0);
+modifiers(unplayable)
+removetrigger(never, true, 0);
+image("res://Images/CardArt/LumpOfCoal.png")
+
+title(Ignite);
+types(fire);
+cost(1);
+$Energy=1
+trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
+trigger(startofturn, do(gainEnergy,($Energy),false));
+removetrigger(endofturn, true,3);
+text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
+rarity(4);
+image("res://Images/CardArt/Ignite.png")
+ 
+title(Undying Ember);
+$Energy=1
+text("On draw, gain $Energy energy\n Unplayable.");
+cost(-);
+trigger(onDraw, do(gainEnergy,($Energy), false));
+types(fire,energy);
+modifiers(unplayable);
+rarity(3);
+removetrigger(never, true, 0);
+image("res://Images/CardArt/UndyingEmber.png");
+
+title("Char");
+cost(1);
+types(fire);
+text("When you void a card, add a Lump of Coal to your discard pile");
+rarity(4);
+trigger(voided,do(create,("Lump of Coal",Discard)));
+removetrigger(voided,true,7);
+

@@ -27,3 +27,9 @@ scene("res://Units/MossCrab.tscn")
 name("Moss Crab")
 difficulty(3)
 spawnable(any)
+
+scene("res://Units/BoomBloom.tscn")
+name("Boom Bloom")
+difficulty(1)
+spawnable(stone,grass)
+

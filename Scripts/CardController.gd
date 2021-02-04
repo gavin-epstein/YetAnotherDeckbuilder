@@ -17,16 +17,17 @@ var selectedCard
 var map
 var enemyController
 var lastPlayed
+var lastTargets
 class_name CardController
 
-func Load()-> void:
+func Load()-> void: 
 	Deck = get_node("Deck")
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
 	Library = get_node("Library")
 	Choice = get_node("Choice")
-	var step = Library.loadallcards()
+	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("Cards loaded")
@@ -119,15 +120,19 @@ func play(card)->bool:
 	print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false
-	if card.cost > Energy:
+	if card.cost is int and card.cost > Energy:
 		return false
+	elif card.cost is String and card.cost == "X":
+		setVar(card,"X",Energy)
 	Hand.remove_card(card)
 	Play.add_card(card)
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
-	
-	Energy -= card.cost
+	if card.cost is int:
+		Energy -= card.cost
+	else:
+		Energy = 0
 	updateDisplay()
 	return true
 	
@@ -157,7 +162,7 @@ func countModifiers(loc, mod) -> int:
 			count+=1
 	return count
 func move(loc1, loc2, card):
-	if card is Dictionary:
+	if card is bool:
 		return card
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
@@ -174,7 +179,7 @@ func discardAll(silent = false):
 	while Hand.cards.size() >ind:
 		var card = Hand.cards[0]
 		if not card.modifiers.has("retain"):
-			Action("discard", [card, silent]);
+			Action("discard", [card, silent], silent);
 		else:
 			ind+=1
 	return true
@@ -211,6 +216,10 @@ func takeFocus(item) -> bool:
 		return false
 	if focus == null:
 		focus = item
+#		if "name" in item:
+#			print("Focus: "+item.name)
+#		if "title" in item:
+#			print("Focus "+ item.title)
 		return true
 	elif focus == item:
 		return true
@@ -218,6 +227,7 @@ func takeFocus(item) -> bool:
 
 func releaseFocus(item) -> bool:
 	if focus == item:
+		#print("Focus Released")
 		focus = null
 		return true
 	return false
@@ -269,7 +279,7 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 		Action("startofturn", [], false)
 		
 		
-func select(loc, predicate,message,num = 1):
+func select(loc, predicate,message,num = 1,random=false):
 	inputAllowed = false
 	loc = get_node(loc)
 	var selectcount = 0
@@ -299,6 +309,14 @@ func select(loc, predicate,message,num = 1):
 		if alltheSame:
 			cardClicked(prototype)
 			return prototype
+	if random:
+		var possible = []
+		for card in loc.cards:
+			if card.highlighted:
+				possible.append(card)
+		var card  = Utility.choice(possible)
+		cardClicked(card)
+		return card
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
@@ -324,36 +342,50 @@ func movePlayer(dist,terrains = ["any"]):
 		return false
 	enemyController.move(enemyController.Player, tile)
 	return true
-func damage(amount, types, targets,distance):
+func selectTiles(targets, distance, tile):
+	if targets[0] is String and targets[0] == "lastTargets":
+		return lastTargets
+	if tile == "Player" or tile == null:
+		tile = enemyController.Player.tile
 	var enemies = []
-	var tile = enemyController.Player.tile
-	var property
-	var terrains
-	if targets.size() < 3:
-		property = "-Player"
-	else:
-		property = targets[2]
-	if targets.size() < 2:
-		terrains = ["any"]
-	else:
-		terrains = targets[1]
 	if targets[0] is int:
 		for _i in range(targets[0]):
-			enemies.append(map.selectRandom(tile,distance,property,terrains))
+			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
 	elif targets[0] == "all":	
-		enemies = map.selectAll(tile,distance,property,terrains)
+		enemies = map.selectAll(tile,distance,targets[2],targets[1])
 	elif targets[0]=="any":
-		var enemy = map.select(tile,distance,property,terrains,"Pick a target")
+		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		if enemy ==null:
-			return false
+			return null
 		enemies.append(enemy)
+	elif targets[0]=="splash" and targets.size >=4:
+		var centers = callv("selectTiles",targets[3])
+		for c in centers:
+			enemies += map.selectAll(c,distance,targets[2],targets[1])
+	lastTargets = enemies
+	return enemies
+	
+func damage(amount, types, targets,distance, tile =null):
+	
+	if tile == null:
+		tile = "Player"
+	var property
+	var terrains
+	if targets.size() < 2:
+		targets.append( ["any"])
+	if targets.size() < 3:
+		targets.append("-Player")
+
+	var enemies = selectTiles(targets,distance,tile)
+	if enemies is GDScriptFunctionState:
+		enemies = yield(enemies,"completed")
 	
 	if enemies == null or enemies.size()== 0:
 		return false
 	for node in enemies:
-		if node.occupants.size() == 0:
+		if node == null or node.occupants.size() == 0:
 			#Enemy has been removed by another effect
 			continue
 		var unit =  node.occupants[0]
@@ -364,7 +396,37 @@ func damage(amount, types, targets,distance):
 			lastPlayed.Triggered("attack",dmg)
 			 
 	return true
-
+func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
+	var property
+	var terrains
+	if targets.size() < 2:
+		targets.append( ["any"])
+	if targets.size() < 3:
+		targets.append("-Player")
+	var enemies = selectTiles(targets,distance,tile)
+	for enemy in enemies:
+		if direction is String and direction == "any":
+			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
+			if dest is GDScriptFunctionState:
+				dest = yield(dest,"completed")
+			if enemy.occupants.size()>0 and dest.size()>0:
+				enemyController.move(enemy.occupants[0],dest[0])
+		else:
+			var dir
+			if direction is String and direction == "away":
+				dir = enemy.position - enemyController.Player.tile.position
+			elif direction is String and direction == "towards":
+				dir = enemyController.Player.tile.position-enemy.position 
+			else:
+				dir = Vector2(direction[0],direction[1])
+			var dest = enemy
+			for _i in range(movedist):
+				var nextDest = map.getTileInDirection(dest,dir)
+				if !nextDest.sentinel and nextDest.occupants.size() ==0:
+					dest = nextDest
+				else:
+					break
+			enemyController.move(enemy.occupants[0],dest)
 func heal(amount):
 	enemyController.Player.heal(amount)
 func setVar(card, varname, amount):
@@ -425,3 +487,23 @@ func triggerAll(trigger, argv):
 func devoidAll():
 	for card in $Voided.cards:
 		move("Voided", "Discard",card)
+func addStatus(stat, amount, tiles ="Player"):
+	if tiles is String and tiles == "Player":
+		tiles = [enemyController.Player.tile]
+	for tile in tiles:
+		for unit in tile.occupants:
+			unit.addStatus(stat, amount)	
+func setStatus(stat, amount, tiles = "Player"):
+	if tiles is String and tiles  == "Player":
+		tiles = [enemyController.Player.tile]
+	for tile in tiles:
+		for unit in tile.occupants:
+			unit.setStatus(stat, amount)
+func clearAllStatuses(tiles = "Player"):
+	if tiles is String and tiles  == "Player":
+		tiles = [enemyController.Player.tile]
+	for tile in tiles:
+		for unit in tile.occupants:
+			for stat in unit.status:
+				unit.setStatus(stat, 0)
+	

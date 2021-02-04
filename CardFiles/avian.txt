@@ -1,0 +1,30 @@
+title("Fly");
+cost(0);
+types(avian,movement);
+trigger(onPlay, do(movePlayer,(40),false));
+text("Move anywhere.\n Void");
+trigger(onPlay, do(voided,(self, Play),false));
+removetrigger(endofturn, true, 0);
+rarity(2);
+image("res://Images/CardArt/Fly.png");
+
+title(Feather Cloak);
+types(wind,armor,avian);
+cost(1);
+$Armor=1
+trigger(onPlay,do(armor,($Armor),false));
+trigger(onPlay,do(armor,($Armor),true));
+trigger(onDiscard,do(armor,($Armor),false));
+text("Gain $Armor armor when discarded. Gain twice that when played");
+rarity(5);
+removetrigger(endofturn,true,3);
+image("res://Images/CardArt/FeatherCloak.png");
+
+title(Bird Mask);
+text("CAW CAAAAAWWWW");
+rarity(1);
+modifiers(unique);
+types(ritual,avian,meme);
+removetrigger(never, true,0);
+cost(2);
+image("res://Images/CardArt/BirdMask.png");

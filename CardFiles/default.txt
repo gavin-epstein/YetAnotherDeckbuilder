@@ -1,0 +1,63 @@
+title(Adventurer);
+text("At the end of turn, set your energy to $EternalEnergy, discard your hand. At the start of turn draw $EternalDraw\n eternal \nsilent")
+trigger(endofturn, do(setEnergy,($EternalEnergy),true));
+trigger(endofturn, do(discardAll,(true),true));
+trigger(startofturn, do(draw, ($EternalDraw), true));
+#trigger(death,do(create("Common Loot",Discard)));
+removetrigger(never, true,0);
+modifiers(eternal,unique);
+$EternalEnergy=3;
+$EternalDraw=5;
+rarity(0);
+image("res://Images/CardArt/Adventurer2.png");
+cost("-");
+
+title(Common Loot);
+types(loot);
+image("res://Images/CardArt/Treasure.png");
+rarity(0);
+cost(1);
+text("Choose 1 of 3 cards to add to your hand \n purge");
+trigger(onPlay, do(cardreward,(100,3),false));
+trigger(onPlay, do(purge,(self),false));
+removetrigger(endofturn, true, 0)
+
+title(Void of Patience);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(devoidAll()));
+trigger(endofturn,do(consume()));
+removetrigger(consume,true,7);
+text("At the end of your turn, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/TheVoid/frame001.png")
+
+title(Void of Anger);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(devoidAll()));
+removetrigger(consume,true,10);
+text("When you play an attack, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/TheVoid/frame000.png")
+
+title(Void of Death);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(death,do(consume()));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(devoidAll()));
+removetrigger(consume,true,4);
+text("When a unit dies, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/TheVoid/frame000.png")
+

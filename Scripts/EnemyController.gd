@@ -47,7 +47,7 @@ func addUnit(unit, node):
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
-	if not node.sentinel:
+	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
 		node.occupants.append(unit)
@@ -66,4 +66,5 @@ func enemyTurn():
 
 func summon(tile, unitname):
 	var unit = load($UnitLibrary.getUnitByName(unitname)).instance()
+	print("summoning"+unit.tile)
 	addUnit(unit, tile)

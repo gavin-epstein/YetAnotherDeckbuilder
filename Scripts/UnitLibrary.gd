@@ -1,13 +1,13 @@
 extends Node2D
 var units = {}
-
+var icons = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 func Load() -> void:
 	loadUnitsFromFile("res://UnitFiles/units01.txt")
-
+	loadStatusIcons()
 func getRandomEnemy(difficulty, terrain):
 	if (rand_range(0,difficulty) < 1):
 		return null
@@ -19,6 +19,20 @@ func getRandomEnemy(difficulty, terrain):
 		return possible[randi() % possible.size()].sceneName
 	else:
 		return null
+func loadStatusIcons():
+	var dir = Directory.new()
+	dir.open("res://Images/StatusIcons/")
+	dir.list_dir_begin()
+
+	while true:
+		var fname = dir.get_next()
+		if fname == "":
+			break
+		elif fname.ends_with(".png"):
+			print(fname.substr(0,fname.length()-4))
+			icons[fname.substr(0,fname.length()-4)] = load("res://Images/StatusIcons/"+fname)
+
+	dir.list_dir_end()
 
 func loadUnitsFromFile(fname):
 	var f = File.new()

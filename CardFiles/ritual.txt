@@ -1,0 +1,69 @@
+title(Dark Recipe);
+$Heal=10
+types(culinary, healing, ritual);
+text("When you have 4 or more ritual cards in play, heal $Heal and discard this card");
+rarity(4);
+trigger(play,if((count(Play, shadow) > 3), (do(heal,($Heal),false))));
+removetrigger(play, (count(Play, shadow) > 3), 1);
+image("res://Images/CardArt/DarkRecipe.png");
+cost(2);
+
+title(Ritual Components);
+types(ritual);
+image("res://Images/CardArt/RitualComponent.png");
+rarity(1);
+cost(0);
+$Draw=1
+removetrigger(endofturn, true, 2);
+trigger(onPlay, do(draw,($Draw),false));
+trigger(onPlay, if((countName(Play,"Ritual Components")< 2),(do( create,(self,Discard),false))));
+text("Draw $Draw.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
+
+title(Ritual of Creation);
+types(ritual);
+rarity(2);
+text("When you have 12 ritual cards in play, recieve a rare card reward, and discard this card");
+trigger(play,if((count(Play, ritual) > 11), (do(cardreward,(2,3), false))));
+removetrigger(play, (count(Play, ritual) > 11), 1);
+cost(2);
+image("res://Images/CardArt/RitualOfCreation.png");
+
+title(Pentaract);
+types(ritual);
+text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and void this card");
+removetrigger(endofturn, true, 5);
+trigger(onRemoveFromPlay, do(heal(5)))
+trigger(onRemoveFromPlay, do(block(5)))
+trigger(onRemoveFromPlay, do(armor(5)))
+trigger(onRemoveFromPlay, do(damage(5,(ritual),(1),40)))
+trigger(onRemoveFromPlay, do(movePlayer(5)))
+trigger(onRemoveFromPlay, do(voided(self, Play)))
+image("res://Images/CardArt/Pentaract.png")
+cost(1);
+rarity(5);
+
+title(Ritual Dagger);
+types(ritual, attack)
+removetrigger(endofturn,true,1)
+cost(1);
+$Damage=10
+$Range=1
+trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
+trigger(slay,do(create("Broken Blade",Hand)))
+rarity(2)
+text(Deal 10 damage, Range $Range. If this kills a unit add a broken blade to your hand);
+removeTrigger(endofturn, true, 2);
+image("res://Images/CardArt/RitualDagger.png")
+
+title(Broken Blade)
+types(ritual, attack)
+cost(0)
+rarity(0)
+$Damage=5
+$Range=5
+text("Deal $Damage damage, at a $Range of range. If this kills a unit add another broken blade to play. On remove from play, purge")
+trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
+trigger(slay,do(create("Broken Blade",Hand)))
+trigger(onRemoveFromPlay, do(purge(self)))
+removeTrigger(endofturn, true, 2);
+image("res://Images/CardArt/BrokenBlade.png")
