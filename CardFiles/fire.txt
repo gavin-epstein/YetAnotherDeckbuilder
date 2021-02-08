@@ -2,7 +2,7 @@ title("Katachronophlogiston");
 types(fire,potion);
 text("Purge your hand. \nPurge");
 modifiers(potion);
-trigger(onPlay, repeat((do(purge((select(Hand,true,"",1,true))))),10));
+trigger(onPlay, repeat((do(purge((select(Hand,true,"-",1,true))))),10));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 rarity(1);

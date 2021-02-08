@@ -18,7 +18,6 @@ func updateDisplay(statuses:Dictionary,icons:Dictionary):
 			sprite.z_index = -1
 			var val  = statuses[status]
 			if val is int:
-				print("Adding val "+ str(val))
 				var text = RichTextLabel.new()
 				add_child(text)
 				text.text = str(val)
@@ -26,7 +25,7 @@ func updateDisplay(statuses:Dictionary,icons:Dictionary):
 				text.rect_scale = Vector2(3,3)
 				text.rect_position = pos+Vector2(180,0)
 				text.visible = true
-				text.modulate = Color(.5,.5,.5)
+				text.modulate = Color(.7,.7,.7)
 				text.add_font_override("normal_font",font)
 				
 			pos += Vector2(xdiff, 0)
