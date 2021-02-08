@@ -1,27 +1,30 @@
 extends Node2D
 var units = {}
 var icons = {}
-
+var intenticons={}
+var unittemplate = load("res://Unit.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
 func Load() -> void:
 	loadUnitsFromFile("res://UnitFiles/units01.txt")
-	loadStatusIcons()
+	loadIcons("res://Images/StatusIcons/",icons)
+	loadIcons("res://Images/IntentIcons/",intenticons)
 func getRandomEnemy(difficulty, terrain):
 	if (rand_range(0,difficulty) < 1):
 		return null
 	var possible = []
 	for unit in units.values():	
-		if unit.difficulty <= difficulty and unit.difficulty != -1 and (terrain in unit.spawns or "any" in unit.spawns):
+		if unit.difficulty <= difficulty and unit.difficulty != -1 and (terrain in unit.spawnableterrains or "any" in unit.spawnableterrains):
 			possible.append(unit)
 	if possible.size() > 0:
-		return possible[randi() % possible.size()].sceneName
+		var other  = unittemplate.instance()
+		return possible[randi() % possible.size()].deepcopy(other)
 	else:
 		return null
-func loadStatusIcons():
+func loadIcons(dirname, dictname):
 	var dir = Directory.new()
-	dir.open("res://Images/StatusIcons/")
+	dir.open(dirname)
 	dir.list_dir_begin()
 
 	while true:
@@ -29,34 +32,28 @@ func loadStatusIcons():
 		if fname == "":
 			break
 		elif fname.ends_with(".png"):
-			print(fname.substr(0,fname.length()-4))
-			icons[fname.substr(0,fname.length()-4)] = load("res://Images/StatusIcons/"+fname)
+			dictname[fname.substr(0,fname.length()-4)] = load(dirname+fname)
 
 	dir.list_dir_end()
 
 func loadUnitsFromFile(fname):
 	var f = File.new()
 	f.open(fname, File.READ)
-	var unit = {}
+	var code = ""
 	while not f.eof_reached():
 		var line = f.get_line()
-		if line != "":
-			line = Utility.parseCardCode(line)
-			if line[0] =="scene":
-				unit.sceneName = line[1][0]
-			elif line[0] == "difficulty":
-				unit.difficulty = int(line[1][0])
-			elif line[0] == "spawnable":
-				unit.spawns = []
-				for string in line[1]:
-					if string =="any":
-						unit.spawns.append("any")
-					else:
-						unit.spawns.append(Utility.interpretTerrain(string) )
-			elif line[0] == "name":
-				unit.name = line[1][0]
-		elif line =="" and unit.size()!=0:
-			units[unit.name] = unit
-			unit = {}
+		if line!= "" and line[0] == "#":
+			continue
+		if line =="" and code != "":
+			var unit = unittemplate.instance()
+			unit.loadUnitFromString(code)
+			self.units[unit.title]= unit
+			unit.controller = get_parent()
+			code = ""
+			yield(get_tree().create_timer(.01), "timeout")
+		if not ";" in line and line!="":
+			line = line+";"
+		code+=line
 func getUnitByName(name):
-	return units[name].sceneName
+	var other  = unittemplate.instance()
+	return units[name].deepcopy(other)
