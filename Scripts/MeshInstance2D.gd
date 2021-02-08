@@ -274,11 +274,10 @@ func select(tile,dist,property,terrains, message):
 	elif selectableNodes.size()==1:
 		selectableNodes[0].dehighlight()
 		return selectableNodes[0]
-	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
-	$Message.visible = true
-	
+	$Message/Message/Message.bbcode_text = "[center]"+message+"[/center]"
+	$Message/Message.visible = true
 	yield(self,"nodeSelected")
-	$Message.visible = false
+	$Message/Message.visible = false
 	for node in selectableNodes:
 		node.dehighlight()
 	return selectedNode
@@ -307,11 +306,21 @@ func getTileInDirection(tile,dir):
 	return closest	
 
 func getTileClosestTo(tile, pos):
-	var closest = tile.neighs[0]
-	var closedist = Utility.sqDistToNode(pos, tile)
-	for node in tile.neighs:
-		var dist = Utility.sqDistToNode(pos,node)
+	return getTileClosestToSet(tile,[pos])
+func getTileClosestToSet(start, dests):
+	
+	var closest = start.neighs[0]
+	var closedist = minDistToPositions(closest, dests)
+	for node in start.neighs:
+		var dist = minDistToPositions(node, dests)
 		if dist < closedist:
 			closest = node
 			closedist = dist
 	return closest	
+func minDistToPositions(tile,positions):
+	var closedist = Utility.sqDistToNode(positions[0].position, tile)
+	for pos in positions:
+		var dist = Utility.sqDistToNode(pos.position,tile)
+		if dist < closedist:
+			closedist = dist
+	return closedist

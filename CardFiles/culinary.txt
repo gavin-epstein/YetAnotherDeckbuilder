@@ -17,6 +17,7 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
 rarity(0);
+image("res://Images/CardArt/ParingKnife.png")
 
 title("Meat Cleaver");
 cost("1");
@@ -43,6 +44,7 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
 rarity(0);
+image("res://Images/CardArt/BreadKnife.png")
 
 title("Cutting Board");
 cost("0");
@@ -74,3 +76,4 @@ text("Summon a Carrot on a random empty grass tile. When killed the carrot grant
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
 image("res://Images/CardArt/CarrotSeeds.png")
+

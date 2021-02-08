@@ -1,10 +1,11 @@
 title(Dark Recipe);
 $Heal=10
+$RitualCount=3
 types(culinary, healing, ritual);
 text("When you have 4 or more ritual cards in play, heal $Heal and discard this card");
 rarity(4);
-trigger(play,if((count(Play, shadow) > 3), (do(heal,($Heal),false))));
-removetrigger(play, (count(Play, shadow) > 3), 1);
+trigger(play,if((count(Play, ritual) > $RitualCount), (do(heal,($Heal),false))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 image("res://Images/CardArt/DarkRecipe.png");
 cost(2);
 
@@ -44,7 +45,7 @@ rarity(5);
 
 title(Ritual Dagger);
 types(ritual, attack)
-removetrigger(endofturn,true,1)
+removetrigger(endofturn,true,2)
 cost(1);
 $Damage=10
 $Range=1
@@ -52,7 +53,6 @@ trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 rarity(2)
 text(Deal 10 damage, Range $Range. If this kills a unit add a broken blade to your hand);
-removeTrigger(endofturn, true, 2);
 image("res://Images/CardArt/RitualDagger.png")
 
 title(Broken Blade)
@@ -61,9 +61,18 @@ cost(0)
 rarity(0)
 $Damage=5
 $Range=5
-text("Deal $Damage damage, at a $Range of range. If this kills a unit add another broken blade to play. On remove from play, purge")
+text("Deal $Damage damage, at a $Range of range. If this kills a unit add another broken blade to your hand. On remove from play, purge")
 trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 trigger(onRemoveFromPlay, do(purge(self)))
-removeTrigger(endofturn, true, 2);
+removetrigger(endofturn, true, 2);
 image("res://Images/CardArt/BrokenBlade.png")
+
+title("Witch's Cauldron")
+cost(1)
+rarity(1)
+$RitualCount = 7
+text("When you have $RitualCount ritual cards in play, void this and add 3 random potions to your hand")
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat(do(createByMod((potion),Hand))),3)));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+trigger(onRemoveFromPlay,do(voided(self, Discard)))

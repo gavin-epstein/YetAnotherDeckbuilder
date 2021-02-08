@@ -1,10 +1,9 @@
-extends Node2D
+extends "res://Scripts/Controller.gd"
 
 signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
-var Play
 var Discard
 var Hand
 var Library
@@ -15,7 +14,7 @@ var inputAllowed = true
 var focus
 var selectedCard
 var map
-var enemyController
+
 var lastPlayed
 var lastTargets
 class_name CardController
@@ -51,36 +50,7 @@ func Load()-> void:
 func _process(delta: float) -> void:
 	inputdelay += delta
 	
-func Action(method:String, argv:Array,silent = false) -> bool:
-	var interrupted = false
-	var res
-	print(method +" "+ Utility.join(" ", argv))
-	if not silent:
-		for card in Play.cards:
-			if card.Interrupts(method, argv):
-				interrupted = true
-	if not interrupted:
-		
-		if self.has_method(method):
-			res =  self.callv(method, argv)
-			if res is GDScriptFunctionState:
-				res = yield(res,"completed")
-			
-		else:
-			print("attempting to " + method)
-		if not silent and res:
-			#look through play, if card is removed from play don't increment index
-			var ind = 0
-			while Play.cards.size() > ind:
-				var card = Play.cards[ind]
-				var res2 = card.Triggered(method, argv)
-				if res2 is GDScriptFunctionState:
-					res2 = yield(res2,"completed")
-				
-				if card in Play.cards:
-					ind+=1
-	updateDisplay()
-	return res
+
 	
 
 func draw(x)->bool:
@@ -345,7 +315,7 @@ func movePlayer(dist,terrains = ["any"]):
 func selectTiles(targets, distance, tile):
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
-	if tile == "Player" or tile == null:
+	if (tile is String and tile == "Player") or tile == null:
 		tile = enemyController.Player.tile
 	var enemies = []
 	if targets[0] is int:
@@ -426,21 +396,11 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 					dest = nextDest
 				else:
 					break
-			enemyController.move(enemy.occupants[0],dest)
+			if enemy.occupants.size()>0:
+				enemyController.move(enemy.occupants[0],dest)
 func heal(amount):
-	enemyController.Player.heal(amount)
-func setVar(card, varname, amount):
-	if card == null:
-		return false
-	card.vars["$" + varname] = amount
-	return true
-func addVar(card, varname, amount):
-	if card == null:
-		return false
-	if card.vars.has("$"  +varname):
-		card.vars["$" + varname] = card.vars["$" + varname]  + amount
-		return true
-	return false
+	enemyController.heal(enemyController.Player,amount)
+
 func getVar(card, varname):
 	if card == null:
 		return false
@@ -465,21 +425,32 @@ func summon(unitName, targets, distance) :
 		locs.append(loc)
 	else:
 		assert(false, "invalid Target")
-	var unitScene = load(enemyController.get_node("UnitLibrary").getUnitByName(unitName))
+	
 	if locs == null or locs.size() == 0:
 		return false
+	var unit = enemyController.get_node("UnitLibrary").getUnitByName(unitName)
 	for node in locs:
-		enemyController.addUnit(unitScene.instance(),node)
+		enemyController.addUnit(unit,node)
 	return true
 func armor(amount):
-	enemyController.Player.addArmor(amount)
+	enemyController.addArmor(enemyController.Player,amount)
 	return true
 func block(amount):
-	enemyController.Player.addBlock(amount)
+	enemyController.addBlock(enemyController.Player,amount)
 	return true
 func consume():
-	
-	enemyController.theVoid.Consume()
+	var theVoid = enemyController.theVoid
+	var possible = []
+	for other in theVoid.tile.neighs:
+		if other.occupants.size()==0:
+			possible.append(other)
+		elif randf() < .4:
+			possible.append(other)
+	var consumed = Utility.choice(possible)
+	if consumed.occupants.size()>0:
+		for thing in consumed.occupants:
+			thing.die(self)
+	map.destroyNodeAndSpawn(consumed)
 	return true
 func triggerAll(trigger, argv):
 	for card in Play.cards:

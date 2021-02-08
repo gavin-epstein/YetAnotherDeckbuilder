@@ -323,18 +323,20 @@ material = SubResource( 1 )
 texture = ExtResource( 268 )
 script = ExtResource( 267 )
 
-[node name="Message" type="ColorRect" parent="Map/MeshInstance2D"]
+[node name="Message" type="CanvasLayer" parent="Map/MeshInstance2D"]
+
+[node name="Message" type="ColorRect" parent="Map/MeshInstance2D/Message"]
 visible = false
-margin_left = -560.114
-margin_top = 308.633
-margin_right = 590.89
-margin_bottom = 546.633
+margin_left = 399.886
+margin_top = 718.633
+margin_right = 1550.89
+margin_bottom = 956.633
 color = Color( 0.541176, 0.541176, 0.541176, 0.556863 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Message" type="RichTextLabel" parent="Map/MeshInstance2D/Message"]
+[node name="Message" type="RichTextLabel" parent="Map/MeshInstance2D/Message/Message"]
 margin_left = 3.0
 margin_top = 58.2299
 margin_right = 2311.0
@@ -407,7 +409,7 @@ script = ExtResource( 2 )
 position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 120
+frame = 24
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -437,7 +439,7 @@ script = ExtResource( 4 )
 position = Vector2( 1181.33, 662.658 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 119
+frame = 23
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -505,7 +507,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 83
+frame = 113
 playing = true
 script = ExtResource( 264 )
 
