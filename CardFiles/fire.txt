@@ -6,6 +6,7 @@ trigger(onPlay, repeat((do(purge((select(Hand,true,"-",1,true))))),10));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 rarity(1);
+image("res://Images/CardArt/Katachron.png")
 cost(0);
 
 title("Fireball!");

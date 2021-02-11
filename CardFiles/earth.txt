@@ -51,3 +51,12 @@ trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(draw($Draw)))));
 removetrigger(endofturn, true, 6)
 rarity(2);
 image("res://Images/CardArt/BountifulSoil.png")
+
+title(Stonewall);
+cost(0);
+types(earth);
+$Block=12
+text("Gain $Block block. Add 2 stones to your hand. Discard from play when you draw any card containing 'Stone'");
+trigger(onPlay, do(block($Block)))
+trigger(onPlay, repeat( (do(create("Stone",Hand))),2))
+removeTrigger(cardDrawn, (hasName(argv[0],"Stone")),1)

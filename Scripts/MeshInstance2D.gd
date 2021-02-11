@@ -238,7 +238,7 @@ func destroyNodeAndSpawn(node):
 	doPhysics(1.5)
 	
 	
-func getTiles(tile,dist,property,terrains):
+func getTiles(tile,dist:int,property,terrains):
 	var possible
 	selectableNodes  = []
 	if dist > 20:

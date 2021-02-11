@@ -398,6 +398,28 @@ __meta__ = {
 [node name="Reaction" type="Node2D" parent="CardController"]
 script = ExtResource( 275 )
 
+[node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Reaction"]
+position = Vector2( 1690.2, 828.659 )
+scale = Vector2( 0.13101, 0.13101 )
+frames = SubResource( 3 )
+frame = 78
+playing = true
+
+[node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
+margin_left = 62.5
+margin_top = 963.0
+margin_right = 341.5
+margin_bottom = 1218.0
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]10[/center]"
+text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Play" type="Node2D" parent="CardController"]
 script = ExtResource( 5 )
 
@@ -409,14 +431,14 @@ script = ExtResource( 2 )
 position = Vector2( 71.9874, 662.722 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 24
+frame = 78
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
-margin_left = 41.6667
-margin_top = 642.0
-margin_right = 320.667
-margin_bottom = 897.0
+margin_left = 1098.78
+margin_top = 529.235
+margin_right = 1377.78
+margin_bottom = 784.235
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -436,10 +458,10 @@ scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 4 )
 
 [node name="AnimatedSprite2" type="AnimatedSprite" parent="CardController/Discard"]
-position = Vector2( 1181.33, 662.658 )
+position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 23
+frame = 77
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -507,7 +529,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 113
+frame = 41
 playing = true
 script = ExtResource( 264 )
 
@@ -527,14 +549,14 @@ __meta__ = {
 }
 
 [node name="EndTurn" type="Sprite" parent="CardController"]
-position = Vector2( 1700.75, 835.998 )
+position = Vector2( 1468.75, 835.998 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 265 )
 
 [node name="EndTurnButton" type="Area2D" parent="CardController/EndTurn"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
-position = Vector2( -8.05566, 68.4614 )
+position = Vector2( -16.9785, 59.5385 )
 shape = SubResource( 7 )
 [connection signal="input_event" from="Map/MeshInstance2D/MapArea" to="Map/MeshInstance2D" method="_on_MapArea_input_event"]
 [connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]

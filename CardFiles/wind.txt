@@ -55,7 +55,7 @@ image("res://Images/CardArt/WindTurbine.png");
 title(Sifting Breath);
 cost(1);
 types(wind);
-rarity(3);
+rarity(2);
 $Draw=1
 removetrigger(endofturn,true,6);
 text("When you would draw cards, draw $Draw extra then discard a card");
@@ -86,3 +86,9 @@ trigger(onPlay, do(draw,($Draw),false))
 text("Move $Move, draw $Draw")
 image("res://Images/CardArt/Quickstep.png")
 
+title(Sidestep);
+cost(0);
+types(wind,dodge)
+rarity(4)
+trigger(onPlay,do(createByMod,(("Dodge"), Reaction)));
+trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));

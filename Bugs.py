@@ -28,9 +28,9 @@ card 1 in hand onclick not working well
 #icon z-index should be on top of other cards
 #icon growth x/y switched
 #create should update display of created card
-??mossy boys not appearing in pairs - summon not working in
-    when new tiles are added, they haven't triangulated yet.
-        Move summon neighbor effects to start of turn
+##??mossy boys not appearing in pairs - summon not working in
+##    when new tiles are added, they haven't triangulated yet.
+##        Move summon neighbor effects to start of turn
 #bread knife not purging
 #type icon move down like 200
 #Attack icon should flip vertically
@@ -44,14 +44,15 @@ card 1 in hand onclick not working well
 #fireball removeTrigger
 #add numbers to status icons
 #numbers not showing up
-add number background to status icons
+add number background to status icon numbers
 #black lettuce card art
 pentaract not voiding
 #dark recipe 2 cost -> 1 cost, or buff the heal
 pentaract move failed to dehighlight
 #change scaling to fixed aspect ratio
-?Fuse not ticking down(visually) (start of turn update display)
-?choose message needs to be on top on top
-
-OVERHAUL ENEMY LOGIC
+#Fuse not ticking down(visually) (start of turn update display)
+#choose message needs to be on top on top
+#OVERHAUL ENEMY LOGIC
+cutting board image
+cleansing water not working?
 

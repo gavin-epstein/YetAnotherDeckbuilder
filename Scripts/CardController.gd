@@ -176,7 +176,7 @@ func cardreward(rarity, count):
 	return true
 
 func purge(card):
-	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card):
+	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card):
 		card.queue_free()
 		return true
 	return false
@@ -360,10 +360,11 @@ func damage(amount, types, targets,distance, tile =null):
 			continue
 		var unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
-		if dmg.size() > 1 and dmg[1] == "kill":
-			lastPlayed.Triggered("slay",[unit])
-		if dmg.size()>0:
-			lastPlayed.Triggered("attack",dmg)
+		if lastPlayed !=null:
+			if dmg.size() > 1 and dmg[1] == "kill":
+				lastPlayed.Triggered("slay",[unit])
+			if dmg.size()>0:
+				lastPlayed.Triggered("attack",dmg)
 			 
 	return true
 func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
@@ -478,3 +479,17 @@ func clearAllStatuses(tiles = "Player"):
 			for stat in unit.status:
 				unit.setStatus(stat, 0)
 	
+func Reaction(amount:float)-> float:
+	if amount < 1:
+		return 0
+	if $Reaction.cards.size() == 0:
+		return amount
+	var card = $Reaction.getCard(0)
+	setVar(card,"DamageTaken", amount)
+	
+	var results = card.Triggered("onReaction",[card])
+	if results is GDScriptFunctionState:
+		results = yield(results,"completed")
+	amount = getVar(card, "DamageTaken")
+	$Reaction.remove_card(card)
+	return amount

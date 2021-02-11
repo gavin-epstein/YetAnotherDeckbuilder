@@ -213,19 +213,47 @@ func execute(code, argv):
 			arg = yield(arg, "completed")
 		
 		args.append(arg)
-		args.append(code[1][1])
-		arg = processArgs(code[1][2],argv)
-		if arg is GDScriptFunctionState:
-			arg = yield(arg, "completed")
-		args.append(arg)
-		if code[1].size()>3:
-			arg = processArgs(code[1][3],argv)
+		if self.has_method("isCard"):
+			arg = code[1][1]
+		else:
+			arg = processArgs(code[1][1],argv)
 			if arg is GDScriptFunctionState:
-				arg = yield(arg,"completed")
+				arg = yield(arg, "completed")
+		args.append(arg)
+		for i in range (2,7):
+			if code[1].size()>i:
+				arg = processArgs(code[1][i],argv)
+				if arg is GDScriptFunctionState:
+					arg = yield(arg,"completed")
+				args.append(arg)
 		var ret = controller.callv("select", args)
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed")
 		return ret
+	elif code[0] == "*":
+		var arg1 = processArgs(code[1], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[2], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		if arg1 != null and arg2 !=null:
+			return arg1*arg2
+		else:
+			return 0
+	elif code[0] == "+":
+		var arg1 = processArgs(code[1], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[2], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		if arg1 != null and arg2 !=null:
+			return arg1+arg2
+		else:
+			return 0
 		
 	else:
 		#assert(false, code[0] + " not a valid command")
@@ -250,8 +278,12 @@ func processArgs(arg, argv):
 			return controller.enemyController.windDirection
 		if arg == "null":
 			return null
-		if arg == "strength":
+		if arg == "strength" and self.get("strength")!=null :
 			return self.get("strength")
+		if arg == "range" and self.get("range")!=null :
+			return self.get("range")
+		if arg == "speed" and self.get("speed")!=null :
+			return self.get("speed")
 		return arg
 	elif arg is Array:
 		var ret = execute(arg, argv)
