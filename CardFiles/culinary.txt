@@ -40,7 +40,7 @@ $Times=2
 types(culinary,attack);
 text("Deal $Damage culinary slash damage at $Range range to $Times targets. Purge");
 trigger(onPlay, repeat((do(damage, ($Damage,(culinary,slash),(any),$Range),false)),$Times));
-trigger(onPlay, do(purge(self)));
+trigger(onPlay, do(purge(self)));l
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
 rarity(0);
@@ -55,6 +55,7 @@ trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
 removetrigger(endofturn, true, 1);
 text("Gain $Block block and add a random kitchen knife to your hand");
 rarity(2);
+image("res://Images/CardArt/CuttingBoard.png")
 
 title("Cheese Grater");
 cost("1")

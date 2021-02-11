@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 6;
+var maxdifficulty = 15;
 var map
 var cardController
 var units=[]
@@ -66,6 +66,8 @@ func Summon(tile, unitname):
 	print("summoning"+unit.title)
 	addUnit(unit, tile)
 func Attack(attacker, target):
+	if target  == null:
+		return false
 	var damage = attacker.getStrength()
 	var types = attacker.damagetypes
 	var res = target.takeDamage(damage, types, attacker)
@@ -91,13 +93,16 @@ func heal(unit, amount):
 func countNames(loc, name) -> int:
 	var count = 0
 	for unit in units:
+		if unit == null:
+			units.erase(unit)
+			continue
 		if unit.hasName(name):
 			count+=1
 	return count
 func select(targets,distance,tile):
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
-	if tile == "Player" or tile == null:
+	if (tile is String and tile == "Player") or tile == null:
 		tile = enemyController.Player.tile
 	var enemies = []
 	if targets[0] is int:
@@ -110,7 +115,7 @@ func select(targets,distance,tile):
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
 	lastTargets = enemies
-	return enemies
+	return enemies[0]
 func getTileInDirection(tile, dir1,dir2=0):
 	if dir1 is Vector2:
 		return map.getTileInDirection(tile, dir1)
@@ -132,3 +137,9 @@ func MoveAndAttack(unit,target):
 				Action("move", [unit, nextTile])
 			else:
 				Action("Attack",[unit, nextTile.occupants[0]])
+func setStatus(tile, statname, val):
+	if tile.occupants.size() > 0:
+		tile.occupants[0].setStatus(statname, val)
+func addStatus(tile, statname, val):
+	if tile.occupants.size() > 0:
+		tile.occupants[0].addStatus(statname, val)

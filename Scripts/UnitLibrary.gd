@@ -7,7 +7,9 @@ var unittemplate = load("res://Unit.tscn")
 func _ready() -> void:
 	pass
 func Load() -> void:
-	loadUnitsFromFile("res://UnitFiles/units01.txt")
+	var res = loadUnitsFromFile("res://UnitFiles/units01.txt")
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	loadIcons("res://Images/StatusIcons/",icons)
 	loadIcons("res://Images/IntentIcons/",intenticons)
 func getRandomEnemy(difficulty, terrain):

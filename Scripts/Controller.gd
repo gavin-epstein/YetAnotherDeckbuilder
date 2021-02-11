@@ -40,6 +40,9 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 			ind = 0
 			while enemyController.units.size() > ind:
 				var unit = enemyController.units[ind]
+				if unit == null:
+					enemyController.units.erase(unit)
+					continue
 				var res2 = unit.Triggered(method,argv)
 				if res is GDScriptFunctionState:
 					res2 = yield(res2,"completed")

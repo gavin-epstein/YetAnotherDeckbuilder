@@ -1,12 +1,11 @@
 extends Node2D
-const xdiff = 900
+const xdiff = 700
 
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
 func updateDisplay(intents:Array,icons:Dictionary):
-	print("intenting: " +str(intents))
-	var pos = Vector2(-1438,-2187)
+	var pos = Vector2(-1038,-2187)
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()

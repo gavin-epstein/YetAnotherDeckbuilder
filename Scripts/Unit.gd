@@ -17,7 +17,7 @@ var tile
 var nextTurn =[]
 var image
 var sight = 40
-const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength"]
+const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 func _ready() -> void:
 	onSummon()
 func onSummon()->void:
@@ -41,7 +41,9 @@ func onSummon()->void:
 				unit.health = sumHealth
 				unit.updateDisplay()
 	if self.image!=null:
+		var sc = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
+		$Image.scale = Vector2(sc,sc)
 	self.Triggered("onSummon",[])
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
@@ -97,6 +99,10 @@ func takeDamage(amount,types, attacker):
 	for atype in types:
 		if status.has("vulnerable:"+atype):
 			amount = amount*1.5
+			
+	if self == controller.Player:
+		amount = controller.cardController.Reaction(amount)		
+			
 	if amount > 0:
 		if armor > 0:
 			amount =max(amount -  armor, 0)
@@ -167,7 +173,7 @@ func updateDisplay():
 	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
 	$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
 func die(attacker):
-	if self.difficulty > 0:
+	if self.difficulty > 1:
 		get_parent().cardController.Action("create",["Common Loot","Discard"])
 	if status.has("supplying") and attacker != null:
 		controller.gainStrength(attacker,self.strength)
@@ -176,13 +182,14 @@ func die(attacker):
 	if status.has("explosive"):
 		#damage all adjacent enemies
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
-			if node.occupants[0] != self:
+			if node.occupants.size()>0 and node.occupants[0] != self:
 				node.occupants[0].takeDamage(status.explosive,("explosive"),self)
 	
 	self.visible = false
 	tile.occupants.erase(self)
 	if get_parent().units.find(self)==-1:
-		assert(false, "failure to die properly" )
+		print(self.title + " failed to die well")
+		#assert(false, "failure to die properly" )
 	get_parent().units.erase(self)
 	yield(get_tree().create_timer(1),"timeout")
 	queue_free()
