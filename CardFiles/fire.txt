@@ -10,7 +10,7 @@ image("res://Images/CardArt/Katachron.png")
 cost(0);
 
 title("Fireball!");
-cost(6);
+cost(5);
 types(fire, attack)
 $Damage=20
 $Range=2
@@ -30,13 +30,16 @@ types("fire");
 removetrigger(endofturn, true, 4);
 rarity(2);
 
-title(Lump of Coal);
+title(Coal);
 cost("-");
 types(earth,fire);
-text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(draw,(3),false))))
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(gainEnergy,(2),false))))
-trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(repeat((do(voided,( (select(Hand,(hasname(self,"Lump of Coal")),"Void a Lump of Coal")),Hand),false)),3))));
+#text("Unplayable. When you draw your third lump of coal in your hand, void all 3, draw 3 cards and gain 2 energy.");
+#trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(draw,(3),false))))
+#trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(do(gainEnergy,(2),false))))
+#trigger(onDraw,if((countName(Hand,"Lump of Coal")>2),(repeat((do(voided,( (select(Hand,(hasname(self,"Lump of Coal")),"Void a Lump of Coal")),Hand),false)),3))));
+text("Unplayable. When voided draw card and gain an energy")
+trigger(onVoided, gainEnergy(1))
+trigger(onVoided, draw(1))
 rarity(0);
 modifiers(unplayable)
 removetrigger(never, true, 0);
@@ -67,8 +70,44 @@ image("res://Images/CardArt/UndyingEmber.png");
 title("Char");
 cost(1);
 types(fire);
-text("When you void a card, add a Lump of Coal to your discard pile");
+text("When you void a card, add a Coal to your discard pile.");
 rarity(4);
 trigger(voided,do(create,("Lump of Coal",Discard)));
-removetrigger(voided,true,7);
+removetrigger(voided,true,4);
 
+title("Spark");
+$Damage=4
+$Draw=1
+$Range=2
+types(fire,attack)
+text("Deal $Damage fire damage, range $Range, then draw $Draw")
+trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
+trigger(onPlay,do(draw($Draw)))
+removetrigger(endofturn, true,1)
+rarity(6)
+cost(0)
+image("res://Images/CardArt/Spark.png");
+
+title("Mark of the Phoenix");
+$Damage=4
+$Increment=7
+$Range=1
+types(fire, attack)
+cost(3)
+trigger(onVoided,do(addVar(self,Damage,$Increment)))
+trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
+removetrigger(endofturn, true,1)
+text("Deal $Damage fire damage, range $Range. When voided, increase this card's damage by $Increment")
+rarity(1)
+
+title("Firewall")
+$Block=20
+$Status=7
+cost(1)
+types(fire)
+rarity(3)
+trigger(onPlay, do(block($Block)))
+trigger(onPlay, do(addStatus("immune:fire",$Status)))
+trigger(onPlay, do(voided(self,Play)))
+text("Block $Block, gain $Status turns of immunity to fire damage. Void")
+removetrigger(endofturn, true, 0);

@@ -22,5 +22,5 @@ position = Vector2( -1827.99, -3090.24 )
 texture = ExtResource( 4 )
 
 [node name="Buff" type="Sprite" parent="Intent"]
-position = Vector2( -1003.68, -3175.88 )
+position = Vector2( -995.44, -3175.88 )
 texture = ExtResource( 5 )

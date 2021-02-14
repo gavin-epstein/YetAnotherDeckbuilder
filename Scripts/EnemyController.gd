@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 15;
+var maxdifficulty = 4;
 var map
 var cardController
 var units=[]
@@ -39,7 +39,7 @@ func addPlayerAndVoid():
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
 func addUnit(unit, node):
-	unit.scale = Vector2(.15,.15);
+	unit.scale = Vector2(.12,.12);
 	node.occupants.append(unit);
 	unit.tile = node
 	unit.position = node.position
@@ -62,12 +62,18 @@ func enemyTurn():
 	for unit in units:
 		unit.endOfTurn()	
 func Summon(tile, unitname):
+	if tile ==null:
+		return false
 	var unit = $UnitLibrary.getUnitByName(unitname)
 	print("summoning"+unit.title)
 	addUnit(unit, tile)
 func Attack(attacker, target):
 	if target  == null:
 		return false
+	if not target.has_method("isUnit"):
+		if target.occupants.size() ==0:
+			return false
+		target= target.occupants[0]
 	var damage = attacker.getStrength()
 	var types = attacker.damagetypes
 	var res = target.takeDamage(damage, types, attacker)
@@ -129,17 +135,34 @@ func MoveAndAttack(unit,target):
 				Action("move", [unit, nextTile])
 			else:
 				Action("Attack",[unit, nextTile.occupants[0]])
+				break
 	else:
 		var targets = map.selectAll(unit.tile,unit.sight,target,["any"])
 		for _i in range(unit.speed):
-			nextTile = map.getTileClosestToSet(unit.tile,targets)
-			if nextTile.occupants.size() ==0:
-				Action("move", [unit, nextTile])
+			var enemy = map.selectRandom(unit.tile,unit.attackrange,target,["any"])
+			if enemy!=null:
+				Action("Attack",[unit, enemy])
+				break
 			else:
-				Action("Attack",[unit, nextTile.occupants[0]])
+				nextTile = map.getTileClosestToSet(unit.tile,targets)
+				if nextTile.occupants.size() ==0:
+					Action("move", [unit, nextTile])
+				else:
+					break
+				
 func setStatus(tile, statname, val):
 	if tile.occupants.size() > 0:
 		tile.occupants[0].setStatus(statname, val)
 func addStatus(tile, statname, val):
 	if tile.occupants.size() > 0:
 		tile.occupants[0].addStatus(statname, val)
+func clearAllStatuses(tiles = "Player"):
+	if tiles is String and tiles  == "Player":
+		tiles = [enemyController.Player.tile]
+	if not tiles is Array:
+		tiles = [tiles]
+	for tile in tiles:
+		for unit in tile.occupants:
+			for stat in unit.status:
+				unit.setStatus(stat, 0)
+	

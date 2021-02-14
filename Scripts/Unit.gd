@@ -17,6 +17,7 @@ var tile
 var nextTurn =[]
 var image
 var sight = 40
+var attackrange = 1
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 func _ready() -> void:
 	onSummon()
@@ -88,6 +89,10 @@ func takeDamage(amount,types, attacker):
 	#thorns
 	if (status.has("thorns") and status.thorns is int and attacker !=null):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
+	if "crush" in types and armor >0:
+		armor-=1
+	if "slash" in types and block == 0 and armor == 0:
+		addStatus("bleed",1)
 	for atype in types:
 		if status.has("immune:"+atype):
 			amount = 0
@@ -142,6 +147,10 @@ func startOfTurn():
 	block = 0;
 	if status.has("fuse"):
 		addStatus("explosive",1)
+	if status.has("bleed"):
+		self.health -= status.get("bleed")
+		if self.health <=0:
+			die(null)
 func endOfTurn():
 	if status.has("fuse") and status.fuse ==1:
 		die(null)
@@ -241,6 +250,8 @@ func loadUnitFromString(string):
 				spawnableterrains[terrain] = true
 		elif parsed[0] == "sight":
 			sight = parsed[1][0]
+		elif parsed[0] == "range":
+			attackrange = parsed[1][0]
 func getIntents():
 	if not triggers.has("turn"):
 		return []
@@ -289,3 +300,5 @@ func getStrength():
 	if status.has("weak"):
 		ret*= .5
 	return ret
+func isUnit()->bool:
+	return true

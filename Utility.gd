@@ -13,7 +13,7 @@ static func parseCardCode(string):
 		if letter == ")":
 			parenstack -= 1
 		
-		if parenstack > 0 or regex.search(letter) or letter in ["[","]","-","$","*","+"] :
+		if parenstack > 0 or regex.search(letter) or letter in ["[","]","-","$","*","+","."] :
 			currenttoken+=letter #if its a letter, or in parenthesis, smash on the current token
 		elif instring:
 			if not letter == '"':
@@ -40,6 +40,8 @@ static func parseCardCode(string):
 		
 		if not token is Array and token.is_valid_integer():
 			newtokens.append(int(token))
+		elif not token is Array and token.is_valid_float():
+			newtokens.append(float(token))
 		elif (token is String and token != "") or token is Array :
 			newtokens.append(token)
 		

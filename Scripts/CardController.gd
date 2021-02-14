@@ -36,11 +36,15 @@ func Load()-> void:
 	map = get_parent().get_node("Map/MeshInstance2D")
 	enemyController = get_parent().get_node("EnemyController")
 	self.updateDisplay()
-	for _i in range(10):
-		
+	for _i in range(2):
 		Deck.add_card(Library.getCardByName("Common Loot"))
-		
-	#shuffle()
+	for _i in range(3):
+		Deck.add_card(Library.getCardByName("Slash"))
+		Deck.add_card(Library.getCardByName("Defend"))
+	Deck.add_card(Library.getCardByName("Crossbow"))
+	Deck.add_card(Library.getCardByName("Dash"))
+	Deck.add_card(Library.getCardByName("Lunge"))
+	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
 		yield(step,"completed")
@@ -167,6 +171,7 @@ func updateDisplay():
 	Deck.updateDisplay()
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
+	$Reaction.updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
 	
@@ -212,13 +217,13 @@ func create(card, loc):
 		card.deepcopy(added)
 	loc.add_card(added)
 	added.updateDisplay()
-	return true
+	return added
 func createByMod(modifiers, loc):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
 	
 	loc.add_card(added)
-	return true
+	return added
 	
 func gainEnergy(num):
 	Energy += num
@@ -226,8 +231,11 @@ func gainEnergy(num):
 	return true
 	
 func voided(card, loc):
-	return move(loc, "Voided", card)
 	
+	if move(loc, "Voided", card):
+		card.Triggered("onVoided",[self])
+		return true
+	return false
 
 func endofturn():
 	enemyController.maxdifficulty+=1
@@ -405,7 +413,7 @@ func heal(amount):
 func getVar(card, varname):
 	if card == null:
 		return false
-	return card.vars("$"+varname);
+	return card.vars["$"+varname];
 func summon(unitName, targets, distance) :
 	var terrains
 	var locs = []
@@ -493,3 +501,5 @@ func Reaction(amount:float)-> float:
 	amount = getVar(card, "DamageTaken")
 	$Reaction.remove_card(card)
 	return amount
+func voidshift():
+	Action("devoidAll",[])

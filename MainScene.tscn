@@ -402,15 +402,15 @@ script = ExtResource( 275 )
 position = Vector2( 1690.2, 828.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 78
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
-margin_left = 62.5
-margin_top = 963.0
-margin_right = 341.5
-margin_bottom = 1218.0
-rect_scale = Vector2( 0.2, 0.2 )
+margin_left = 1606.0
+margin_top = 793.141
+margin_right = 2151.0
+margin_bottom = 1056.14
+rect_scale = Vector2( 0.3, 0.3 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
@@ -428,17 +428,17 @@ scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Deck"]
-position = Vector2( 71.9874, 662.722 )
+position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 78
+frame = 84
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
-margin_left = 1098.78
-margin_top = 529.235
-margin_right = 1377.78
-margin_bottom = 784.235
+margin_left = 43.9908
+margin_top = 617.167
+margin_right = 322.991
+margin_bottom = 872.167
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -461,13 +461,13 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 77
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
-margin_left = 1152.33
+margin_left = 1105.15
 margin_top = 642.334
-margin_right = 1431.33
+margin_right = 1384.15
 margin_bottom = 889.334
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
@@ -511,10 +511,10 @@ script = ExtResource( 137 )
 position = Vector2( 1769.42, 763.118 )
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
-margin_left = 1748.18
-margin_top = 743.131
-margin_right = 2027.18
-margin_bottom = 990.131
+margin_left = 1819.19
+margin_top = 862.371
+margin_right = 2098.19
+margin_bottom = 1109.37
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
@@ -529,7 +529,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 41
+frame = 47
 playing = true
 script = ExtResource( 264 )
 

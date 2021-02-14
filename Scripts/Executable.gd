@@ -220,6 +220,7 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg = yield(arg, "completed")
 		args.append(arg)
+
 		for i in range (2,7):
 			if code[1].size()>i:
 				arg = processArgs(code[1][i],argv)
@@ -273,15 +274,17 @@ func processArgs(arg, argv):
 		if arg == "tile" and self.get("tile")!=null:
 			return self.tile
 		if arg == "Player":
-			return controller.enemyController.Player.tile
+			if controller.enemyController.Player !=null:
+				return controller.enemyController.Player.tile
+			return null
 		if arg == "windDirection":
 			return controller.enemyController.windDirection
 		if arg == "null":
 			return null
 		if arg == "strength" and self.get("strength")!=null :
 			return self.get("strength")
-		if arg == "range" and self.get("range")!=null :
-			return self.get("range")
+		if arg == "range" and self.get("attackrange")!=null :
+			return self.get("attackrange")
 		if arg == "speed" and self.get("speed")!=null :
 			return self.get("speed")
 		return arg

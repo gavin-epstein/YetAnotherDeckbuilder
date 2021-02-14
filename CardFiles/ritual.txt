@@ -28,6 +28,7 @@ trigger(play,if((count(Play, ritual) > 11), (do(cardreward,(2,3), false))));
 removetrigger(play, (count(Play, ritual) > 11), 1);
 cost(2);
 image("res://Images/CardArt/RitualOfCreation.png");
+modifiers(unique)
 
 title(Pentaract);
 types(ritual);
@@ -61,7 +62,7 @@ cost(0)
 rarity(0)
 $Damage=5
 $Range=5
-text("Deal $Damage damage, at a $Range of range. If this kills a unit add another broken blade to your hand. On remove from play, purge")
+text("Deal $Damage damage, at a range of $Range. If this kills a unit add another broken blade to your hand. On remove from play, purge")
 trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 trigger(onRemoveFromPlay, do(purge(self)))
@@ -70,9 +71,12 @@ image("res://Images/CardArt/BrokenBlade.png")
 
 title("Witch's Cauldron")
 cost(1)
+types(ritual)
 rarity(1)
-$RitualCount = 7
-text("When you have $RitualCount ritual cards in play, void this and add 3 random potions to your hand")
-trigger(play,if((count(Play, ritual) > $RitualCount), (repeat(do(createByMod((potion),Hand))),3)));
+$RitualCount=7
+$Times=3
+text("When you have $RitualCount ritual cards in play, void this and add $Times random potions to your hand")
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat(do(createByMod((potion),Hand))),$Times)));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 trigger(onRemoveFromPlay,do(voided(self, Discard)))
+image("res://Images/CardArt/WitchsCauldron.png")

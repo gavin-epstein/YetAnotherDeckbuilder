@@ -55,7 +55,7 @@ types(void);
 modifiers(void);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
+trigger(onRemoveFromPlay,do(voidshift()));
 trigger(endofturn,do(consume()));
 removetrigger(consume,true,7);
 text("At the end of your turn, The Void grows. On discard from play, transform");
@@ -69,7 +69,7 @@ modifiers(void);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
 trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
+trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(consume,true,10);
 text("When you play an attack, The Void grows. On discard from play, transform");
 rarity(0);
@@ -82,9 +82,59 @@ modifiers(void);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(death,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
-trigger(onRemoveFromPlay,do(devoidAll()));
+trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(consume,true,4);
 text("When a unit dies, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/TheVoid/frame000.png")
+
+title("Dash");
+cost(1);
+types(starter,movement)
+text("Move $Move")
+$Move=2
+rarity(0)
+trigger(onPlay, do(movePlayer($Move)))
+removetrigger(endofturn,true,1)
+
+title("Defend")
+cost(1);
+types(starter)
+$Block=4
+text(Block $Block)
+trigger(onPlay, do(block($Block)))
+removetrigger(endofturn,true,1)
+rarity(0)
+image("res://Images/CardArt/Defend.png")
+
+title("Slash")
+cost(1)
+types(starter,attack)
+$Damage=5
+$Range=2
+text(Deal $Damage slash damage, range of $Range)
+trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range)))
+removetrigger(endofturn,true,1)
+rarity(0)
+
+title("Crossbow")
+cost(1)
+types(starter,attack)
+$Damage=5
+text(Deal $Damage stab damage, at any range)
+trigger(onPlay, do(damage, ($Damage,(stab),(any),40)))
+removetrigger(endofturn,true,2)
+rarity(0)
+
+title("Lunge")
+cost(1)
+$Damage=4
+$Move=1
+$Range=1
+types(starter,attack)
+text("Move $Move, then deal $Damage stab damage at range of $Range")
+trigger(onPlay, do(movePlayer($Move)))
+trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range)))
+removetrigger(endofturn,true,1)
+rarity(0)
 

@@ -92,3 +92,13 @@ types(wind,dodge)
 rarity(4)
 trigger(onPlay,do(createByMod,(("Dodge"), Reaction)));
 trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));
+text("Add a random dodge to your reaction pile, discard a random card")
+removetrigger(endofturn,true,2);
+
+title(Wind Dance);
+cost(1);
+types(wind,dodge,movement)
+rarity(2)
+trigger(move,do(createByMod,(("Dodge"), Reaction)));
+removetrigger(move,true,5);
+text("When you move, add a random dodge to your reaction pile");

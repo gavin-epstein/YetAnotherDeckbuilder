@@ -5,6 +5,7 @@ text("When you gain block add a random kitchen knife to your hand");
 rarity(4);
 trigger(block,do(createByMod,(("kitchenknife"), Hand)));
 removetrigger(block,true,4);
+image("res://Images/CardArt/knifeBlock.png")
 
 title("Paring Knife");
 cost("0");

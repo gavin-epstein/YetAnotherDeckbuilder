@@ -55,4 +55,5 @@ pentaract move failed to dehighlight
 #OVERHAUL ENEMY LOGIC
 cutting board image
 cleansing water not working?
-
+#range on broken blade
+Dash not working
