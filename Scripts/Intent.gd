@@ -5,7 +5,7 @@ const xdiff = 700
 # var a: int = 2
 # var b: String = "text"
 func updateDisplay(intents:Array,icons:Dictionary):
-	var pos = Vector2(-1038,-2187)
+	var pos = Vector2(-1038,-1987)
 	for child in get_children():
 		remove_child(child)
 		child.queue_free()

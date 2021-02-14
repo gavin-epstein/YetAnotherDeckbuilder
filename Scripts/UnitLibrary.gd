@@ -17,7 +17,7 @@ func getRandomEnemy(difficulty, terrain):
 		return null
 	var possible = []
 	for unit in units.values():	
-		if unit.difficulty <= difficulty and unit.difficulty != -1 and (terrain in unit.spawnableterrains or "any" in unit.spawnableterrains):
+		if unit.difficulty <= difficulty and unit.difficulty != -1 and (Utility.interpretTerrain(terrain) in unit.spawnableterrains or "any" in unit.spawnableterrains):
 			possible.append(unit)
 	if possible.size() > 0:
 		var other  = unittemplate.instance()

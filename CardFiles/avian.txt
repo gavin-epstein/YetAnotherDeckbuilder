@@ -28,3 +28,12 @@ types(ritual,avian,meme);
 removetrigger(never, true,0);
 cost(2);
 image("res://Images/CardArt/BirdMask.png");
+
+title(Flock Together);
+text("Summon a swallow for each avian card in play. void")
+rarity(2)
+types(summon, avian)
+cost(1);
+trigger(onPlay, repeat((do(summon("Barn Swallow",(any),2))) , ( count(Play,avian)) ));  
+trigger(onPlay, do(voided,(self, Play)));
+removetrigger(endofturn, true, 0);

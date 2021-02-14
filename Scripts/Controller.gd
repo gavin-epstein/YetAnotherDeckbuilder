@@ -9,7 +9,7 @@ func _ready() -> void:
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
 	var res
-	print(method +" "+ Utility.join(" ", argv))
+	#print(method +" "+ Utility.join(" ", argv))
 	if not silent:
 		for card in Play.cards:
 			if card.Interrupts(method, argv):
