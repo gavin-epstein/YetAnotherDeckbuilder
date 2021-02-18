@@ -38,8 +38,8 @@ func Load()-> void:
 	self.updateDisplay()
 	for _i in range(2):
 		Deck.add_card(Library.getCardByName("Common Loot"))
+		Deck.add_card(Library.getCardByName("Smack"))
 	for _i in range(3):
-		Deck.add_card(Library.getCardByName("Slash"))
 		Deck.add_card(Library.getCardByName("Defend"))
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
@@ -98,7 +98,9 @@ func play(card)->bool:
 		return false
 	elif card.cost is String and card.cost == "X":
 		setVar(card,"X",Energy)
+	self.releaseFocus(card)
 	Hand.remove_card(card)
+	Discard.remove_card(card)
 	Play.add_card(card)
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
@@ -159,6 +161,8 @@ func discardAll(silent = false):
 	return true
 	
 func discard(card, silent = false):
+	if card == null:
+		return false
 	if not silent:
 		card.Triggered("onDiscard", [card])
 	move("Hand", "Discard", card)
@@ -253,7 +257,12 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 		inputdelay = 0
 		Action("endofturn",[],false)
 		#Enemies go here
-		enemyController.enemyTurn()
+		takeFocus(self)
+		inputAllowed = false
+		var res = enemyController.enemyTurn()
+		yield(res,"completed")
+		inputAllowed = true
+		releaseFocus(self)
 		Action("startofturn", [], false)
 		
 		
@@ -320,6 +329,8 @@ func movePlayer(dist,terrains = ["any"]):
 		return false
 	enemyController.move(enemyController.Player, tile)
 	return true
+	#Targets
+	# ( [1/any/all], [(any)/(grass,sand)], -boss)
 func selectTiles(targets, distance, tile):
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
@@ -456,9 +467,10 @@ func consume():
 		elif randf() < .4:
 			possible.append(other)
 	var consumed = Utility.choice(possible)
-	if consumed.occupants.size()>0:
-		for thing in consumed.occupants:
-			thing.die(self)
+	
+	for thing in enemyController.units:
+		if thing.tile == consumed:
+			thing.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)
 	return true
 func triggerAll(trigger, argv):

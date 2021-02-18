@@ -1,6 +1,6 @@
 extends CardLocation
 
-
+const bannedtypes = ["attack", "movement","starter","loot"]
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
@@ -39,7 +39,20 @@ func generateReward(rarity, count = 3):
 	var types = []
 	for card in get_parent().Play.cards:
 		for type in card.types:
-			types.append(type)
+			if not type in bannedtypes:
+				types.append(type)
+	for card in get_parent().Discard.cards:
+		for type in card.types:
+			if not type  in bannedtypes:
+				types.append(type)
+	for card in get_parent().Deck.cards:
+		for type in card.types:
+			if not type  in bannedtypes:
+				types.append(type)
+	for card in get_parent().Hand.cards:
+		for type in card.types:
+			if not type  in bannedtypes:
+				types.append(type)
 	if types == []:
 		types = ["any"]
 	for _i in range(count):

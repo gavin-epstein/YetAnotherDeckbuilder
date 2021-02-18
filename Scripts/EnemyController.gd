@@ -17,14 +17,16 @@ func Load():
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
-	
-func nodeSpawned(node):
+func countDifficulty():
 	totaldifficulty = 0
+	for _i in units.count(null):
+		units.erase(null)
 	for unit in units:
-		if unit == null:
-			units.erase(unit)
-	for unit in units:
-		totaldifficulty += unit.difficulty
+		if unit!=null:
+			totaldifficulty += unit.difficulty
+
+func nodeSpawned(node):
+	countDifficulty()
 	var unit = $UnitLibrary.getRandomEnemy(maxdifficulty - totaldifficulty,node.terrain);
 	if unit !=null:
 		addUnit(unit,node)
@@ -39,8 +41,9 @@ func addPlayerAndVoid():
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
 func addUnit(unit, node):
-	unit.scale = Vector2(.12,.12);
-	node.occupants.append(unit);
+	unit.scale = Vector2(.2,.2);
+	if not unit.trap:
+		node.occupants.append(unit);
 	unit.tile = node
 	unit.position = node.position
 	add_child(unit)
@@ -50,7 +53,8 @@ func move(unit, node):
 	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
-		node.occupants.append(unit)
+		if not unit.trap:
+			node.occupants.append(unit)
 func enemyTurn():
 	for unit in units:
 		if unit == null:
@@ -59,8 +63,12 @@ func enemyTurn():
 		unit.startOfTurn()
 	for unit in units:
 		unit.Triggered("turn",[])
+		yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
 		unit.endOfTurn()	
+	countDifficulty()
+	if totaldifficulty < 1 :
+		cardController.Action("consume",[])
 func Summon(tile, unitname):
 	if tile ==null:
 		return false
@@ -83,7 +91,7 @@ func Attack(attacker, target):
 		attacker.Triggered("slay",[target])
 func gainMaxHealth(unit,amount):
 	unit.maxHealth +=amount
-	unit.health += amount
+	unit.changeHealth(amount)
 	unit.updateDisplay()
 func gainStrength(unit,amount):
 	unit.strength+=amount
@@ -95,7 +103,8 @@ func addBlock(unit,amount):
 	unit.block+=amount
 	unit.updateDisplay()
 func heal(unit, amount):
-	unit.health = min(unit.maxHealth, unit.health+amount)
+	amount = min(amount,unit.maxHealth - amount )
+	unit.changeHealth(amount)	
 func countNames(loc, name) -> int:
 	var count = 0
 	for unit in units:

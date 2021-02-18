@@ -22,6 +22,26 @@ trigger(onPlay, do(cardreward,(100,3),false));
 trigger(onPlay, do(purge,(self),false));
 removetrigger(endofturn, true, 0)
 
+title(Uncommon Loot);
+types(loot);
+image("res://Images/CardArt/UncommonLoot.png");
+rarity(0);
+cost(1);
+text("Choose 1 of 3 uncommon or better cards to add to your hand \n purge");
+trigger(onPlay, do(cardreward,(4,3),false));
+trigger(onPlay, do(purge,(self),false));
+removetrigger(endofturn, true, 0)
+
+title(Rare Loot);
+types(loot);
+image("res://Images/CardArt/RareLoot.png");
+rarity(0);
+cost(1);
+text("Choose 1 of 3 rare cards to add to your hand \n purge");
+trigger(onPlay, do(cardreward,(2,3),false));
+trigger(onPlay, do(purge,(self),false));
+removetrigger(endofturn, true, 0)
+
 title(Perfect Dodge)
 types(reaction)
 trigger(onReaction, do(setVar(self,DamageTaken,0)))
@@ -92,7 +112,7 @@ title("Dash");
 cost(1);
 types(starter,movement)
 text("Move $Move")
-$Move=2
+$Move=3
 rarity(0)
 trigger(onPlay, do(movePlayer($Move)))
 removetrigger(endofturn,true,1)
@@ -107,14 +127,15 @@ removetrigger(endofturn,true,1)
 rarity(0)
 image("res://Images/CardArt/Defend.png")
 
-title("Slash")
+title("Smack")
 cost(1)
 types(starter,attack)
 $Damage=5
 $Range=2
-text(Deal $Damage slash damage, range of $Range)
-trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range)))
+text(Deal $Damage crush damage, range of $Range)
+trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)))
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/Smack.png")
 rarity(0)
 
 title("Crossbow")
@@ -125,16 +146,17 @@ text(Deal $Damage stab damage, at any range)
 trigger(onPlay, do(damage, ($Damage,(stab),(any),40)))
 removetrigger(endofturn,true,2)
 rarity(0)
+image("res://Images/CardArt/Crossbow.png")
 
 title("Lunge")
 cost(1)
 $Damage=4
-$Move=1
+$Move=2
 $Range=1
 types(starter,attack)
 text("Move $Move, then deal $Damage stab damage at range of $Range")
 trigger(onPlay, do(movePlayer($Move)))
 trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range)))
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/Lunge.png")
 rarity(0)
-

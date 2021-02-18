@@ -2,12 +2,12 @@ extends MeshInstance2D
 class_name Map
 
 const maxFailedAttempts = 150
-const width = 960
-const height = 400
+const width = 800 #was 960
+const height = 400 #was 400
 const radius =1.5*max(width, height)
 #0 = cicrumcenter, 1 = centroid
 const CCinter = .33
-const minSqDist = 4000 *2
+const minSqDist = 4000 *4
 const maxSqDist = minSqDist*1.2
 signal mapGenerated
 signal nodeSelected
@@ -215,7 +215,12 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 					selectedNode = closest
 					emit_signal("nodeSelected")
 			cardController.releaseFocus(self)
-func doPhysics(time):
+		else:
+			var other  = cardController.focus
+			if other != null:
+				print("Focus is on ", cardController.focus.get("name"),": ", other.get("title"))
+			
+func doPhysics(time): 
 	print("Physics going")
 	cardController.takeFocus(self)
 	self.physics_on  = true
@@ -235,7 +240,7 @@ func destroyNodeAndSpawn(node):
 	var newpos = rand_range(.95,.8)* (sentinels[randi()%sentinels.size()].position)
 	addGridNode(newpos, getTerrain())	
 	triangulate()
-	doPhysics(1.5)
+	doPhysics(3)
 	
 	
 func getTiles(tile,dist:int,property,terrains):

@@ -1,7 +1,7 @@
 extends Node2D
 
 class_name GridNode
-const speed = 100
+const speed = 80
 var neighs = []
 var terrain:int
 var obstruction: bool
@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 			get_parent().destroyNodeAndSpawn(self)
 		#move toward destination
 		if (position - destination).length_squared() > 4:
-			position = position.linear_interpolate(destination, delta)
+			position = position.linear_interpolate(destination, min(1,delta))
 		#springyness
 		for neigh in neighs:
 			if true:

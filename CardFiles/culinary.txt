@@ -41,7 +41,7 @@ $Times=2
 types(culinary,attack);
 text("Deal $Damage culinary slash damage at $Range range to $Times targets. Purge");
 trigger(onPlay, repeat((do(damage, ($Damage,(culinary,slash),(any),$Range),false)),$Times));
-trigger(onPlay, do(purge(self)));l
+trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
 rarity(0);
@@ -78,4 +78,3 @@ text("Summon a Carrot on a random empty grass tile. When killed the carrot grant
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
 image("res://Images/CardArt/CarrotSeeds.png")
-
