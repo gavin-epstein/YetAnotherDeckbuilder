@@ -37,3 +37,12 @@ cost(1);
 trigger(onPlay, repeat((do(summon("Barn Swallow",(any),2))) , ( count(Play,avian)) ));  
 trigger(onPlay, do(voided,(self, Play)));
 removetrigger(endofturn, true, 0);
+
+title("Birds of a Feather");
+cost(2);
+text("Give all friendly units +1/+1. Add a Flock Together to your hand");
+trigger(onPlay, do(create("Flock Together",Hand)));
+trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
+trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
+rarity(1);
+removetrigger(endofturn,true,7);

@@ -8,6 +8,7 @@ const tilespeed  = 10
 var speed
 var spawnableterrains = {}
 var healthBarTemplate = preload("res://HealthBar.tscn")
+var healthChangeTemplate = preload("res://Units/healthChange.tscn")
 var healthBar
 var block = 0
 var armor = 0
@@ -18,6 +19,8 @@ var nextTurn =[]
 var image
 var sight = 40
 var attackrange = 1
+var trap = false #trans rights
+signal animateHealthChange
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 func _ready() -> void:
 	onSummon()
@@ -48,7 +51,7 @@ func onSummon()->void:
 	self.Triggered("onSummon",[])
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
-		self.position  += (tile.position - self.position)*tilespeed*delta
+		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
 	self.z_index = (500+position.y)/10;
 
 
@@ -78,6 +81,8 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	if self.trap:
+		return [0]
 	if self.health <=0:
 		return [0]
 	#set enemies on fire, if they are flammable and in water
@@ -120,7 +125,7 @@ func takeDamage(amount,types, attacker):
 			block = 0
 	
 		
-	health -= floor(amount)
+	changeHealth(-1*floor(amount))
 	if status.has("lifelink"):
 		for unit in get_parent().units:
 			if unit != null and unit.title == self.title:
@@ -148,11 +153,15 @@ func startOfTurn():
 	if status.has("fuse"):
 		addStatus("explosive",1)
 	if status.has("bleed"):
-		self.health -= status.get("bleed")
+		changeHealth( -1*status.get("bleed"))
 		if self.health <=0:
 			die(null)
 func endOfTurn():
+	if self.trap and self.tile.occupants.size() != 0:
+		self.Triggered("trap",[tile.occupants[0]])
 	if status.has("fuse") and status.fuse ==1:
+		die(null)
+	if status.has("expire") and status.expire == 1:
 		die(null)
 	for key in status:
 		if status[key] is int:
@@ -167,6 +176,8 @@ func updateDisplay():
 	healthBar.get_node("Block/Number").bbcode_text = "[center]"+str(block)+"[/center]"
 	healthBar.get_node("Armor/Number").bbcode_text = "[center]"+str(armor)+"[/center]"
 	healthBar.get_node("Attack/Number").bbcode_text = "[center]"+str(getStrength())+"[/center]"
+	if trap:
+		healthBar.get_node("Heart").visible = false
 	if block > 0:
 		healthBar.get_node("Block").visible = true
 	else:
@@ -182,7 +193,11 @@ func updateDisplay():
 	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
 	$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
 func die(attacker):
-	if self.difficulty > 1:
+	if difficulty > 10:
+		get_parent().cardController.Action("create",["Rare Loot","Discard"])
+	elif difficulty > 5:
+		get_parent().cardController.Action("create",["Uncommon Loot","Discard"])
+	elif self.difficulty > 1:
 		get_parent().cardController.Action("create",["Common Loot","Discard"])
 	if status.has("supplying") and attacker != null:
 		controller.gainStrength(attacker,self.strength)
@@ -204,6 +219,15 @@ func die(attacker):
 	queue_free()
 
 func addStatus(stat, val):
+	if stat == "health":
+		controller.Action("heal",[self, val])
+		return true
+	elif stat == "maxHealth":
+		controller.Action("gainMaxHealth", [self, val])
+		return true
+	elif stat == "strength":
+		controller.Action("gainStrength",[self, val])
+		return true
 	if val is int and val ==0:
 		return false
 	if not stat in status or val is bool:
@@ -252,6 +276,8 @@ func loadUnitFromString(string):
 			sight = parsed[1][0]
 		elif parsed[0] == "range":
 			attackrange = parsed[1][0]
+		elif parsed[0] == "trap":
+			trap = true
 func getIntents():
 	if not triggers.has("turn"):
 		return []
@@ -302,3 +328,12 @@ func getStrength():
 	return ret
 func isUnit()->bool:
 	return true
+func changeHealth(amount)-> void:
+	health += amount
+	var num = healthChangeTemplate.instance()
+	
+	self.add_child(num)
+	num.get_node("CanvasLayer/Control").rect_scale =  Vector2(.4,.4)
+	num.get_node("CanvasLayer").offset  = self.get_global_transform().get_origin()+Vector2(rand_range(-50,50),rand_range(-50,50))
+	num.number  =amount
+	emit_signal("animateHealthChange")

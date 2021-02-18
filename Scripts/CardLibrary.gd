@@ -44,7 +44,7 @@ func loadallcards(fname) -> int:
 			count+=1
 			card.controller = get_parent()
 			cardcode = ""
-			yield(get_tree().create_timer(.05), "timeout")
+			yield(get_tree().create_timer(.01), "timeout")
 			
 		if not ";" in line and line!="":
 			line = line+";"
@@ -80,6 +80,8 @@ func updateDisplay():
 func getRandom(maxRarity:int = 100, types = ["any"]):
 	if types.size() ==0:
 		types = ["any"]
+	types.erase("attack")
+	types.erase("movement")
 	var select = []
 	for card in cards:
 		for type in types:

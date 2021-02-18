@@ -14,7 +14,6 @@ func generate():
 			var sprite = Sprite.new()
 			sprite.texture = library.icons[type]
 			add_child(sprite)
-			
 			sprite.position = pos
 			pos += Vector2(0, ydiff)
 			if pos.y > ydiff * 8:

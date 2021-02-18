@@ -53,7 +53,12 @@ pentaract move failed to dehighlight
 #Fuse not ticking down(visually) (start of turn update display)
 #choose message needs to be on top on top
 #OVERHAUL ENEMY LOGIC
-cutting board image
+#cutting board image
 cleansing water not working?
 #range on broken blade
-Dash not working
+#Dash not working
+Add traps
+-fire walk
+
+
+

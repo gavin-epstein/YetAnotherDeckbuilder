@@ -4,13 +4,13 @@ trigger(play, if((hastype(argv[0],wind)),(do(draw,((count(Play, wind))),false)))
 types(wind, enchantment);
 removetrigger(play,(hastype(argv[0],wind)),6);
 image("res://Images/CardArt/WindWalk.png");
-rarity(3);
+rarity(1);
 cost(1);
 
 title(Wind Blast);
 $Damage=1
 $Move=1
-text(Deal $Damage wind damage to all enemies and push them $Move tile);
+text(Deal $Damage wind damage to all units and push them $Move tile);
 trigger(onPlay, do(damage, ($Damage,(wind),(all),50),false));
 trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
 removetrigger(endofturn, true, 1);
@@ -34,21 +34,21 @@ title(Wind Power);
 $Energy=1
 $Draw=1
 types(wind, mechanical,energy)
-text("when you discard 3 cards, draw $Draw, gain $Energy energy, and purge this card");
-removetrigger(discard, true, 3);
-trigger(onRemoveFromPlay, do(gainEnergy,($Energy), false));
-trigger(onRemoveFromPlay, do(draw,($Draw),false));
-trigger(onRemoveFromPlay, do(purge, (self), false));
+text("On discard draw $Draw, gain $Energy energy, and purge this card");
+trigger(onDiscard, do(gainEnergy,($Energy), false));
+trigger(onDiscard, do(draw,($Draw),false));
+trigger(onDiscard, do(purge, (self), false));
 cost(-);
+modifiers(unplayable)
 rarity(0);
 image("res://Images/CardArt/WindPower.png");
 
 title(Wind Turbine);
 types(wind,mechanical);
 cost(2);
-trigger(startofturn, do(create,("Wind Power",Play),false));
+trigger(startofturn, do(create,("Wind Power",Hand),false));
 removetrigger(endofturn,true,6);
-text("At the start of your turn, add a Wind Power to play");
+text("At the start of your turn, add a Wind Power to your hand");
 rarity(2);
 image("res://Images/CardArt/WindTurbine.png");
 
@@ -57,7 +57,7 @@ cost(1);
 types(wind);
 rarity(2);
 $Draw=1
-removetrigger(endofturn,true,6);
+removetrigger(draw,true,6);
 text("When you would draw cards, draw $Draw extra then discard a card");
 trigger(draw, do(draw,($Draw),true));
 trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
@@ -73,6 +73,7 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to u
 trigger(onPlay,do(purge(self)));
 text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
 removetrigger(endofturn, true, 0);
+image("res://Images/CardArt/WindHammer.png")
 
 title(Quickstep);
 cost(0);
@@ -95,10 +96,19 @@ trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));
 text("Add a random dodge to your reaction pile, discard a random card")
 removetrigger(endofturn,true,2);
 
-title(Wind Dance);
+title("Wind Dance");
 cost(1);
 types(wind,dodge,movement)
 rarity(2)
 trigger(move,do(createByMod,(("Dodge"), Reaction)));
 removetrigger(move,true,5);
 text("When you move, add a random dodge to your reaction pile");
+
+title("Storm");
+cost(4);
+rarity(2);
+$Damage=15
+trigger(onDiscard,do(play(self)));
+trigger(onPlay, do(damage, ($Damage,(wind),(all),1),false));
+text("Deal $Damage damage to all adjacent enemies. If this card is discarded, play it");
+removetrigger(endofturn, true,1);

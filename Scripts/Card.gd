@@ -50,6 +50,7 @@ func _process(delta: float) -> void:
 			if $Resizer.scale.x ==1:
 				z_index = 20
 				$AnimationPlayer.play("Grow")
+			yield($AnimationPlayer,"animation_finished")
 	else:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")

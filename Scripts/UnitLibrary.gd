@@ -52,7 +52,7 @@ func loadUnitsFromFile(fname):
 			self.units[unit.title]= unit
 			unit.controller = get_parent()
 			code = ""
-			yield(get_tree().create_timer(.01), "timeout")
+			
 		if not ";" in line and line!="":
 			line = line+";"
 		code+=line
