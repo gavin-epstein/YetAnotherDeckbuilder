@@ -62,8 +62,9 @@ func enemyTurn():
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		unit.Triggered("turn",[])
-		yield(get_tree().create_timer(.1), "timeout")
+		if unit != null:
+			unit.Triggered("turn",[])
+			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
 		unit.endOfTurn()	
 	countDifficulty()
@@ -84,6 +85,8 @@ func Attack(attacker, target):
 		target= target.occupants[0]
 	var damage = attacker.getStrength()
 	var types = attacker.damagetypes
+	attacker.playAnimation("attack")
+	target.playAnimation("defend")
 	var res = target.takeDamage(damage, types, attacker)
 	if res is GDScriptFunctionState:
 		res = yield(res, "completed")

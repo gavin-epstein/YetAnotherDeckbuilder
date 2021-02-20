@@ -111,3 +111,15 @@ trigger(onPlay, do(addStatus("immune:fire",$Status)))
 trigger(onPlay, do(voided(self,Play)))
 text("Block $Block, gain $Status turns of immunity to fire damage. Void")
 removetrigger(endofturn, true, 0);
+
+title("Flamewalk")
+$Move=1
+cost(1)
+types(fire)
+rarity(2)
+trigger(onPlay,do(setVar(self,lastTile,Player)))
+trigger(onPlay,do(move($Move)))
+trigger(onPlay,do(summon("Flame",(1),0,lastTile)))
+text(move $Move. Summon a flame on the tile you left)
+removetrigger(endofturn,true,1);
+

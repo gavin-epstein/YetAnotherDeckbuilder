@@ -60,4 +60,17 @@ text("Gain $Block block. Add 2 stones to your hand. Insert into your deck when y
 trigger(onPlay, do(block($Block)))
 trigger(onPlay, repeat( (do(create("Stone",Hand))),2))
 trigger(cardDrawn,if((hasName(argv[0],"Stone")), do(move(Play,Draw,self))))
-removeTrigger(cardDrawn, (hasName(argv[0],"Stone")),1)
+removetrigger(cardDrawn, (hasName(argv[0],"Stone")),1)
+rarity(4)
+
+title(Mine);
+cost(2);
+$Block=2
+types(earth,mechanical)
+text("When you draw an unplayable card, gain $Block block. Add a random unplayable card to each of your deck, hand, and discard")
+removetrigger(endofturn,true,10);
+trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(block($Block)))));
+trigger(onPlay,do(createByMod,(("unplayable"), Deck)));
+trigger(onPlay,do(createByMod,(("unplayable"), Hand)));
+trigger(onPlay,do(createByMod,(("unplayable"), Discard)));
+rarity(2)

@@ -20,6 +20,7 @@ var image
 var sight = 40
 var attackrange = 1
 var trap = false #trans rights
+var debug
 signal animateHealthChange
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 func _ready() -> void:
@@ -48,6 +49,7 @@ func onSummon()->void:
 		var sc = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
 		$Image.scale = Vector2(sc,sc)
+	playAnimation("idle")
 	self.Triggered("onSummon",[])
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
@@ -215,8 +217,13 @@ func die(attacker):
 		print(self.title + " failed to die well")
 		#assert(false, "failure to die properly" )
 	get_parent().units.erase(self)
-	yield(get_tree().create_timer(1),"timeout")
-	queue_free()
+	var res = playAnimation("die")
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
+		queue_free()
+	else:
+		yield(get_tree().create_timer(1),"timeout")
+		queue_free()
 
 func addStatus(stat, val):
 	if stat == "health":
@@ -242,6 +249,7 @@ func setStatus(stat, val):
 	else:
 		status[stat] = val
 func loadUnitFromString(string):
+	$AnimatedSprite.visible = false
 	var lines = string.split(";")
 	for line in lines:
 		if line == "" or line == " ":
@@ -278,6 +286,10 @@ func loadUnitFromString(string):
 			attackrange = parsed[1][0]
 		elif parsed[0] == "trap":
 			trap = true
+		elif parsed[0] == "animation":
+			callv("loadAnimation", parsed[1])
+			$Image.visible = false
+			$AnimatedSprite.visible = true
 func getIntents():
 	if not triggers.has("turn"):
 		return []
@@ -310,8 +322,13 @@ func deepcopy(other):
 			other.set(name, val);
 		else:
 			pass
-	
-	other.image = self.image
+	if $Image.visible:
+		other.image = self.image
+		other.get_node("AnimatedSprite").visible = false
+	else: 
+		other.get_node("Image").visible = false
+		other.get_node("AnimatedSprite").visible = true
+	other.get_node("AnimatedSprite").frames = $AnimatedSprite.frames
 	other.controller = self.controller
 	other.updateDisplay()
 	return other	
@@ -337,3 +354,46 @@ func changeHealth(amount)-> void:
 	num.get_node("CanvasLayer").offset  = self.get_global_transform().get_origin()+Vector2(rand_range(-50,50),rand_range(-50,50))
 	num.number  =amount
 	emit_signal("animateHealthChange")
+
+#Params
+#action - animation name: "idle", "attack","defend","move"
+#sheetframes, frames in order
+#size - size of one frame
+#count - dimentsions in frames of image
+#e.g.
+# [0] [1] [2]
+# [3] [4] [5]
+#size (1,1)
+#count (2,3)
+func playAnimation(action):
+	debug = $AnimatedSprite
+	if $AnimatedSprite.frames.has_animation(action):
+		$AnimatedSprite.play(action)
+	if not $AnimatedSprite.frames.get_animation_loop(action):
+		yield($AnimatedSprite,"animation_finished")
+		playAnimation("idle")
+		
+func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
+	if not size is Vector2:
+		size = Vector2(size[0],size[1])
+	if not count is Vector2:
+		count = Vector2(count[0],count[1])
+	var tex:Texture = load(file)
+	var sheet = []
+	for y in range(count.y):
+		for x in range(count.x):
+			var f = AtlasTexture.new()
+			f.atlas = tex
+			f.region = Rect2(size.x*x, size.y*y, size.x, size.y)
+			sheet.append(f)
+	var frames = $AnimatedSprite.frames
+	frames.add_animation(action)
+	for frame in sheetframes:
+		frames.add_frame(action,sheet[frame])
+	frames.set_animation_speed(action, animspeed)
+	if action =="idle":
+		frames.set_animation_loop(action,true)
+	else:
+		frames.set_animation_loop(action,false)
+	$AnimatedSprite.frames = frames
+	debug = $AnimatedSprite
