@@ -80,3 +80,12 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (repeat(do(createByMod((po
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 trigger(onRemoveFromPlay,do(voided(self, Discard)))
 image("res://Images/CardArt/WitchsCauldron.png")
+
+title("Ritual Summons")
+cost(1)
+types(ritual)
+$RitualCount=7
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+trigger(onRemoveFromPlay,do(voided(self, Discard)))
+trigger(play,if((count(Play, ritual) > $RitualCount), (do(summon("Imp",(any),1)))));
+text("When you have $RitualCount ritual cards in play, void this and summon an Imp");

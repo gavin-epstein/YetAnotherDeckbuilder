@@ -425,10 +425,11 @@ func getVar(card, varname):
 	if card == null:
 		return false
 	return card.vars["$"+varname];
-func summon(unitName, targets, distance) :
+func summon(unitName, targets, distance,tile="Player") :
 	var terrains
 	var locs = []
-	var tile = enemyController.Player.tile
+	if tile == "Player":
+		tile = enemyController.Player.tile
 	if targets.size() < 2:
 		terrains = ["any"]
 	else:
@@ -464,8 +465,8 @@ func consume():
 	for other in theVoid.tile.neighs:
 		if other.occupants.size()==0:
 			possible.append(other)
-		elif randf() < .4:
-			possible.append(other)
+	if possible.size() == 0:
+		possible = theVoid.tile.neighs
 	var consumed = Utility.choice(possible)
 	
 	for thing in enemyController.units:
