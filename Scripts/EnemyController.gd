@@ -1,9 +1,8 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 4;
+var maxdifficulty = 6;
 var map
-var cardController
 var units=[]
 var Player
 var theVoid
@@ -41,7 +40,9 @@ func addPlayerAndVoid():
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
 func addUnit(unit, node):
-	unit.scale = Vector2(.2,.2);
+	if node == null:
+		return false
+	unit.scale = Vector2(.17,.17);
 	if not unit.trap:
 		node.occupants.append(unit);
 	unit.tile = node
@@ -50,6 +51,11 @@ func addUnit(unit, node):
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
+	if node is Array:
+		if node.size() ==0:
+			return false
+		else:
+			node = node[0]
 	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
@@ -66,16 +72,22 @@ func enemyTurn():
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
-		unit.endOfTurn()	
+		if unit != null:
+			unit.endOfTurn()	
 	countDifficulty()
 	if totaldifficulty < 1 :
 		cardController.Action("consume",[])
 func Summon(tile, unitname):
 	if tile ==null:
 		return false
+	var tiles
+	if not tile is Array:
+		tiles = [tile]
+	else:
+		tiles= tile
 	var unit = $UnitLibrary.getUnitByName(unitname)
-	print("summoning"+unit.title)
-	addUnit(unit, tile)
+	for tile in tiles:
+		addUnit(unit, tile)
 func Attack(attacker, target):
 	if target  == null:
 		return false
@@ -93,21 +105,56 @@ func Attack(attacker, target):
 	if res.size() > 1 and res[1] =="kill":
 		attacker.Triggered("slay",[target])
 func gainMaxHealth(unit,amount):
-	unit.maxHealth +=amount
-	unit.changeHealth(amount)
-	unit.updateDisplay()
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		unit.maxHealth +=amount
+		unit.changeHealth(amount)
+		unit.updateDisplay()
 func gainStrength(unit,amount):
-	unit.strength+=amount
-	unit.updateDisplay()
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		unit.strength+=amount
+		unit.updateDisplay()
 func addArmor(unit,amount):
-	unit.armor+=amount
-	unit.updateDisplay()
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		if unit.has_method("isUnit"):
+			unit.armor+=amount
+			unit.updateDisplay()
+		elif unit.occupants.size() > 0:
+			unit = unit.occupants[0]
+			unit.armor+=amount
+			unit.updateDisplay()
 func addBlock(unit,amount):
-	unit.block+=amount
-	unit.updateDisplay()
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		unit.block+=amount
+		unit.updateDisplay()
 func heal(unit, amount):
-	amount = min(amount,unit.maxHealth - amount )
-	unit.changeHealth(amount)	
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		amount = min(amount,unit.maxHealth - unit.health )
+		unit.changeHealth(amount)	
 func countNames(loc, name) -> int:
 	var count = 0
 	for unit in units:
@@ -133,7 +180,7 @@ func select(targets,distance,tile):
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
 	lastTargets = enemies
-	return enemies[0]
+	return enemies #was enemies[0], but I'm pretty sure it should be an array right?
 func getTileInDirection(tile, dir1,dir2=0):
 	if dir1 is Vector2:
 		return map.getTileInDirection(tile, dir1)
@@ -146,14 +193,22 @@ func MoveAndAttack(unit,target):
 			if nextTile.occupants.size() ==0:
 				Action("move", [unit, nextTile])
 			else:
-				Action("Attack",[unit, nextTile.occupants[0]])
+				if unit.hasVariable("Multistrike"):
+					for _eoorork in range(getVar(unit, "Multistrike")):
+						Action("Attack",[unit, nextTile.occupants[0]])
+				else:
+					Action("Attack",[unit, nextTile.occupants[0]])
 				break
 	else:
 		var targets = map.selectAll(unit.tile,unit.sight,target,["any"])
 		for _i in range(unit.speed):
 			var enemy = map.selectRandom(unit.tile,unit.attackrange,target,["any"])
 			if enemy!=null:
-				Action("Attack",[unit, enemy])
+				if unit.hasVariable("Multistrike"):
+					for _eoorork in range(getVar(unit, "Multistrike")):
+						Action("Attack",[unit, enemy])
+				else:
+					Action("Attack",[unit, enemy])
 				break
 			else:
 				nextTile = map.getTileClosestToSet(unit.tile,targets)
@@ -163,11 +218,27 @@ func MoveAndAttack(unit,target):
 					break
 				
 func setStatus(tile, statname, val):
-	if tile.occupants.size() > 0:
-		tile.occupants[0].setStatus(statname, val)
+	if tile == null:
+		return false
+	var units
+	if not tile is Array:
+		units = [tile]
+	else:
+		units= tile
+	for tile in units:
+		if tile.occupants.size() > 0:
+			tile.occupants[0].setStatus(statname, val)
 func addStatus(tile, statname, val):
-	if tile.occupants.size() > 0:
-		tile.occupants[0].addStatus(statname, val)
+	if tile == null:
+		return false
+	var units
+	if not tile is Array:
+		units = [tile]
+	else:
+		units= tile
+	for tile in units:
+		if tile.occupants.size() > 0:
+			tile.occupants[0].addStatus(statname, val)
 func clearAllStatuses(tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
@@ -178,3 +249,5 @@ func clearAllStatuses(tiles = "Player"):
 			for stat in unit.status:
 				unit.setStatus(stat, 0)
 	
+func endGame():
+	get_tree().paused = true

@@ -9,7 +9,7 @@ rarity(2);
 image("res://Images/CardArt/Fly.png");
 
 title(Feather Cloak);
-types(wind,armor,avian);
+types(wind,avian);
 cost(1);
 $Armor=1
 trigger(onPlay,do(armor,($Armor),false));
@@ -46,3 +46,13 @@ trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),friendly),
 trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
 rarity(1);
 removetrigger(endofturn,true,7);
+
+title("Flight Potion");
+cost(0)
+text("Become immune to damage for 1 turn. Purge")
+trigger(onPlay,do(addStatus("immune:any",1)))
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+rarity(2);
+types(avian, potion);
+modifiers(potion);

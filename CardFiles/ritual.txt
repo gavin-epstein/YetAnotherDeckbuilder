@@ -89,3 +89,13 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 trigger(onRemoveFromPlay,do(voided(self, Discard)))
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(summon("Imp",(any),1)))));
 text("When you have $RitualCount ritual cards in play, void this and summon an Imp");
+rarity(1)
+image("res://Images/CardArt/SummoningRitual.png")
+
+title("Secrecy")
+types(ritual)
+text("At the end of your turn gain block equal to the number of ritual cards in play");
+trigger(endfofturn,block( (count(Play,ritual))))
+removetrigger(endofturn,true,5);
+cost(2);
+rarity(7);

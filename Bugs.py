@@ -38,7 +38,7 @@ card 1 in hand onclick not working well
 #type icons are on top of cardreward
 #range of cheese grater is off
 #increase rowwidth of play
-?#Npc attacks triggering twice?
+##Npc attacks triggering twice?
 #card title text change scale based on content
 #clothed in flame removeTrigger
 #fireball removeTrigger
@@ -46,9 +46,9 @@ card 1 in hand onclick not working well
 #numbers not showing up
 add number background to status icon numbers
 #black lettuce card art
-pentaract not voiding
+?pentaract not voiding
 #dark recipe 2 cost -> 1 cost, or buff the heal
-pentaract move failed to dehighlight
+#?pentaract move failed to dehighlight
 #change scaling to fixed aspect ratio
 #Fuse not ticking down(visually) (start of turn update display)
 #choose message needs to be on top on top
@@ -57,8 +57,9 @@ pentaract move failed to dehighlight
 cleansing water not working?
 #range on broken blade
 #Dash not working
-Add traps
--fire walk
-
+#Add traps
+#-fire walk
+Traps render behind
+Cleansing water select is broken
 
 

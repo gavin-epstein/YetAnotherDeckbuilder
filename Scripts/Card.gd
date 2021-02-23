@@ -5,12 +5,10 @@ class_name Card
 const zoomoffset = Vector2(0,-100)
 const speed  = 10
 #vars
-var cost
-var unmodifiedCost
 var removecount
 var defaultremovecount
 var types = {}
-var text
+var text=""
 var image
 var title
 var modifiers = {}
@@ -45,7 +43,7 @@ func _process(delta: float) -> void:
 	var mousedist = get_global_mouse_position() - $Resizer.get_global_transform().get_origin()
 	var extents = Vector2(750, 1050)*$Resizer.get_global_transform().get_scale()
 	#print(mousedist, extents)
-	if mousedist.x < extents.x and mousedist.y < extents.y and mousedist.x > 0 and mousedist.y > 0:
+	if self.visible and mousedist.x < extents.x and mousedist.y < extents.y and mousedist.x > 0 and mousedist.y > 0:
 		if controller.takeFocus(self):
 			if $Resizer.scale.x ==1:
 				z_index = 20
@@ -98,8 +96,9 @@ func loadCardFromString(string):
 			for mod in parsed[1]:
 				modifiers[mod] = true
 		elif parsed[0] == "cost":
-			self.cost = parsed[1][0]
-			unmodifiedCost = cost
+			var cost = parsed[1][0]
+			self.vars["$Cost"] = cost
+			self.vars["BaseCost"] = cost
 		elif parsed[0] =="text":
 			self.text =  Utility.join(" ",parsed[1]).replace("\\n","\n")
 		elif parsed[0] == "image":
@@ -113,7 +112,7 @@ func loadCardFromString(string):
 	#self.updateDisplay()
 
 func updateDisplay():
-	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(cost) + "[/center]";
+	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title+ "[/center]";
 	var titlescale = min(.5,8.0/title.length())
@@ -121,7 +120,8 @@ func updateDisplay():
 	titlebox.rect_size = Vector2(583.0/titlescale,211)
 	var displaytext = text
 	for key in vars:
-		displaytext = displaytext.replace(key, vars[key])
+		if vars[key] is String or vars[key] is int:
+			displaytext = displaytext.replace(key, vars[key])
 	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(removecount) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false

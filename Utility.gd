@@ -130,3 +130,9 @@ static func interpretTerrain(name):
 static func choice(array:Array):
 	if array.size() > 0:
 		return array[randi()%array.size()]
+static func type(object):
+	if object is Object:
+		return object.get_class()
+	return str(typeof(object))
+	
+		
