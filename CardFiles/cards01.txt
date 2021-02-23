@@ -53,5 +53,5 @@ text("remove all status effects from a target.\n Range $Range. \nPurge")
 rarity(2);
 modifiers(potion)
 removetrigger(endofturn, true, 0);
-trigger(onPlay,do(clearAllStatus((do(selectTiles(("any",["any"],"exists"),$Range,Player))))))
+trigger(onPlay,do(clearAllStatus((do(selectTiles(("any",("any"),"exists"),$Range,Player))))))
 trigger(onPlay, do(purge(self)));

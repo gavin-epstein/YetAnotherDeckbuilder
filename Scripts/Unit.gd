@@ -32,15 +32,18 @@ func onSummon()->void:
 		var sumMaxHealth = self.maxHealth
 		var sumHealth = self.health
 		for unit in get_parent().units:
-			if unit.title == self.title:
-				sumMaxHealth +=unit.maxHealth
-				sumHealth += unit.health
-				break
+			if unit!=null:
+				if unit.title == self.title:
+					sumMaxHealth +=unit.maxHealth
+					sumHealth += unit.health
+					break
 		print(sumHealth, "/",sumMaxHealth)
 		self.maxHealth = sumMaxHealth
 		self.health = sumHealth
 		self.updateDisplay()
 		for unit in get_parent().units:
+			if unit == null:
+				continue
 			if unit.title == self.title:
 				unit.maxHealth = sumMaxHealth
 				unit.health = sumHealth
@@ -55,6 +58,8 @@ func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
 	self.z_index = (500+position.y)/10;
+	if self.trap:
+		self.z_index -= 10
 
 
 func addHealthBar():
@@ -76,6 +81,9 @@ func hasProperty(prop:String):
 		ret = true
 	elif status.has(prop):
 		ret = true
+	elif prop.begins_with("name:"):
+		if prop.substr(5) in self.title:
+			ret = true
 	else:
 		ret = false
 	if negate:
@@ -87,45 +95,52 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
-	#set enemies on fire, if they are flammable and in water
-	if "fire" in types and status.has("flammable") and not Utility.interpretTerrain("water") == tile.terrain:
-		status["flaming"] = true
+	
 	#put out fire
 	if ("water" in types or "ice" in types) and status.has("flaming"):
-		status.erase("flaming")
+		addStatus("flaming",-1)
+	if "ice" in types:
+		addStatus("frost",1)
 	#thorns
 	if (status.has("thorns") and status.thorns is int and attacker !=null):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
 	if "crush" in types and armor >0:
 		armor-=1
-	if "slash" in types and block == 0 and armor == 0:
-		addStatus("bleed",1)
 	for atype in types:
-		if status.has("immune:"+atype):
+		if status.has("immune:"+atype) or status.has("immune:any"):
 			amount = 0
 			break
 	for atype in types:
-		if status.has("resistant:"+atype):
+		if status.has("resistant:"+atype) or status.has("resistant:any"):
 			amount = amount/2.0
 			break
 	for atype in types:
-		if status.has("vulnerable:"+atype):
+		if status.has("vulnerable:"+atype)or status.has("vulnerable:any"):
 			amount = amount*1.5
 			
 	if self == controller.Player:
 		amount = controller.cardController.Reaction(amount)		
-			
+	if "stab" in types and block > 0:
+		amount+=1
+	
 	if amount > 0:
 		if armor > 0:
 			amount =max(amount -  armor, 0)
 			armor -=1
+			if status.has("hardenedcarapace"):
+				controller.Action("addBlock", self, 2)
 		if block >amount:
 			block -=floor(amount)
 			amount = 0
 		elif block > 0:
 			amount -= block
 			block = 0
-	
+	#effects on unblocked damage
+	if amount > 0:
+		if "fire" in types and attacker!=null:
+			addStatus("flaming",1)
+		if "slash" in types and block == 0 and armor == 0:
+			addStatus("bleed",1)
 		
 	changeHealth(-1*floor(amount))
 	if status.has("lifelink"):
@@ -140,8 +155,9 @@ func takeDamage(amount,types, attacker):
 		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
 		if status.has("lifelink"):
 			for unit in get_parent().units:
-				if unit.title == self.title and unit != self:
-					unit.die(null)
+				if unit!=null:
+					if unit.title == self.title and unit != self:
+						unit.die(null)
 		die(attacker)
 		return [amount,"kill"]
 	else:
@@ -150,7 +166,7 @@ func takeDamage(amount,types, attacker):
 	return [amount]
 func startOfTurn():
 	if status.has("flaming"):
-		takeDamage(floor(health/2),["fire"],null)
+		takeDamage(4,["fire"],null)
 	block = 0;
 	if status.has("fuse"):
 		addStatus("explosive",1)
@@ -158,13 +174,19 @@ func startOfTurn():
 		changeHealth( -1*status.get("bleed"))
 		if self.health <=0:
 			die(null)
+	statusTickDown()
+	self.Triggered("startofturn",[]);
 func endOfTurn():
+	self.Triggered("endofturn",[]);
 	if self.trap and self.tile.occupants.size() != 0:
 		self.Triggered("trap",[tile.occupants[0]])
+func statusTickDown():
 	if status.has("fuse") and status.fuse ==1:
-		die(null)
+		setStatus("fuse",0)
+		die("fuse")
 	if status.has("expire") and status.expire == 1:
-		die(null)
+		setStatus("expire",0)
+		die("expire")
 	for key in status:
 		if status[key] is int:
 			status[key] = status[key]-1
@@ -172,6 +194,8 @@ func endOfTurn():
 				status.erase(key)
 		
 func updateDisplay():
+	if tile == null:
+		return false
 	if healthBar == null:
 		yield(self,"ready")
 	healthBar.get_node("Heart/Number").bbcode_text = "[center]"+str(health)+"[/center]"
@@ -188,12 +212,15 @@ func updateDisplay():
 		healthBar.get_node("Armor").visible = true
 	else:
 		healthBar.get_node("Armor").visible = false
-	if  strength > 0:
+	if  getStrength() > 0:
 		healthBar.get_node("Attack").visible = true
 	else:
 		healthBar.get_node("Attack").visible = false
 	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
-	$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
+	if tile.neighs.size()==0 or controller.Player == null or self.health <= 0:
+		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
+	else:
+		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
 func die(attacker):
 	if difficulty > 10:
 		get_parent().cardController.Action("create",["Rare Loot","Discard"])
@@ -214,9 +241,12 @@ func die(attacker):
 	self.visible = false
 	tile.occupants.erase(self)
 	if get_parent().units.find(self)==-1:
+		if self == controller.Player:
+			controller.endGame()
 		print(self.title + " failed to die well")
 		#assert(false, "failure to die properly" )
 	get_parent().units.erase(self)
+	self.Triggered("onDeath",[attacker])
 	var res = playAnimation("die")
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
@@ -336,10 +366,10 @@ func hasName(string)->bool:
 	return self.title.find(string)!=-1
 func getStrength():
 	var ret = self.strength
-	if status.has("sapped"):
-		ret -= status.sapped
-	if status.has("enraged"):
-		ret += status.enraged
+	if status.has("frost"):
+		ret -= status.frost
+	if status.has("flaming"):
+		ret += status.flaming
 	if status.has("weak"):
 		ret*= .5
 	return ret

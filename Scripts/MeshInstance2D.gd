@@ -218,7 +218,7 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 		else:
 			var other  = cardController.focus
 			if other != null:
-				print("Focus is on ", cardController.focus.get("name"),": ", other.get("title"))
+				print("Focus is on ", cardController.focus.get("name"),": ", other.get("title")," ", other.get_parent().get("name"))
 			
 func doPhysics(time): 
 	print("Physics going")

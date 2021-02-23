@@ -20,6 +20,7 @@ var lastTargets
 class_name CardController
 
 func Load()-> void: 
+	cardController = self
 	Deck = get_node("Deck")
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
@@ -94,9 +95,10 @@ func play(card)->bool:
 	print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false
-	if card.cost is int and card.cost > Energy:
+	var cost = getVar(card, "Cost")
+	if cost is int and cost > Energy:
 		return false
-	elif card.cost is String and card.cost == "X":
+	elif cost is String and cost == "X":
 		setVar(card,"X",Energy)
 	self.releaseFocus(card)
 	Hand.remove_card(card)
@@ -105,8 +107,8 @@ func play(card)->bool:
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
-	if card.cost is int:
-		Energy -= card.cost
+	if cost is int:
+		Energy -= cost
 	else:
 		Energy = 0
 	updateDisplay()
@@ -186,6 +188,7 @@ func cardreward(rarity, count):
 
 func purge(card):
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card):
+		releaseFocus(card)
 		card.queue_free()
 		return true
 	return false
@@ -242,7 +245,7 @@ func voided(card, loc):
 	return false
 
 func endofturn():
-	enemyController.maxdifficulty+=1
+	enemyController.maxdifficulty+=.5
 	enemyController.Player.endOfTurn()
 	return true
 
@@ -255,16 +258,20 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 	if event.is_action("left_click") and inputdelay > .2 and takeFocus(self):
 		releaseFocus(self)
 		inputdelay = 0
-		Action("endofturn",[],false)
+		var res = Action("endofturn",[],false)
+		if res is GDScriptFunctionState:
+			yield(res,"completed")
 		#Enemies go here
 		takeFocus(self)
 		inputAllowed = false
-		var res = enemyController.enemyTurn()
-		yield(res,"completed")
+		res = enemyController.enemyTurn()
+		if res is GDScriptFunctionState:
+			yield(res,"completed")
 		inputAllowed = true
 		releaseFocus(self)
-		Action("startofturn", [], false)
-		
+		res = Action("startofturn", [], false)
+		if res is GDScriptFunctionState:
+			yield(res,"completed")
 		
 func select(loc, predicate,message,num = 1,random=false):
 	inputAllowed = false
@@ -328,6 +335,7 @@ func movePlayer(dist,terrains = ["any"]):
 	if tile == null:
 		return false
 	enemyController.move(enemyController.Player, tile)
+	releaseFocus(map)
 	return true
 	#Targets
 	# ( [1/any/all], [(any)/(grass,sand)], -boss)
@@ -349,7 +357,7 @@ func selectTiles(targets, distance, tile):
 		if enemy ==null:
 			return null
 		enemies.append(enemy)
-	elif targets[0]=="splash" and targets.size >=4:
+	elif targets[0]=="splash" and targets.size() >=4:
 		var centers = callv("selectTiles",targets[3])
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
@@ -357,7 +365,7 @@ func selectTiles(targets, distance, tile):
 	return enemies
 	
 func damage(amount, types, targets,distance, tile =null):
-	
+	amount+=enemyController.Player.getStrength()
 	if tile == null:
 		tile = "Player"
 	var property
@@ -421,32 +429,20 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 func heal(amount):
 	enemyController.heal(enemyController.Player,amount)
 
-func getVar(card, varname):
-	if card == null:
-		return false
-	return card.vars["$"+varname];
+
 func summon(unitName, targets, distance,tile="Player") :
 	var terrains
 	var locs = []
-	if tile == "Player":
+	if tile is String and tile == "Player":
 		tile = enemyController.Player.tile
 	if targets.size() < 2:
 		terrains = ["any"]
 	else:
 		terrains = targets[1]
-	if targets[0] is int:
-		for _i in range(targets[0]):
-			locs.append(map.selectRandom(tile,distance,"empty",terrains))
-	elif targets[0] == "all":	
-		locs = map.selectAll(tile,distance,"empty",terrains)
-	elif targets[0]=="any":
-		var loc = map.select(tile,distance,"empty",terrains,"Pick a location to summon")
-		if loc is GDScriptFunctionState:
-			loc = yield(loc,"completed")
-		locs.append(loc)
-	else:
-		assert(false, "invalid Target")
-	
+	targets = [targets[0],terrains,"empty"]
+	locs = selectTiles(targets,distance,tile)
+	if locs is GDScriptFunctionState:
+		locs = yield(locs,"completed")
 	if locs == null or locs.size() == 0:
 		return false
 	var unit = enemyController.get_node("UnitLibrary").getUnitByName(unitName)
@@ -470,7 +466,7 @@ func consume():
 	var consumed = Utility.choice(possible)
 	
 	for thing in enemyController.units:
-		if thing.tile == consumed:
+		if thing !=null and thing.tile == consumed:
 			thing.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)
 	return true
@@ -492,7 +488,7 @@ func setStatus(stat, amount, tiles = "Player"):
 	for tile in tiles:
 		for unit in tile.occupants:
 			unit.setStatus(stat, amount)
-func clearAllStatuses(tiles = "Player"):
+func clearAllStatus(tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
 	for tile in tiles:
@@ -516,3 +512,6 @@ func Reaction(amount:float)-> float:
 	return amount
 func voidshift():
 	Action("devoidAll",[])
+func cardAt(loc,index):
+	loc = get_child(loc)
+	return loc.getCard(index)	

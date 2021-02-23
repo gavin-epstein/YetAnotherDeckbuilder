@@ -8,7 +8,6 @@ health(200)
 status(immovable, true)
 
 name("Rock")
-name("Monolith")
 difficulty(0)
 spawnable(stone,grass,sand)
 image("res://Images/UnitArt/Stone.png")
@@ -24,7 +23,7 @@ image("res://Images/UnitArt/TreeStump.png")
 speed(0)
 health(40)
 status(immovable,true)
-status(flammable,true)
+status("vulnerable:fire",true)
 
 name("Tumbleweed")
 difficulty(1)
@@ -37,6 +36,7 @@ damagetypes(stab)
 trigger(turn,do(MoveAndAttack(self,windDirection)))
 trigger(onAttack,do(takeDamage(strength,null)))
 status(thorns,5)
+status("vulnerable:fire",true)
 
 name("Player")
 difficulty(0)
@@ -88,13 +88,14 @@ health(10)
 strength(10)
 speed(1)
 range(2)
-spawnable(water)
+spawnable(any)
+$Multistrike = 1
 damagetypes(slash)
 status(hardenedcarapace,true)
 image("res://Images/UnitArt/anomalocaris.png")
 trigger(onSummon,do(addArmor(self,10)))
 trigger(turn,do(MoveAndAttack(self,friendly)))
-trigger(turn,do(Attack(self,(select((1,(any),friendly), range, tile)))))
+
 
 name("Smol Wizard")
 difficulty(5)
@@ -131,10 +132,27 @@ speed(0)
 range(40)
 $turncount=-1
 trigger(turn,if( ($turncount=1), (do(Attack(self, Player)))))
-trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),"Moss Spore")))))
+trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
 trigger(turn,if( ($turncount=0), (do(gainStrength(self, 1)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
+
+name("Toxic Moss")
+difficulty(1);
+spawnable(any)
+health(4)
+status(lifelink,true)
+speed(0)
+range(0)
+strength(0)
+$turncount=-1
+$Block=3
+trigger(turn,if( ($turncount=0), (do(addBlock(do(select((all,(any),"name:Moss"),1,tile)), $Block)))))
+trigger(turn,if( ($turncount=1), (cardDo(create("Toxic Spores",Reaction)))))
+trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/ToxicMoss.png")
 
 name("Imp")
 difficulty(-1)
@@ -158,3 +176,42 @@ trap
 status(expire,3)
 trigger(trap,do(Attack(self,argv[0]),true))
 image("res://Images/UnitArt/Flame.png")
+
+name("Scythe Egg");
+difficulty(1);
+spawnable(any)
+health(10);
+strength(0);
+status(thorns,4);
+status(expire,8);
+speed(0);
+$Intent=thorns
+trigger(turn,if( ($Intent=thorns), (do(addStatus( ( select( (all,(any),-friendly),1,tile) ) ,thorns,2))) ))
+trigger(turn,if( ($Intent=armor),  (do(addArmor ( ( select( (all,(any),-friendly),1,tile) ), 1       ))) ))
+trigger(turn,do(setVar(self,Intent,(random(thorns,armor)))))
+trigger(onDeath,if( ( argv[0]=expire  ), (do (Summon(tile,"Scythe Larva")))));
+image("res://Images/UnitArt/ScytheEgg.png");
+
+name("Scythe Larva");
+difficulty(12);
+spawnable(any)
+health(17);
+strength(4);
+range(1);
+speed(2);
+$Multistrike=3
+$Intent=Multiattack;
+damagetypes(slash)
+trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
+trigger(turn,if( ($Intent=Multiattack),  (do(MoveAndAttack(self,friendly))) ));
+#
+trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
+trigger(turn,if( ($Intent=Sting),  (do(MoveAndAttack(self,friendly))) ));
+trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), bleed, 5 ))) ));
+#
+trigger(turn,if( ($Intent=Defend), do(addBlock(self,8))));
+trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
+image("res://Images/UnitArt/ScytheLarva.png");
+#Make sting a status effect
+
+

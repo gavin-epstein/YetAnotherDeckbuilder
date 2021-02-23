@@ -97,7 +97,7 @@ func execute(code, argv):
 						
 				else:
 					after = processArgs(after[0],argv)
-				if (compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after):
+				if (Utility.type(before) == Utility.type(after)) and (compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after):
 					var ex = execute(command, argv)
 					if ex is GDScriptFunctionState:
 						ex = yield(ex, "completed")
@@ -139,7 +139,7 @@ func execute(code, argv):
 			if ex is GDScriptFunctionState:
 				ex = yield(ex, "completed")
 				
-	elif code[0] == "do":
+	elif code[0] == "do" or code[0] == "enemyDo" or code[0] == "cardDo":
 		var args = []
 		for arg in code[1][1]:
 			arg = processArgs(arg,argv)
@@ -151,8 +151,13 @@ func execute(code, argv):
 			silence = processArgs(code[1][2], argv)
 			if silence is GDScriptFunctionState:
 				silence = yield(silence, "completed")
-		
-		var res = controller.Action(code[1][0], args, silence)
+		var res
+		if code[0] == "do":
+			res = controller.Action(code[1][0], args, silence)
+		elif code[0] == "enemyDo":
+			res = controller.enemyController.Action(code[1][0], args, silence)
+		elif code[0] == "cardDo":
+			res = controller.enemyController.cardController.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
 		
@@ -255,7 +260,20 @@ func execute(code, argv):
 			return arg1+arg2
 		else:
 			return 0
-		
+	elif code[0] == "!" or code[0] == "not":
+		var arg = processArgs(code.slice(1,code.size()-1), argv)
+		if arg is GDScriptFunctionState:
+			arg = yield(arg,"completed")
+		if arg is bool:
+			return not arg
+		else:
+			return false
+	elif code[0] == "random":
+		var choice = Utility.choice(code[1])
+		choice = processArgs(choice,argv)
+		if choice is GDScriptFunctionState:
+			choice = yield(choice,"completed")
+		return choice
 	else:
 		#assert(false, code[0] + " not a valid command")
 		return code
@@ -269,8 +287,11 @@ func processArgs(arg, argv):
 			return true
 		if arg =="false":
 			return false
-		if arg[0] == "$" and vars.has(arg):
-			return vars[arg]
+		if arg[0] == "$":
+			if vars.has(arg):
+				return vars[arg]
+			else:
+				return false
 		if arg == "tile" and self.get("tile")!=null:
 			return self.tile
 		if arg == "Player":

@@ -1,7 +1,19 @@
 extends Node2D
 var Play
 var enemyController
+var cardController
 var test = false
+const testMethods = ["Attack","addArmor","addBlock",
+					"gainStrength","gainMaxHealth",
+					"heal","Summon","setVar","addVar",
+					"getStatus","setStatus","clearAllStatus",
+					"move","reshuffle","shuffle","draw",
+					"play","setEnergy","gainEnergy","discard",
+					"discardAll","cardreward","purge","create",
+					"createByMod","voided","endofturn","startofturn",
+					"movePlayer","damage","moveUnits","summon",
+					"armor","block","consume","addStatus"
+					]
 var hits = []
 func _ready() -> void:
 	Play = get_node("/root/Scene/CardController/Play")
@@ -17,7 +29,7 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 	if not interrupted:
 		
 		if self.has_method(method):
-			if test:
+			if test and method in testMethods:
 				hits.append(method)
 			else:
 				res =  self.callv(method, argv)
@@ -53,11 +65,14 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 	return res
 
 func startTest():
-	test = true
-	hits = []
+	enemyController.test = true
+	cardController.test = true
+	enemyController.hits = []
+	cardController.hits = []
 func endTest():
-	test = false
-	return hits
+	enemyController.test = false
+	cardController.test = false
+	return enemyController.hits + cardController.hits
 	
 func setVar(card, varname, amount):
 	if card == null:
@@ -71,3 +86,7 @@ func addVar(card, varname, amount):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount
 		return true
 	return false
+func getVar(card, varname):
+	if card == null:
+		return false
+	return card.vars["$"+varname];

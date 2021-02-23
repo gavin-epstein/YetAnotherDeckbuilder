@@ -16,7 +16,7 @@ trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
 removetrigger(endofturn, true, 1);
 types(wind, attack, spell);
 image("res://Images/CardArt/WindBlast.png");
-rarity(6)
+rarity(3)
 cost(1)
 
 title(Whirlwind);
@@ -38,6 +38,7 @@ text("On discard draw $Draw, gain $Energy energy, and purge this card");
 trigger(onDiscard, do(gainEnergy,($Energy), false));
 trigger(onDiscard, do(draw,($Draw),false));
 trigger(onDiscard, do(purge, (self), false));
+removetrigger(endofturn,true,0);
 cost(-);
 modifiers(unplayable)
 rarity(0);
@@ -61,6 +62,7 @@ removetrigger(draw,true,6);
 text("When you would draw cards, draw $Draw extra then discard a card");
 trigger(draw, do(draw,($Draw),true));
 trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
+image("res://Images/CardArt/SiftingBreath.png");
 
 title("Wind Hammer");
 cost(1);
@@ -74,6 +76,7 @@ trigger(onPlay,do(purge(self)));
 text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/WindHammer.png")
+modifiers(hammer);
 
 title(Quickstep);
 cost(0);
@@ -105,10 +108,71 @@ removetrigger(move,true,5);
 text("When you move, add a random dodge to your reaction pile");
 
 title("Storm");
+types(wind,attack)
 cost(4);
 rarity(2);
 $Damage=15
+trigger(onDiscard,do(move(Discard,Hand,self)));
 trigger(onDiscard,do(play(self)));
 trigger(onPlay, do(damage, ($Damage,(wind),(all),1),false));
 text("Deal $Damage damage to all adjacent enemies. If this card is discarded, play it");
 removetrigger(endofturn, true,1);
+
+title("Bottled Breeze");
+cost(0)
+rarity(2);
+trigger(onPlay,do(draw(10)));
+text("Draw until your hand is full. Purge")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion);
+types(wind,potion);
+
+title("Baited Breath");
+cost(3)
+rarity(5)
+$Block=4
+$Damage=4
+$Range=2
+trigger(onPlay,do(block($Block)))
+trigger(onPlay,do(damage, ($Damage,(wind),(any),$Range)))
+trigger(onDiscard,do(move(Discard,Hand,self)));
+trigger(onDiscard,do(addVar(self,Cost,-1)));
+trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
+text("Block $Block, Deal $Damage damage, range 2. When discarded, return this to your hand and lower the cost by one until played")
+removetrigger(endofturn,true,1);
+
+title("Sift");
+cost(0)
+$Draw=1
+trigger(onPlay, do(draw,($Draw),false));
+trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard (Sift)"))),false));
+removetrigger(endofturn,true,1);
+rarity(10);
+types(wind);
+text("Draw $Draw, discard 1");
+
+title("Gust");
+cost(1)
+$Damage=7
+$Move=1
+$Range=3
+text(Deal $Damage wind damage,range $Range and push $Move tile);
+trigger(onPlay, do(damage, ($Damage,(wind),(any),$Range),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+removetrigger(endofturn,true,1);
+rarity(6);
+types(wind);
+
+title("Inhale");
+cost(1)
+$Block=4
+$Move=1
+text("Now and at the start of next turn, gain $Block block and pull a unit towards you");
+trigger(onPlay, do(block($Block)));
+trigger(onPlay, do(moveUnits((any),40,Player,towards,$Move)));
+trigger(startofturn, do(block($Block)));
+trigger(startofturn, do(moveUnits((any),40,Player,towards,$Move)));
+removetrigger(startofturn,true,1);
+rarity(5);
+types(wind);
