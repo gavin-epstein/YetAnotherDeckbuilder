@@ -20,7 +20,11 @@ var image
 var sight = 40
 var attackrange = 1
 var trap = false #trans rights
+var facingtype = ["flip"]
+var _imagescale
+var lore
 var debug
+var mouseon
 signal animateHealthChange
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 func _ready() -> void:
@@ -49,11 +53,14 @@ func onSummon()->void:
 				unit.health = sumHealth
 				unit.updateDisplay()
 	if self.image!=null:
-		var sc = 1000.0/max(image.get_width(), image.get_height())
+		_imagescale = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
-		$Image.scale = Vector2(sc,sc)
+		$Image.scale = Vector2(_imagescale,_imagescale)
+	else:
+		_imagescale = 1
 	playAnimation("idle")
 	self.Triggered("onSummon",[])
+	self.addStatus("New",1)
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -128,7 +135,7 @@ func takeDamage(amount,types, attacker):
 			amount =max(amount -  armor, 0)
 			armor -=1
 			if status.has("hardenedcarapace"):
-				controller.Action("addBlock", self, 2)
+				controller.Action("addBlock", [self, 2])
 		if block >amount:
 			block -=floor(amount)
 			amount = 0
@@ -221,6 +228,7 @@ func updateDisplay():
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	else:
 		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
+	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
 	if difficulty > 10:
 		get_parent().cardController.Action("create",["Rare Loot","Discard"])
@@ -320,6 +328,10 @@ func loadUnitFromString(string):
 			callv("loadAnimation", parsed[1])
 			$Image.visible = false
 			$AnimatedSprite.visible = true
+		elif parsed[0] == "facing":
+			self.facingtype = parsed[1]
+		elif parsed[0] == "lore":
+			self.lore =  Utility.join(" ",parsed[1]).replace("\\n","\n")
 func getIntents():
 	if not triggers.has("turn"):
 		return []
@@ -427,3 +439,32 @@ func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 		frames.set_animation_loop(action,false)
 	$AnimatedSprite.frames = frames
 	debug = $AnimatedSprite
+func facing(angle):
+	if facingtype[0] == "none":
+		return
+	if facingtype[0] == "flip":
+		if angle < PI/2 or angle > 3*PI/2 :
+			$Image.scale = Vector2(-1*_imagescale,_imagescale)
+			$AnimatedSprite.scale = Vector2(-1*_imagescale,_imagescale)
+		else:
+			$Image.scale = Vector2(_imagescale,_imagescale)
+			$AnimatedSprite.scale = Vector2(_imagescale,_imagescale)
+	elif facingtype[0] == "topdown":
+		$Image.rotation = angle + PI/2
+		$AnimatedSprite.rotation = angle+ PI/2
+
+
+func _on_HoverRect_mouse_entered() -> void:
+	mouseon = true
+	yield(get_tree().create_timer(.2),"timeout")
+	if mouseon:
+		$HoverText/Fader.play("Fade")
+		
+
+func _on_HoverRect_mouse_exited() -> void:
+	mouseon = false
+	if $HoverText.modulate.a >0 and $HoverText.modulate.a < 1:
+		yield($HoverText/Fader,"animation_finished")
+	if $HoverText.modulate.a == 1:
+		$HoverText/Fader.play_backwards("Fade")
+	

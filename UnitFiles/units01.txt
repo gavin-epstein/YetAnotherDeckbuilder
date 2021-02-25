@@ -53,6 +53,7 @@ trigger(consume, do(gainMaxHealth(self,1)))
 trigger(voidshift, do(clearAllStatuses(tile)))
 image("res://Images/UnitArt/void.png")
 status(immovable, true)
+lore("The void at the center of the world. Its hunger is unending")
 
 name("Carrot")
 difficulty(-1)
@@ -96,7 +97,6 @@ image("res://Images/UnitArt/anomalocaris.png")
 trigger(onSummon,do(addArmor(self,10)))
 trigger(turn,do(MoveAndAttack(self,friendly)))
 
-
 name("Smol Wizard")
 difficulty(5)
 spawnable(any)
@@ -119,6 +119,7 @@ damagetypes(avian,stab)
 image("res://Images/UnitArt/Swallow.png")
 status(friendly,true)
 trigger(turn,do(MoveAndAttack(self,"-friendly")))
+facing(topdown)
 
 name("Moss Spore")
 animation("idle","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,3,0,1,2,1),(1000,1000),(3,3),4)
@@ -204,12 +205,10 @@ $Intent=Multiattack;
 damagetypes(slash)
 trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
 trigger(turn,if( ($Intent=Multiattack),  (do(MoveAndAttack(self,friendly))) ));
-#
 trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
 trigger(turn,if( ($Intent=Sting),  (do(MoveAndAttack(self,friendly))) ));
-trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), bleed, 5 ))) ));
-#
-trigger(turn,if( ($Intent=Defend), do(addBlock(self,8))));
+trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), sting, 5 ))) ));
+trigger(turn,if( ($Intent=Defend), (do(addBlock(self,8)))));
 trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
 image("res://Images/UnitArt/ScytheLarva.png");
 #Make sting a status effect
