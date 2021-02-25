@@ -1,0 +1,11 @@
+bleed:Bleed: At the start of turn, take damage equal to stacks
+hardenedcarapace:Hardened Carapace: When losing armor, gain 2 block per armor lost
+flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to burn
+lifelink:Life Link: This unit shares health with all other units of the same name
+friendly:Friendly: You and your allies
+sting:Sting: no effect yet
+immovable:Immovable
+expire:Expire: This unit will die or transform when expire runs out
+fuse:Fuse: This unit will explode when fuse runs out. Gains 1 stack of explosive each turn
+explosive:Explosive: On death, deals damage equal to explosive stacks to all adjacent units
+thorns:Thorns: On recieving damage, deals damage equal to stacks back to the attacker

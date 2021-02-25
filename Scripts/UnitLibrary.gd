@@ -2,6 +2,7 @@ extends Node2D
 var units = {}
 var icons = {}
 var intenticons={}
+var tooltips = {}
 var unittemplate = load("res://Unit.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,8 +13,9 @@ func Load() -> void:
 		yield(res, "completed")
 	loadIcons("res://Images/StatusIcons/",icons)
 	loadIcons("res://Images/IntentIcons/",intenticons)
+	loadtooltips("res://Units/tooltips.txt")
 func getRandomEnemy(difficulty, terrain):
-	if (rand_range(0,difficulty) < 1):
+	if  difficulty  <10 and (rand_range(0,difficulty) < 1):
 		return null
 	var possible = []
 	for unit in units.values():	
@@ -56,6 +58,16 @@ func loadUnitsFromFile(fname):
 		if not ";" in line and line!="":
 			line = line+";"
 		code+=line
+func loadtooltips(fname):
+	var f = File.new()
+	f.open(fname, File.READ)
+	while not f.eof_reached():
+		var line = f.get_line()
+		if line.find(":") != -1:
+			line = line.split(":")
+			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
+		
+		
 func getUnitByName(name):
 	var other  = unittemplate.instance()
 	return units[name].deepcopy(other)

@@ -8,6 +8,7 @@ var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var lastTargets
+var voidNext
 # Called when the node enters the scene tree for the first time.
 func Load():
 	yield(get_parent(),"ready")
@@ -51,11 +52,13 @@ func addUnit(unit, node):
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
+	
 	if node is Array:
 		if node.size() ==0:
 			return false
 		else:
 			node = node[0]
+	unit.facing((node.position - unit.position).angle())
 	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
@@ -68,14 +71,14 @@ func enemyTurn():
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		if unit != null:
+		if unit != null and unit.status.get("new")==null:
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
 		if unit != null:
 			unit.endOfTurn()	
 	countDifficulty()
-	if totaldifficulty < 1 :
+	if totaldifficulty < 1 or totaldifficulty < .2* maxdifficulty:
 		cardController.Action("consume",[])
 func Summon(tile, unitname):
 	if tile ==null:
@@ -95,6 +98,8 @@ func Attack(attacker, target):
 		if target.occupants.size() ==0:
 			return false
 		target= target.occupants[0]
+	attacker.facing((target.position - attacker.position).angle())
+	target.facing((attacker.position - target.position).angle())
 	var damage = attacker.getStrength()
 	var types = attacker.damagetypes
 	attacker.playAnimation("attack")

@@ -47,7 +47,7 @@ static func parseCardCode(string):
 		
 	return newtokens
 	
-static func join(string, array) -> String:
+static func join(string:String, array:Array) -> String:
 	var out = ""
 	for s in array:
 		out += string +str(s)
@@ -131,8 +131,10 @@ static func choice(array:Array):
 	if array.size() > 0:
 		return array[randi()%array.size()]
 static func type(object):
+	var ret
 	if object is Object:
-		return object.get_class()
-	return str(typeof(object))
-	
+		ret = str(object.get_class())
+	else:
+		ret =str(typeof(object))
+	return ret
 		
