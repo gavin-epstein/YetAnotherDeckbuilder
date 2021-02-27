@@ -25,33 +25,40 @@ var _imagescale
 var lore
 var debug
 var mouseon
+var head
+var components
+var componentnames=[]
+var links=[]
+var linkagenames = []
+var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
-func _ready() -> void:
-	onSummon()
-func onSummon()->void:
-	addHealthBar()
-	maxHealth  = health
-	if status.has("lifelink"):
-		var sumMaxHealth = self.maxHealth
-		var sumHealth = self.health
-		for unit in get_parent().units:
-			if unit!=null:
+
+func onSummon(head)->void:
+	self.head = head
+	if head == self:
+		addHealthBar()
+		maxHealth  = health
+		if status.has("lifelink"):
+			var sumMaxHealth = self.maxHealth
+			var sumHealth = self.health
+			for unit in get_parent().units:
+				if unit!=null:
+					if unit.title == self.title:
+						sumMaxHealth +=unit.maxHealth
+						sumHealth += unit.health
+						break
+			print(sumHealth, "/",sumMaxHealth)
+			self.maxHealth = sumMaxHealth
+			self.health = sumHealth
+			self.updateDisplay()
+			for unit in get_parent().units:
+				if unit == null:
+					continue
 				if unit.title == self.title:
-					sumMaxHealth +=unit.maxHealth
-					sumHealth += unit.health
-					break
-		print(sumHealth, "/",sumMaxHealth)
-		self.maxHealth = sumMaxHealth
-		self.health = sumHealth
-		self.updateDisplay()
-		for unit in get_parent().units:
-			if unit == null:
-				continue
-			if unit.title == self.title:
-				unit.maxHealth = sumMaxHealth
-				unit.health = sumHealth
-				unit.updateDisplay()
+					unit.maxHealth = sumMaxHealth
+					unit.health = sumHealth
+					unit.updateDisplay()
 	if self.image!=null:
 		_imagescale = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
@@ -59,8 +66,13 @@ func onSummon()->void:
 	else:
 		_imagescale = 1
 	playAnimation("idle")
-	self.Triggered("onSummon",[])
-	self.addStatus("New",1)
+	if self.head == self:
+		self.Triggered("onSummon",[])
+		self.addStatus("New",1)
+		if componentnames.size() > 0:
+			components = []
+			components.resize(componentnames.size())
+			components[0] == self
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -264,6 +276,8 @@ func die(attacker):
 		queue_free()
 
 func addStatus(stat, val):
+	if self.head != self:
+		return head.addStatus(stat,val)
 	if stat == "health":
 		controller.Action("heal",[self, val])
 		return true
@@ -282,6 +296,8 @@ func addStatus(stat, val):
 		if status[stat] ==0:
 			status.erase(stat)
 func setStatus(stat, val):
+	if self.head != self:
+		return head.addStatus(stat,val)
 	if val is int and val ==0 or val is bool and val == false:
 		status.erase(stat)
 	else:
@@ -299,8 +315,6 @@ func loadUnitFromString(string):
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
 		elif parsed[0] == "damagetypes":
 			damagetypes =  parsed[1]
-		elif parsed[0] == "image":
-			self.image = load(parsed[1][0])
 		elif parsed[0] == "title" or parsed[0] =="name":
 			self.title = Utility.join(" ",parsed[1])
 		elif parsed[0][0] =="$":
@@ -332,6 +346,12 @@ func loadUnitFromString(string):
 			self.facingtype = parsed[1]
 		elif parsed[0] == "lore":
 			self.lore =  Utility.join(" ",parsed[1]).replace("\\n","\n")
+		elif parsed[0] == "components":
+			self.componentnames = parsed[1]
+		elif parsed[0] == "linkage":
+			linkagenames.append(parsed[1])
+		elif parsed[0] == "movementPolicy":
+			movementPolicy = parsed[1][0]
 func getIntents():
 	if not triggers.has("turn"):
 		return []

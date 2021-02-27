@@ -56,7 +56,8 @@ if link is stretched (for more than a threshold time) cause spring behavior in
 when spawning in:
     components(self, "name","name","othername")
     linkage("linkname",0,1) #links based on indices in components
-    linkage("linkname",1,2) 
+    linkage("linkname",1,2)
+    linkage("linkname",1,-) #to a tile
 Use cases:
     Void tentacles:
         Void - head = self
@@ -76,3 +77,10 @@ Use cases:
         if next snek is null, spawn
 linkage policy: stretch (just y axis), grow (fixed aspect ratio), static (no change)
     
+#TODO
+?head execution
+#loading linkages from file
+#loading components
+#spawning
+testing
+moving

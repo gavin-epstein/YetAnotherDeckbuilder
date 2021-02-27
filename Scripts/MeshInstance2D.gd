@@ -257,7 +257,11 @@ func getTiles(tile,dist:int,property,terrains):
 		var q = [tile]
 		while q.size()>0:
 			var next = q.pop_front()
-			possible.append(next)
+			#multitile unit targeting
+			if next.occupants.size()>0:
+				possible.append(next.occupants[0].head.tile)
+			else:
+				possible.append(next)
 			if next.dist < dist:
 				for neigh in next.neighs:
 					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null:
@@ -329,3 +333,4 @@ func minDistToPositions(tile,positions):
 		if dist < closedist:
 			closedist = dist
 	return closedist
+	
