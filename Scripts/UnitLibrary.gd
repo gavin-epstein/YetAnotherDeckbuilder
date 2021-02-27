@@ -3,7 +3,9 @@ var units = {}
 var icons = {}
 var intenticons={}
 var tooltips = {}
-var unittemplate = load("res://Unit.tscn")
+var linkages = {}
+const unittemplate =preload("res://Unit.tscn")
+const linkagetemplate  = preload("res://Units/Linkage.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -58,6 +60,23 @@ func loadUnitsFromFile(fname):
 		if not ";" in line and line!="":
 			line = line+";"
 		code+=line
+func loadLinkagesFromFile(fname):
+	var f = File.new()
+	f.open(fname, File.READ)
+	var code = ""
+	while not f.eof_reached():
+		var line = f.get_line()
+		if line!= "" and line[0] == "#":
+			continue
+		if line =="" and code != "":
+			var unit = linkagetemplate.instance()
+			unit.loadFromString(code)
+			self.units[unit.title]= unit
+			code = ""
+			
+		if not ";" in line and line!="":
+			line = line+";"
+		code+=line
 func loadtooltips(fname):
 	var f = File.new()
 	f.open(fname, File.READ)
@@ -71,3 +90,6 @@ func loadtooltips(fname):
 func getUnitByName(name):
 	var other  = unittemplate.instance()
 	return units[name].deepcopy(other)
+func getLinkageByName(lname):
+	var other  = linkagetemplate.instance()
+	return linkages[lname].deepcopy(other)

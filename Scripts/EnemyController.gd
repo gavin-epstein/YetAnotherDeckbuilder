@@ -40,7 +40,9 @@ func addPlayerAndVoid():
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
-func addUnit(unit, node):
+func addUnit(unit, node,head=null):
+	if head == null:
+		head = unit
 	if node == null:
 		return false
 	unit.scale = Vector2(.17,.17);
@@ -49,6 +51,26 @@ func addUnit(unit, node):
 	unit.tile = node
 	unit.position = node.position
 	add_child(unit)
+	unit.onSummon(head)
+	if unit.componentnames.size()>0:
+		for link in unit.linkagenames:
+			var start = int(link[0])
+			var end = int(link[1])
+			var linkname = int(link[3])
+			if unit.components[start] == null:
+				assert(false, "Malformed unit")
+			if unit.components[end] == null:
+				#Spawn new component
+				var basetile = unit.components[start].tile
+				var tile = map.selectRandom(basetile,1,"empty",["any"])
+				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
+				addUnit(component,tile,unit)
+				unit.components[end] = component
+			#Spawn new linkage
+			var linkage = $UnitLibrary.getLinkageByName(linkname)
+			linkage.setup(start,end,head)
+			add_child(linkage)
+			unit.links.append(linkage)
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
@@ -92,8 +114,10 @@ func Summon(tile, unitname):
 	for tile in tiles:
 		addUnit(unit, tile)
 func Attack(attacker, target):
+	attacker = attacker.head
 	if target  == null:
 		return false
+	target = target.get("head")
 	if not target.has_method("isUnit"):
 		if target.occupants.size() ==0:
 			return false
@@ -191,6 +215,7 @@ func getTileInDirection(tile, dir1,dir2=0):
 		return map.getTileInDirection(tile, dir1)
 	return map.getTileInDirection(tile, Vector2(dir1,dir2))
 func MoveAndAttack(unit,target):
+	unit = unit.head
 	var nextTile = unit.tile
 	if target is Vector2:
 		for _i in range(unit.speed):

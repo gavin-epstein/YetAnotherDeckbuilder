@@ -125,7 +125,7 @@ title("Renewal")
 types(fire)
 text("Void your hand, draw a card and gain an energy for each card voided.void")
 rarity(1);
-trigger(onPlay,do(setVar(self,cardnumber,count(Hand,any))))
+trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))
 trigger(onPlay,do(draw($cardnumber)))
 trigger(onPlay,do(gainEnergy($cardnumber)))
@@ -165,3 +165,14 @@ trigger(onPlay,do(voided,((select(Play,(!hasModifier(self,"Eternal")),"-",1,true
 text(Gain $Block X block, then void a random card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
+
+title("Self Immolate");
+types(fire)
+cost(0)
+$Energy=2
+trigger(onPlay,do(gainEnergy($Energy)))
+trigger(onPlay,do(addStatus(Player,flaming,$Energy)))
+text("Gain $Energy energy, and $Energy burn")
+removetrigger(endofturn, true, 1);
+rarity(3);
+
