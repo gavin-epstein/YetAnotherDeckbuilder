@@ -20,40 +20,61 @@ var image
 var sight = 40
 var attackrange = 1
 var trap = false #trans rights
+var facingtype = ["flip"]
+var _imagescale
+var lore
 var debug
+var mouseon
+var head
+var components=[]
+var componentnames=[]
+var links=[]
+var linkagenames = []
+var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
-func _ready() -> void:
-	onSummon()
-func onSummon()->void:
-	addHealthBar()
-	maxHealth  = health
-	if status.has("lifelink"):
-		var sumMaxHealth = self.maxHealth
-		var sumHealth = self.health
-		for unit in get_parent().units:
-			if unit!=null:
+
+func onSummon(head)->void:
+	self.head = head
+	if head == self:
+		addHealthBar()
+		maxHealth  = health
+		if status.has("lifelink"):
+			var sumMaxHealth = self.maxHealth
+			var sumHealth = self.health
+			for unit in get_parent().units:
+				if unit!=null:
+					if unit.title == self.title:
+						sumMaxHealth +=unit.maxHealth
+						sumHealth += unit.health
+						break
+			print(sumHealth, "/",sumMaxHealth)
+			self.maxHealth = sumMaxHealth
+			self.health = sumHealth
+			self.updateDisplay()
+			for unit in get_parent().units:
+				if unit == null:
+					continue
 				if unit.title == self.title:
-					sumMaxHealth +=unit.maxHealth
-					sumHealth += unit.health
-					break
-		print(sumHealth, "/",sumMaxHealth)
-		self.maxHealth = sumMaxHealth
-		self.health = sumHealth
-		self.updateDisplay()
-		for unit in get_parent().units:
-			if unit == null:
-				continue
-			if unit.title == self.title:
-				unit.maxHealth = sumMaxHealth
-				unit.health = sumHealth
-				unit.updateDisplay()
+					unit.maxHealth = sumMaxHealth
+					unit.health = sumHealth
+					unit.updateDisplay()
 	if self.image!=null:
-		var sc = 1000.0/max(image.get_width(), image.get_height())
+		_imagescale = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
-		$Image.scale = Vector2(sc,sc)
+		$Image.scale = Vector2(_imagescale,_imagescale)
+	else:
+		_imagescale = 1
 	playAnimation("idle")
-	self.Triggered("onSummon",[])
+	if self.head == self:
+		self.Triggered("onSummon",[])
+		self.addStatus("New",1)
+		if componentnames.size() > 0:
+			components = []
+			components.resize(componentnames.size())
+			components[0] = self
+	else:
+		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -128,7 +149,7 @@ func takeDamage(amount,types, attacker):
 			amount =max(amount -  armor, 0)
 			armor -=1
 			if status.has("hardenedcarapace"):
-				controller.Action("addBlock", self, 2)
+				controller.Action("addBlock", [self, 2])
 		if block >amount:
 			block -=floor(amount)
 			amount = 0
@@ -221,6 +242,7 @@ func updateDisplay():
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	else:
 		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
+	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
 	if difficulty > 10:
 		get_parent().cardController.Action("create",["Rare Loot","Discard"])
@@ -248,6 +270,11 @@ func die(attacker):
 	get_parent().units.erase(self)
 	self.Triggered("onDeath",[attacker])
 	var res = playAnimation("die")
+	for component in components:
+		if component != null and component!=self:
+			component.die(null)
+	for link in links:
+		link.queue_free()
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
 		queue_free()
@@ -256,6 +283,8 @@ func die(attacker):
 		queue_free()
 
 func addStatus(stat, val):
+	if self.head != self:
+		return head.addStatus(stat,val)
 	if stat == "health":
 		controller.Action("heal",[self, val])
 		return true
@@ -274,6 +303,8 @@ func addStatus(stat, val):
 		if status[stat] ==0:
 			status.erase(stat)
 func setStatus(stat, val):
+	if self.head != self:
+		return head.addStatus(stat,val)
 	if val is int and val ==0 or val is bool and val == false:
 		status.erase(stat)
 	else:
@@ -289,10 +320,10 @@ func loadUnitFromString(string):
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
+		elif parsed[0] == "image":
+			self.image= load(parsed[1][0])
 		elif parsed[0] == "damagetypes":
 			damagetypes =  parsed[1]
-		elif parsed[0] == "image":
-			self.image = load(parsed[1][0])
 		elif parsed[0] == "title" or parsed[0] =="name":
 			self.title = Utility.join(" ",parsed[1])
 		elif parsed[0][0] =="$":
@@ -320,6 +351,16 @@ func loadUnitFromString(string):
 			callv("loadAnimation", parsed[1])
 			$Image.visible = false
 			$AnimatedSprite.visible = true
+		elif parsed[0] == "facing":
+			self.facingtype = parsed[1]
+		elif parsed[0] == "lore":
+			self.lore =  Utility.join(" ",parsed[1]).replace("\\n","\n")
+		elif parsed[0] == "components":
+			self.componentnames = parsed[1]
+		elif parsed[0] == "linkage":
+			linkagenames.append(parsed[1])
+		elif parsed[0] == "movementPolicy":
+			movementPolicy = parsed[1][0]
 func getIntents():
 	if not triggers.has("turn"):
 		return []
@@ -427,3 +468,32 @@ func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 		frames.set_animation_loop(action,false)
 	$AnimatedSprite.frames = frames
 	debug = $AnimatedSprite
+func facing(angle):
+	if facingtype[0] == "none":
+		return
+	if facingtype[0] == "flip":
+		if angle < PI/2 or angle > 3*PI/2 :
+			$Image.scale = Vector2(-1*_imagescale,_imagescale)
+			$AnimatedSprite.scale = Vector2(-1*_imagescale,_imagescale)
+		else:
+			$Image.scale = Vector2(_imagescale,_imagescale)
+			$AnimatedSprite.scale = Vector2(_imagescale,_imagescale)
+	elif facingtype[0] == "topdown":
+		$Image.rotation = angle + PI/2
+		$AnimatedSprite.rotation = angle+ PI/2
+
+
+func _on_HoverRect_mouse_entered() -> void:
+	mouseon = true
+	yield(get_tree().create_timer(.2),"timeout")
+	if mouseon:
+		$HoverText/Fader.play("Fade")
+		
+
+func _on_HoverRect_mouse_exited() -> void:
+	mouseon = false
+	if $HoverText.modulate.a >0 and $HoverText.modulate.a < 1:
+		yield($HoverText/Fader,"animation_finished")
+	if $HoverText.modulate.a == 1:
+		$HoverText/Fader.play_backwards("Fade")
+	

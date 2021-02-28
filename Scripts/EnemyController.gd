@@ -1,13 +1,14 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 6;
+var maxdifficulty = 2;
 var map
 var units=[]
 var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var lastTargets
+var voidNext
 # Called when the node enters the scene tree for the first time.
 func Load():
 	yield(get_parent(),"ready")
@@ -39,7 +40,9 @@ func addPlayerAndVoid():
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
-func addUnit(unit, node):
+func addUnit(unit, node,head=null):
+	if head == null:
+		head = unit
 	if node == null:
 		return false
 	unit.scale = Vector2(.17,.17);
@@ -48,14 +51,40 @@ func addUnit(unit, node):
 	unit.tile = node
 	unit.position = node.position
 	add_child(unit)
+	unit.onSummon(head)
+	if unit.componentnames.size()>0:
+		for link in unit.linkagenames:
+			var linkname = link[0]
+			var start = int(link[1])
+			var end = int(link[2])
+			
+			if unit.components[start] == null:
+				assert(false, "Malformed unit")
+			if unit.components[end] == null:
+				#Spawn new component
+				var basetile = unit.components[start].tile
+				var tile = map.selectRandom(basetile,1,"empty",["any"])
+				if tile == null:
+					unit.die(null)
+					return
+				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
+				addUnit(component,tile,unit)
+				unit.components[end] = component
+			#Spawn new linkage
+			var linkage = $UnitLibrary.getLinkageByName(linkname)
+			linkage.setup(unit.components[start],unit.components[end],head)
+			add_child(linkage)
+			unit.links.append(linkage)
 	units.append(unit)
 	unit.visible = true
 func move(unit, node):
+	
 	if node is Array:
 		if node.size() ==0:
 			return false
 		else:
 			node = node[0]
+	unit.facing((node.position - unit.position).angle())
 	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
@@ -68,14 +97,14 @@ func enemyTurn():
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		if unit != null:
+		if unit != null and unit.status.get("new")==null:
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
 		if unit != null:
 			unit.endOfTurn()	
 	countDifficulty()
-	if totaldifficulty < 1 :
+	if totaldifficulty < 1 or totaldifficulty < .2* maxdifficulty:
 		cardController.Action("consume",[])
 func Summon(tile, unitname):
 	if tile ==null:
@@ -89,12 +118,19 @@ func Summon(tile, unitname):
 	for tile in tiles:
 		addUnit(unit, tile)
 func Attack(attacker, target):
+	attacker = attacker.head
+	if target  == null:
+		return false
+	
 	if target  == null:
 		return false
 	if not target.has_method("isUnit"):
 		if target.occupants.size() ==0:
 			return false
 		target= target.occupants[0]
+	target = target.get("head")
+	attacker.facing((target.position - attacker.position).angle())
+	target.facing((attacker.position - target.position).angle())
 	var damage = attacker.getStrength()
 	var types = attacker.damagetypes
 	attacker.playAnimation("attack")
@@ -186,6 +222,7 @@ func getTileInDirection(tile, dir1,dir2=0):
 		return map.getTileInDirection(tile, dir1)
 	return map.getTileInDirection(tile, Vector2(dir1,dir2))
 func MoveAndAttack(unit,target):
+	unit = unit.head
 	var nextTile = unit.tile
 	if target is Vector2:
 		for _i in range(unit.speed):

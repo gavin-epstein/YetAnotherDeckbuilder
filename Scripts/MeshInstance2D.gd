@@ -188,6 +188,7 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 	highlight.visible = false
 	highlight.name = "Highlight"
 	if not sentinel:
+		triangulate()
 		enemyController.nodeSpawned(newNode)
 	else:
 		newNode.sentinel = true
@@ -257,14 +258,18 @@ func getTiles(tile,dist:int,property,terrains):
 		var q = [tile]
 		while q.size()>0:
 			var next = q.pop_front()
-			possible.append(next)
+			#multitile unit targeting
+			if next.occupants.size()>0:
+				possible.append(next.occupants[0].head.tile)
+			else:
+				possible.append(next)
 			if next.dist < dist:
 				for neigh in next.neighs:
 					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null:
 						neigh.dist = next.dist+1
 						q.append(neigh)
 	for node in possible:
-		if node.hasTerrain(terrains) and node.hasOccupant(property):
+		if node.hasTerrain(terrains) and node.hasOccupant(property) and not (node.sentinel and node.occupants.size() == 0):
 			node.highlight()
 			selectableNodes.append(node)
 	if selectableNodes.size() ==0:
@@ -329,3 +334,4 @@ func minDistToPositions(tile,positions):
 		if dist < closedist:
 			closedist = dist
 	return closedist
+	

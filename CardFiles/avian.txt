@@ -40,12 +40,16 @@ removetrigger(endofturn, true, 0);
 
 title("Birds of a Feather");
 cost(2);
-text("Give all friendly units +1/+1. Add a Flock Together to your hand");
-trigger(onPlay, do(create("Flock Together",Hand)));
+$CreateCount=0
+$TotalUses=2
+text("Give all friendly units +1/+1. The first $TotalUses times you play this, also add a Flock Together to your hand");
 trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
 trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
+trigger(onPlay, if( (CreateCount<TotalUses),(do(create("Flock Together",Hand))))));
+trigger(onPlay, if( (CreateCount<TotalUses),(do(addVar(self,CreateCount,1)))));
 rarity(1);
 removetrigger(endofturn,true,7);
+types(avian, summon)
 
 title("Flight Potion");
 cost(0)

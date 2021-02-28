@@ -14,7 +14,6 @@ var inputAllowed = true
 var focus
 var selectedCard
 var map
-
 var lastPlayed
 var lastTargets
 class_name CardController
@@ -45,6 +44,7 @@ func Load()-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
+	Deck.add_card(Library.getCardByName("Birds of a Feather"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -355,10 +355,12 @@ func selectTiles(targets, distance, tile):
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		if enemy ==null:
-			return null
+			return []
 		enemies.append(enemy)
 	elif targets[0]=="splash" and targets.size() >=4:
 		var centers = callv("selectTiles",targets[3])
+		if centers is GDScriptFunctionState:
+			centers = yield(centers, "completed")
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
 	lastTargets = enemies
@@ -479,6 +481,8 @@ func devoidAll():
 func addStatus(stat, amount, tiles ="Player"):
 	if tiles is String and tiles == "Player":
 		tiles = [enemyController.Player.tile]
+	if tiles == null:
+		return false
 	for tile in tiles:
 		for unit in tile.occupants:
 			unit.addStatus(stat, amount)	

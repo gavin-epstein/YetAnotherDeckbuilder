@@ -97,7 +97,7 @@ func execute(code, argv):
 						
 				else:
 					after = processArgs(after[0],argv)
-				if (Utility.type(before) == Utility.type(after)) and (compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after):
+				if (Utility.type(before) == Utility.type(after)) and ((compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after)):
 					var ex = execute(command, argv)
 					if ex is GDScriptFunctionState:
 						ex = yield(ex, "completed")
