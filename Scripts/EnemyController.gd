@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 6;
+var maxdifficulty = 2;
 var map
 var units=[]
 var Player
@@ -54,21 +54,25 @@ func addUnit(unit, node,head=null):
 	unit.onSummon(head)
 	if unit.componentnames.size()>0:
 		for link in unit.linkagenames:
-			var start = int(link[0])
-			var end = int(link[1])
-			var linkname = int(link[3])
+			var linkname = link[0]
+			var start = int(link[1])
+			var end = int(link[2])
+			
 			if unit.components[start] == null:
 				assert(false, "Malformed unit")
 			if unit.components[end] == null:
 				#Spawn new component
 				var basetile = unit.components[start].tile
 				var tile = map.selectRandom(basetile,1,"empty",["any"])
+				if tile == null:
+					unit.die(null)
+					return
 				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
 				addUnit(component,tile,unit)
 				unit.components[end] = component
 			#Spawn new linkage
 			var linkage = $UnitLibrary.getLinkageByName(linkname)
-			linkage.setup(start,end,head)
+			linkage.setup(unit.components[start],unit.components[end],head)
 			add_child(linkage)
 			unit.links.append(linkage)
 	units.append(unit)
@@ -117,11 +121,14 @@ func Attack(attacker, target):
 	attacker = attacker.head
 	if target  == null:
 		return false
-	target = target.get("head")
+	
+	if target  == null:
+		return false
 	if not target.has_method("isUnit"):
 		if target.occupants.size() ==0:
 			return false
 		target= target.occupants[0]
+	target = target.get("head")
 	attacker.facing((target.position - attacker.position).angle())
 	target.facing((attacker.position - target.position).angle())
 	var damage = attacker.getStrength()

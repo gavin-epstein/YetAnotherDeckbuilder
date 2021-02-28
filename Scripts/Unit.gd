@@ -26,7 +26,7 @@ var lore
 var debug
 var mouseon
 var head
-var components
+var components=[]
 var componentnames=[]
 var links=[]
 var linkagenames = []
@@ -72,7 +72,9 @@ func onSummon(head)->void:
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
-			components[0] == self
+			components[0] = self
+	else:
+		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -268,6 +270,11 @@ func die(attacker):
 	get_parent().units.erase(self)
 	self.Triggered("onDeath",[attacker])
 	var res = playAnimation("die")
+	for component in components:
+		if component != null and component!=self:
+			component.die(null)
+	for link in links:
+		link.queue_free()
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
 		queue_free()
@@ -313,6 +320,8 @@ func loadUnitFromString(string):
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
+		elif parsed[0] == "image":
+			self.image= load(parsed[1][0])
 		elif parsed[0] == "damagetypes":
 			damagetypes =  parsed[1]
 		elif parsed[0] == "title" or parsed[0] =="name":

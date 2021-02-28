@@ -188,6 +188,7 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 	highlight.visible = false
 	highlight.name = "Highlight"
 	if not sentinel:
+		triangulate()
 		enemyController.nodeSpawned(newNode)
 	else:
 		newNode.sentinel = true

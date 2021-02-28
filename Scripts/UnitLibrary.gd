@@ -16,6 +16,7 @@ func Load() -> void:
 	loadIcons("res://Images/StatusIcons/",icons)
 	loadIcons("res://Images/IntentIcons/",intenticons)
 	loadtooltips("res://Units/tooltips.txt")
+	loadLinkagesFromFile("res://UnitFiles/linkages01.txt")
 func getRandomEnemy(difficulty, terrain):
 	if  difficulty  <10 and (rand_range(0,difficulty) < 1):
 		return null
@@ -71,7 +72,7 @@ func loadLinkagesFromFile(fname):
 		if line =="" and code != "":
 			var unit = linkagetemplate.instance()
 			unit.loadFromString(code)
-			self.units[unit.title]= unit
+			self.linkages[unit.title]= unit
 			code = ""
 			
 		if not ";" in line and line!="":
