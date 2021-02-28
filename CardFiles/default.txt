@@ -151,7 +151,7 @@ image("res://Images/CardArt/Crossbow.png")
 title("Lunge")
 cost(1)
 $Damage=4
-$Move=2
+$Move=1
 $Range=1
 types(starter,attack)
 text("Move $Move, then deal $Damage stab damage at range of $Range")

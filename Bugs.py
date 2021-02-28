@@ -1,65 +1,86 @@
-#Armor->0 resets it --- fixed by onsummon being triggered once for the void?
 
 Null units showing up in unit list
-#Earthen Hammer not upgrading
-#Moss Crabs don't pursue the player ??Work on tile in dir method
-#Carrots suffering from lifelink
-#Target is null then cancel the attack/move/#purge/upgrade
 
-#healing potion null removetrigger
-#endturn should try to takefocus
-#remove unecessary pauses from loading
-#remove highlight when theres a single target of an attack
-#lifelink creatures should all die together (even when dying of void)
-#void should prioritize empty tiles
-#void of anger too stronk
-#lifelink health not quite right
-#z index of onhover cards in play
-#health+attack size
-#cheesegrater remove trigger
-#player.start of turn and endofturn
-#loot based on unit diffculty
 freezing on select -- probably a while vs if yield
 card 1 in hand onclick not working well
     not focus problem?
     has do do with resizing, clicks aren't registering when resized
     
-#icons not showing up
-#icon z-index should be on top of other cards
-#icon growth x/y switched
-#create should update display of created card
-##??mossy boys not appearing in pairs - summon not working in
-##    when new tiles are added, they haven't triangulated yet.
-##        Move summon neighbor effects to start of turn
-#bread knife not purging
-#type icon move down like 200
-#Attack icon should flip vertically
-#multiple mossy boys die at the same time
-#type icons are on top of cardreward
-#range of cheese grater is off
-#increase rowwidth of play
-##Npc attacks triggering twice?
-#card title text change scale based on content
-#clothed in flame removeTrigger
-#fireball removeTrigger
-#add numbers to status icons
-#numbers not showing up
+
 add number background to status icon numbers
-#black lettuce card art
-?pentaract not voiding
-#dark recipe 2 cost -> 1 cost, or buff the heal
-#?pentaract move failed to dehighlight
-#change scaling to fixed aspect ratio
-#Fuse not ticking down(visually) (start of turn update display)
-#choose message needs to be on top on top
-#OVERHAUL ENEMY LOGIC
-#cutting board image
+add icons for immune, resistant, vulnerable by type
+
 cleansing water not working?
-#range on broken blade
-#Dash not working
-#Add traps
-#-fire walk
-Traps render behind
-Cleansing water select is broken
+    Cleansing water select is broken
 
+?Traps render behind
 
+renewal not setting count
+Consumed tile should be telegraphed
+    -units with linkage/ multitile entities
+##Orientation change for units, on attack/move
+##    flip
+##    topdown
+##    frames
+biomes (generated tiles should pick the same texture as their neighbors)
+
+plants/background images for different biomes, (naturally spawning traps)
+
+Birds of a feather not buffing
+
+#hover text on units
+
+zoom and scroll on map
+
+zoom and tooltips on cards
+
+Unit pieces:
+    head, body, linkage, trap,
+            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?
+    head    1      linkages,bodies?head    yes           yes          yes           yes
+    body    1      head                    yes           no           no            yes
+    linkage 0      head,[2]ends            no            no           no            no?
+    trap    1      head                    no            no           yes           yes                                               
+Map.select/getTiles add head if head not in possible
+
+linkage connects to 2 entities, could be units of tiles
+head handles movement policy of all children
+    Snake- child order is relevant
+    Rigid- movement direction then child snaps to tile
+    Spring- none (handled by linkage)
+On move, linkage tiles are reassigned by head
+if either link endpoint is destroyed, destroy the link
+if link is stretched (for more than a threshold time) cause spring behavior in
+    - unit if one end is a tile
+    - tile furthest from head of this link
+when spawning in:
+    components(self, "name","name","othername")
+    linkage("linkname",0,1) #links based on indices in components
+    linkage("linkname",1,2)
+    linkage("linkname",1,-) #to a tile
+Use cases:
+    Void tentacles:
+        Void - head = self
+        tentacles - linkage
+        tentacles: linkage
+    Shambling mound:
+        Center - head
+        body bits, head =center
+        linkage: head, body bits
+        linkage: body bit to other body bit
+    Snek (Hydra):
+        Head- head
+        body- also heads, have a var for $Prev snake, and a link to the next segment
+        if prev snek is null, move
+        if prev snek is null, animate "Head"
+        if prev snek != null, animate "Body"
+        if next snek is null, spawn
+linkage policy: stretch (just y axis), grow (fixed aspect ratio), static (no change)
+    
+#TODO
+?head execution
+#loading linkages from file
+#loading components
+#spawning
+testing
+moving

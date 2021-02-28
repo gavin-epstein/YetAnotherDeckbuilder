@@ -27,7 +27,7 @@ func updateDisplay(statuses:Dictionary,icons:Dictionary):
 				text.visible = true
 				text.modulate = Color(.7,.7,.7)
 				text.add_font_override("normal_font",font)
-				
+				text.scroll_active = false
 			pos += Vector2(xdiff, 0)
 			if pos.x > (xdiff * 6)-1162:
 				pos.y-=xdiff*5.5
