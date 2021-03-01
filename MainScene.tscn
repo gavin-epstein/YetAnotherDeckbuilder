@@ -1,4 +1,4 @@
-[gd_scene load_steps=284 format=2]
+[gd_scene load_steps=286 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -276,6 +276,8 @@
 [ext_resource path="res://Images/MapArt/Water.png" type="Texture" id=274]
 [ext_resource path="res://Scripts/Reaction.gd" type="Script" id=275]
 [ext_resource path="res://Scripts/MainScene.gd" type="Script" id=276]
+[ext_resource path="res://Scripts/MapZoom.gd" type="Script" id=277]
+[ext_resource path="res://Images/MapArt/MapBackground.png" type="Texture" id=278]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -315,17 +317,28 @@ extents = Vector2( 531.325, 222.946 )
 [node name="Scene" type="Node2D"]
 script = ExtResource( 276 )
 
-[node name="Map" type="Node2D" parent="."]
-position = Vector2( 960, 410 )
+[node name="Center" type="Node2D" parent="."]
 
-[node name="MeshInstance2D" type="MeshInstance2D" parent="Map"]
+[node name="MapLayer" type="CanvasLayer" parent="Center"]
+layer = -1
+offset = Vector2( 960, 410 )
+transform = Transform2D( 1, 0, 0, 1, 960, 410 )
+script = ExtResource( 277 )
+
+[node name="Sprite" type="Sprite" parent="Center/MapLayer"]
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 278 )
+
+[node name="Map" type="Node2D" parent="Center/MapLayer"]
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="Center/MapLayer/Map"]
 material = SubResource( 1 )
 texture = ExtResource( 268 )
 script = ExtResource( 267 )
 
-[node name="Message" type="CanvasLayer" parent="Map/MeshInstance2D"]
+[node name="Message" type="CanvasLayer" parent="Center/MapLayer/Map/MeshInstance2D"]
 
-[node name="Message" type="ColorRect" parent="Map/MeshInstance2D/Message"]
+[node name="Message" type="ColorRect" parent="Center/MapLayer/Map/MeshInstance2D/Message"]
 visible = false
 margin_left = 399.886
 margin_top = 718.633
@@ -336,7 +349,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Message" type="RichTextLabel" parent="Map/MeshInstance2D/Message/Message"]
+[node name="Message" type="RichTextLabel" parent="Center/MapLayer/Map/MeshInstance2D/Message/Message"]
 margin_left = 3.0
 margin_top = 58.2299
 margin_right = 2311.0
@@ -351,18 +364,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MapArea" type="Area2D" parent="Map/MeshInstance2D"]
+[node name="MapArea" type="Area2D" parent="Center/MapLayer/Map/MeshInstance2D"]
 position = Vector2( 0, -120 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Map/MeshInstance2D/MapArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Center/MapLayer/Map/MeshInstance2D/MapArea"]
 position = Vector2( 0.0505333, 93.3675 )
 shape = SubResource( 2 )
 
-[node name="EnemyController" type="Node2D" parent="."]
-position = Vector2( 960, 428 )
+[node name="EnemyController" type="Node2D" parent="Center/MapLayer"]
 script = ExtResource( 273 )
 
-[node name="UnitLibrary" type="Node2D" parent="EnemyController"]
+[node name="UnitLibrary" type="Node2D" parent="Center/MapLayer/EnemyController"]
 script = ExtResource( 272 )
 
 [node name="CardController" type="Node2D" parent="."]
@@ -402,7 +414,7 @@ script = ExtResource( 275 )
 position = Vector2( 1690.2, 828.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 94
+frame = 37
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -431,7 +443,7 @@ script = ExtResource( 2 )
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 95
+frame = 38
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -461,7 +473,7 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 94
+frame = 37
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -529,7 +541,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 58
+frame = 1
 playing = true
 script = ExtResource( 264 )
 
@@ -558,6 +570,6 @@ texture = ExtResource( 265 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
 position = Vector2( -16.9785, 59.5385 )
 shape = SubResource( 7 )
-[connection signal="input_event" from="Map/MeshInstance2D/MapArea" to="Map/MeshInstance2D" method="_on_MapArea_input_event"]
+[connection signal="input_event" from="Center/MapLayer/Map/MeshInstance2D/MapArea" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
 [connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]

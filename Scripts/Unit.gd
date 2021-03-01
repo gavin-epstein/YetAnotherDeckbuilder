@@ -79,6 +79,8 @@ func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
 	self.z_index = (500+position.y)/10;
+	if mouseon:
+		self.z_index+=50
 	if self.trap:
 		self.z_index -= 10
 
@@ -292,8 +294,7 @@ func addStatus(stat, val):
 		controller.Action("gainMaxHealth", [self, val])
 		return true
 	elif stat == "strength":
-		controller.Action("gainStrength",[self, val])
-		return true
+		return controller.Action("gainStrength",[self, val])
 	if val is int and val ==0:
 		return false
 	if not stat in status or val is bool:
@@ -422,7 +423,7 @@ func changeHealth(amount)-> void:
 	
 	self.add_child(num)
 	num.get_node("CanvasLayer/Control").rect_scale =  Vector2(.4,.4)
-	num.get_node("CanvasLayer").offset  = self.get_global_transform().get_origin()+Vector2(rand_range(-50,50),rand_range(-50,50))
+	num.get_node("CanvasLayer").offset  = self.get_global_transform().get_origin()+Vector2(rand_range(-50,50),rand_range(-50,50)) + get_node("/root/Scene/Center/MapLayer").offset
 	num.number  =amount
 	emit_signal("animateHealthChange")
 

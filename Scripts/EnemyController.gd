@@ -10,10 +10,11 @@ var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var lastTargets
 var voidNext
 # Called when the node enters the scene tree for the first time.
-func Load():
-	yield(get_parent(),"ready")
-	map = get_parent().get_node("Map/MeshInstance2D")
-	cardController = get_parent().get_node("CardController")
+func Load(parent):
+	yield(parent,"ready")
+	map = parent.map
+	cardController = parent.cardController
+	enemyController=self
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
@@ -157,8 +158,10 @@ func gainStrength(unit,amount):
 	else:
 		units= unit
 	for unit in units:
-		unit.strength+=amount
-		unit.updateDisplay()
+		if unit != Player:
+			unit.strength+=amount
+			unit.updateDisplay()
+	return true
 func addArmor(unit,amount):
 	var units
 	if not unit is Array:

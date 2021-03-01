@@ -17,7 +17,8 @@ const testMethods = ["Attack","addArmor","addBlock",
 var hits = []
 func _ready() -> void:
 	Play = get_node("/root/Scene/CardController/Play")
-	enemyController = get_node("/root/Scene/EnemyController")
+	enemyController = get_node("/root/Scene").enemyController
+	cardController = get_node("/root/Scene").cardController
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
 	var res
