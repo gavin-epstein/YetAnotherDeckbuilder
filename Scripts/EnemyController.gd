@@ -14,6 +14,7 @@ func Load(parent):
 	yield(parent,"ready")
 	map = parent.map
 	cardController = parent.cardController
+	enemyController=self
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
