@@ -292,8 +292,7 @@ func addStatus(stat, val):
 		controller.Action("gainMaxHealth", [self, val])
 		return true
 	elif stat == "strength":
-		controller.Action("gainStrength",[self, val])
-		return true
+		return controller.Action("gainStrength",[self, val])
 	if val is int and val ==0:
 		return false
 	if not stat in status or val is bool:

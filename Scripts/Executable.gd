@@ -160,7 +160,7 @@ func execute(code, argv):
 			res = controller.enemyController.cardController.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
-		
+		return res
 	elif code[0] == "decrementRemoveCount":
 		if self.has_method("isCard"):
 			set("removecount",get("removecount")-1)
