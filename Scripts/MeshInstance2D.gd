@@ -33,12 +33,13 @@ var physics_on  = false
 var voidNode
 var selectableNodes = []
 var selectedNode
+const sentinelrowsep = 400
 
-func Load():
+func Load(parent):
 	randomize()
 	gridNodeTemplate = load("res://Scripts/GridNode.gd");
-	cardController = get_node("../../CardController");
-	enemyController = get_node("../../EnemyController");
+	cardController = parent.cardController
+	enemyController = parent.enemyController
 	var step = generate()
 	if step is GDScriptFunctionState:
 		step = yield(step, "completed")
@@ -65,9 +66,9 @@ func generate() -> void:
 		
 		sentinels.append(addGridNode(pos, color,true))
 		#second row
-		pos = Vector2(x,-height-140)
+		pos = Vector2(x,-height-sentinelrowsep)
 		addGridNode(pos, color,true)
-		pos = Vector2(x,height+140)
+		pos = Vector2(x,height+sentinelrowsep)
 		addGridNode(pos, color,true)
 	for y in range(-height, height, sqrt(maxSqDist)):
 		var pos = Vector2(-width-40, y)
@@ -77,9 +78,9 @@ func generate() -> void:
 		color  = -1
 		sentinels.append(addGridNode(pos, color,true))
 		#outer row
-		pos = Vector2(-width-140, y)	
+		pos = Vector2(-width-sentinelrowsep, y)	
 		addGridNode(pos, color,true)
-		pos = Vector2(width+140, y)
+		pos = Vector2(width+sentinelrowsep, y)
 		addGridNode(pos, color,true)
 	#var startTime = OS.get_ticks_msec()
 	while failedAttempts < maxFailedAttempts:
