@@ -3,11 +3,11 @@ class_name Map
 
 const maxFailedAttempts = 150
 const width = 800 #was 960
-const height = 400 #was 400
+const height = 475 #was 400
 const radius =1.5*max(width, height)
 #0 = cicrumcenter, 1 = centroid
 const CCinter = .33
-const minSqDist = 4000 *4
+const minSqDist = 4000 *5
 const maxSqDist = minSqDist*1.2
 signal mapGenerated
 signal nodeSelected
@@ -33,7 +33,7 @@ var physics_on  = false
 var voidNode
 var selectableNodes = []
 var selectedNode
-const sentinelrowsep = 400
+const sentinelrowsep = 160
 
 func Load(parent):
 	randomize()

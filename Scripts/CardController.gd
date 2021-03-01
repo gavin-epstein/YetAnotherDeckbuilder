@@ -33,7 +33,7 @@ func Load(parent)-> void:
 	Play.add_card(Library.getCardByName("Adventurer"))
 	Play.add_card(Library.getRandomByModifier(["void"]))
 	Energy = 3
-	map = parent.cardController
+	map = parent.map
 	enemyController = parent.enemyController
 	self.updateDisplay()
 	for _i in range(2):
@@ -404,6 +404,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	if targets.size() < 3:
 		targets.append("-Player")
 	var enemies = selectTiles(targets,distance,tile)
+	if not enemies is Array:
+		enemies = [enemies]
 	for enemy in enemies:
 		if direction is String and direction == "any":
 			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
