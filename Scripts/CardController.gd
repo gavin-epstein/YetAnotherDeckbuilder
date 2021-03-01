@@ -18,7 +18,7 @@ var lastPlayed
 var lastTargets
 class_name CardController
 
-func Load()-> void: 
+func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
 	Hand = get_node("Hand")
@@ -33,8 +33,8 @@ func Load()-> void:
 	Play.add_card(Library.getCardByName("Adventurer"))
 	Play.add_card(Library.getRandomByModifier(["void"]))
 	Energy = 3
-	map = get_parent().get_node("Map/MeshInstance2D")
-	enemyController = get_parent().get_node("EnemyController")
+	map = parent.map
+	enemyController = parent.enemyController
 	self.updateDisplay()
 	for _i in range(2):
 		Deck.add_card(Library.getCardByName("Common Loot"))
@@ -44,7 +44,7 @@ func Load()-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-	Deck.add_card(Library.getCardByName("Birds of a Feather"))
+#	Deck.add_card(Library.getCardByName("Birds of a Feather"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -404,6 +404,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	if targets.size() < 3:
 		targets.append("-Player")
 	var enemies = selectTiles(targets,distance,tile)
+	if not enemies is Array:
+		enemies = [enemies]
 	for enemy in enemies:
 		if direction is String and direction == "any":
 			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
