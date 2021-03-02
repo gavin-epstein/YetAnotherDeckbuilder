@@ -190,6 +190,15 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 	highlight.name = "Highlight"
 	if not sentinel:
 		triangulate()
+		#make biomes
+		var tries =0
+		var other = Utility.choice(newNode.neighs)
+		while tries < 4 and other.sentinel:
+			other = Utility.choice(newNode.neighs)
+			tries+=1
+		if not other.sentinel:
+			newNode.terrain = other.terrain
+			newNode.uvCoords = getTerrainColor(other.terrain)
 		enemyController.nodeSpawned(newNode)
 	else:
 		newNode.sentinel = true

@@ -22,11 +22,11 @@ Consumed tile should be telegraphed
 ##    flip
 ##    topdown
 ##    frames
-biomes (generated tiles should pick the same texture as their neighbors)
+#biomes (generated tiles should pick the same texture as their neighbors)
 
 plants/background images for different biomes, (naturally spawning traps)
 
-Birds of a feather not buffing
+#Birds of a feather not buffing
 
 #hover text on units
 
@@ -35,6 +35,8 @@ Birds of a feather not buffing
 zoom and tooltips on cards
 multitile units should be able to move through themselves
 
+tile backgrounds coords based on map coords not screencoords
+    or add a viewport for the map, so that they change on shift but not scroll
 ##Unit pieces:
 ##    head, body, linkage, trap,
 ##            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?

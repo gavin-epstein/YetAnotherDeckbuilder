@@ -15,15 +15,15 @@ void fragment() {
 	} else if (COLOR.r>.5 && COLOR.g > .5 && COLOR.b < .5){
 		COLOR = texture(tex2, flipped_screen);
 	}else if (COLOR.r>.5 && COLOR.g < .5 && COLOR.b > .5){
-		COLOR = texture(tex3, flipped_screen);
+		COLOR = texture(tex6, flipped_screen);
 	}else if (COLOR.r>.5 && COLOR.g < .5 && COLOR.b < .5){
 		COLOR = texture(tex1, flipped_screen);
 	}else if (COLOR.r<.5 && COLOR.g > .5 && COLOR.b > .5){
-		COLOR = texture(tex5, flipped_screen);
+		COLOR = texture(tex4, flipped_screen);
 	}else if (COLOR.r<.5 && COLOR.g > .5 && COLOR.b < .5){
 		COLOR = texture(tex3, flipped_screen);
 	}else if (COLOR.r<.5 && COLOR.g < .5 && COLOR.b > .5){
-		COLOR = texture(tex7, flipped_screen);
+		COLOR = texture(tex5, flipped_screen);
 	}else if (COLOR.r<.5 && COLOR.g < .5 && COLOR.b < .5){
 		COLOR = vec4(0,0,0,0)
 	}

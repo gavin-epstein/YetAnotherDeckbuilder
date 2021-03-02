@@ -1,4 +1,4 @@
-[gd_scene load_steps=286 format=2]
+[gd_scene load_steps=288 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -278,12 +278,16 @@
 [ext_resource path="res://Scripts/MainScene.gd" type="Script" id=276]
 [ext_resource path="res://Scripts/MapZoom.gd" type="Script" id=277]
 [ext_resource path="res://Images/MapArt/MapBackground.png" type="Texture" id=278]
+[ext_resource path="res://Images/MapArt/Sand.png" type="Texture" id=279]
+[ext_resource path="res://Images/MapArt/Ice.png" type="Texture" id=280]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
 shader_param/tex1 = ExtResource( 270 )
 shader_param/tex2 = ExtResource( 271 )
 shader_param/tex3 = ExtResource( 274 )
+shader_param/tex4 = ExtResource( 279 )
+shader_param/tex5 = ExtResource( 280 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 958.873, 398.783 )
@@ -341,9 +345,9 @@ script = ExtResource( 267 )
 [node name="Message" type="ColorRect" parent="Center/MapLayer/Map/MeshInstance2D/Message"]
 visible = false
 margin_left = 399.886
-margin_top = 718.633
+margin_top = 806.633
 margin_right = 1550.89
-margin_bottom = 956.633
+margin_bottom = 1044.63
 color = Color( 0.541176, 0.541176, 0.541176, 0.556863 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -414,7 +418,7 @@ script = ExtResource( 275 )
 position = Vector2( 1690.2, 828.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 37
+frame = 110
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -443,7 +447,7 @@ script = ExtResource( 2 )
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 38
+frame = 111
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -473,7 +477,7 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 37
+frame = 110
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -541,7 +545,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 1
+frame = 74
 playing = true
 script = ExtResource( 264 )
 

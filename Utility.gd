@@ -1,5 +1,5 @@
 class_name Utility
-enum Terrain{Grass, Stone, Water}
+enum Terrain{Grass, Stone, Water, Sand, Ice}
 
 static func parseCardCode(string):
 	var regex = RegEx.new()
@@ -114,12 +114,17 @@ static func sqDistToNode(pixel:Vector2, node) -> float:
 	return xDist*xDist + yDist * yDist
 static func interpretTerrain(name):
 	if name is String:
+		name = name.to_lower()
 		if name == "grass":
 			return 0
 		elif name == "stone":
 			return 1
-		elif name == "water":
+		elif name == "water" or name == "swamp":
 			return 2
+		elif name == "sand":
+			return 3
+		elif name == "ice":
+			return 4
 		return -1
 	else:
 		for key in Terrain:
