@@ -1,6 +1,6 @@
 name("Monolith")
 difficulty(0)
-spawnable(stone,grass,sand)
+spawnable(stone,grass,sand,ice)
 image("res://Images/UnitArt/Monolith.png")
 spawnable(any)
 speed(0)
@@ -9,7 +9,7 @@ status(immovable, true)
 
 name("Rock")
 difficulty(0)
-spawnable(stone,grass,sand)
+spawnable(stone,grass,water)
 image("res://Images/UnitArt/Stone.png")
 spawnable(any)
 speed(0)
@@ -18,7 +18,7 @@ status(immovable, true)
 
 name("Tree Stump")
 difficulty(0)
-spawnable(grass)
+spawnable(grass,water)
 image("res://Images/UnitArt/TreeStump.png")
 speed(0)
 health(40)
@@ -27,7 +27,7 @@ status("vulnerable:fire",true)
 
 name("Tumbleweed")
 difficulty(0)
-spawnable(grass,sand)
+spawnable(sand)
 image("res://Images/UnitArt/Tumbleweed.png")
 speed(3)
 health(10)
@@ -65,7 +65,7 @@ status(friendly,true)
 
 name("Moss Crab")
 difficulty(3)
-spawnable(any)
+spawnable(water)
 trigger(turn,if((countName(Play,"Moss Crab")>1),(do(MoveAndAttack(self,friendly)))))
 trigger(turn,if((countName(Play,"Moss Crab")<2),(do(Summon((select((1,("any"),empty),1,tile)),"Moss Crab")))))
 health(20)
@@ -124,7 +124,7 @@ facing(topdown)
 name("Moss Spore")
 animation("idle","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,3,0,1,2,1),(1000,1000),(3,3),4)
 animation("attack","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,6,7),(1000,1000),(3,3),1)
-spawnable(any)
+spawnable(water)
 difficulty(3)
 health(7)
 strength(0)
@@ -140,7 +140,7 @@ trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
 
 name("Toxic Moss")
 difficulty(1);
-spawnable(any)
+spawnable(water,grass)
 health(4)
 status(lifelink,true)
 speed(0)
@@ -180,7 +180,7 @@ image("res://Images/UnitArt/Flame.png")
 
 name("Scythe Egg");
 difficulty(1);
-spawnable(any)
+spawnable(sand)
 health(10);
 strength(0);
 status(thorns,4);
@@ -195,7 +195,7 @@ image("res://Images/UnitArt/ScytheEgg.png");
 
 name("Scythe Larva");
 difficulty(12);
-spawnable(any)
+spawnable(sand)
 health(17);
 strength(4);
 range(1);

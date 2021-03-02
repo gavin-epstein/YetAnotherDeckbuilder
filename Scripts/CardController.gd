@@ -404,6 +404,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	if targets.size() < 3:
 		targets.append("-Player")
 	var enemies = selectTiles(targets,distance,tile)
+	if enemies is GDScriptFunctionState:
+		enemies = yield(enemies,"complete")
 	if not enemies is Array:
 		enemies = [enemies]
 	for enemy in enemies:

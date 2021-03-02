@@ -67,6 +67,7 @@ $Range=3
 trigger(onPlay,repeat((do(damage,($Damage,(culinary,slash),(1),$Range))),$Times));
 text("Deal $Damage damage to a random unit within in $Range tiles $Times times");
 rarity(2);
+image("res://Images/CardArt/CheeseGrater.png")
 removetrigger(endofturn, true, 3);
 
 title(Carrot Seeds);
