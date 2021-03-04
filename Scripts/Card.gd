@@ -19,6 +19,7 @@ var highlighted = false
 var rarity = 0
 var debug
 var mouseon
+var tooltips=[]
 var iconsdone = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -110,7 +111,7 @@ func loadCardFromString(string):
 		elif parsed[0][0] =="$":
 			vars[parsed[0]] = parsed[2]
 	#self.updateDisplay()
-
+	self.generateTooltips()
 func updateDisplay():
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
@@ -184,9 +185,12 @@ func dehighlight():
 func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	#mouseon = true
 	if event.is_action_pressed("left_click"):
-		print("Click on "+ self.title)
+		#print("Click on "+ self.title)
 		if get_parent().has_method("cardClicked"):
 			get_parent().cardClicked(self)
+	if event.is_action_pressed("right_click"):
+		#print("Right Click on " + self.title)
+		controller.get_node("CardDisplay").display(self)
 func isCard():
 	return true	
 
@@ -197,3 +201,17 @@ func isIdentical(other):
 		if !(other.vars.has(v) and other.vars[v] == vars[v]):
 			return false
 	return true
+func getTooltips():
+	return tooltips
+func generateTooltips():
+	var regex = RegEx.new()
+	regex.compile('(\\s+)|([.,!?:;\"-])+')
+	var words = regex.sub(self.text,"@",true)
+	for _i in range(3):
+		words = words.replace("@@","@")
+	words = words.split("@")
+	for word in words:
+		var tip = controller.Library.getToolTip(word)
+		if tip !=null:
+			tooltips.append(word.capitalize()+": "+tip)
+		

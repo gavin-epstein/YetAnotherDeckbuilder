@@ -141,8 +141,8 @@ func takeDamage(amount,types, attacker):
 		if status.has("vulnerable:"+atype)or status.has("vulnerable:any"):
 			amount = amount*1.5
 			
-	if self == controller.Player:
-		amount = controller.cardController.Reaction(amount)		
+	if self == controller.Player and attacker != null:
+		amount = controller.cardController.Reaction(amount,attacker)		
 	if "stab" in types and block > 0:
 		amount+=1
 	

@@ -13,11 +13,15 @@ add icons for immune, resistant, vulnerable by type
 cleansing water not working?
     Cleansing water select is broken
 
-?Traps render behind
+#Traps render behind
 
-renewal not setting count
-Consumed tile should be telegraphed
-    -units with linkage/ multitile entities
+renewal not voiding
+#Dark deeds not damageing
+Dark deeds light whispers not activating part 2
+#stone not unplayable
+
+
+#    -units with linkage/ multitile entities
 ##Orientation change for units, on attack/move
 ##    flip
 ##    topdown
@@ -32,11 +36,18 @@ plants/background images for different biomes, (naturally spawning traps)
 
 #zoom and scroll on map
 
-zoom and tooltips on cards
+#zoom and tooltips on cards
 multitile units should be able to move through themselves
+Consumed tile should be telegraphed
 
 tile backgrounds coords based on map coords not screencoords
     or add a viewport for the map, so that they change on shift but not scroll
+
+landing screen
+
+save game
+
+improve pathfinding of enemies
 ##Unit pieces:
 ##    head, body, linkage, trap,
 ##            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?

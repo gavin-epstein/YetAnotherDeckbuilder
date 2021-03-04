@@ -193,7 +193,7 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 		#make biomes
 		var tries =0
 		var other = Utility.choice(newNode.neighs)
-		while tries < 4 and other.sentinel:
+		while tries < 2 and other.sentinel:
 			other = Utility.choice(newNode.neighs)
 			tries+=1
 		if not other.sentinel:

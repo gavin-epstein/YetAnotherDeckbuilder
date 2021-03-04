@@ -108,7 +108,7 @@ $Range=1
 $AddRange=1
 trigger(onPlay, if( (countNames(Play,"Light Whispers")=0),do(setVar(self,AddRange,$Range))))
 trigger(onPlay, if( (countNames(Play,"Light Whispers")>0),do(setVar(self,AddRange,(+, $Range, 2)))))
-trigger(onPlay, do(damage, ($Damage,(ritual),(any),$AddRange)))
+trigger(onPlay, do(damage($Damage,(ritual),(any),$AddRange)))
 trigger(onPlay, do(create("Light Whispers",Deck)))
 trigger(onRemoveFromPlay,do(purge(self)))
 removetrigger(endofturn,true,2)

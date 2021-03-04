@@ -30,6 +30,7 @@ text("On draw gain $Block block. \n Unplayable");
 rarity(0);
 removetrigger(never, true, 0);
 trigger(onDraw, do(block,($Block), false));
+modifiers(unplayable)
 
 title(Rock Smash);
 cost(2);
@@ -74,3 +75,21 @@ trigger(onPlay,do(createByMod,(("unplayable"), Deck)));
 trigger(onPlay,do(createByMod,(("unplayable"), Hand)));
 trigger(onPlay,do(createByMod,(("unplayable"), Discard)));
 rarity(2)
+
+title(Earthquake);
+cost(1);
+$Damage=7;
+$Move=1
+rarity(4);
+trigger(onPlay, do(damage, ($Damage,(earth),(all,(stone),-friendly),50),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$Move)));
+text("Deal $Damage damage to enemy units on stone tiles and pull them $Move towards you");
+types(earth);
+
+title(Plate Tectonics);
+cost(2);
+$Increment=2
+text("Add 1 damage to all attacks in play. On remove from play, subtract 1 damage from all attacks in play")
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to upgrade",10,true)),Damage,$Increment)));
+rarity(0)
+#Todo implement a way of getting all cards in play

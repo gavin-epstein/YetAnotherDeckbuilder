@@ -171,7 +171,7 @@ trigger(turn,do(addStrength(self,1)))
 name("Flame")
 difficulty(0)
 health(0)
-strength(1)
+strength(3)
 damagetypes(fire)
 trap
 status(expire,3)
@@ -230,3 +230,11 @@ name("wormbod")
 difficulty(0)
 facing(topdown)
 image("res://Images/UnitArt/wormBod.png");
+
+name("Prickly Pear")
+spawnable(sand)
+trap
+trigger(trap,do(addStatus(tile,thorns,1)))
+difficulty(0)
+image("res://Images/UnitArt/PricklyPear.png")
+lore("A common desert cactus, will add spikes to any nearby units")

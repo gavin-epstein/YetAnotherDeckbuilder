@@ -131,8 +131,8 @@ types(wind,potion);
 title("Baited Breath");
 cost(3)
 rarity(5)
-$Block=4
-$Damage=4
+$Block=9
+$Damage=9
 $Range=2
 trigger(onPlay,do(block($Block)))
 trigger(onPlay,do(damage, ($Damage,(wind),(any),$Range)))

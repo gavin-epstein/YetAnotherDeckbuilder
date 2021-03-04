@@ -176,3 +176,25 @@ text("Gain $Energy energy, and $Energy burn")
 removetrigger(endofturn, true, 1);
 rarity(3);
 
+title("Burning Blood");
+$Energy=3
+trigger(onPlay,do(move(Play,Reaction,self)));
+trigger(onReaction,do(move(Reaction,Play,self)));
+trigger(startofturn,do(gainEnergy($Energy)));
+removetrigger(endofturn,true,1);
+text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
+types(fire,reaction);
+rarity(7);
+
+title("Firestorm");
+cost(2);
+$Damage=4
+$Repeat=3
+$Draw=4
+$Range=2
+trigger(onPlay,do(damage,($Damage,(fire,wind),($Repeat),$Range)));
+text("Deal $Damage damage to $Repeat random enemies in range $Range, and discard the top $Draw cards of your deck");
+trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
+types(fire,wind)
+rarity(5);
+removetrigger(endofturn,true,1)

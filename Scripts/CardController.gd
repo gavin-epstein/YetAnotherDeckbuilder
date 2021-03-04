@@ -162,13 +162,12 @@ func discardAll(silent = false):
 			ind+=1
 	return true
 	
-func discard(card, silent = false):
+func discard(card, silent = false, loc = "Hand"):
 	if card == null:
 		return false
 	if not silent:
 		card.Triggered("onDiscard", [card])
-	move("Hand", "Discard", card)
-	return true
+	return move(loc, "Discard", card)
 	
 func updateDisplay():
 	Hand.updateDisplay()
@@ -504,19 +503,19 @@ func clearAllStatus(tiles = "Player"):
 			for stat in unit.status:
 				unit.setStatus(stat, 0)
 	
-func Reaction(amount:float)-> float:
+func Reaction(amount:float, attacker)-> float:
 	if amount < 1:
 		return 0
 	if $Reaction.cards.size() == 0:
 		return amount
 	var card = $Reaction.getCard(0)
 	setVar(card,"DamageTaken", amount)
-	
+	setVar(card,"Attacker", attacker)
 	var results = card.Triggered("onReaction",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
 	amount = getVar(card, "DamageTaken")
-	$Reaction.remove_card(card)
+	#$Reaction.remove_card(card)
 	return amount
 func voidshift():
 	Action("devoidAll",[])
