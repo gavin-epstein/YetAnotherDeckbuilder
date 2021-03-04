@@ -1,4 +1,4 @@
-[gd_scene load_steps=288 format=2]
+[gd_scene load_steps=291 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -280,6 +280,8 @@
 [ext_resource path="res://Images/MapArt/MapBackground.png" type="Texture" id=278]
 [ext_resource path="res://Images/MapArt/Sand.png" type="Texture" id=279]
 [ext_resource path="res://Images/MapArt/Ice.png" type="Texture" id=280]
+[ext_resource path="res://Scripts/CardDisplay.gd" type="Script" id=281]
+[ext_resource path="res://Images/CardArt/CardFrame.png" type="Texture" id=282]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -317,6 +319,13 @@ font_data = ExtResource( 266 )
 
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 531.325, 222.946 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 0.329412 )
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
 
 [node name="Scene" type="Node2D"]
 script = ExtResource( 276 )
@@ -372,7 +381,7 @@ __meta__ = {
 position = Vector2( 0, -120 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Center/MapLayer/Map/MeshInstance2D/MapArea"]
-position = Vector2( 0.0505333, 93.3675 )
+position = Vector2( 0.247616, 93.3675 )
 shape = SubResource( 2 )
 
 [node name="EnemyController" type="Node2D" parent="Center/MapLayer"]
@@ -382,7 +391,6 @@ script = ExtResource( 273 )
 script = ExtResource( 272 )
 
 [node name="CardController" type="Node2D" parent="."]
-z_index = 200
 script = ExtResource( 1 )
 
 [node name="Message" type="ColorRect" parent="CardController"]
@@ -418,7 +426,7 @@ script = ExtResource( 275 )
 position = Vector2( 1690.2, 828.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 110
+frame = 107
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -447,7 +455,7 @@ script = ExtResource( 2 )
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 111
+frame = 108
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -477,7 +485,7 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 110
+frame = 107
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -545,7 +553,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 74
+frame = 71
 playing = true
 script = ExtResource( 264 )
 
@@ -574,6 +582,35 @@ texture = ExtResource( 265 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
 position = Vector2( -16.9785, 59.5385 )
 shape = SubResource( 7 )
+
+[node name="CardDisplay" type="Node2D" parent="CardController"]
+z_index = 10
+script = ExtResource( 281 )
+
+[node name="ColorRect" type="ColorRect" parent="CardController/CardDisplay"]
+margin_right = 1900.0
+margin_bottom = 1080.0
+color = Color( 0.45098, 0.427451, 0.494118, 0.556863 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="CardController/CardDisplay"]
+margin_left = 1050.0
+margin_top = 128.0
+margin_right = 1650.0
+margin_bottom = 950.4
+custom_styles/panel = SubResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CardFrame" type="Sprite" parent="CardController/CardDisplay"]
+visible = false
+position = Vector2( 426.711, 123.15 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 282 )
+centered = false
 [connection signal="input_event" from="Center/MapLayer/Map/MeshInstance2D/MapArea" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
 [connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]

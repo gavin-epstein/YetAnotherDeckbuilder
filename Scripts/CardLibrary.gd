@@ -3,6 +3,7 @@ var cardtemplate = preload("res://Card.tscn");
 class_name CardLibrary
 var CardRng = RandomNumberGenerator.new()
 var icons = {}
+var tooltips = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,6 +12,7 @@ func _ready() -> void:
 	
 func Load():
 	loadIcons()
+	loadTooltips("res://CardToolTips/cardtooltips.txt")
 	var dir = Directory.new()
 	dir.open("res://Cardfiles/")
 	dir.list_dir_begin()
@@ -39,12 +41,12 @@ func loadallcards(fname) -> int:
 			continue
 		if line =="" and cardcode != "":
 			var card = cardtemplate.instance()
+			card.controller = get_parent()
 			card.loadCardFromString(cardcode)
 			self.cards.append(card)
 			count+=1
-			card.controller = get_parent()
 			cardcode = ""
-			yield(get_tree().create_timer(.01), "timeout")
+			yield(get_tree().create_timer(.001), "timeout")
 			
 		if not ";" in line and line!="":
 			line = line+";"
@@ -108,3 +110,14 @@ func removeUnique(title):
 	for card in cards:
 		if card.title == title:
 			card.rarity = 0;
+			card.modifiers = {};
+func loadTooltips(fname):
+	var f = File.new()
+	f.open(fname, File.READ)
+	while not f.eof_reached():
+		var line = f.get_line()
+		if line.find(":") != -1:
+			line = line.split(":")
+			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
+func getToolTip(word):
+	return tooltips.get(word.to_lower())

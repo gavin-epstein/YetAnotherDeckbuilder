@@ -12,13 +12,15 @@ var time = 0
 
 
 
-# Called when the node enters the scene tree for the first time.
 func _process(delta:float):
 	time+=delta
 	for end in ends:
 		if end == null:
 			queue_free()
 	#Set self position
+	for end in ends:
+		if end == null:
+			queue_free()
 	var up:Vector2 = ends[1].position - ends[0].position
 	$Image.rotation = up.angle() + PI/2
 	self.position = ends[0].position + .5*up + Vector2(0,verticaloffset)

@@ -60,3 +60,15 @@ removetrigger(endofturn, true, 0);
 rarity(2);
 types(avian, potion);
 modifiers(potion);
+
+title(Peck);
+cost(0)
+$Damage=2
+$Draw=2
+$Range=1
+trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
+trigger(onPlay, do(draw($Draw)));
+text("Deal $Damage stab damage, range $Range.\nDraw $Draw");
+removetrigger(endofturn, true, 1);
+types(avian)
+rarity(9);
