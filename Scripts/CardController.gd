@@ -244,7 +244,7 @@ func voided(card, loc):
 	return false
 
 func endofturn():
-	enemyController.maxdifficulty+=.5
+	enemyController.maxdifficulty+=.7
 	enemyController.Player.endOfTurn()
 	return true
 

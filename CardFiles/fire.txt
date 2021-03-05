@@ -160,8 +160,9 @@ title("Ashes");
 types(fire)
 cost(X);
 $Block=4
-trigger(onPlay, do(block(*,$Block,$X)));
-trigger(onPlay,do(voided,((select(Play,(!hasModifier(self,"Eternal")),"-",1,true))),Play))
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+trigger(onPlay, do(block((*,$Block,$X))));
+trigger(onPlay,do(voided,((select(Play,(! hasModifier(self,"Eternal")),"-",1,true))),Play))
 text(Gain $Block X block, then void a random card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
@@ -170,14 +171,16 @@ title("Self Immolate");
 types(fire)
 cost(0)
 $Energy=2
+$Status=1
 trigger(onPlay,do(gainEnergy($Energy)))
-trigger(onPlay,do(addStatus(Player,flaming,$Energy)))
-text("Gain $Energy energy, and $Energy burn")
+trigger(onPlay,do(addStatus(flaming,$Energy)))
+text("Gain $Energy energy, and $Status burn")
 removetrigger(endofturn, true, 1);
 rarity(3);
 
 title("Burning Blood");
 $Energy=3
+cost(0)
 trigger(onPlay,do(move(Play,Reaction,self)));
 trigger(onReaction,do(move(Reaction,Play,self)));
 trigger(startofturn,do(gainEnergy($Energy)));

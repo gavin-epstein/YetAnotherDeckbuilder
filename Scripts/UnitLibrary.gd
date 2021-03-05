@@ -20,6 +20,8 @@ func Load() -> void:
 func getRandomEnemy(difficulty, terrain):
 	if  difficulty  <10 and (rand_range(0,difficulty) < 1):
 		return null
+	if difficulty < 1.5:
+		return null
 	var possible = []
 	for unit in units.values():	
 		if unit.difficulty <= difficulty and unit.difficulty != -1 and (Utility.interpretTerrain(terrain) in unit.spawnableterrains or "any" in unit.spawnableterrains):
