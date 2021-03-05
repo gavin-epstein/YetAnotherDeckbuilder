@@ -19,7 +19,7 @@ var nextTurn =[]
 var image
 var sight = 40
 var attackrange = 1
-var trap = false #trans rights
+var trap = false 
 var facingtype = ["flip"]
 var _imagescale
 var lore

@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 2;
+var maxdifficulty = 7;
 var map
 var units=[]
 var Player
@@ -66,6 +66,7 @@ func addUnit(unit, node,head=null):
 				var basetile = unit.components[start].tile
 				var tile = map.selectRandom(basetile,1,"empty",["any"])
 				if tile == null:
+					unit.difficulty = 0
 					unit.die(null)
 					return
 				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
@@ -78,6 +79,10 @@ func addUnit(unit, node,head=null):
 			unit.links.append(linkage)
 	units.append(unit)
 	unit.visible = true
+func swap(unit1,unit2):
+	if move(unit1,unit2.tile):
+		move(unit2,unit1.tile)
+	
 func move(unit, node):
 	
 	if node is Array:
@@ -227,6 +232,7 @@ func getTileInDirection(tile, dir1,dir2=0):
 func MoveAndAttack(unit,target):
 	unit = unit.head
 	var nextTile = unit.tile
+	var curTile = unit.tile
 	if target is Vector2:
 		for _i in range(unit.speed):
 			nextTile = map.getTileInDirection(nextTile,target)
@@ -240,9 +246,9 @@ func MoveAndAttack(unit,target):
 					Action("Attack",[unit, nextTile.occupants[0]])
 				break
 	else:
-		var targets = map.selectAll(unit.tile,unit.sight,target,["any"])
+		var targets = map.selectAll(nextTile,unit.sight,target,["any"])
 		for _i in range(unit.speed):
-			var enemy = map.selectRandom(unit.tile,unit.attackrange,target,["any"])
+			var enemy = map.selectRandom(nextTile,unit.attackrange,target,["any"])
 			if enemy!=null:
 				if unit.hasVariable("Multistrike"):
 					for _eoorork in range(getVar(unit, "Multistrike")):
@@ -251,11 +257,21 @@ func MoveAndAttack(unit,target):
 					Action("Attack",[unit, enemy])
 				break
 			else:
-				nextTile = map.getTileClosestToSet(unit.tile,targets)
+				curTile = nextTile
+				nextTile = map.getTileClosestToSet(curTile,targets)
 				if nextTile.occupants.size() ==0:
 					Action("move", [unit, nextTile])
+				elif nextTile.occupants[0].head == unit.head:
+					Action("move", [unit, nextTile])
+					Action("move", [nextTile.occupants[0], curTile])
 				else:
-					break
+					for neigh in curTile.neighs:
+						if neigh.dist !=null and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
+							nextTile = neigh
+							Action("move", [unit, nextTile])
+							break
+					
+					
 				
 func setStatus(tile, statname, val):
 	if tile == null:

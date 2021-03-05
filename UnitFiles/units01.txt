@@ -238,3 +238,14 @@ trigger(trap,do(addStatus(tile,thorns,1)))
 difficulty(0)
 image("res://Images/UnitArt/PricklyPear.png")
 lore("A common desert cactus, will add spikes to any nearby units")
+
+name("Frost Gremlin");
+difficulty(4);
+spawnable(ice)
+health(13);
+strength(6);
+range(3);
+speed(1);
+trigger(turn,do(MoveAndAttack(self,friendly)))
+trigger(turn,do(AddStatus((select((all,(any),friendly),3,tile)),frost,2)))
+image("res://Images/UnitArt/FrostGremlin.png")

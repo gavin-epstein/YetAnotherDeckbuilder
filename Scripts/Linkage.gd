@@ -17,10 +17,8 @@ func _process(delta:float):
 	for end in ends:
 		if end == null:
 			queue_free()
+			return
 	#Set self position
-	for end in ends:
-		if end == null:
-			queue_free()
 	var up:Vector2 = ends[1].position - ends[0].position
 	$Image.rotation = up.angle() + PI/2
 	self.position = ends[0].position + .5*up + Vector2(0,verticaloffset)
@@ -74,6 +72,8 @@ func spring(move, towards):
 	if tile.occupants.size() ==0 and not tile.sentinel:
 		controller.move(move, tile)
 		needstospring = false
+	elif not tile.sentinel and tile.occupants[0].head == move.head:
+		controller.swap(move,tile.occupants[0])
 	else:
 		pass
 		#TODO figure how to spring if blocked

@@ -16,9 +16,9 @@ cleansing water not working?
 #Traps render behind
 
 renewal not voiding
-#Dark deeds not damageing
+Ashes not voiding a card
 Dark deeds light whispers not activating part 2
-#stone not unplayable
+
 
 
 #    -units with linkage/ multitile entities
@@ -37,7 +37,7 @@ plants/background images for different biomes, (naturally spawning traps)
 #zoom and scroll on map
 
 #zoom and tooltips on cards
-multitile units should be able to move through themselves
+#multitile units should be able to move through themselves
 Consumed tile should be telegraphed
 
 tile backgrounds coords based on map coords not screencoords
@@ -47,7 +47,11 @@ landing screen
 
 save game
 
-improve pathfinding of enemies
+?improve pathfinding of enemies
+
+sounds
+
+add range, speed to unit mouseover
 ##Unit pieces:
 ##    head, body, linkage, trap,
 ##            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?

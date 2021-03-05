@@ -76,7 +76,7 @@ rarity(1)
 $RitualCount=7
 $Times=3
 text("When you have $RitualCount ritual cards in play, void this and add $Times random potions to your hand")
-trigger(play,if((count(Play, ritual) > $RitualCount), (repeat(do(createByMod((potion),Hand))),$Times)));
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(createByMod((potion),Hand))),$Times))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 trigger(onRemoveFromPlay,do(voided(self, Discard)))
 image("res://Images/CardArt/WitchsCauldron.png")
