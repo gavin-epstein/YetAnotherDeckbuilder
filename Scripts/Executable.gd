@@ -275,8 +275,14 @@ func execute(code, argv):
 			choice = yield(choice,"completed")
 		return choice
 	else:
-		#assert(false, code[0] + " not a valid command")
-		return code
+		var ret = []
+		for arg in code:
+			arg = processArgs(arg, argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg,"completed")
+			ret.append(arg)
+		return ret
+		
 func processArgs(arg, argv):
 	if arg is String:
 		if arg.substr(0,5) == "argv[":

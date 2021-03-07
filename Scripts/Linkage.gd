@@ -42,7 +42,10 @@ func _process(delta:float):
 					resetdie = false
 					needstodie = true
 		if resetdie:
-			self.z_index = min(ends[0].z_index,ends[1].z_index)-1
+			if ends[0].has_method("isUnit") and  ends[1].has_method("isUnit"):
+				self.z_index = min(ends[0].z_index,ends[1].z_index)-1
+			else:
+				self.z_index = 4
 			needstodie = false
 		if not getTile(ends[0]) in getTile(ends[1]).neighs:
 			if needstospring:

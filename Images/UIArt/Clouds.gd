@@ -2,7 +2,7 @@ extends MeshInstance2D
 const randwidth = 15
 const width = 1920
 const height = 1080
-const vertcount = 20000
+const vertcount = 1000#increase dependent on hardware?
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"

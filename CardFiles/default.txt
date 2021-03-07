@@ -69,6 +69,20 @@ cost(-)
 removetrigger(endofturn, true, 0)
 modifiers(Dodge)
 
+title(Void of Greed);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(voidshift()));
+trigger(play,if((hastype(argv[0],hammer)),(do(consume()))));
+trigger(play,if((hastype(argv[0],loot)),(do(consume()))));
+removetrigger(consume,true,4);
+text("When you play a Loot or a Hammer card, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/VoidOfGreed.png")
+
 title(Void of Patience);
 cost(-);
 types(void);
@@ -80,7 +94,7 @@ trigger(endofturn,do(consume()));
 removetrigger(consume,true,7);
 text("At the end of your turn, The Void grows. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/TheVoid/frame001.png")
+image("res://Images/CardArt/VoidOfPatience.png")
 
 title(Void of Anger);
 cost(-);
@@ -93,7 +107,7 @@ trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(consume,true,10);
 text("When you play an attack, The Void grows. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/TheVoid/frame000.png")
+image("res://Images/CardArt/VoidOfAnger.png")
 
 title(Void of Death);
 cost(-);
@@ -106,7 +120,7 @@ trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(consume,true,4);
 text("When a unit dies, The Void grows. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/TheVoid/frame000.png")
+image("res://Images/CardArt/VoidOfDeath.png")
 
 title("Dash");
 cost(1);
@@ -116,6 +130,7 @@ $Move=3
 rarity(0)
 trigger(onPlay, do(movePlayer($Move)))
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/Dash.png")
 
 title("Defend")
 cost(1);

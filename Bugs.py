@@ -1,21 +1,17 @@
 
 Null units showing up in unit list
+    They are successfully being ignored
 
-freezing on select -- probably a while vs if yield
 card 1 in hand onclick not working well
     not focus problem?
     has do do with resizing, clicks aren't registering when resized
     
-
-add number background to status icon numbers
-add icons for immune, resistant, vulnerable by type
-
 cleansing water not working?
     Cleansing water select is broken
 
 #Traps render behind
 
-renewal not voiding
+renewal not voiding other cards
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 
@@ -38,7 +34,7 @@ plants/background images for different biomes, (naturally spawning traps)
 
 #zoom and tooltips on cards
 #multitile units should be able to move through themselves
-Consumed tile should be telegraphed
+#Consumed tile should be telegraphed
 
 tile backgrounds coords based on map coords not screencoords
     or add a viewport for the map, so that they change on shift but not scroll
@@ -47,11 +43,19 @@ landing screen
 
 save game
 
-?improve pathfinding of enemies
+improve pathfinding of enemies - they should be able to go around things
 
 sounds
 
 add range, speed to unit mouseover
+
+add number background to status icon numbers
+
+add icons for immune, resistant, vulnerable by type
+
+performance improvement
+
+devlog
 ##Unit pieces:
 ##    head, body, linkage, trap,
 ##            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?

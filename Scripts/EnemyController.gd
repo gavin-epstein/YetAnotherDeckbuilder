@@ -41,6 +41,7 @@ func addPlayerAndVoid():
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
+	pickConsumed()
 func addUnit(unit, node,head=null):
 	if head == null:
 		head = unit
@@ -307,3 +308,21 @@ func clearAllStatuses(tiles = "Player"):
 	
 func endGame():
 	get_tree().paused = true
+
+func pickConsumed():
+	yield(get_tree().create_timer(.2),"timeout")
+	var possible = []
+	for other in theVoid.tile.neighs:
+		if other.occupants.size()==0:
+			possible.append(other)
+	if possible.size() == 0:
+		possible = theVoid.tile.neighs
+	var consumed = Utility.choice(possible)
+	if theVoid.links.size()==0:
+		var linkage = $UnitLibrary.getLinkageByName("VoidTentacles")
+		linkage.setup(theVoid,consumed,theVoid)
+		add_child(linkage)
+		theVoid.links.append(linkage)
+	else:
+		theVoid.links[0].setup(theVoid,consumed,theVoid)
+	cardController.consumed = consumed
