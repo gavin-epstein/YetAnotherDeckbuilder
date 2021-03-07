@@ -1,3 +1,7 @@
 name(wormlink)
 image("res://Images/UnitArt/wormlink.png")
 verticaloffset(-42)
+
+name(VoidTentacles)
+image("res://Images/UnitArt/VoidTentacles.png")
+verticaloffset(0)

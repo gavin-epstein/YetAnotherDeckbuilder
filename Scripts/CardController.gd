@@ -16,6 +16,7 @@ var selectedCard
 var map
 var lastPlayed
 var lastTargets
+var consumed
 class_name CardController
 
 func Load(parent)-> void: 
@@ -462,18 +463,11 @@ func block(amount):
 	return true
 func consume():
 	var theVoid = enemyController.theVoid
-	var possible = []
-	for other in theVoid.tile.neighs:
-		if other.occupants.size()==0:
-			possible.append(other)
-	if possible.size() == 0:
-		possible = theVoid.tile.neighs
-	var consumed = Utility.choice(possible)
-	
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
 			thing.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)
+	enemyController.pickConsumed()
 	return true
 func triggerAll(trigger, argv):
 	for card in Play.cards:

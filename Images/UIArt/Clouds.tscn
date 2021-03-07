@@ -4,10 +4,10 @@
 [ext_resource path="res://Images/UIArt/Clouds.shader" type="Shader" id=2]
 [ext_resource path="res://Images/UIArt/CloudMask.png" type="Texture" id=3]
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
 shader_param/mask = ExtResource( 3 )
 
 [node name="Node2D" type="MeshInstance2D"]
-material = SubResource( 2 )
+material = SubResource( 1 )
 script = ExtResource( 1 )
