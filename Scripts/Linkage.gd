@@ -110,3 +110,39 @@ func deepcopy(other):
 func setup(e1,e2,head):
 	ends = [e1,e2]
 	self.head = head
+func save()->Dictionary:
+	var saveends= []
+	#search the head, if end not found search the whole ass map
+	#if not found search all units
+	for end in ends:
+		var endlocation = "head"
+		var saveend = head.components.find(end)
+		if saveend == -1:
+			endlocation = "map"
+			saveend = head.controller.map.find(end)
+		if saveend == -1:
+			for i in range(head.controller.units.size()):
+				var unit = head.controller.units[i]
+				saveend = unit.components.find(end)
+				if saveend != -1:
+					endlocation = i
+		saveends.append([endlocation,saveend]) 
+	
+	return {
+		"title":title,
+		"ends":saveends
+	}
+	
+func loadFromSave(save):
+	ends = []
+	for saveend in save.ends:
+		var end
+		if saveend[0] is int or saveend[0] is float:
+			var ind = int(saveend[0])
+			var unit = head.controller.units[ind]
+			end = unit.components[int(saveend[1])]
+		elif saveend[0] == "head":
+			end = head.components[int(saveend[1])]
+		elif saveend[0] == "map":
+			end = head.controller.nodes[int(saveend[1])]
+		ends.append(end)

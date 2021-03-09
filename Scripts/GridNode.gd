@@ -11,6 +11,7 @@ var uvCoords: Vector2
 var meshIndex
 var destination:Vector2
 var dist
+onready var map = get_parent()
 var highlighted = false
 # -1 unclaimed. 0 wall
 var region = -1
@@ -20,9 +21,9 @@ var sentinel = false
 
 
 func _process(delta: float) -> void:
-	if get_parent().physics_on and not sentinel:
+	if map.physics_on and not sentinel:
 		#if out of bounds self destruct
-		if abs(position.y) > Map.height or abs(position.x) > Map.width:
+		if abs(position.y) > map.height or abs(position.x) > map.width:
 			self.sentinel = true
 			get_parent().destroyNodeAndSpawn(self)
 		#move toward destination
@@ -33,10 +34,10 @@ func _process(delta: float) -> void:
 			if true:
 				var dir:Vector2 = neigh.position - self.position
 				var length = dir.length_squared()
-				if length < Map.minSqDist:
-					destination -= (delta * speed* dir.normalized() * Map.minSqDist/max(length,.1))
-				elif length > Map.maxSqDist:
-					destination += (delta * speed* dir.normalized() * length/Map.maxSqDist)
+				if length < map.minSqDist:
+					destination -= (delta * speed* dir.normalized() * map.minSqDist/max(length,.1))
+				elif length > map.maxSqDist:
+					destination += (delta * speed* dir.normalized() * length/map.maxSqDist)
 
 func added(pos: Vector2)  -> void:
 	self.position  = pos;
@@ -97,3 +98,17 @@ func highlight():
 func dehighlight():
 	$Highlight.visible = false
 	highlighted = false
+
+func save() -> Dictionary:
+	return {
+		"uvCoords":[uvCoords.x,uvCoords.y],
+		"terrain":terrain,
+		"position":[position.x, position.y],
+		"sentinel":sentinel
+	}
+func loadFromSave(save:Dictionary):
+	uvCoords = Vector2(save.uvCoords[0], save.uvCoords[1])
+	terrain = int(terrain)
+	position = Vector2(save.position[0],save.position[1])
+	sentinel = save.sentinel
+	

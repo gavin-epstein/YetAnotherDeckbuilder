@@ -12,6 +12,7 @@ const maxSqDist = minSqDist*1.2
 signal mapGenerated
 signal nodeSelected
 var highlightTemplate = preload("res://Units/Highlight.tscn")
+var gridNodeTemplate = preload("res://Scripts/GridNode.gd");
 var nodes = []
 var verts = PoolVector2Array()
 var uvs = PoolVector2Array()
@@ -25,7 +26,6 @@ var lastStep
 var centerCache = {}
 var pausetime = 0.0
 var acceptinput = false
-var gridNodeTemplate
 var cardController
 var enemyController
 var sentinels=[]
@@ -37,7 +37,7 @@ const sentinelrowsep = 160
 
 func Load(parent):
 	randomize()
-	gridNodeTemplate = load("res://Scripts/GridNode.gd");
+	
 	cardController = parent.cardController
 	enemyController = parent.enemyController
 	var step = generate()
@@ -345,3 +345,32 @@ func minDistToPositions(tile,positions):
 			closedist = dist
 	return closedist
 	
+func save()->Dictionary:
+	var savenodes = []
+	for node in nodes:
+		savenodes.append(node.save())
+	var savesentinels = []
+	for node in sentinels:
+		savesentinels.append(nodes.find(node))
+	return{
+		"nodes":savenodes,
+		"sentinels":savesentinels,
+		"voidNode":nodes.find(voidNode)
+	}
+func loadFromSave(save:Dictionary, parent):
+	cardController = parent.cardController
+	enemyController = parent.enemyController
+	nodes = []
+	for savenode in save.nodes:
+		var node = gridNodeTemplate.instance()
+		node.loadFromSave()
+	sentinels =[]
+	for index in save.sentinels:
+		sentinels.append(nodes[int(index)])
+	voidNode = nodes[int(save.voidNode)]
+	
+	triangulate()
+	var step = doPhysics(2);
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	acceptinput = true

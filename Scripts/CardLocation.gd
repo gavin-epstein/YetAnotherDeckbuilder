@@ -38,3 +38,17 @@ func updateDisplay() -> void:
 	pass
 	#assert(false, "Abstract Method")
 
+func save()-> Dictionary:
+	var savecards = []
+	for card in cards:
+		if card !=null:
+			savecards.append(card.save())
+	return{
+		cards: savecards
+	}
+func loadFromSave(save:Dictionary):
+	self.cards = []
+	for savecard in save.cards:
+		var card = get_parent().Library.getCardByName(savecard.title)
+		card.loadFromSave(savecard)
+		cards.append(card)

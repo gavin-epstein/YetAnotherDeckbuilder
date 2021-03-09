@@ -15,7 +15,6 @@ var armor = 0
 var maxHealth
 var damagetypes= []
 var tile
-var nextTurn =[]
 var image
 var sight = 40
 var attackrange = 1
@@ -32,7 +31,7 @@ var links=[]
 var linkagenames = []
 var movementPolicy="Spring"
 signal animateHealthChange
-const buffintents = ["gainArmor","gainBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
+const buffintents = ["addArmor","addBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 
 func onSummon(head)->void:
 	self.head = head
@@ -498,3 +497,49 @@ func _on_HoverRect_mouse_exited() -> void:
 	if $HoverText.modulate.a == 1:
 		$HoverText/Fader.play_backwards("Fade")
 	
+func save() -> Dictionary:
+	var savecomponents = []
+	for component in components:
+		savecomponents.append(component.save())
+	var savelinkages = []
+	for link in links:
+		savelinkages.append(link.save())
+	var tileindex = controller.map.nodes.find(self.tile)
+	return{
+		"title":title,
+		"vars":vars,
+		"health":health,
+		"maxHealth":maxHealth,
+		"strength":strength,
+		"status":status,
+		"block":block,
+		"armor":armor,
+		"components":savecomponents,
+		"links":savelinkages,
+		"tile": tileindex
+	}
+func loadFromSave(save:Dictionary):
+	vars = save.vars
+	health = save.health
+	maxHealth = save.maxHealth
+	strength = save.strength
+	status = save.status
+	block = save.blocks
+	armor = save.armor
+	components = []
+	for savecomponent in save.components:
+		var component = controller.get_node("UnitLibrary").getUnitByName(savecomponent.title)
+		component.head = self
+		component.controller = self.controller
+		component.loadFromSave(savecomponent)
+		components.append(component)
+	links = []
+	for savelink in save.links:
+		var link = controller.get_node("UnitLibrary").getLinkageByName(savelink.title)
+		link.head = self
+		link.loadFromSave(savelink)
+		links.append(link)
+	self.tile = controller.map.nodes[int(save.tile)]
+	if not self.trap:
+		self.tile.occupants.append(self)
+		
