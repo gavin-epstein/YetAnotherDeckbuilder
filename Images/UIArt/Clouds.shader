@@ -31,9 +31,9 @@ void vertex(){
 		maxx++;
 	}
 	hue= map(hue, 0.0, maxx, 0.0, 4.0);
-	while(hue>=1.0){
-		hue -= 1.0;
-	}
+	
+	hue = fract(hue);
+	
 	hue = map(hue,0.0,1.0, .45 , .6);
 	sat = map(sat,0.0,maxx, 0,.7);
 	//val = map(val, 0.0, maxx, 0.0,1.0);

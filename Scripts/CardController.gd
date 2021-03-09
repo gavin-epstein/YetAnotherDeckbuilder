@@ -516,3 +516,22 @@ func voidshift():
 func cardAt(loc,index):
 	loc = get_child(loc)
 	return loc.getCard(index)	
+func save()->Dictionary:
+	return{
+		"hand": Hand.save(),
+		"deck": Deck.save(),
+		"discard": Discard.save(),
+		"play": Play.save(),
+		"voided":$Voided.save(),
+		"reaction":$Reaction.save(),
+		"energy": self.Energy
+	}
+func loadFromSave(save:Dictionary,parent):
+	Load(parent)
+	Hand.loadFromSave(save.hand)
+	Deck.loadFromSave(save.deck)
+	Discard.loadFromSave(save.discard)
+	Play.loadFromSave(save.play)
+	$Voided.loadFromSave(save.voided)
+	$Reaction.loadFromSave(save.reaction)
+	Energy = save.energy

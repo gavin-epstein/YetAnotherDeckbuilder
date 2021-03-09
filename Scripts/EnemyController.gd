@@ -326,3 +326,25 @@ func pickConsumed():
 	else:
 		theVoid.links[0].setup(theVoid,consumed,theVoid)
 	cardController.consumed = consumed
+
+func save()->Dictionary:
+	var saveunits=[]
+	for unit in units:
+		saveunits.append(unit.save())
+	return {
+		"units":saveunits,
+		"windDirection": [windDirection.x,windDirection.y],
+		"maxdifficulty": maxdifficulty,
+		"player": Player.save()
+	}
+func loadFromSave(save:Dictionary, parent):
+	Load(parent)
+	units = []
+	for saveunit in save.units:
+		var unit  = $UnitLibrary.getUnitByName(saveunit.title)
+		unit.loadFromSave(saveunit)
+		units.append(saveunit)
+	self.windDirection = Vector2(save.windDirection.x, save.windDirection.y)
+	self.maxdifficulty = save.maxdifficulty
+	Player = $UnitLibrary.getUnitByName("Player")
+	Player.loadFromSave(save.player)

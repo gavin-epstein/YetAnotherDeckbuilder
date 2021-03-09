@@ -17,6 +17,9 @@ func updateDisplay(statuses:Dictionary,icons:Dictionary):
 			sprite.position = pos
 			sprite.z_index = -1
 			var val  = statuses[status]
+			if val is float:
+				val = int(val)
+				statuses[status] = int(val)
 			if val is int:
 				var text = RichTextLabel.new()
 				add_child(text)

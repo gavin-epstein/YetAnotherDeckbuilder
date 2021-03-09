@@ -215,3 +215,14 @@ func generateTooltips():
 		if tip !=null:
 			tooltips.append(word.capitalize()+": "+tip)
 		
+func save() -> Dictionary:
+	return{
+		"title":title,
+		"vars":vars,
+		"removecount":removecount
+	}
+
+func loadFromSave(save:Dictionary):
+	self.vars = save.vars
+	self.removecount = save.removecount
+
