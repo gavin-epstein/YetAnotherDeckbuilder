@@ -542,7 +542,7 @@ script = ExtResource( 275 )
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 80
+frame = 19
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -571,7 +571,7 @@ script = ExtResource( 2 )
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 81
+frame = 20
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -601,7 +601,7 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 80
+frame = 19
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -651,7 +651,7 @@ script = ExtResource( 137 )
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 60
+frame = 46
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -673,7 +673,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 44
+frame = 109
 playing = true
 script = ExtResource( 264 )
 
@@ -740,6 +740,7 @@ layer = 3
 script = ExtResource( 374 )
 
 [node name="Back" type="Panel" parent="Pause Menu"]
+visible = false
 margin_left = 750.0
 margin_top = 200.0
 margin_right = 1168.0
@@ -781,7 +782,7 @@ margin_left = 47.0
 margin_top = 150.0
 margin_right = 380.0
 margin_bottom = 218.0
-mouse_filter = 2
+mouse_filter = 1
 custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -808,7 +809,7 @@ margin_left = 47.0
 margin_top = 270.0
 margin_right = 380.0
 margin_bottom = 338.0
-mouse_filter = 2
+mouse_filter = 1
 custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -833,3 +834,5 @@ __meta__ = {
 [connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
 [connection signal="gui_input" from="Pause Menu/Back/Resume" to="Pause Menu" method="_ResumeButton"]
+[connection signal="gui_input" from="Pause Menu/Back/SaveQuit" to="Pause Menu" method="_SaveQuitButton"]
+[connection signal="gui_input" from="Pause Menu/Back/Resign" to="Pause Menu" method="_ResignButton"]

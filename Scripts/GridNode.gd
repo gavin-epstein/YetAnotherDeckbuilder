@@ -104,11 +104,13 @@ func save() -> Dictionary:
 		"uvCoords":[uvCoords.x,uvCoords.y],
 		"terrain":terrain,
 		"position":[position.x, position.y],
-		"sentinel":sentinel
+		"sentinel":sentinel,
+		"destination":[destination.x,destination.y]
 	}
 func loadFromSave(save:Dictionary):
 	uvCoords = Vector2(save.uvCoords[0], save.uvCoords[1])
 	terrain = int(terrain)
 	position = Vector2(save.position[0],save.position[1])
 	sentinel = save.sentinel
+	destination = Vector2(save.destination[0],save.destination[1])
 	

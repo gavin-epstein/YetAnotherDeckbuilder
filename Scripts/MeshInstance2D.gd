@@ -362,15 +362,20 @@ func loadFromSave(save:Dictionary, parent):
 	enemyController = parent.enemyController
 	nodes = []
 	for savenode in save.nodes:
-		var node = gridNodeTemplate.instance()
-		node.loadFromSave()
+		var node = gridNodeTemplate.new()
+		node.loadFromSave(savenode)
+		nodes.append(node)
+		add_child(node)
+		var highlight =  highlightTemplate.instance()
+		node.add_child(highlight)
+		self.add_child(highlight)
+		highlight.visible = false
+		highlight.name = "Highlight"
 	sentinels =[]
 	for index in save.sentinels:
 		sentinels.append(nodes[int(index)])
 	voidNode = nodes[int(save.voidNode)]
 	
 	triangulate()
-	var step = doPhysics(2);
-	if step is GDScriptFunctionState:
-		step = yield(step,"completed")
+	
 	acceptinput = true

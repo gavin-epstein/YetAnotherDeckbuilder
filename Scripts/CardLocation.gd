@@ -31,7 +31,9 @@ func remove_card_at(i) -> bool:
 	cards.remove(i)
 	return true
 func getCard(i):
-	assert(cards.size()>i, "No Card at %d"%i)
+	#assert(cards.size()>i, "No Card at %d"%i)
+	if cards.size()<=i:
+		return null
 	return cards[i]
 
 func updateDisplay() -> void:
@@ -44,11 +46,13 @@ func save()-> Dictionary:
 		if card !=null:
 			savecards.append(card.save())
 	return{
-		cards: savecards
+		"cards": savecards
 	}
 func loadFromSave(save:Dictionary):
 	self.cards = []
 	for savecard in save.cards:
 		var card = get_parent().Library.getCardByName(savecard.title)
 		card.loadFromSave(savecard)
+		add_child(card)
 		cards.append(card)
+	updateDisplay()
