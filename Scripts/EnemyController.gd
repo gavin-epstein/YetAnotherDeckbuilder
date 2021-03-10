@@ -9,9 +9,10 @@ var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var lastTargets
 var voidNext
+const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
 func Load(parent):
-	yield(parent,"ready")
+	#yield(parent,"ready")
 	map = parent.map
 	cardController = parent.cardController
 	enemyController=self
@@ -47,7 +48,7 @@ func addUnit(unit, node,head=null):
 		head = unit
 	if node == null:
 		return false
-	unit.scale = Vector2(.17,.17);
+	unit.scale = unitscale;
 	if not unit.trap:
 		node.occupants.append(unit);
 	unit.tile = node
@@ -71,7 +72,13 @@ func addUnit(unit, node,head=null):
 					unit.die(null)
 					return
 				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
-				addUnit(component,tile,unit)
+				add_child(component)
+				component.scale = unitscale
+				if not component.trap:
+					tile.occupants.append(component)
+				component.position = tile.position
+				component.onSummon(unit)
+				component.controller = self
 				unit.components[end] = component
 			#Spawn new linkage
 			var linkage = $UnitLibrary.getLinkageByName(linkname)
@@ -79,7 +86,6 @@ func addUnit(unit, node,head=null):
 			add_child(linkage)
 			unit.links.append(linkage)
 	units.append(unit)
-	unit.visible = true
 func swap(unit1,unit2):
 	if move(unit1,unit2.tile):
 		move(unit2,unit1.tile)
@@ -335,16 +341,29 @@ func save()->Dictionary:
 		"units":saveunits,
 		"windDirection": [windDirection.x,windDirection.y],
 		"maxdifficulty": maxdifficulty,
-		"player": Player.save()
+		"player": Player.save(),
+		"voidNext":map.nodes.find(voidNext),
+		"theVoid":units.find(theVoid)
 	}
 func loadFromSave(save:Dictionary, parent):
-	Load(parent)
+	var step = self.Load(parent)
+	if step is GDScriptFunctionState:
+		yield(step, "completed")
 	units = []
 	for saveunit in save.units:
 		var unit  = $UnitLibrary.getUnitByName(saveunit.title)
+		add_child(unit)
 		unit.loadFromSave(saveunit)
-		units.append(saveunit)
-	self.windDirection = Vector2(save.windDirection.x, save.windDirection.y)
+		units.append(unit)
+		unit.scale = unitscale
+		unit.onSummon(unit,true)
+	self.windDirection = Vector2(save.windDirection[0], save.windDirection[1])
 	self.maxdifficulty = save.maxdifficulty
 	Player = $UnitLibrary.getUnitByName("Player")
 	Player.loadFromSave(save.player)
+	Player.scale = unitscale
+	add_child(Player)
+	Player.onSummon(Player,true)
+	
+	voidNext = map.nodes[int(save.voidNext)]
+	theVoid = units[int(save.theVoid)]

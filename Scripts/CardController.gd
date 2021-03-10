@@ -187,6 +187,8 @@ func cardreward(rarity, count):
 	return true
 
 func purge(card):
+	if card == null:
+		return false
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card):
 		releaseFocus(card)
 		card.queue_free()
@@ -194,7 +196,7 @@ func purge(card):
 	return false
 
 func takeFocus(item) -> bool:
-	if Choice.visible and not item in Choice.cards:
+	if $Choice.visible and not item in $Choice.cards:
 		return false
 	if focus == null:
 		focus = item
@@ -345,8 +347,8 @@ func selectTiles(targets, distance, tile):
 	if (tile is String and tile == "Player") or tile == null:
 		tile = enemyController.Player.tile
 	var enemies = []
-	if targets[0] is int:
-		for _i in range(targets[0]):
+	if targets[0] is int or targets[0] is float:
+		for _i in range(int(targets[0])):
 			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
 	elif targets[0] == "all":	
 		enemies = map.selectAll(tile,distance,targets[2],targets[1])
@@ -405,7 +407,7 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		targets.append("-Player")
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:
-		enemies = yield(enemies,"complete")
+		enemies = yield(enemies,"completed")
 	if not enemies is Array:
 		enemies = [enemies]
 	for enemy in enemies:
@@ -514,7 +516,7 @@ func Reaction(amount:float, attacker)-> float:
 func voidshift():
 	Action("devoidAll",[])
 func cardAt(loc,index):
-	loc = get_child(loc)
+	loc = get_node(loc)
 	return loc.getCard(index)	
 func save()->Dictionary:
 	return{
@@ -524,14 +526,33 @@ func save()->Dictionary:
 		"play": Play.save(),
 		"voided":$Voided.save(),
 		"reaction":$Reaction.save(),
-		"energy": self.Energy
+		"energy": self.Energy,
+		"consumed":map.nodes.find(consumed)
 	}
 func loadFromSave(save:Dictionary,parent):
-	Load(parent)
+	cardController = self
+	Deck = get_node("Deck")
+	Hand = get_node("Hand")
+	Discard = get_node("Discard")
+	Play = get_node("Play")
+	Library = get_node("Library")
+	Choice = get_node("Choice")
+	var step = Library.Load()
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	map = parent.map
+	enemyController = parent.enemyController
+	
+
 	Hand.loadFromSave(save.hand)
 	Deck.loadFromSave(save.deck)
 	Discard.loadFromSave(save.discard)
 	Play.loadFromSave(save.play)
 	$Voided.loadFromSave(save.voided)
 	$Reaction.loadFromSave(save.reaction)
-	Energy = save.energy
+	print("Energy:" + str(save.energy) + " "+  str(int(save.energy)))
+	Energy = int(save.energy)
+	$Energy.updateDisplay()
+	consumed = map.nodes[int(save.consumed)]
+	print(Hand.cards.size())
+	print("AllDone")

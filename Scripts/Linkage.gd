@@ -119,7 +119,7 @@ func save()->Dictionary:
 		var saveend = head.components.find(end)
 		if saveend == -1:
 			endlocation = "map"
-			saveend = head.controller.map.find(end)
+			saveend = head.controller.map.nodes.find(end)
 		if saveend == -1:
 			for i in range(head.controller.units.size()):
 				var unit = head.controller.units[i]
@@ -144,5 +144,5 @@ func loadFromSave(save):
 		elif saveend[0] == "head":
 			end = head.components[int(saveend[1])]
 		elif saveend[0] == "map":
-			end = head.controller.nodes[int(saveend[1])]
+			end = head.controller.map.nodes[int(saveend[1])]
 		ends.append(end)

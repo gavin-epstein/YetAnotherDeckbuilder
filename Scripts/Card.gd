@@ -219,10 +219,15 @@ func save() -> Dictionary:
 	return{
 		"title":title,
 		"vars":vars,
-		"removecount":removecount
+		"removecount":removecount,
+		"visible":visible
 	}
 
 func loadFromSave(save:Dictionary):
 	self.vars = save.vars
+	for key in vars:
+		if vars[key] is float:
+			vars[key] = int(vars[key])
 	self.removecount = save.removecount
-
+	self.visible = save.visible
+	self.updateDisplay()

@@ -10,7 +10,11 @@ const SAVE_NAME = "res://Saves/savefile.json"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	loadAll()
+	var file = File.new()
+	if file.file_exists(SAVE_NAME):
+		loadFromSave()
+	else:
+		loadAll()
 	
 func loadAll():
 	var screen_size = OS.get_screen_size()
@@ -41,6 +45,8 @@ func save():
 	file.store_string(to_json(save))
 	file.close()
 func loadFromSave():
+	var screen_size = OS.get_screen_size()
+	OS.set_window_size(screen_size)
 	var save
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
@@ -49,10 +55,16 @@ func loadFromSave():
 		file.close()
 		if typeof(data) == TYPE_DICTIONARY:
 			save = data
-			map.loadFromSave(save.map, self)
-			enemyController.loadFromSave(save.enemyController, self)
-			cardController.loadFromSave(save.cardController, self)
-			
+			var step
+			step = map.loadFromSave(save.map, self)
+			if step is GDScriptFunctionState:
+				yield(step,"completed")
+			step = enemyController.loadFromSave(save.enemyController, self)
+			if step is GDScriptFunctionState:
+				yield(step,"completed")
+			step = cardController.loadFromSave(save.cardController, self)
+			if step is GDScriptFunctionState:
+				yield(step,"completed")
 		else:
 			printerr("Corrupted data!")
 	else:

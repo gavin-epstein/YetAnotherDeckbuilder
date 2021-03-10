@@ -33,7 +33,7 @@ var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["addArmor","addBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
 
-func onSummon(head)->void:
+func onSummon(head, silent= false)->void:
 	self.head = head
 	if head == self:
 		addHealthBar()
@@ -58,22 +58,25 @@ func onSummon(head)->void:
 					unit.maxHealth = sumMaxHealth
 					unit.health = sumHealth
 					unit.updateDisplay()
+	else:
+		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	if self.image!=null:
 		_imagescale = 1000.0/max(image.get_width(), image.get_height())
 		$Image.texture = image
 		$Image.scale = Vector2(_imagescale,_imagescale)
 	else:
 		_imagescale = 1
-	playAnimation("idle")
-	if self.head == self:
+		playAnimation("idle")
+	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
 		self.addStatus("New",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
 			components[0] = self
-	else:
-		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
+		else:
+			components = [self]
+	
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -245,6 +248,8 @@ func updateDisplay():
 		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
+	if head !=self:
+		head.die(attacker)
 	if difficulty > 10:
 		get_parent().cardController.Action("create",["Rare Loot","Discard"])
 	elif difficulty > 5:
@@ -273,15 +278,24 @@ func die(attacker):
 	var res = playAnimation("die")
 	for component in components:
 		if component != null and component!=self:
-			component.die(null)
+			component.playAnimation("die")
+			
 	for link in links:
 		link.queue_free()
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
-		queue_free()
+	
+		_eraseSelf()
 	else:
 		yield(get_tree().create_timer(1),"timeout")
-		queue_free()
+		_eraseSelf()
+func _eraseSelf():
+	for component in components:
+		if component != null and component!=self:
+			component.queue_free()
+	for link in links:
+		link.queue_free()
+	queue_free()
 
 func addStatus(stat, val):
 	if self.head != self:
@@ -500,7 +514,8 @@ func _on_HoverRect_mouse_exited() -> void:
 func save() -> Dictionary:
 	var savecomponents = []
 	for component in components:
-		savecomponents.append(component.save())
+		if component!=self:
+			savecomponents.append(component.save())
 	var savelinkages = []
 	for link in links:
 		savelinkages.append(link.save())
@@ -520,25 +535,33 @@ func save() -> Dictionary:
 	}
 func loadFromSave(save:Dictionary):
 	vars = save.vars
+	for key in vars:
+		if vars[key] is float:
+			vars[key] = int(vars[key])
 	health = save.health
 	maxHealth = save.maxHealth
 	strength = save.strength
 	status = save.status
-	block = save.blocks
+	block = save.block
 	armor = save.armor
-	components = []
+	components = [self]
 	for savecomponent in save.components:
 		var component = controller.get_node("UnitLibrary").getUnitByName(savecomponent.title)
-		component.head = self
-		component.controller = self.controller
+		get_parent().add_child(component)
+		component.scale = get_parent().unitscale
 		component.loadFromSave(savecomponent)
+		component.onSummon(self,true)
+		component.controller = self.controller
 		components.append(component)
+		
+		
 	links = []
 	for savelink in save.links:
 		var link = controller.get_node("UnitLibrary").getLinkageByName(savelink.title)
 		link.head = self
 		link.loadFromSave(savelink)
 		links.append(link)
+		get_parent().add_child(link)
 	self.tile = controller.map.nodes[int(save.tile)]
 	if not self.trap:
 		self.tile.occupants.append(self)
