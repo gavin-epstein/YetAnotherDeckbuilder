@@ -7,7 +7,7 @@ const ydiff = 939-123
 
 func generate():
 	var card = get_parent().get_parent()
-	var library = card.controller.get_node("Library")
+	var library = card.controller.Library
 	var pos = Vector2(500,323)
 	for type in card.types:
 		if type in library.icons:

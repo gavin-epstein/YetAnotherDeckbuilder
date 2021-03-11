@@ -19,6 +19,7 @@ func _ResumeButton(event: InputEvent) -> void:
 func _SaveQuitButton(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		get_parent().save()
+		get_tree().change_scene("res://Splash.tscn")
 func _ResignButton(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		get_parent().loadFromSave()

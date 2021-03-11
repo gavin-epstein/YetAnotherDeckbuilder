@@ -25,7 +25,7 @@ func Load(parent)-> void:
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
-	Library = get_node("Library")
+	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
@@ -535,7 +535,7 @@ func loadFromSave(save:Dictionary,parent):
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
-	Library = get_node("Library")
+	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
