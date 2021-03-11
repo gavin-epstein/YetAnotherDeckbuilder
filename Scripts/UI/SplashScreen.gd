@@ -1,6 +1,7 @@
 extends Node2D
 const SAVE_NAME = "res://Saves/savefile.json"
 const mainscene = preload("res://MainScene.tscn")
+
 func savefound()-> bool:
 	var file = File.new()
 	return file.file_exists(SAVE_NAME)
@@ -37,3 +38,6 @@ func _on_ContinueButton_mouse_exited() -> void:
 
 func _on_NewGameButton_mouse_exited() -> void:
 	$Menu/NewGame.modulate=Color(1,1,1)
+
+#func _input(event: InputEvent) -> void:
+#	print(event.as_text())

@@ -28,6 +28,7 @@ func _process(delta:float):
 		$Image.scale = Vector2(up.length()/1000.0,up.length()/1000.0)
 	elif policy == "static":
 		$Image.scale = Vector2(.17,.17)
+	self.visible=true
 	#Checking spring and deletion
 	if time >= checkdelay:
 		
