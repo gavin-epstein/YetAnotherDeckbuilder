@@ -1,16 +1,19 @@
 extends CardLocation
 var cardtemplate = preload("res://Card.tscn");
-class_name CardLibrary
+
 var CardRng = RandomNumberGenerator.new()
 var icons = {}
 var tooltips = {}
-
+var loaded = false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	CardRng.randomize()
 	pass
 	
 func Load():
+	if loaded:
+		return true
+	loaded = true
 	loadIcons()
 	loadTooltips("res://CardToolTips/cardtooltips.txt")
 	var dir = Directory.new()

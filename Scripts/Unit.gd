@@ -565,4 +565,4 @@ func loadFromSave(save:Dictionary):
 	self.tile = controller.map.nodes[int(save.tile)]
 	if not self.trap:
 		self.tile.occupants.append(self)
-		
+	

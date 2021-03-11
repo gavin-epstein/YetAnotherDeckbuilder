@@ -2,7 +2,7 @@ extends MeshInstance2D
 const randwidth = 15
 const width = 1920
 const height = 1080
-const vertcount = 10000#increase dependent on hardware?
+const vertcount = 1000#increase dependent on hardware?
 
 
 

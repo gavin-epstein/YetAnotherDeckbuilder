@@ -255,6 +255,8 @@ func destroyNodeAndSpawn(node):
 	
 	
 func getTiles(tile,dist:int,property,terrains):
+	if tile == null:
+		return []
 	var possible
 	selectableNodes  = []
 	if dist > 20:
@@ -377,5 +379,4 @@ func loadFromSave(save:Dictionary, parent):
 	voidNode = nodes[int(save.voidNode)]
 	
 	triangulate()
-	
 	acceptinput = true
