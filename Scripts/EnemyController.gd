@@ -79,6 +79,7 @@ func addUnit(unit, node,head=null):
 				component.position = tile.position
 				component.onSummon(unit)
 				component.controller = self
+				component.tile = tile
 				unit.components[end] = component
 			#Spawn new linkage
 			var linkage = $UnitLibrary.getLinkageByName(linkname)

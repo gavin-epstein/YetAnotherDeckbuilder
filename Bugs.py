@@ -5,6 +5,7 @@ Null units showing up in unit list
 card 1 in hand onclick not working well
     not focus problem?
     has do do with resizing, clicks aren't registering when resized
+    ?? Control nodes(text) stealing mouse input?
     
 cleansing water not working?
     Cleansing water select is broken
@@ -15,14 +16,7 @@ renewal not voiding other cards
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 
-
-
-#    -units with linkage/ multitile entities
-##Orientation change for units, on attack/move
-##    flip
-##    topdown
-##    frames
-#biomes (generated tiles should pick the same texture as their neighbors)
+#Splash screen not registering input when loaded from in game (pause issue)
 
 plants/background images for different biomes, (naturally spawning traps)
 
@@ -39,9 +33,10 @@ plants/background images for different biomes, (naturally spawning traps)
 tile backgrounds coords based on map coords not screencoords
     or add a viewport for the map, so that they change on shift but not scroll
 
-landing screen
+title screen warnings for save not found, save will be erased
 
-save game
+?multitile entities spawning is fucked. They arent ending up on the tiles
+multitile enities mouseover
 
 improve pathfinding of enemies - they should be able to go around things
 
@@ -53,9 +48,13 @@ add number background to status icon numbers
 
 add icons for immune, resistant, vulnerable by type
 
+type overhaul
+
 performance improvement
 
 devlog
+
+website for feedback
 ##Unit pieces:
 ##    head, body, linkage, trap,
 ##            tiles, other pointer,       is occupant?, has intent?, has healthbar?  should extend unit?
