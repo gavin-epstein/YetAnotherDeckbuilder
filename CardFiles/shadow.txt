@@ -1,0 +1,11 @@
+title(Shadow Slice);
+text("Deal $Damage shadow slash damage to an adjacent enemy, silently\n Discard from play immediately");
+cost(0);
+trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),$Range),true))
+trigger(onPlay, do(move, (Play, Discard, self), true));
+types(attack, slash, shadow, melee);
+removetrigger(endofturn, true,0);
+image("res://Images/CardArt/ShadowSlice.png");
+rarity(7);
+$Damage=6
+$Range=1

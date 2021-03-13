@@ -17,8 +17,6 @@ func _ready() -> void:
 		loadAll()
 	
 func loadAll():
-	var screen_size = OS.get_screen_size()
-	OS.set_window_size(screen_size)
 	var step = enemyController.Load(self)
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
@@ -45,8 +43,6 @@ func save():
 	file.store_string(to_json(save))
 	file.close()
 func loadFromSave():
-	var screen_size = OS.get_screen_size()
-	OS.set_window_size(screen_size)
 	var save
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
@@ -69,7 +65,11 @@ func loadFromSave():
 			printerr("Corrupted data!")
 	else:
 		printerr("No saved data!")
-
+func deletesave():
+	var file = File.new()
+	if file.file_exists(SAVE_NAME):
+		var dir = Directory.new()
+		dir.remove(SAVE_NAME)
 
 
 

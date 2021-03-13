@@ -25,7 +25,7 @@ func Load(parent)-> void:
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
-	Library = get_node("Library")
+	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
@@ -45,7 +45,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-#	Deck.add_card(Library.getCardByName("Birds of a Feather"))
+	#Deck.add_card(Library.getCardByName("Sledgehammer"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -247,7 +247,7 @@ func voided(card, loc):
 	return false
 
 func endofturn():
-	enemyController.maxdifficulty+=.7
+	enemyController.maxdifficulty+=.9
 	enemyController.Player.endOfTurn()
 	return true
 
@@ -283,14 +283,40 @@ func select(loc, predicate,message,num = 1,random=false):
 		if card.processArgs(predicate, []):
 			card.highlight()
 			selectcount+=1
+	print("selectcount: " + str(selectcount))	
+	if random: #random
+		var possible = []
+		for card in loc.cards:
+			if card.highlighted:
+				possible.append(card)
+		
+		var cards  = Utility.choosex(possible,num)
+		if cards.size()==1:
+			cardClicked(cards[0])
+			return cards[0]
+		if cards.size()>0:
+			cardClicked(cards[0])
+		return cards
+	if num is String and num == "all": #all
+		var possible = []
+		for card in loc.cards:
+			if card.highlighted:
+				possible.append(card)
+		if possible.size()>0:
+			cardClicked(possible[0])
+		return possible
+	#otherwise select 1.
+	#if only 1 is available return it
 	if selectcount == 1:
 		for card in loc.cards:
 			if card.highlighted:
 				cardClicked(card)
 				return card
 		print("Selectable Card has Moved?")
+	#if none available, null
 	elif selectcount == 0:
 		return null
+	#if all are the same return the first one
 	else:
 		var prototype = null
 		var alltheSame = true
@@ -305,14 +331,7 @@ func select(loc, predicate,message,num = 1,random=false):
 		if alltheSame:
 			cardClicked(prototype)
 			return prototype
-	if random:
-		var possible = []
-		for card in loc.cards:
-			if card.highlighted:
-				possible.append(card)
-		var card  = Utility.choice(possible)
-		cardClicked(card)
-		return card
+	#finally, let the player click
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
@@ -535,7 +554,7 @@ func loadFromSave(save:Dictionary,parent):
 	Hand = get_node("Hand")
 	Discard = get_node("Discard")
 	Play = get_node("Play")
-	Library = get_node("Library")
+	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:

@@ -1,0 +1,131 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Images/UIArt/MoraLantern.png" type="Texture" id=1]
+[ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/UI/SplashScreen.gd" type="Script" id=3]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+margin_top = 1.14264
+margin_right = 1920.0
+margin_bottom = 1081.14
+mouse_filter = 2
+color = Color( 0.0392157, 0.0392157, 0.0392157, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoraLantern" type="Sprite" parent="."]
+position = Vector2( 1.81274, 0.906311 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+margin_left = 1.75732
+margin_top = 60.0
+margin_right = 2736.76
+margin_bottom = 420.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+bbcode_enabled = true
+bbcode_text = "[center]Mora and the End of the World[/center]"
+text = "Mora and the End of the World"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Node2D" parent="."]
+position = Vector2( 40, 72 )
+
+[node name="NewGame" type="RichTextLabel" parent="Menu"]
+margin_left = 133.094
+margin_top = 292.625
+margin_right = 858.094
+margin_bottom = 511.625
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+text = "New Game"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameButton" type="ColorRect" parent="Menu/NewGame"]
+anchor_left = 0.235
+anchor_top = -0.579
+anchor_right = 0.235
+anchor_bottom = -0.579
+margin_left = -161.375
+margin_top = 172.801
+margin_right = 531.625
+margin_bottom = 295.801
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Continue" type="RichTextLabel" parent="Menu"]
+margin_left = 135.813
+margin_top = 434.923
+margin_right = 860.813
+margin_bottom = 653.923
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Continue"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueButton" type="ColorRect" parent="Menu/Continue"]
+anchor_left = 0.235
+anchor_top = -0.579
+anchor_right = 0.235
+anchor_bottom = -0.579
+margin_left = -161.375
+margin_top = 172.801
+margin_right = 531.625
+margin_bottom = 295.801
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Quit" type="RichTextLabel" parent="Menu"]
+margin_left = 137.625
+margin_top = 584.471
+margin_right = 862.625
+margin_bottom = 803.471
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+text = "Quit"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="ColorRect" parent="Menu/Quit"]
+anchor_left = 0.235
+anchor_top = -0.579
+anchor_right = 0.235
+anchor_bottom = -0.579
+margin_left = -170.375
+margin_top = 173.801
+margin_right = 533.625
+margin_bottom = 302.801
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="gui_input" from="Menu/NewGame/NewGameButton" to="." method="_on_NewGameButton_gui_input"]
+[connection signal="mouse_exited" from="Menu/NewGame/NewGameButton" to="." method="_on_NewGameButton_mouse_exited"]
+[connection signal="gui_input" from="Menu/Continue/ContinueButton" to="." method="_on_ContinueButton_gui_input"]
+[connection signal="mouse_exited" from="Menu/Continue/ContinueButton" to="." method="_on_ContinueButton_mouse_exited"]
+[connection signal="gui_input" from="Menu/Quit/QuitButton" to="." method="_on_QuitButton_gui_input"]
+[connection signal="mouse_exited" from="Menu/Quit/QuitButton" to="." method="_on_QuitButton_mouse_exited"]

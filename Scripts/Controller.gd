@@ -81,6 +81,7 @@ func setVar(card, varname, amount):
 	card.vars["$" + varname] = amount
 	return true
 func addVar(card, varname, amount):
+	print(card.title, varname, amount)
 	if card == null:
 		return false
 	if card.vars.has("$"  +varname):

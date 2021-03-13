@@ -28,6 +28,7 @@ func _process(delta:float):
 		$Image.scale = Vector2(up.length()/1000.0,up.length()/1000.0)
 	elif policy == "static":
 		$Image.scale = Vector2(.17,.17)
+	self.visible=true
 	#Checking spring and deletion
 	if time >= checkdelay:
 		
@@ -47,7 +48,7 @@ func _process(delta:float):
 			else:
 				self.z_index = 4
 			needstodie = false
-		if not getTile(ends[0]) in getTile(ends[1]).neighs:
+		if getTile(ends[0]) !=null and getTile(ends[1])!=null and not getTile(ends[0]) in getTile(ends[1]).neighs:
 			if needstospring:
 				if ends[0].has_method("isUnit") and not ends[1].has_method("isUnit"):
 					spring(ends[0], ends[1])
@@ -65,7 +66,7 @@ func _process(delta:float):
 		else:
 			needstospring = false
 func getTile(endpoint):
-	if endpoint.get("tile")!=null:
+	if endpoint.get("tile")!=null or endpoint.has_method("isUnit"):
 		return endpoint.tile
 	else:
 		return endpoint

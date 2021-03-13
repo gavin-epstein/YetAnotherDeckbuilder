@@ -162,15 +162,15 @@ func execute(code, argv):
 			res = yield(res, "completed")
 		return res
 	elif code[0] == "decrementRemoveCount":
-		if self.has_method("isCard"):
-			set("removecount",get("removecount")-1)
-			if get("removecount") == 0:
+		if hasVariable("removecount"):
+			vars["$removecount"] = vars["$removecount"]-1 
+			if vars["$removecount"] <= 0:
 				var res = self.Triggered("onRemoveFromPlay",argv)
 				if res is GDScriptFunctionState:
 					yield(res, "completed")
 				controller.Action("move",["Play","Discard",self])
-				set("cost",get("unmodifiedCost"))
-				set("removecount", get("defaultremovecount"))
+				vars["$Cost"] = vars["$BaseCost"]
+				vars["$removecount"] = vars["$defaultremovecount"]
 	elif code[0] == "hastype":
 		var args = []
 		for arg in code[1]:
@@ -208,7 +208,7 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg = yield(arg, "complete")
 			args.append(arg)
-		if not args[0].has_method("isCard"):
+		if not args[0].has_method("hasVariable"):
 			return false
 		return args[0].hasVariable(args[1])
 	elif code[0] =="select":
@@ -236,6 +236,14 @@ func execute(code, argv):
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed")
 		return ret
+	elif code[0] == "foreach":
+		var list = processArgs(code[1][1],argv)
+		if list is GDScriptFunctionState:
+			yield(list,"completed")
+		var res = foreach(code[1][0],list,code[1][2],argv)
+		if res is GDScriptFunctionState:
+			res = yield(res,"completed")
+		return res
 	elif code[0] == "*":
 		var arg1 = processArgs(code[1], argv)
 		if arg1 is GDScriptFunctionState:
@@ -329,3 +337,17 @@ func hasVariable(string) ->bool:
 		return true
 	return false
 
+func foreach(varname,list,action,argv):
+	if list == null:
+		return false
+	if not list is Array:
+		list = [list]
+	var reslist = []
+	for item in list:
+		vars["$"+varname] = item
+		var res = execute(action,argv)
+		if res is GDScriptFunctionState:
+			res = yield(res,"completed")
+		reslist.append(res)
+	vars.erase(varname)
+	return reslist
