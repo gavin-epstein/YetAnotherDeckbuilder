@@ -1,0 +1,42 @@
+title("Bottled Breeze");
+cost(0)
+rarity(2);
+trigger(onPlay,do(draw(10)));
+text("Draw until your hand is full. Purge")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion);
+types(wind,potion);
+
+title("Katachronophlogiston");
+types(fire,potion);
+text("Purge your hand. \nPurge");
+modifiers(potion);
+trigger(onPlay, repeat((do(purge((select(Hand,true,"-",1,true))))),10));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+rarity(1);
+image("res://Images/CardArt/Katachron.png")
+cost(0);
+
+title("Soup");
+cost(0);
+$Heal=20
+trigger(onPlay,do(heal($Heal)))
+trigger(onPlay, do(purge(self)));
+text("Heal $Heal, purge. \n");
+types(healing, potion);
+removetrigger(endofturn, true, 0);
+modifiers(potion);
+rarity(3);
+
+title("Cleansing Water");
+cost(1);
+$Range=2
+types(water, potion)
+text("remove all status effects from a target.\n Range $Range. \nPurge")
+rarity(2);
+modifiers(potion)
+removetrigger(endofturn, true, 0);
+trigger(onPlay,do(clearAllStatus((do(selectTiles(("any",("any"),"exists"),$Range,Player))))))
+trigger(onPlay, do(purge(self)));

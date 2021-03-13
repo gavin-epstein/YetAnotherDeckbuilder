@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 7;
+var maxdifficulty = 13;
 var map
 var units=[]
 var Player
@@ -79,6 +79,7 @@ func addUnit(unit, node,head=null):
 				component.position = tile.position
 				component.onSummon(unit)
 				component.controller = self
+				component.tile = tile
 				unit.components[end] = component
 			#Spawn new linkage
 			var linkage = $UnitLibrary.getLinkageByName(linkname)
@@ -91,7 +92,8 @@ func swap(unit1,unit2):
 		move(unit2,unit1.tile)
 	
 func move(unit, node):
-	
+	if unit == null or node ==null:
+		return false
 	if node is Array:
 		if node.size() ==0:
 			return false

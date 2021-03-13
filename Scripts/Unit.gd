@@ -498,6 +498,8 @@ func facing(angle):
 
 
 func _on_HoverRect_mouse_entered() -> void:
+	if head!=self:
+		return head._on_HoverRect_mouse_entered()
 	mouseon = true
 	yield(get_tree().create_timer(.2),"timeout")
 	if mouseon:
@@ -505,6 +507,8 @@ func _on_HoverRect_mouse_entered() -> void:
 		
 
 func _on_HoverRect_mouse_exited() -> void:
+	if head!=self:
+		return head._on_HoverRect_mouse_exited()
 	mouseon = false
 	if $HoverText.modulate.a >0 and $HoverText.modulate.a < 1:
 		yield($HoverText/Fader,"animation_finished")
@@ -565,4 +569,4 @@ func loadFromSave(save:Dictionary):
 	self.tile = controller.map.nodes[int(save.tile)]
 	if not self.trap:
 		self.tile.occupants.append(self)
-		
+	

@@ -542,7 +542,7 @@ script = ExtResource( 275 )
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 19
+frame = 101
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -571,7 +571,7 @@ script = ExtResource( 2 )
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 20
+frame = 102
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -601,7 +601,7 @@ script = ExtResource( 4 )
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 19
+frame = 101
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -618,10 +618,6 @@ text = "10"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Library" type="Node2D" parent="CardController"]
-position = Vector2( -238.157, 985.841 )
-script = ExtResource( 6 )
 
 [node name="Choice" type="Node2D" parent="CardController"]
 visible = false
@@ -651,7 +647,7 @@ script = ExtResource( 137 )
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 46
+frame = 42
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -673,7 +669,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 109
+frame = 65
 playing = true
 script = ExtResource( 264 )
 
@@ -733,6 +729,9 @@ position = Vector2( 426.711, 123.15 )
 scale = Vector2( 0.8, 0.8 )
 texture = ExtResource( 282 )
 centered = false
+
+[node name="CardLibrary" type="Node2D" parent="CardController"]
+script = ExtResource( 6 )
 
 [node name="Pause Menu" type="CanvasLayer" parent="."]
 pause_mode = 2
