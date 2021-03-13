@@ -70,3 +70,14 @@ removetrigger(endofturn, true, 0);
 types(light,shadow,fire,earth,water,meme);
 cost(0);
 image("res://Images/CardArt/BlackLettuce.png");
+
+title(Light Breeze);
+cost(4)
+$Draw=4
+$Energy=5
+trigger(onPlay, do(draw($Draw)))
+trigger(onPlay, do(gainEnergy($Energy)))
+types(light,wind)
+text("Draw $Draw, gain $Energy energy")
+removetrigger(endofturn,true,2)
+rarity(6)

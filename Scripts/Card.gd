@@ -82,6 +82,9 @@ func loadCardFromString(string):
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
+		elif parsed[0]=="interrupt":
+			var trigger = parsed[1]
+			Utility.addtoDict(interrupts,trigger[0],  trigger.slice(1,trigger.size()-1))
 		elif parsed[0] == "removetrigger":
 			var removetrigger = parsed[1]
 			Utility.addtoDict(triggers ,removetrigger[0], ["if", [removetrigger[1],["decrementRemoveCount"]]])
@@ -108,6 +111,7 @@ func loadCardFromString(string):
 			self.rarity = int(parsed[1][0])
 		elif parsed[0][0] =="$":
 			vars[parsed[0]] = parsed[2]
+		
 	#self.updateDisplay()
 	self.generateTooltips()
 func updateDisplay():

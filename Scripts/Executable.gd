@@ -19,15 +19,31 @@ func Triggered(method, argv):
 				res = yield(res, "completed")
 	if not controller.test:
 		self.updateDisplay();
-func Interrupts(method, args) -> bool:
+func Interrupts(method, argv) -> bool:
+	if interrupts.has(method):
+		var reslist = []
+		for code in interrupts[method]:
+			var res = execute(code, argv)
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
+			reslist.append(res)
+		#Take the first result as the value
+		#So do without interrupting should look like
+		#interrupt(method, false)
+		#interrupt(method, do( ... ))
+		print(reslist)
+		for res in reslist:
+			if res is bool:
+				return res
 	return false
+			
 func updateDisplay():
 	assert(false, "Abstract Method")
 
 func execute(code, argv):
 	
 	if code is String:
-		return code
+		return processArgs(code,argv)
 	if code is GDScriptFunctionState:
 		code = yield(code, "completed")
 	if not code[0] is String:
