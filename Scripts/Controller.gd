@@ -21,12 +21,17 @@ func _ready() -> void:
 	cardController = get_node("/root/Scene").cardController
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
+	var stoppable = silent
+	if silent is Array:
+		stoppable = silent[1]
+		silent = silent[0]
 	var res
 	#print(method +" "+ Utility.join(" ", argv))
-	if not silent:
+	if not stoppable:
 		for card in Play.cards:
 			if card.Interrupts(method, argv):
 				interrupted = true
+				print(method+str(argv) + " interrupted by " + card.title)
 	if not interrupted:
 		
 		if self.has_method(method):

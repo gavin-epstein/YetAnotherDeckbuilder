@@ -15,6 +15,7 @@ cleansing water not working?
 renewal not voiding other cards
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
+lifelink units gaining health on save reload
 
 #Splash screen not registering input when loaded from in game (pause issue)
 
@@ -34,6 +35,7 @@ tile backgrounds coords based on map coords not screencoords
     or add a viewport for the map, so that they change on shift but not scroll
 
 title screen warnings for save not found, save will be erased
+
 
 #multitile entities spawning is fucked. They arent ending up on the tiles
 multitile enities mouseover
