@@ -45,7 +45,8 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-	#Deck.add_card(Library.getCardByName("Sledgehammer"))
+	Deck.add_card(Library.getCardByName("Time Machine"))
+	Deck.add_card(Library.getCardByName("Windmill"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
