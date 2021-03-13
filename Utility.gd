@@ -135,6 +135,14 @@ static func interpretTerrain(name):
 static func choice(array:Array):
 	if array.size() > 0:
 		return array[randi()%array.size()]
+static func choosex(array:Array, x:int):
+	array = array.duplicate()
+	var ret =[]
+	for _i in range(min(array.size(),x)):
+		var thing = choice(array)
+		array.erase(thing)
+		ret.append(thing)
+	return ret
 static func type(object):
 	var ret
 	if object is Object:

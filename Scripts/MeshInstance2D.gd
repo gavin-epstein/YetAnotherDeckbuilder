@@ -193,7 +193,7 @@ func addGridNode(pos:Vector2, terrain:int, sentinel  = false) -> Node2D:
 		#make biomes
 		var tries =0
 		var other = Utility.choice(newNode.neighs)
-		while tries < 2 and other.sentinel:
+		while tries < 1 and other.sentinel:
 			other = Utility.choice(newNode.neighs)
 			tries+=1
 		if not other.sentinel:
@@ -229,7 +229,8 @@ func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) 
 		else:
 			var other  = cardController.focus
 			if other != null:
-				print("Focus is on ", cardController.focus.get("name"),": ", other.get("title")," ", other.get_parent().get("name"))
+				pass
+				#print("Focus is on ", cardController.focus.get("name"),": ", other.get("title")," ", other.get_parent().get("name"))
 			
 func doPhysics(time): 
 	print("Physics going")

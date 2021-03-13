@@ -1,7 +1,7 @@
 title(Dark Recipe);
 $Heal=10
 $RitualCount=3
-types(culinary, healing, ritual);
+types(food, ritual);
 text("When you have 4 or more ritual cards in play, heal $Heal and discard this card");
 rarity(4);
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(heal,($Heal),false))));
@@ -10,7 +10,7 @@ image("res://Images/CardArt/DarkRecipe.png");
 cost(2);
 
 title(Ritual Components);
-types(ritual);
+types(ritual, wind);
 image("res://Images/CardArt/RitualComponent.png");
 rarity(1);
 cost(0);
@@ -21,7 +21,7 @@ trigger(onPlay, if((countName(Play,"Ritual Components")< 2),(do( create,(self,Di
 text("Draw $Draw.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
 
 title(Ritual of Creation);
-types(ritual);
+types(ritual, loot);
 rarity(2);
 text("When you have 12 ritual cards in play, recieve a rare card reward, and discard this card");
 trigger(play,if((count(Play, ritual) > 11), (do(cardreward,(2,3), false))));
@@ -31,7 +31,7 @@ image("res://Images/CardArt/RitualOfCreation.png");
 modifiers(unique)
 
 title(Pentaract);
-types(ritual);
+types(ritual, movement);
 text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and void this card");
 removetrigger(endofturn, true, 5);
 trigger(onRemoveFromPlay, do(heal(5)))
@@ -71,7 +71,7 @@ image("res://Images/CardArt/BrokenBlade.png")
 
 title("Witch's Cauldron")
 cost(1)
-types(ritual)
+types(ritual,potion)
 rarity(1)
 $RitualCount=7
 $Times=3
@@ -83,7 +83,7 @@ image("res://Images/CardArt/WitchsCauldron.png")
 
 title("Ritual Summons")
 cost(1)
-types(ritual)
+types(ritual, summon)
 $RitualCount=7
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 trigger(onRemoveFromPlay,do(voided(self, Discard)))
@@ -101,7 +101,7 @@ cost(2);
 rarity(7);
 
 title("Dark Deeds")
-types(ritual, attack)
+types(ritual, attack, shadow)
 cost(2)
 $Damage=16
 $Range=1
@@ -120,12 +120,12 @@ title("Light Whispers")
 types(ritual)
 cost(1)
 $Block=9
-$Armor=2
+$Energy=2
 trigger(onPlay, do(block($Block)))
 removetrigger(endofturn,true,3)
-trigger(onPlay, if( (countNames(Play,"Dark Deeds")>0),do(armor($Armor))))
+trigger(onPlay, if( (countNames(Play,"Dark Deeds")>0),do(gainEnergy($Energy))))
 trigger(onPlay, do(create("Dark Deeds",Deck)))
 trigger(onRemoveFromPlay,do(purge(self)))
 rarity(4)
 image("res://Images/CardArt/LightWhispers.png")
-text("Gain $Block block. If there is a Dark Deeds in play, also gain $Armor armor. Add a Dark Deeds to your deck. On remove from play, purge")
+text("Gain $Block block. If there is a Dark Deeds in play, also gain $Energy energy. Add a Dark Deeds to your deck. On remove from play, purge")

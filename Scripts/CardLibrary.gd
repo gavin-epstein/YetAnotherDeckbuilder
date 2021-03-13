@@ -25,7 +25,7 @@ func Load():
 		
 		if fname == "":
 			break
-		elif fname.ends_with(".txt"):
+		elif fname.ends_with(".txt") or fname.ends_with(".py"):
 			var count = loadallcards(fname)
 			if count is GDScriptFunctionState:
 				count = yield(count,"completed")
@@ -82,11 +82,18 @@ func getCardByName(title):
 func updateDisplay():
 	pass
 	
-func getRandom(maxRarity:int = 100, types = ["any"]):
-	if types.size() ==0:
-		types = ["any"]
+func getRandom(maxRarity:int = 100, types = []):
+	#print("types " +str(types) )
 	types.erase("attack")
 	types.erase("movement")
+	types.erase("starter")
+	types.erase("void")
+	if types.size() ==0:
+		types = ["any"]
+	else:
+		if not "hammer" in types:
+			types.append("hammer")
+		
 	var select = []
 	for card in cards:
 		for type in types:

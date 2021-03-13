@@ -1,0 +1,50 @@
+title("Gust");
+cost(1)
+$Damage=7
+$Move=1
+$Range=3
+$Draw=1
+text(Deal $Damage wind damage,range $Range and push $Move tile. Draw $Draw);
+trigger(onPlay, do(damage, ($Damage,(wind),(any),$Range),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+trigger(onPlay, do(draw($Draw)));
+removetrigger(endofturn,true,1);
+rarity(6);
+types(kinetic,wind);
+
+title("Lure");
+cost(1)
+$Block=4
+$Move=1
+text("Now and at the start of next turn, gain $Block block and pull a unit towards you");
+trigger(onPlay, do(block($Block)));
+trigger(onPlay, do(moveUnits((any),40,Player,towards,$Move)));
+trigger(startofturn, do(block($Block)));
+trigger(startofturn, do(moveUnits((any),40,Player,towards,$Move)));
+removetrigger(startofturn,true,1);
+rarity(5);
+types(kinetic);
+
+title(Kinetic Blast);
+$Damage=1
+$Move=1
+text(Deal $Damage damage to all units and push them $Move tile);
+trigger(onPlay, do(damage, ($Damage,(kinetic),(all),50),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+removetrigger(endofturn, true, 1);
+types(attack, kinetic);
+image("res://Images/CardArt/WindBlast.png");
+rarity(3)
+cost(1)
+
+title(Earthquake);
+cost(1);
+$Damage=7;
+$Move=1
+rarity(4);
+trigger(onPlay, do(damage, ($Damage,(earth),(all,(stone),-friendly),50),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$Move)));
+text("Deal $Damage damage to enemy units on stone tiles and pull them $Move towards you");
+types(kinetic, attack);
+removetrigger(endofturn,true,1);
+#add earth synergy?

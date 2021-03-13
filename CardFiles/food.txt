@@ -1,0 +1,9 @@
+title(Carrot Seeds);
+cost(1);
+types(food, summon, plant)
+rarity(4);
+removetrigger(endofturn,true,0);
+text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
+trigger(onPlay, do(voided,(self, Play),false));
+trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
+image("res://Images/CardArt/CarrotSeeds.png")
