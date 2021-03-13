@@ -1,0 +1,9 @@
+title("Grandfather Clock")
+types(mechanical)
+$Increment=2
+trigger(onPlay,foreach(Card,(select(Play,(hasVariable(self,removecount)),"-",all)),(do(addVar($Card,removecount,$Increment)))))
+text("All cards in play stay in play for 2 more turns/triggers")
+removetrigger(endofturn,true,1)
+rarity(4)
+cost(0)
+

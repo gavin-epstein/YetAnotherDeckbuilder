@@ -1,0 +1,58 @@
+title("Detritovorous Flesh");
+cost(1);
+$Block=3
+$Increment=3
+trigger(onPlay,do(block($Block)));
+trigger(death,do(addVar(self,Block,$Increment)));
+rarity(2);
+types(fungal);
+text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
+removetrigger(endofturn, true, 2);
+image("res://Images/CardArt/DetritovorousFlesh.png");
+
+title("Fungal Hammer");
+cost(2);
+types(fungal, hammer,attack)
+$Damage=0
+$Range=2
+rarity(1)
+trigger(addVar,if((argv[1]=Damage),(do(addVar,(self,Damage,argv[2]),true))))
+trigger(onPlay, do(damage, ($Damage,(crush,fungal),(any),$Range),true))
+text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
+removetrigger(endofturn,true,2);
+modifiers(unique);
+
+title(Infest);
+cost(2);
+types(fungal, attack);
+$Damage=4
+$Increment=4
+$Range=2
+rarity(3);
+trigger(onPlay,do(damage, ($Damage,(fungal),(any),$Range)));
+trigger(slay,do(addVar(self,Damage,$Increment)));
+text("Deal $Damage fungal damage range $Range. Slay: increase this card's damage by $Increment");
+removetrigger(endofturn,true,3);
+
+title(Overgrown Machinery)
+cost(2)
+types(fungal,mechanical,attack)
+$Damage=0
+$Increment=1
+rarity(2)
+$Range=1
+trigger(onPlay,do(damage, ($Damage,(fungal),(all),$Range)));
+trigger(startofturn,do(addVar(self,Damage,$Increment)));
+text(Deal $Damage damage to all adjacent units. At the start of your turn, increase this cards damage by $Increment);
+removetrigger(endofturn,true,10);
+image("res://Images/CardArt/OvergrownMachine.png");
+
+title(Ubiquitous Growth);
+cost(2);
+$Increment=1
+text("Add $Increment damage to all attacks in play. On remove from play, subtract $Increment damage from all attacks in play")
+trigger(onPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(do(addVar($Card,Damage,$Increment)))))
+trigger(onRemoveFromPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(do(addVar($Card,Damage,(*,-1,$Increment))))))
+removetrigger(endofturn,true,3);
+rarity(4)
+

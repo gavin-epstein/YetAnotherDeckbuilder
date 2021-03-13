@@ -1,0 +1,91 @@
+title("Sift");
+cost(0)
+$Draw=1
+trigger(onPlay, do(draw,($Draw),false));
+trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard (Sift)"))),false));
+removetrigger(endofturn,true,1);
+rarity(10);
+types(cloud);
+text("Draw $Draw, discard 1");
+
+title(Wind Power);
+$Energy=1
+$Draw=1
+types(wind,light,cloud)
+text("On discard draw $Draw, gain $Energy energy, and purge this card");
+trigger(onDiscard, do(gainEnergy,($Energy), false));
+trigger(onDiscard, do(draw,($Draw),false));
+trigger(onDiscard, do(purge, (self), false));
+removetrigger(endofturn,true,0);
+cost(-);
+modifiers(unplayable)
+rarity(0);
+image("res://Images/CardArt/WindPower.png");
+
+title(Floating Turbine);
+types(mechanical,cloud);
+cost(2);
+trigger(startofturn, do(create,("Wind Power",Hand),false));
+removetrigger(endofturn,true,6);
+text("At the start of your turn, add a Wind Power to your hand");
+rarity(2);
+
+title(Obscuring Mist);
+cost(0);
+types(dodge,cloud)
+rarity(4)
+trigger(onPlay,do(createByMod,(("Dodge"), Reaction)));
+trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));
+text("Add a random dodge to your reaction pile, discard a random card")
+removetrigger(endofturn,true,2);
+
+title("Storm");
+types(cloud,attack)
+cost(4);
+rarity(2);
+$Damage=15
+trigger(onDiscard,do(move(Discard,Hand,self)));
+trigger(onDiscard,do(setVar(self,Cost,0)))
+trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
+trigger(onDiscard,do(play(self)));
+trigger(onPlay, do(damage, ($Damage,(none),(all),1),false));
+text("Deal $Damage damage to all adjacent enemies. If this card is discarded, play it");
+removetrigger(endofturn, true,1);
+
+title("Altostratus");
+cost(3)
+rarity(5)
+$Block=9
+$Damage=9
+$Range=2
+trigger(onPlay,do(block($Block)))
+trigger(onPlay,do(damage, ($Damage,(wind),(any),$Range)))
+trigger(onDiscard,do(move(Discard,Hand,self)));
+trigger(onDiscard,do(addVar(self,Cost,-1)));
+trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
+text("Block $Block, Deal $Damage damage, range 2. When discarded, return this to your hand and lower the cost by one until played")
+removetrigger(endofturn,true,1);
+
+title(Sifting Breath);
+cost(1);
+types(wind,cloud);
+rarity(2);
+$Draw=1
+removetrigger(draw,true,6);
+text("When you would draw cards, draw $Draw extra then discard a card");
+trigger(draw, do(draw,($Draw),true));
+trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Breath)"))),false));
+image("res://Images/CardArt/SiftingBreath.png");
+
+title("Thunderclap");
+cost(2);
+$Damage=4
+$Repeat=3
+$Draw=4
+$Range=2
+trigger(onPlay,do(damage,($Damage,(wind),($Repeat),$Range)));
+text("Deal $Damage damage to $Repeat random enemies in range $Range, and discard the top $Draw cards of your deck");
+trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
+types(cloud,attack)
+rarity(5);
+removetrigger(endofturn,true,1)

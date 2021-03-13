@@ -1,0 +1,47 @@
+title("Blacksmith's Hammer");
+cost(1);
+types(hammer, attack);
+$Damage=2
+$Increment=3
+rarity(1);
+trigger(onPlay,do(damage,($Damage,(crush),(1),40)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to upgrade")),Damage,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Deal $Damage damage to a random enemy, then permanently add $Increment damage to an attack in play.\nPurge");
+removetrigger(endofturn, true, 0);
+image("res://Images/CardArt/Blacksmith'sHammer.png")
+
+title("Power Hammer")
+types(light,hammer)
+$Increment=1
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Energy)),"Pick a card to upgrade")),Energy,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Permanently add $Increment energy to the energy gain of a non eternal card in play.\nPurge");
+removetrigger(endofturn, true, 0);
+cost(2);
+types(fire,hammer)
+modifiers(hammer)
+rarity(2)
+
+title("Sledgehammer")
+types(hammer)
+trigger(onPlay,do(purge((select(Hand,true,"Pick a card to purge")))))
+trigger(onPlay,do(purge(self)));
+text("Purge a card in your hand.\nPurge");
+removetrigger(endofturn, true, 0);
+rarity(5)
+cost(1)
+
+title("Wind Hammer");
+cost(1);
+types(hammer, wind);
+$Draw=1
+$Increment=1
+rarity(1);
+trigger(onPlay,do(draw,($Draw)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
+removetrigger(endofturn, true, 0);
+image("res://Images/CardArt/WindHammer.png")
+modifiers(hammer);

@@ -1,6 +1,9 @@
 extends Node2D
 const SAVE_NAME = "res://Saves/savefile.json"
 const mainscene = preload("res://MainScene.tscn")
+func _ready() -> void:
+	var screensize = OS.get_screen_size()
+	OS.set_window_size(screensize)
 
 func savefound()-> bool:
 	var file = File.new()

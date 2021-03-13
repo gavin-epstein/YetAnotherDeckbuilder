@@ -19,3 +19,4 @@ X: When played, takes the rest of your energy and sets X to that value
 dodge: Reaction card that reduces incoming damage by 50-100%
 silent: Does not trigger the effects of any other cards
 transform: Turn a card into another card of the same type
+slay: Triggered when this card/unit kills an enemy

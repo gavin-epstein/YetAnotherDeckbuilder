@@ -25,7 +25,8 @@ func getRandomEnemy(difficulty, terrain):
 	var possible = []
 	for unit in units.values():	
 		if unit.difficulty <= difficulty and unit.difficulty != -1 and (Utility.interpretTerrain(terrain) in unit.spawnableterrains or "any" in unit.spawnableterrains):
-			possible.append(unit)
+			if unit.difficulty!=0 or rand_range(0,1)<.5:
+				possible.append(unit)
 	if possible.size() > 0:
 		var other  = unittemplate.instance()
 		return possible[randi() % possible.size()].deepcopy(other)

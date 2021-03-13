@@ -1,51 +1,16 @@
-title("Fortress");
-cost(1);
-$Block=3
-$Increment=3
-trigger(onPlay,do(block($Block)));
-trigger(death,do(addVar(self,Block,$Increment)));
-rarity(2);
-types(earth);
-text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
-removetrigger(endofturn, true, 2);
-
-title("Earthen Hammer");
-cost(2);
-types(earth, hammer)
-$Damage=0
-$Range=2
-rarity(1)
-trigger(addVar,if((argv[1]=Damage),(do(addVar,(self,Damage,argv[2]),true))))
-trigger(onPlay, do(damage, ($Damage,(crush,earth),(any),$Range),true))
-text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
-removetrigger(endofturn,true,2);
-modifiers(unique);
-image("res://Images/CardArt/EarthenHammer.png")
-
 title("Stone");
 cost(-);
 types(earth);
 $Block=2
-text("On draw gain $Block block. \n Unplayable");
+text("On draw gain $Block block. \nUnplayable");
 rarity(0);
 removetrigger(never, true, 0);
 trigger(onDraw, do(block,($Block), false));
 modifiers(unplayable)
 
-title(Rock Smash);
-cost(2);
-types(earth, attack);
-$Damage=3
-$Increment=2
-rarity(3);
-trigger(onPlay,do(damage, ($Damage,(crush,earth),(any),1)));
-trigger(onPlay,do(addVar(self,Damage,$Increment)));
-text("Deal $Damage earth crush damage to an adjacent unit, then increase this cards damage by $Increment");
-removetrigger(endofturn,true,4);
-
 title(Bountiful Soil);
 cost(1);
-types(earth,plant);
+types(earth, wind);
 $Draw=1
 text("when you draw an unplayable card, draw $Draw more");
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(draw($Draw)))));
@@ -76,21 +41,14 @@ trigger(onPlay,do(createByMod,(("unplayable"), Hand)));
 trigger(onPlay,do(createByMod,(("unplayable"), Discard)));
 rarity(2)
 
-title(Earthquake);
-cost(1);
-$Damage=7;
-$Move=1
-rarity(4);
-trigger(onPlay, do(damage, ($Damage,(earth),(all,(stone),-friendly),50),false));
-trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$Move)));
-text("Deal $Damage damage to enemy units on stone tiles and pull them $Move towards you");
-types(earth);
-removetrigger(endofturn,true,1);
+title(Diamond);
+cost(-)
+$Armor=1
+types(earth)
+text("On draw, gain $Armor armor.\nUnplayable")
+trigger(onDraw, do(armor,($Armor), false));
+modifiers(unplayable)
+removetrigger(never, true, 0);
+rarity(1)
 
-title(Plate Tectonics);
-cost(2);
-$Increment=2
-text("Add 1 damage to all attacks in play. On remove from play, subtract 1 damage from all attacks in play")
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to upgrade",10,true)),Damage,$Increment)));
-rarity(0)
-#Todo implement a way of getting all cards in play
+#Pyroclastic flow. void unplayable cards, deal short range aoe damage for each

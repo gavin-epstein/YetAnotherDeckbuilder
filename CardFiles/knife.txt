@@ -1,6 +1,6 @@
 title("Knife Block");
 cost("1");
-types(culinary);
+types(knife);
 text("When you gain block add a random kitchen knife to your hand");
 rarity(4);
 trigger(block,do(createByMod,(("kitchenknife"), Hand)));
@@ -11,9 +11,9 @@ title("Paring Knife");
 cost("0");
 $Damage=4
 $Range=4
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range. Purge");
-trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
+types(knife,attack);
+text("Deal $Damage slash damage at $Range range. Purge");
+trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range),false));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
@@ -24,9 +24,9 @@ title("Meat Cleaver");
 cost("1");
 $Damage=14
 $Range=1
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range. Purge");
-trigger(onPlay, do(damage, ($Damage,(culinary,slash),(any),$Range),false));
+types(knife,attack);
+text("Deal $Damage slash damage at $Range range. Purge");
+trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range),false));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
@@ -38,9 +38,9 @@ cost("1");
 $Damage=5
 $Range=2
 $Times=2
-types(culinary,attack);
-text("Deal $Damage culinary slash damage at $Range range to $Times targets. Purge");
-trigger(onPlay, repeat((do(damage, ($Damage,(culinary,slash),(any),$Range),false)),$Times));
+types(knife,attack);
+text("Deal $Damage slash damage at $Range range to $Times targets. Purge");
+trigger(onPlay, repeat((do(damage, ($Damage,(slash),(any),$Range),false)),$Times));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
@@ -50,7 +50,7 @@ image("res://Images/CardArt/BreadKnife.png")
 title("Cutting Board");
 cost("0");
 $Block=4
-types(culinary)
+types(knife)
 trigger(onPlay,do(block($Block)));
 trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
 removetrigger(endofturn, true, 1);
@@ -60,33 +60,24 @@ image("res://Images/CardArt/CuttingBoard.png")
 
 title("Cheese Grater");
 cost("1")
-types(culinary,attack);
+types(knife,attack);
 $Times=10
 $Damage=1
 $Range=3
-trigger(onPlay,repeat((do(damage,($Damage,(culinary,slash),(1),$Range))),$Times));
+trigger(onPlay,repeat((do(damage,($Damage,(slash),(1),$Range))),$Times));
 text("Deal $Damage damage to a random unit within in $Range tiles $Times times");
 rarity(2);
 image("res://Images/CardArt/CheeseGrater.png")
 removetrigger(endofturn, true, 3);
 
-title(Carrot Seeds);
-cost(1);
-types(culinary, summon, plant)
-rarity(4);
-removetrigger(endofturn,true,0);
-text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
-trigger(onPlay, do(voided,(self, Play),false));
-trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
-image("res://Images/CardArt/CarrotSeeds.png")
-
 #Steak knife
 #add 2 bleed if bleeding
 
 #Knife drawer
-#Gain energy and draw when play knife
+#Gain draw when play knife
 
 #Knife sharpener
 #When you create a knife add 3 damage
 
-#
+#Polished blades
+#Energy when play knife

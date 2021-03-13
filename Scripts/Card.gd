@@ -5,8 +5,6 @@ class_name Card
 const zoomoffset = Vector2(0,-100)
 const speed  = 10
 #vars
-var removecount
-var defaultremovecount
 var types = {}
 var text=""
 var image
@@ -87,8 +85,8 @@ func loadCardFromString(string):
 		elif parsed[0] == "removetrigger":
 			var removetrigger = parsed[1]
 			Utility.addtoDict(triggers ,removetrigger[0], ["if", [removetrigger[1],["decrementRemoveCount"]]])
-			removecount =removetrigger[2]
-			defaultremovecount = removecount
+			vars["$removecount"] =removetrigger[2]
+			vars["$defaultremovecount"] = removetrigger[2]
 			removetype = removetrigger[0]
 		elif parsed[0] == "types":
 			for type in parsed[1]:
@@ -99,7 +97,7 @@ func loadCardFromString(string):
 		elif parsed[0] == "cost":
 			var cost = parsed[1][0]
 			self.vars["$Cost"] = cost
-			self.vars["BaseCost"] = cost
+			self.vars["$BaseCost"] = cost
 		elif parsed[0] =="text":
 			self.text =  Utility.join(" ",parsed[1]).replace("\\n","\n")
 		elif parsed[0] == "image":
@@ -124,12 +122,12 @@ func updateDisplay():
 		if vars[key] is String or vars[key] is int:
 			displaytext = displaytext.replace(key, vars[key])
 	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
-	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(removecount) + "[/center]";
+	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(vars["$removecount"]) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
 	get_node("Resizer/CardFrame/hourglass").visible = false
 	get_node("Resizer/CardFrame/Endless").visible = false
 	if removetype == "never":
-		removecount = -1
+		vars["$removecount"] = -1
 		get_node("Resizer/CardFrame/Endless").visible = true
 		get_node("Resizer/CardFrame/Timer").visible = false
 	elif removetype == "endofturn":
@@ -219,7 +217,6 @@ func save() -> Dictionary:
 	return{
 		"title":title,
 		"vars":vars,
-		"removecount":removecount,
 		"visible":visible
 	}
 
@@ -228,6 +225,5 @@ func loadFromSave(save:Dictionary):
 	for key in vars:
 		if vars[key] is float:
 			vars[key] = int(vars[key])
-	self.removecount = save.removecount
 	self.visible = save.visible
 	self.updateDisplay()

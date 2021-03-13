@@ -1,38 +1,18 @@
-title("Katachronophlogiston");
-types(fire,potion);
-text("Purge your hand. \nPurge");
-modifiers(potion);
-trigger(onPlay, repeat((do(purge((select(Hand,true,"-",1,true))))),10));
-trigger(onPlay, do(purge(self)));
-removetrigger(endofturn, true, 0);
-rarity(1);
-image("res://Images/CardArt/Katachron.png")
-cost(0);
-
 title("Fireball!");
-cost(4);
+cost(2);
 types(fire, attack)
 $Damage=20
 $Range=2
-text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range")
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Void")
 trigger(onPlay, do(damage($Damage, fire, (splash,(any),exists,((any,(any),any),$Range,Player)),1)))
-removetrigger(endofturn, true, 1);
+trigger(onPlay, do(voided(self,Play)))
+removetrigger(endofturn, true, 0);
 rarity(3);
 types(fire,attack);
 
-title("Clothed in Flames");
-cost("X");
-$X="X"
-trigger(onRemoveFromPlay, do(setVar(self,X,X)));
-trigger(onPlay, do(armor($X)))
-text("Gain X armor");
-types("fire");
-removetrigger(endofturn, true, 4);
-rarity(2);
-
 title(Coal);
 cost("-");
-types(earth,fire);
+types(earth,fire,light);
 $Draw=1
 $Energy=1
 text("Unplayable. When voided draw card and gain an energy")
@@ -43,31 +23,9 @@ modifiers(unplayable)
 removetrigger(never, true, 0);
 image("res://Images/CardArt/LumpOfCoal.png")
 
-title(Ignite);
-types(fire);
-cost(1);
-$Energy=1
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
-trigger(startofturn, do(gainEnergy,($Energy),false));
-removetrigger(endofturn, true,3);
-text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
-rarity(4);
-image("res://Images/CardArt/Ignite.png")
- 
-title(Undying Ember);
-$Energy=1
-text("On draw, gain $Energy energy\n Unplayable.");
-cost(-);
-trigger(onDraw, do(gainEnergy,($Energy), false));
-types(fire,energy);
-modifiers(unplayable);
-rarity(3);
-removetrigger(never, true, 0);
-image("res://Images/CardArt/UndyingEmber.png");
-
 title("Char");
 cost(1);
-types(fire);
+types(fire,earth);
 text("When you void a card, add a Coal to your discard pile.");
 rarity(4);
 trigger(voided,do(create,("Coal",Discard)));
@@ -77,7 +35,7 @@ title("Spark");
 $Damage=4
 $Draw=1
 $Range=2
-types(fire,attack)
+types(fire,attack,wind)
 text("Deal $Damage fire damage, range $Range, then draw $Draw")
 trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
 trigger(onPlay,do(draw($Draw)))
@@ -86,12 +44,12 @@ rarity(6)
 cost(0)
 image("res://Images/CardArt/Spark.png");
 
-title("Mark of the Phoenix");
+title("Foxfire");
 $Damage=4
 $Increment=7
 $Range=1
-types(fire, attack)
-cost(3)
+types(fire, attack,fungal)
+cost(2)
 trigger(onVoided,do(addVar(self,Damage,$Increment)))
 trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
 removetrigger(endofturn, true,1)
@@ -110,43 +68,8 @@ trigger(onPlay, do(voided(self,Play)))
 text("Block $Block, gain $Status turns of immunity to fire damage. Void")
 removetrigger(endofturn,true,1);
 
-title("Flamewalk")
-$Move=1
-cost(1)
-types(fire,movement);
-rarity(4)
-trigger(onPlay,do(setVar(self,lastTile,Player)))
-trigger(onPlay,do(movePlayer($Move)))
-trigger(onPlay,do(summon("Flame",(1),0,$lastTile)))
-text(move $Move. Summon a flame on the tile you left)
-removetrigger(endofturn,true,1);
-
-title("Renewal")
-types(fire)
-text("Void your hand, draw a card and gain an energy for each card voided.void")
-rarity(1);
-trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
-trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))
-trigger(onPlay,do(draw($cardnumber)))
-trigger(onPlay,do(gainEnergy($cardnumber)))
-trigger(onPlay, do(voided(self,Play)))
-removetrigger(endofturn, true, 0);
-cost(0);
-
-title("Fire Hammer")
-types(fire,hammer)
-$Increment=1
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Energy)),"Pick a card to upgrade")),Energy,$Increment)));
-trigger(onPlay,do(purge(self)));
-text("Permanently add $Increment energy to the energy gain of a non eternal card in play.\nPurge");
-removetrigger(endofturn, true, 0);
-cost(2);
-types(fire,hammer)
-modifiers(hammer)
-rarity(2)
-
-title("Scald");
-types(fire,attack)
+title("Blinding Flash");
+types(fire,light,attack)
 cost(0);
 $Range=3;
 trigger(onPlay, do(damage((count("Energy","Energy")),(fire),(any),$Range)));
@@ -167,37 +90,15 @@ text(Gain $Block X block, then void a random card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
 
-title("Self Immolate");
-types(fire)
-cost(0)
-$Energy=2
-$Status=1
-trigger(onPlay,do(gainEnergy($Energy)))
-trigger(onPlay,do(addStatus(flaming,$Energy)))
-text("Gain $Energy energy, and $Status burn")
-removetrigger(endofturn, true, 1);
-rarity(3);
 
-title("Burning Blood");
-$Energy=3
-cost(0)
-trigger(onPlay,do(move(Play,Reaction,self)));
-trigger(onReaction,do(move(Reaction,Play,self)));
-trigger(startofturn,do(gainEnergy($Energy)));
-removetrigger(endofturn,true,1);
-text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
-types(fire,reaction);
-rarity(7);
-
-title("Firestorm");
-cost(2);
-$Damage=4
-$Repeat=3
-$Draw=4
-$Range=2
-trigger(onPlay,do(damage,($Damage,(fire,wind),($Repeat),$Range)));
-text("Deal $Damage damage to $Repeat random enemies in range $Range, and discard the top $Draw cards of your deck");
-trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
-types(fire,wind)
-rarity(5);
-removetrigger(endofturn,true,1)
+title("Renewal")
+types(fire, light)
+text("Void your hand, draw a card and gain an energy for each card voided.void")
+rarity(1);
+trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
+trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))
+trigger(onPlay,do(draw($cardnumber)))
+trigger(onPlay,do(gainEnergy($cardnumber)))
+trigger(onPlay, do(voided(self,Play)))
+removetrigger(endofturn, true, 0);
+cost(0);
