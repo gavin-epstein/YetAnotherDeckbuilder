@@ -7,3 +7,25 @@ removetrigger(endofturn,true,1)
 rarity(4)
 cost(0)
 
+title("Time Machine")
+types(mechanical)
+$Interrupted=1
+trigger(onPlay, do(startofturn()))
+trigger(onPlay, do(setVar(self,Interrupted,1)))
+interrupt(draw,if(($Interrupted>0),true))
+interrupt(draw,if(true,false))
+interrupt(draw,do(setVar(self,Interrupted,0)))
+removetrigger(endofturn,true,1)
+text("Trigger all start of turn effects except for Adventurer")
+cost(0)
+rarity(6)
+
+title("Defense Mechanism")
+types(mechanical)
+cost(2)
+rarity(5)
+$Block=4
+trigger(startofturn, do block($Block))
+text("At the start of your turn, gain block $Block")
+rarity(7)
+removetrigger(endofturn, true,8);
