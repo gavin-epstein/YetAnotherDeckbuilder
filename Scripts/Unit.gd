@@ -294,7 +294,8 @@ func _eraseSelf():
 		if component != null and component!=self:
 			component.queue_free()
 	for link in links:
-		link.queue_free()
+		if link != null:
+			link.queue_free()
 	queue_free()
 
 func addStatus(stat, val):

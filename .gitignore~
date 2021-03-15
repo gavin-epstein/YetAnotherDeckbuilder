@@ -1,3 +1,6 @@
-*.xfc
+*.xcf
 *.import
 **/.DS_Store
+*.aup
+*_data
+*.au
