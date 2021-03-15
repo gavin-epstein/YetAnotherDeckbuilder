@@ -46,7 +46,7 @@ image("res://Images/CardArt/Spark.png");
 
 title("Foxfire");
 $Damage=4
-$Increment=7
+$Increment=12
 $Range=1
 types(fire, attack,fungal)
 cost(2)
@@ -55,6 +55,7 @@ trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
 removetrigger(endofturn, true,1)
 text("Deal $Damage fire damage, range $Range. When voided, increase this card's damage by $Increment")
 rarity(1)
+image("res://Images/CardArt/Foxfire.png");
 
 title("Firewall")
 $Block=20

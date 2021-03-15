@@ -6,6 +6,7 @@ $Energy=2
 trigger(onPlay,do(gainEnergy(2)))
 text("Gain $Energy Energy")
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/Illuminate.png");
 
 title(Ignite);
 types(fire,light);
@@ -27,6 +28,7 @@ types(earth,light);
 modifiers(unplayable);
 rarity(3);
 removetrigger(never, true, 0);
+image("res://Images/CardArt/LuminousEarth.png")
 
 title("Clothed in Light");
 cost("X");

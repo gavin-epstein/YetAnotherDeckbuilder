@@ -118,7 +118,7 @@ func updateDisplay():
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title+ "[/center]";
-	var titlescale = min(.5,8.0/title.length())
+	var titlescale = min(.5,6.0/title.length())
 	titlebox.rect_scale = Vector2(titlescale,titlescale)
 	titlebox.rect_size = Vector2(583.0/titlescale,211)
 	var displaytext = text
