@@ -44,3 +44,12 @@ func _on_NewGameButton_mouse_exited() -> void:
 
 #func _input(event: InputEvent) -> void:
 #	print(event.as_text())
+
+
+func _on_SettingsButton_gui_input(event: InputEvent) -> void:
+	$Menu/Settings.modulate = Color(.7,.7,.7)
+	if (event.is_action_pressed("left_click")):
+		$Settings.visible=true
+
+func _on_SettingsButton_mouse_exited() -> void:
+	$Menu/Settings.modulate=Color(1,1,1)

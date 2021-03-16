@@ -89,7 +89,7 @@ func hasOccupant(occupant):
 		return true
 	else:
 		for thing in occupants:
-			if thing.hasProperty(occupant):
+			if thing!=null and  thing.hasProperty(occupant):
 				return true
 	return false
 func highlight():

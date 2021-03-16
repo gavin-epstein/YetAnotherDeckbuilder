@@ -50,6 +50,7 @@ trigger(onPlay,do(addStatus(flaming,$Energy)))
 text("Gain $Energy energy, and $Status burn")
 removetrigger(endofturn, true, 1);
 rarity(3);
+image("res://Images/CardArt/SelfImmolate.png")
 
 title("Glowing Blood");
 $Energy=3

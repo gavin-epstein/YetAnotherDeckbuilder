@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/Unit.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Intent.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=8]
 [ext_resource path="res://Images/StatusIcons/sting.png" type="Texture" id=9]
 [ext_resource path="res://Images/StatusIcons/immovable.png" type="Texture" id=10]
+[ext_resource path="res://Scripts/Audio.gd" type="Script" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 450, 450 )
@@ -46,6 +47,10 @@ tracks/0/keys = {
 
 [node name="Unit" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="Audio" type="AudioStreamPlayer" parent="."]
+volume_db = -4.0
+script = ExtResource( 11 )
 
 [node name="HoverRect" type="Area2D" parent="."]
 

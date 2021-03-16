@@ -198,6 +198,7 @@ func addBlock(unit,amount):
 		units= unit
 	for unit in units:
 		unit.block+=amount
+		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()
 func heal(unit, amount):
 	var units

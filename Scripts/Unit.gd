@@ -166,7 +166,13 @@ func takeDamage(amount,types, attacker):
 			addStatus("flaming",1)
 		if "slash" in types and block == 0 and armor == 0:
 			addStatus("bleed",1)
-		
+	var default = true
+	for atype in types:
+		if $Audio.playsound(atype):
+			default = false
+			break	
+	if default:
+		$Audio.playsound("defaultAttack")
 	changeHealth(-1*floor(amount))
 	if status.has("lifelink"):
 		for unit in get_parent().units:
@@ -176,7 +182,6 @@ func takeDamage(amount,types, attacker):
 	if amount > 0:	
 		self.Triggered("damaged",[amount,types,attacker])
 	if health <= 0:
-		
 		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
 		if status.has("lifelink"):
 			for unit in get_parent().units:

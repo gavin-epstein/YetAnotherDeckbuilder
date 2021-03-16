@@ -20,7 +20,7 @@ func updateDisplay():
 		card.z_index = 0
 		card.updateDisplay()
 		x+=xsep
-		if x > startx + xsep*13:
+		if x > startx + xsep*10:
 			x = startx
 			y += ysep
 			
