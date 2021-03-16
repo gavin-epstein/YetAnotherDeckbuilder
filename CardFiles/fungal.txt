@@ -55,6 +55,7 @@ trigger(onPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(d
 trigger(onRemoveFromPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(do(addVar($Card,Damage,(*,-1,$Increment))))))
 removetrigger(endofturn,true,3);
 rarity(4)
+image("res://Images/CardArt/UbiquitousGrowth.png");
 
 title("Bioluminescence");
 cost(2);

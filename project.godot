@@ -48,6 +48,11 @@ _global_script_classes=[ {
 "class": "Utility",
 "language": "GDScript",
 "path": "res://Utility.gd"
+}, {
+"base": "Node",
+"class": "global",
+"language": "GDScript",
+"path": "res://Scripts/global.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
@@ -57,7 +62,8 @@ _global_script_class_icons={
 "Executable": "",
 "GridNode": "",
 "Map": "",
-"Utility": ""
+"Utility": "",
+"global": ""
 }
 
 [application]
@@ -65,6 +71,10 @@ _global_script_class_icons={
 config/name="CardEngine"
 run/main_scene="res://Splash.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Global="*res://Scripts/global.gd"
 
 [display]
 

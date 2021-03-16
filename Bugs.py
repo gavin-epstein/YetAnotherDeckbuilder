@@ -5,7 +5,7 @@ Null units showing up in unit list
 card 1 in hand onclick not working well
     not focus problem?
     has do do with resizing, clicks aren't registering when resized
-    ?? Control nodes(text) stealing mouse input?
+    ##?? Control nodes(text) stealing mouse input?
     
 cleansing water not working?
     Cleansing water select is broken
@@ -31,7 +31,8 @@ plants/background images for different biomes, (naturally spawning traps)
 #multitile units should be able to move through themselves
 #Consumed tile should be telegraphed
 
-tile backgrounds coords based on map coords not screencoords
+Ehh i think it's fine
+    tile backgrounds coords based on map coords not screencoords
     or add a viewport for the map, so that they change on shift but not scroll
 
 title screen warnings for save not found, save will be erased
@@ -43,14 +44,15 @@ title screen warnings for save not found, save will be erased
 improve pathfinding of enemies - they should be able to go around things
 
 sounds
-    Attack for each damage type
-        default
-        slash
-        stab
-        crush
-    Gain Block
+    Attack for each damage type - multiple options would be good
+        ?default
+        ?slash
+        ?stab
+        ?crush
+        ?fire
+    #Gain Block
     gain Armor
-    move?
+    move
     loot opened
 
 add range, speed to unit mouseover
