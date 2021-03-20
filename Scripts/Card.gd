@@ -19,6 +19,7 @@ var debug
 var mouseon
 var tooltips=[]
 var iconsdone = false
+var targetvis=true
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if self.image!=null:
@@ -33,6 +34,7 @@ func _process(delta: float) -> void:
 				self.position = target_position
 				if target_scale != null:
 					scale = target_scale
+				self.visible = targetvis
 		if target_scale != null:
 			self.scale = self.scale.linear_interpolate(target_scale,speed*delta)
 
@@ -165,7 +167,7 @@ func deepcopy(other)-> Card:
 	other.updateDisplay()
 	return other
 		
-func moveTo(pos:Vector2, size = null):
+func moveTo(pos:Vector2, size = null, vis = true):
 	if target_position == null:
 		self.position = pos
 		self.target_position = pos
@@ -175,6 +177,7 @@ func moveTo(pos:Vector2, size = null):
 		
 		self.target_scale = size
 		self.target_position = pos
+	targetvis = vis
 	
 func highlight():
 	self.highlighted = true

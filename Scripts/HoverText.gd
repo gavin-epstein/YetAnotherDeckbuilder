@@ -9,6 +9,7 @@ func updateDisplay(unit, library):
 	var pos = Vector2(-60,0)
 	
 	var text = RichTextLabel.new()
+	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$TextContainer.add_child(text)
 	text.bbcode_text = str("[center]" + unit.title+"[/center]")
 	text.bbcode_enabled = true
@@ -22,6 +23,7 @@ func updateDisplay(unit, library):
 	text.add_font_override("normal_font",fancyfont)
 	if unit.lore !=null:
 		text = RichTextLabel.new()
+		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		$TextContainer.add_child(text)
 		var lines =  ceil(unit.lore.length()/29.0)
 		text.bbcode_text = unit.lore
@@ -42,6 +44,7 @@ func updateDisplay(unit, library):
 			sprite.position = pos+Vector2(50,90)
 			sprite.scale = Vector2(.25,.25)
 			text = RichTextLabel.new()
+			text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			$TextContainer.add_child(text)
 			var content = library.tooltips[stat]
 			var lines =  ceil(content.length()/29.0)

@@ -41,7 +41,8 @@ corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[node name="Node2D" type="Node2D"]
+[node name="Settings" type="Node2D"]
+pause_mode = 2
 script = ExtResource( 4 )
 
 [node name="Panel" type="Panel" parent="."]
@@ -127,9 +128,9 @@ anchor_left = -0.035
 anchor_top = -0.055
 anchor_right = -0.035
 anchor_bottom = -0.055
-margin_left = 117.556
+margin_left = 405.556
 margin_top = 625.672
-margin_right = 332.556
+margin_right = 620.556
 margin_bottom = 727.672
 custom_styles/panel = SubResource( 6 )
 __meta__ = {
@@ -137,6 +138,8 @@ __meta__ = {
 }
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="Panel/Panel"]
+anchor_left = -0.00516585
+anchor_right = -0.00516585
 margin_left = 17.0
 margin_top = -2.0
 margin_right = 407.0

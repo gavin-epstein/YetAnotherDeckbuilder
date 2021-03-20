@@ -1,9 +1,15 @@
 extends CanvasLayer
+const errortemplate = preload("res://Images/UIArt/ErrorReport.tscn")
 onready var splashscene = load("res://Splash.tscn")
+
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("escape"):
 		show()
+	elif event.is_action_pressed("error_report"):
+		var error = errortemplate.instance()
+		add_child(error)
+		get_tree().paused = true
 
 func show() -> void:
 	$Back.visible = true
@@ -29,4 +35,6 @@ func _ResignButton(event: InputEvent) -> void:
 		get_tree().change_scene_to(splashscene)
 
 
-
+func _on_Settings_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		$Settings.visible=true

@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Images/UIArt/MoraLantern.png" type="Texture" id=1]
 [ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Scripts/UI/SplashScreen.gd" type="Script" id=3]
 [ext_resource path="res://Images/UIArt/Settings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Images/UIArt/logo.svg" type="Texture" id=5]
+[ext_resource path="res://Images/UIArt/logo2.png" type="Texture" id=6]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 3 )
@@ -19,11 +21,12 @@ __meta__ = {
 }
 
 [node name="MoraLantern" type="Sprite" parent="."]
-position = Vector2( 1.81274, 0.906311 )
+position = Vector2( 154.813, 0.906311 )
 texture = ExtResource( 1 )
 centered = false
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
+visible = false
 margin_left = 1.75732
 margin_top = 60.0
 margin_right = 2736.76
@@ -39,13 +42,13 @@ __meta__ = {
 }
 
 [node name="Menu" type="Node2D" parent="."]
-position = Vector2( 40, 72 )
+position = Vector2( -33.8288, 366.863 )
 
 [node name="NewGame" type="RichTextLabel" parent="Menu"]
 margin_left = 133.094
-margin_top = 292.625
+margin_top = 236.625
 margin_right = 858.094
-margin_bottom = 511.625
+margin_bottom = 455.625
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
@@ -70,10 +73,10 @@ __meta__ = {
 }
 
 [node name="Continue" type="RichTextLabel" parent="Menu"]
-margin_left = 135.813
-margin_top = 434.923
-margin_right = 860.813
-margin_bottom = 653.923
+margin_left = 575.813
+margin_top = 242.923
+margin_right = 1300.81
+margin_bottom = 461.923
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
@@ -98,10 +101,10 @@ __meta__ = {
 }
 
 [node name="Quit" type="RichTextLabel" parent="Menu"]
-margin_left = 137.625
-margin_top = 584.471
-margin_right = 862.625
-margin_bottom = 803.471
+margin_left = 577.625
+margin_top = 447.471
+margin_right = 1302.62
+margin_bottom = 666.471
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
@@ -117,9 +120,9 @@ anchor_top = -0.579
 anchor_right = 0.235
 anchor_bottom = -0.579
 margin_left = -170.375
-margin_top = 173.801
+margin_top = 169.638
 margin_right = 533.625
-margin_bottom = 302.801
+margin_bottom = 298.638
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -127,9 +130,9 @@ __meta__ = {
 
 [node name="Settings" type="RichTextLabel" parent="Menu"]
 margin_left = 137.625
-margin_top = 728.471
-margin_right = 862.625
-margin_bottom = 947.471
+margin_top = 439.471
+margin_right = 862.62
+margin_bottom = 658.471
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
@@ -156,6 +159,17 @@ __meta__ = {
 [node name="Settings" parent="." instance=ExtResource( 4 )]
 visible = false
 position = Vector2( 101.163, 206.79 )
+
+[node name="logo" type="Sprite" parent="."]
+visible = false
+position = Vector2( 582.505, 597.8 )
+scale = Vector2( 1.32615, 1.32615 )
+texture = ExtResource( 5 )
+
+[node name="logo2" type="Sprite" parent="."]
+position = Vector2( 331.253, 245.754 )
+scale = Vector2( 0.205402, 0.205402 )
+texture = ExtResource( 6 )
 [connection signal="gui_input" from="Menu/NewGame/NewGameButton" to="." method="_on_NewGameButton_gui_input"]
 [connection signal="mouse_exited" from="Menu/NewGame/NewGameButton" to="." method="_on_NewGameButton_mouse_exited"]
 [connection signal="gui_input" from="Menu/Continue/ContinueButton" to="." method="_on_ContinueButton_gui_input"]

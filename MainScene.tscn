@@ -1,4 +1,4 @@
-[gd_scene load_steps=386 format=2]
+[gd_scene load_steps=389 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -374,6 +374,8 @@
 [ext_resource path="res://Images/CardArt/TheVoid/frame051.png" type="Texture" id=372]
 [ext_resource path="res://Images/UIArt/Clouds.tscn" type="PackedScene" id=373]
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=374]
+[ext_resource path="res://Images/UIArt/Settings.tscn" type="PackedScene" id=375]
+[ext_resource path="res://Scripts/UI/CardPileDisplay.gd" type="Script" id=376]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -428,13 +430,20 @@ corner_radius_bottom_right = 80
 corner_radius_bottom_left = 80
 
 [sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.137255, 0.701961, 1, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.137255, 0.701961, 1, 0.682353 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 1, 0.658824, 0.317647, 1 )
 corner_radius_top_left = 20
 corner_radius_top_right = 20
@@ -537,12 +546,13 @@ __meta__ = {
 
 [node name="Reaction" type="Node2D" parent="CardController"]
 script = ExtResource( 275 )
+hotkey = "c"
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Reaction"]
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 123
+frame = 64
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -551,11 +561,22 @@ margin_top = 809.141
 margin_right = 2279.0
 margin_bottom = 1072.14
 rect_scale = Vector2( 0.3, 0.3 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]10[/center]"
 text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area" type="ColorRect" parent="CardController/Reaction"]
+margin_left = 1767.0
+margin_top = 774.0
+margin_right = 1865.0
+margin_bottom = 910.0
+color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -566,12 +587,13 @@ script = ExtResource( 5 )
 [node name="Deck" type="Node2D" parent="CardController"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
+hotkey = "z"
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Deck"]
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 124
+frame = 65
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -589,6 +611,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Area" type="ColorRect" parent="CardController/Deck"]
+margin_left = 37.0
+margin_top = 594.0
+margin_right = 102.0
+margin_bottom = 684.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Hand" type="Node2D" parent="CardController"]
 z_index = 1
 script = ExtResource( 3 )
@@ -596,12 +628,13 @@ script = ExtResource( 3 )
 [node name="Discard" type="Node2D" parent="CardController"]
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 4 )
+hotkey = "x"
 
-[node name="AnimatedSprite2" type="AnimatedSprite" parent="CardController/Discard"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Discard"]
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 123
+frame = 64
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -610,11 +643,22 @@ margin_top = 642.334
 margin_right = 1384.15
 margin_bottom = 889.334
 rect_scale = Vector2( 0.2, 0.2 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0, 0, 0, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]10[/center]"
 text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area" type="ColorRect" parent="CardController/Discard"]
+margin_left = 1102.0
+margin_top = 616.0
+margin_right = 1165.0
+margin_bottom = 705.0
+color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -647,7 +691,7 @@ script = ExtResource( 137 )
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 31
+frame = 16
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -665,11 +709,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Area" type="ColorRect" parent="CardController/Voided"]
+margin_left = 1639.0
+margin_top = 803.0
+margin_right = 1748.0
+margin_bottom = 892.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Energy" type="AnimatedSprite" parent="CardController"]
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 87
+frame = 28
 playing = true
 script = ExtResource( 264 )
 
@@ -700,8 +754,6 @@ position = Vector2( -16.9785, 59.5385 )
 shape = SubResource( 8 )
 
 [node name="CardDisplay" type="Node2D" parent="CardController"]
-visible = false
-z_index = 10
 script = ExtResource( 281 )
 
 [node name="ColorRect" type="ColorRect" parent="CardController/CardDisplay"]
@@ -733,6 +785,42 @@ centered = false
 [node name="CardLibrary" type="Node2D" parent="CardController"]
 script = ExtResource( 6 )
 
+[node name="CardPileDisplay" type="Node2D" parent="CardController"]
+z_index = 2
+script = ExtResource( 376 )
+
+[node name="Panel" type="Panel" parent="CardController/CardPileDisplay"]
+visible = false
+modulate = Color( 0.980392, 0.980392, 1, 0.705882 )
+margin_right = 1920.0
+margin_bottom = 1080.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Resume" type="Panel" parent="CardController/CardPileDisplay/Panel"]
+margin_left = 834.359
+margin_top = 891.698
+margin_right = 1213.36
+margin_bottom = 978.698
+custom_styles/panel = SubResource( 10 )
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="CardController/CardPileDisplay/Panel/Resume"]
+margin_left = 28.7833
+margin_top = 5.07593
+margin_right = 801.783
+margin_bottom = 200.076
+rect_scale = Vector2( 0.4, 0.4 )
+mouse_filter = 1
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]Done[/center]"
+text = "Done"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Pause Menu" type="CanvasLayer" parent="."]
 pause_mode = 2
 layer = 3
@@ -741,10 +829,10 @@ script = ExtResource( 374 )
 [node name="Back" type="Panel" parent="Pause Menu"]
 visible = false
 margin_left = 750.0
-margin_top = 200.0
+margin_top = 154.0
 margin_right = 1168.0
-margin_bottom = 577.0
-custom_styles/panel = SubResource( 10 )
+margin_bottom = 624.0
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -755,7 +843,7 @@ margin_top = 38.0
 margin_right = 380.0
 margin_bottom = 106.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -782,7 +870,7 @@ margin_top = 150.0
 margin_right = 380.0
 margin_bottom = 218.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -805,11 +893,11 @@ __meta__ = {
 
 [node name="Resign" type="Panel" parent="Pause Menu/Back"]
 margin_left = 47.0
-margin_top = 270.0
+margin_top = 264.0
 margin_right = 380.0
-margin_bottom = 338.0
+margin_bottom = 332.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 12 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -829,9 +917,49 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Settings" type="Panel" parent="Pause Menu/Back"]
+margin_left = 47.0
+margin_top = 375.0
+margin_right = 380.0
+margin_bottom = 443.0
+mouse_filter = 1
+custom_styles/panel = SubResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Pause Menu/Back/Settings"]
+margin_left = 5.0
+margin_top = -7.0
+margin_right = 823.0
+margin_bottom = 224.0
+rect_scale = Vector2( 0.4, 0.4 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]Settings
+[/center]"
+text = "Settings
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Settings" parent="Pause Menu" instance=ExtResource( 375 )]
+visible = false
+position = Vector2( 620.746, 95.6628 )
+scale = Vector2( 0.8, 0.8 )
 [connection signal="input_event" from="Center/MapLayer/Map/MeshInstance2D/MapArea" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
+[connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
+[connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
+[connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
 [connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
+[connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
 [connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
+[connection signal="gui_input" from="CardController/CardPileDisplay/Panel/Resume" to="CardController/CardPileDisplay" method="_on_Resume_gui_input"]
 [connection signal="gui_input" from="Pause Menu/Back/Resume" to="Pause Menu" method="_ResumeButton"]
 [connection signal="gui_input" from="Pause Menu/Back/SaveQuit" to="Pause Menu" method="_SaveQuitButton"]
 [connection signal="gui_input" from="Pause Menu/Back/Resign" to="Pause Menu" method="_ResignButton"]
+[connection signal="gui_input" from="Pause Menu/Back/Settings" to="Pause Menu" method="_on_Settings_gui_input"]
