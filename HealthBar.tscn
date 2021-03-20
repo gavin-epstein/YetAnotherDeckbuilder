@@ -27,10 +27,12 @@ margin_top = -239.807
 margin_right = -7.03784
 margin_bottom = 10.1927
 rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center]122[/center]"
 text = "122"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -50,10 +52,12 @@ margin_top = -137.666
 margin_right = 0.889008
 margin_bottom = 112.334
 rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center]122[/center]"
 text = "122"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -73,10 +77,12 @@ margin_top = -112.31
 margin_right = 37.0212
 margin_bottom = 137.69
 rect_scale = Vector2( 1.714, 1.714 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center]122[/center]"
 text = "122"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -94,10 +100,12 @@ margin_top = -180.793
 margin_right = 3.88879
 margin_bottom = 69.2069
 rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 bbcode_enabled = true
 bbcode_text = "[center]122[/center]"
 text = "122"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }

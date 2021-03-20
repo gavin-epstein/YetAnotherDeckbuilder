@@ -38,8 +38,9 @@ Ehh i think it's fine
 title screen warnings for save not found, save will be erased
 
 
-#multitile entities spawning is fucked. They arent ending up on the tiles
+multitile entities spawning is fucked. They arent ending up on the tiles
 ?multitile enities mouseover
+multitile dying
 
 improve pathfinding of enemies - they should be able to go around things
 
@@ -57,17 +58,19 @@ sounds
 
 add range, speed to unit mouseover
 
-add number background to status icon numbers
+#add number background to status icon numbers
 
 add icons for immune, resistant, vulnerable by type
 
 #type overhaul
 
-Ability to look at deck, discard, reaction
+#Ability to look at deck, discard, reaction
 
 performance improvement
 
 devlog
 
 website for feedback
+
+redo card clicked to use GUI
 

@@ -1,10 +1,5 @@
-extends CardLocation
+extends CardPile
 
-func updateDisplay():
-	for card in cards:
-		card.visible = false
-		card.moveTo($AnimatedSprite.position)
-	get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 
 func add_card(card) -> void:
 	if cards.size() == 0:
@@ -12,3 +7,8 @@ func add_card(card) -> void:
 	else:
 		add_card_at(card,randi()%cards.size())
 	
+
+
+func _on_Area2_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		display()

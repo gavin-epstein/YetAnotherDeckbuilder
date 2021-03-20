@@ -76,3 +76,6 @@ func deletesave():
 
 func _ResignButton(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	pass # Replace with function body.
+
+
+

@@ -99,6 +99,7 @@ trigger(endfofturn,block( (count(Play,ritual))))
 removetrigger(endofturn,true,5);
 cost(2);
 rarity(7);
+image("res://Images/CardArt/Secrecy.png")
 
 title("Dark Deeds")
 types(ritual, attack, shadow)

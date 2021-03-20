@@ -1,4 +1,4 @@
-extends CardLocation
+extends CardPile
 
 
 # Declare member variables here. Examples:
@@ -12,12 +12,8 @@ func add_card(card) -> void:
 		add_card_at(card,randi()%cards.size())
 	
 
-func updateDisplay():
-	for card in cards:
-		card.visible = false
-		card.moveTo($AnimatedSprite.position)
-	get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+
+func _on_Area_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		display()
