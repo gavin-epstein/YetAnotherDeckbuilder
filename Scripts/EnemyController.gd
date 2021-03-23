@@ -55,6 +55,7 @@ func addUnit(unit, node,head=null):
 	unit.position = node.position
 	add_child(unit)
 	unit.onSummon(head)
+	units.append(unit)
 	if unit.componentnames.size()>0:
 		for link in unit.linkagenames:
 			var linkname = link[0]
@@ -70,6 +71,7 @@ func addUnit(unit, node,head=null):
 				if tile == null:
 					unit.difficulty = 0
 					unit.die(null)
+					print("Unit didn't fit")
 					return
 				var component = $UnitLibrary.getUnitByName(unit.componentnames[end])
 				add_child(component)
@@ -86,7 +88,7 @@ func addUnit(unit, node,head=null):
 			linkage.setup(unit.components[start],unit.components[end],head)
 			add_child(linkage)
 			unit.links.append(linkage)
-	units.append(unit)
+	
 func swap(unit1,unit2):
 	if move(unit1,unit2.tile):
 		move(unit2,unit1.tile)
@@ -315,8 +317,14 @@ func clearAllStatuses(tiles = "Player"):
 			for stat in unit.status:
 				unit.setStatus(stat, 0)
 	
-func endGame():
-	get_tree().paused = true
+func Lose(enemy):
+
+	if enemy !=null:
+		var image = enemy.get_node("Image").texture
+		get_node("/root/global").lossImage = image
+	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
+func Win():
+	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():
 	yield(get_tree().create_timer(.2),"timeout")

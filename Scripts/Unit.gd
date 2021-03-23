@@ -255,6 +255,10 @@ func updateDisplay():
 func die(attacker):
 	if head !=self:
 		head.die(attacker)
+	if self == controller.Player:
+			controller.Lose(attacker)
+	if self == controller.theVoid:
+			controller.Win()
 	if difficulty > 10:
 		get_parent().cardController.Action("create",["Rare Loot","Discard"])
 	elif difficulty > 5:
@@ -274,10 +278,8 @@ func die(attacker):
 	self.visible = false
 	tile.occupants.erase(self)
 	if get_parent().units.find(self)==-1:
-		if self == controller.Player:
-			controller.endGame()
+		
 		print(self.title + " failed to die well")
-		#assert(false, "failure to die properly" )
 	get_parent().units.erase(self)
 	self.Triggered("onDeath",[attacker])
 	var res = playAnimation("die")
@@ -285,8 +287,8 @@ func die(attacker):
 		if component != null and component!=self:
 			component.playAnimation("die")
 			
-	for link in links:
-		link.queue_free()
+#	for link in links:
+#		link.queue_free()
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
 	
@@ -295,8 +297,10 @@ func die(attacker):
 		yield(get_tree().create_timer(1),"timeout")
 		_eraseSelf()
 func _eraseSelf():
+	print("Erasing")
 	for component in components:
 		if component != null and component!=self:
+			print("Removing component" + component.title)
 			component.queue_free()
 	for link in links:
 		if link != null:
@@ -406,6 +410,8 @@ func deepcopy(other):
 	var properties = self.get_property_list()
 	for prop in properties:
 		var name = prop.name;
+		if name in ["transform","position","rotation","rotation_degrees","scale"]:
+			continue
 		var val = self.get(name);
 		if val is Array or val is Dictionary:
 			other.set(name,val.duplicate(true))

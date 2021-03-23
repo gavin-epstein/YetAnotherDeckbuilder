@@ -1,6 +1,5 @@
 extends Node
-class_name global
+
+var lossImage = preload("res://Images/UIArt/EmptyLantern.png")
 
 
-var music_volume= -4
-var sfx_volume = -6

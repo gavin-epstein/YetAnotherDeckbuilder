@@ -4,6 +4,7 @@ export var hotkey = ""
 var ondisplay =false
 const xsep = 150
 const ysep = 220
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(hotkey):
 		display()
@@ -19,10 +20,12 @@ func updateDisplay():
 		var startx= 200
 		var x = startx
 		var y = 100
-		for card in cards:
+		var dispcards = cards.duplicate()
+		dispcards.sort_custom(self,"alphabetize")
+		for card in dispcards:
 			card.moveTo(Vector2(x,y), Vector2(.2,.2))
 			card.visible = true
-			card.z_index = 5
+			card.z_index = 7
 			card.updateDisplay()
 			x+=xsep
 			if x > startx + xsep*10:
@@ -32,11 +35,19 @@ func updateDisplay():
 
 	
 func display():
-	if get_parent().takeFocus(self):
+	#if get_parent().takeFocus(self):
 		get_node("../CardPileDisplay").display(self)
 		self.ondisplay = true
 		self.updateDisplay()
+	#get_parent().releaseFocus(self)
 func undisplay():
-	get_parent().releaseFocus(self)
+	#get_parent().releaseFocus(self)
 	self.ondisplay = false
 	self.updateDisplay()
+
+func alphabetize(card1,card2):
+	if card1.title < card2.title:
+		return true
+	return false
+
+	

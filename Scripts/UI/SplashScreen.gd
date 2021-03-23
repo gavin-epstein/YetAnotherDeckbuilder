@@ -10,7 +10,8 @@ func savefound()-> bool:
 	return file.file_exists(SAVE_NAME)
 
 func _on_NewGameButton_gui_input(event: InputEvent) -> void:
-	$Menu/NewGame.modulate=Color(.8,.8,.8)
+	$Menu/NewGameButton.modulate=Color(.8,.8,.8)
+	
 	if event.is_action_pressed("left_click"):
 		if savefound():
 			var dir = Directory.new()
@@ -19,37 +20,37 @@ func _on_NewGameButton_gui_input(event: InputEvent) -> void:
 
 
 func _on_ContinueButton_gui_input(event: InputEvent) -> void:
-	$Menu/Continue.modulate=Color(.8,.8,.8)
+	$Menu/ContinueButton.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click"):
 		if savefound():
 			get_tree().change_scene_to(mainscene)
 
 func _on_QuitButton_gui_input(event: InputEvent) -> void:
-	$Menu/Quit.modulate = Color(.7,.7,.7)
+	$Menu/QuitButton.modulate = Color(.7,.7,.7)
 	if event.is_action_pressed("left_click"):
 		get_tree().quit()
 
 
 
 func _on_QuitButton_mouse_exited() -> void:
-	$Menu/Quit.modulate = Color(1,1,1)
+	$Menu/QuitButton.modulate = Color(1,1,1)
 
 
 func _on_ContinueButton_mouse_exited() -> void:
-	$Menu/Continue.modulate=Color(1,1,1)
+	$Menu/ContinueButton.modulate=Color(1,1,1)
 
 
 func _on_NewGameButton_mouse_exited() -> void:
-	$Menu/NewGame.modulate=Color(1,1,1)
+	$Menu/NewGameButton.modulate=Color(1,1,1)
 
 #func _input(event: InputEvent) -> void:
 #	print(event.as_text())
 
 
 func _on_SettingsButton_gui_input(event: InputEvent) -> void:
-	$Menu/Settings.modulate = Color(.7,.7,.7)
+	$Menu/SettingsButton.modulate = Color(.7,.7,.7)
 	if (event.is_action_pressed("left_click")):
 		$Settings.visible=true
 
 func _on_SettingsButton_mouse_exited() -> void:
-	$Menu/Settings.modulate=Color(1,1,1)
+	$Menu/SettingsButton.modulate=Color(1,1,1)

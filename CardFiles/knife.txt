@@ -55,7 +55,7 @@ trigger(onPlay,do(block($Block)));
 trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
 removetrigger(endofturn, true, 1);
 text("Gain $Block block and add a random kitchen knife to your hand");
-rarity(2);
+rarity(7);
 image("res://Images/CardArt/CuttingBoard.png")
 
 title("Cheese Grater");
@@ -73,11 +73,23 @@ removetrigger(endofturn, true, 3);
 #Steak knife
 #add 2 bleed if bleeding
 
-#Knife drawer
-#Gain draw when play knife
+title(Knife Drawer);
+cost("2")
+types(knife, wind);
+$Draw=1
+trigger(play, if((hasmodifier(argv[0],kitchenknife)),(do(draw($Draw)))));
+text("When you play a kitchen knife draw $Draw");
+removetrigger(endofturn,true,5)
+rarity(2)
 
 #Knife sharpener
 #When you create a knife add 3 damage
 
-#Polished blades
-#Energy when play knife
+title(Polished Blades);
+cost("2")
+types(knife, light);
+$Energy=1
+trigger(play, if((hasName(argv[0],knife)),(do(gainEnergy($Energy)))));
+text("When you play a card whose name has 'Knife' gain $Energy energy");
+removetrigger(endofturn,true,5)
+rarity(3)

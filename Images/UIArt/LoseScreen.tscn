@@ -1,0 +1,86 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Images/MapArt/MapBackground2.png" type="Texture" id=1]
+[ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/UI/LoseScreen.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.110165, 0.0912725, 0.140625, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.110165, 0.0912725, 0.140625, 1 )
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="Node2D" type="Node2D"]
+pause_mode = 2
+script = ExtResource( 3 )
+
+[node name="MapBackground2" type="Sprite" parent="."]
+position = Vector2( 0, 1.19116 )
+scale = Vector2( 0.365043, 0.365043 )
+texture = ExtResource( 1 )
+centered = false
+
+[node name="ColorRect" type="Panel" parent="MapBackground2"]
+margin_left = 1457.03
+margin_top = 1963.03
+margin_right = 3911.03
+margin_bottom = 2466.03
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MapBackground2/ColorRect"]
+margin_left = 20.6548
+margin_top = 7.32739
+margin_right = 2465.65
+margin_bottom = 494.327
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+custom_colors/selection_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]You have perished. 
+The world is consumed in darkness.[/center]"
+text = "You have perished. 
+The world is consumed in darkness."
+
+[node name="ColorRect2" type="Panel" parent="MapBackground2"]
+margin_left = 2207.37
+margin_top = 2589.0
+margin_right = 3214.37
+margin_bottom = 2823.0
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MapBackground2/ColorRect2"]
+margin_left = -33.0
+margin_top = 13.0
+margin_right = 986.0
+margin_bottom = 252.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Back[/center]"
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 960, 412 )
+scale = Vector2( 0.365043, 0.365043 )
+[connection signal="gui_input" from="MapBackground2/ColorRect2" to="." method="_on_ColorRect2_gui_input"]
+[connection signal="mouse_exited" from="MapBackground2/ColorRect2" to="." method="_on_ColorRect2_mouse_exited"]

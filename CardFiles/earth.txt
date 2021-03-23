@@ -7,6 +7,7 @@ rarity(0);
 removetrigger(never, true, 0);
 trigger(onDraw, do(block,($Block), false));
 modifiers(unplayable)
+image("res://Images/CardArt/Stone.png")
 
 title(Bountiful Soil);
 cost(1);
@@ -28,6 +29,7 @@ trigger(onPlay, repeat( (do(create("Stone",Hand))),2))
 trigger(cardDrawn,if((hasName(argv[0],"Stone")), do(move(Play,Draw,self))))
 removetrigger(cardDrawn, (hasName(argv[0],"Stone")),1)
 rarity(4)
+image("res://Images/CardArt/Stonewall.png")
 
 title(Mine);
 cost(2);
@@ -50,5 +52,6 @@ trigger(onDraw, do(armor,($Armor), false));
 modifiers(unplayable)
 removetrigger(never, true, 0);
 rarity(1)
+image("res://Images/CardArt/Diamond.png")
 
 #Pyroclastic flow. void unplayable cards, deal short range aoe damage for each

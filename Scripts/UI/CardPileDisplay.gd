@@ -12,5 +12,14 @@ func display(caller):
 
 func _on_Resume_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("left_click")):
-		$Panel.visible = false
-		self.caller.undisplay()
+		undisplay()
+
+func _input(event: InputEvent) -> void:
+	if (event.is_action_pressed("ui_accept")):
+		undisplay()
+	elif (event.is_action_pressed("ui_cancel")):
+		undisplay()
+
+func undisplay():
+	$Panel.visible = false
+	self.caller.undisplay()
