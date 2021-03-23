@@ -278,7 +278,7 @@ func getTiles(tile,dist:int,property,terrains):
 				possible.append(next)
 			if next.dist < dist:
 				for neigh in next.neighs:
-					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null:
+					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null and not (property== "empty" and neigh.occupants.size() >0):
 						neigh.dist = next.dist+1
 						q.append(neigh)
 	for node in possible:
@@ -340,6 +340,27 @@ func getTileClosestToSet(start, dests):
 			closest = node
 			closedist = dist
 	return closest	
+#Params:
+#start: tile to start search from
+#dests: set of tiles to go to. 
+#return: the tile next to start that has the shortest path to the closest member of dests
+func pathFindToSet(start, dests):
+	for node in nodes:
+			node.dist = null
+	for node in dests:
+		node.dist = 0
+	var q = dests
+	while q.size()>0:
+		var next = q.pop_front()
+		#multitile unit targeting
+	
+		for neigh in next.neighs:
+			if neigh ==start:
+				return next #closest tile adjacent to start
+			if neigh.occupants.size() ==0 and neigh.dist  == null :
+				neigh.dist = next.dist+1
+				q.append(neigh)
+	return start #if dests cannot be reached, stay still
 func minDistToPositions(tile,positions):
 	var closedist = Utility.sqDistToNode(positions[0].position, tile)
 	for pos in positions:

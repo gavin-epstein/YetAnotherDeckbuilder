@@ -38,9 +38,9 @@ Ehh i think it's fine
 title screen warnings for save not found, save will be erased
 
 
-multitile entities spawning is fucked. They arent ending up on the tiles
-?multitile enities mouseover
-multitile dying
+#multitile entities spawning is fucked. They arent ending up on the tiles
+#multitile enities mouseover
+?multitile dying
 
 improve pathfinding of enemies - they should be able to go around things
 
@@ -64,7 +64,7 @@ When selecting from pile, move the message
 
 add icons for immune, resistant, vulnerable by type
 
-A fuck a tutorial
+o fuck a tutorial
 
 #Loading bars
 

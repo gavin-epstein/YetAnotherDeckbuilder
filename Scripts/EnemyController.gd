@@ -270,7 +270,7 @@ func MoveAndAttack(unit,target):
 				break
 			else:
 				curTile = nextTile
-				nextTile = map.getTileClosestToSet(curTile,targets)
+				nextTile = map.pathFindToSet(curTile,targets)
 				if nextTile.occupants.size() ==0:
 					Action("move", [unit, nextTile])
 				elif nextTile.occupants[0].head == unit.head:
