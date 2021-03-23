@@ -56,3 +56,7 @@ func loadFromSave(save:Dictionary):
 		add_child(card)
 		cards.append(card)
 	updateDisplay()
+		
+func cardClicked(card):
+	if card.highlighted:
+		get_parent().cardClicked(card)

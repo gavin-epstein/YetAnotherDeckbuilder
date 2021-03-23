@@ -24,6 +24,4 @@ func updateDisplay():
 			x = startx
 			y += ysep
 			
-func cardClicked(card):
-	if card.highlighted:
-		get_parent().cardClicked(card)
+

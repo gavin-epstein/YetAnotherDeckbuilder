@@ -45,7 +45,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-	#Deck.add_card(Library.getCardByName("Overgrown Machinery"))
+	Deck.add_card(Library.getCardByName("Preignite"))
 	#Deck.add_card(Library.getCardByName("Windmill"))
 	shuffle()
 	step = Action("draw",[5])
@@ -333,12 +333,16 @@ func select(loc, predicate,message,num = 1,random=false):
 			cardClicked(prototype)
 			return prototype
 	#finally, let the player click
+	if loc is CardPile:
+		loc.display()
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
 	$Message.visible = false
+	if loc is CardPile:
+		$CardPileDisplay.undisplay()
 	return selectedCard
 func cardClicked(card):
 	selectedCard = card

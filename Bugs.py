@@ -17,7 +17,7 @@ Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 lifelink units gaining health on save reload
 
-#Splash screen not registering input when loaded from in game (pause issue)
+save quit crashes if not done loading
 
 plants/background images for different biomes, (naturally spawning traps)
 
@@ -58,19 +58,22 @@ sounds
 
 add range, speed to unit mouseover
 
+When selecting from pile, move the message
+
 #add number background to status icon numbers
 
 add icons for immune, resistant, vulnerable by type
 
-#type overhaul
+A fuck a tutorial
 
-#Ability to look at deck, discard, reaction
+#Loading bars
 
 performance improvement
 
 devlog
 
-website for feedback
+#website for feedback
 
 redo card clicked to use GUI
 
+old menu font color: ffc954

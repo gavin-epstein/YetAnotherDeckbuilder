@@ -53,11 +53,6 @@ _global_script_classes=[ {
 "class": "Utility",
 "language": "GDScript",
 "path": "res://Utility.gd"
-}, {
-"base": "Node",
-"class": "global",
-"language": "GDScript",
-"path": "res://Scripts/global.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
@@ -68,8 +63,7 @@ _global_script_class_icons={
 "Executable": "",
 "GridNode": "",
 "Map": "",
-"Utility": "",
-"global": ""
+"Utility": ""
 }
 
 [application]
@@ -80,7 +74,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-Global="*res://Scripts/global.gd"
+global="*res://Scripts/global.gd"
 
 [display]
 
@@ -150,6 +144,26 @@ escape={
 error_report={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":96,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Discard={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":88,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Reaction={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":86,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Deck={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":90,"unicode":0,"echo":false,"script":null)
+ ]
+}
+Voided={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":67,"unicode":0,"echo":false,"script":null)
  ]
 }
 

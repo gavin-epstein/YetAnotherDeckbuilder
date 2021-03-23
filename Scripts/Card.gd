@@ -47,7 +47,7 @@ func _process(delta: float) -> void:
 	if self.visible and mousedist.x < extents.x and mousedist.y < extents.y and mousedist.x > 0 and mousedist.y > 0:
 		if controller.takeFocus(self):
 			if $Resizer.scale.x ==1:
-				z_index = 20
+				z_index = 5
 				$AnimationPlayer.play("Grow")
 			yield($AnimationPlayer,"animation_finished")
 	else:
@@ -65,7 +65,7 @@ func hasType(type)->bool:
 	return false
 	
 func hasName(string)->bool:
-	return self.title.find(string)!=-1
+	return self.title.to_lower().find(string.to_lower())!=-1
 	
 func hasModifier(string) -> bool:
 	if string == "any":
