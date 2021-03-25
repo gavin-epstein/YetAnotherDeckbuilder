@@ -45,7 +45,6 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-	Deck.add_card(Library.getCardByName("Preignite"))
 	#Deck.add_card(Library.getCardByName("Windmill"))
 	shuffle()
 	step = Action("draw",[5])
@@ -93,7 +92,7 @@ func shuffle()->bool:
 	return true
 
 func play(card)->bool:
-	lastPlayed = card
+	
 	print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false
@@ -102,18 +101,22 @@ func play(card)->bool:
 		return false
 	elif cost is String and cost == "X":
 		setVar(card,"X",Energy)
-	self.releaseFocus(card)
-	Hand.remove_card(card)
-	Discard.remove_card(card)
-	Play.add_card(card)
+		Energy = 0
+	if cost is int:
+		Energy -= cost
+	lastPlayed = card
+	self.focus = self
+	card.mouseon= false
+	inputAllowed = false
+	self.move("Hand","Play", card)
+	updateDisplay()
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
-	if cost is int:
-		Energy -= cost
-	else:
-		Energy = 0
+	
 	updateDisplay()
+	releaseFocus(self)
+	inputAllowed = true
 	return true
 	
 
@@ -167,9 +170,10 @@ func discardAll(silent = false):
 func discard(card, silent = false, loc = "Hand"):
 	if card == null:
 		return false
-	if not silent:
+	var res =  move(loc, "Discard", card)
+	if not silent and res:
 		card.Triggered("onDiscard", [card])
-	return move(loc, "Discard", card)
+	return res
 	
 func updateDisplay():
 	Hand.updateDisplay()
@@ -333,13 +337,18 @@ func select(loc, predicate,message,num = 1,random=false):
 			cardClicked(prototype)
 			return prototype
 	#finally, let the player click
+	releaseFocus(self)
 	if loc is CardPile:
 		loc.display()
+		$Message.rect_position= Vector2(376,560)
+	else:
+		$Message.rect_position= Vector2(376,280)
 	selectedCard = null
 	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
+	focus=self
 	$Message.visible = false
 	if loc is CardPile:
 		$CardPileDisplay.undisplay()
@@ -354,18 +363,19 @@ func cardClicked(card):
 	emit_signal("resumeExecution")
 	
 func movePlayer(dist,terrains = ["any"]):
-	takeFocus(map);
+	focus=map#force it
 	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to");
 	if tile is GDScriptFunctionState:
 		tile = yield(tile, "completed")
 	if tile == null:
 		return false
 	enemyController.move(enemyController.Player, tile)
-	releaseFocus(map)
+	focus=self
 	return true
-	#Targets
-	# ( [1/any/all], [(any)/(grass,sand)], -boss)
+	
 func selectTiles(targets, distance, tile):
+	#Let them choose on the map, but not play another card
+	focus = map
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
 	if (tile is String and tile == "Player") or tile == null:
@@ -390,6 +400,7 @@ func selectTiles(targets, distance, tile):
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
 	lastTargets = enemies
+	focus=self
 	return enemies
 	
 func damage(amount, types, targets,distance, tile =null):
@@ -402,7 +413,7 @@ func damage(amount, types, targets,distance, tile =null):
 		targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
-
+	focus = map
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:
 		enemies = yield(enemies,"completed")
@@ -420,7 +431,7 @@ func damage(amount, types, targets,distance, tile =null):
 				lastPlayed.Triggered("slay",[unit])
 			if dmg.size()>0:
 				lastPlayed.Triggered("attack",dmg)
-			 
+	focus =self	 
 	return true
 func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	var property
@@ -429,9 +440,11 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
+	focus = map
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:
 		enemies = yield(enemies,"completed")
+	focus = self
 	if not enemies is Array:
 		enemies = [enemies]
 	for enemy in enemies:

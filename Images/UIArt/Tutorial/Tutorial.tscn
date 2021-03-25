@@ -1,0 +1,774 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Scripts/UI/Tutorial.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/AlMadiri.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Images/UIArt/Tutorial/DeckHandDiscard.png" type="Texture" id=4]
+[ext_resource path="res://Images/UIArt/Tutorial/EnergyPlayVoid.png" type="Texture" id=5]
+[ext_resource path="res://Images/UIArt/Tutorial/AdventurerVoid.png" type="Texture" id=6]
+[ext_resource path="res://Images/UIArt/Tutorial/Map.png" type="Texture" id=7]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.12549, 0.14902, 0.247059, 0.745098 )
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[node name="Node2D" type="Node2D"]
+z_index = 3
+script = ExtResource( 1 )
+
+[node name="1" type="Node2D" parent="."]
+
+[node name="ColorRect2" type="Panel" parent="1"]
+margin_left = 755.623
+margin_top = 245.494
+margin_right = 2083.62
+margin_bottom = 980.494
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="1/ColorRect2"]
+margin_left = 58.0
+margin_top = 17.4976
+margin_right = 1285.0
+margin_bottom = 741.498
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Welcome to the End of the World! Are you new here? [/center]"
+text = "Welcome to the End of the World! Are you new here? "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip" type="Panel" parent="1"]
+margin_left = 490.955
+margin_top = 657.579
+margin_right = 1818.95
+margin_bottom = 1127.58
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="1/Skip"]
+anchor_left = 0.00219166
+anchor_right = 0.00219166
+margin_left = 61.0895
+margin_top = 17.0
+margin_right = 1270.09
+margin_bottom = 485.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Nope 
+(skip the tutorial) [/center]"
+text = "Nope 
+(skip the tutorial) "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip2" type="Panel" parent="1"]
+margin_left = 1066.79
+margin_top = 650.302
+margin_right = 2394.79
+margin_bottom = 1120.3
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="1/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 52.0773
+margin_top = 16.9998
+margin_right = 1217.51
+margin_bottom = 485.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Yes, please show me around
+ [/center]"
+text = "Yes, please show me around
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="2" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect2" type="Panel" parent="2"]
+margin_left = 671.0
+margin_top = 176.0
+margin_right = 2560.0
+margin_bottom = 1632.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="2/ColorRect2"]
+margin_left = 32.0
+margin_top = 31.0
+margin_right = 1868.0
+margin_bottom = 1494.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Ok so first of all, press escape at any time to bring up the pause menu. You can also press backtick ( ` ) at any time to leave comments/ bug reports [/center]"
+text = "Ok so first of all, press escape at any time to bring up the pause menu. You can also press backtick ( ` ) at any time to leave comments/ bug reports "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip2" type="Panel" parent="2"]
+margin_left = 838.025
+margin_top = 758.226
+margin_right = 1844.02
+margin_bottom = 969.226
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="2/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 186.809
+margin_top = 7.61853
+margin_right = 793.804
+margin_bottom = 217.619
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Got it
+ [/center]"
+text = "Got it
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="3" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect2" type="Panel" parent="3"]
+margin_left = 69.106
+margin_top = 563.212
+margin_right = 1539.11
+margin_bottom = 1314.21
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="3/ColorRect2"]
+margin_left = 82.0
+margin_top = 23.0
+margin_right = 1401.0
+margin_bottom = 322.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]This is your Deck [/center]"
+text = "This is your Deck "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="3/ColorRect2"]
+margin_left = 54.0
+margin_top = 329.0
+margin_right = 2091.0
+margin_bottom = 902.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "You draw cards from here. Press Z or click on it to view the cards in your Deck"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="Panel" parent="3"]
+margin_left = 631.0
+margin_top = 505.42
+margin_right = 2131.0
+margin_bottom = 1271.42
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="3/ColorRect3"]
+margin_left = 152.0
+margin_top = 26.0
+margin_right = 1333.0
+margin_bottom = 325.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]This is your Hand [/center]"
+text = "This is your Hand "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="3/ColorRect3"]
+anchor_left = -0.00342461
+anchor_right = -0.00342461
+margin_left = 119.0
+margin_top = 281.0
+margin_right = 1947.0
+margin_bottom = 854.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "You play cards from here. On your turn you can click on a card to play it"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect4" type="Panel" parent="3"]
+margin_left = 1327.0
+margin_top = 595.0
+margin_right = 2827.0
+margin_bottom = 1361.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="3/ColorRect4"]
+margin_left = 125.0
+margin_top = 26.0
+margin_right = 1467.0
+margin_bottom = 325.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]This is your Discard [/center]"
+text = "This is your Discard "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="3/ColorRect4"]
+anchor_left = -0.00342461
+anchor_right = -0.00342461
+margin_left = 119.137
+margin_top = 281.0
+margin_right = 1947.14
+margin_bottom = 861.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "At the end of your turn you discard your hand to here. Press X or click on it to view"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeckHandDiscard" type="Sprite" parent="3"]
+scale = Vector2( 0.749721, 0.749721 )
+texture = ExtResource( 4 )
+centered = false
+
+[node name="Skip2" type="Panel" parent="3"]
+margin_left = 805.341
+margin_top = 125.395
+margin_right = 1811.34
+margin_bottom = 336.395
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="3/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 186.809
+margin_top = 7.61853
+margin_right = 793.804
+margin_bottom = 217.619
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Got it
+ [/center]"
+text = "Got it
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="4" type="Node2D" parent="."]
+visible = false
+
+[node name="ColorRect2" type="Panel" parent="4"]
+margin_left = 52.106
+margin_top = 403.212
+margin_right = 1522.11
+margin_bottom = 1154.21
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="4/ColorRect2"]
+margin_left = 82.0
+margin_top = 23.0
+margin_right = 1401.0
+margin_bottom = 322.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]This is your Energy [/center]"
+text = "This is your Energy "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="4/ColorRect2"]
+margin_left = 54.0
+margin_top = 265.0
+margin_right = 2091.0
+margin_bottom = 930.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "Cards have an energy cost in the top right corner, you spend energy to play cards."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="Panel" parent="4"]
+margin_left = 620.429
+margin_top = 312.427
+margin_right = 2259.43
+margin_bottom = 1246.43
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="4/ColorRect3"]
+margin_left = 76.9736
+margin_top = 4.67108
+margin_right = 1559.97
+margin_bottom = 426.671
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Cards here are in Play [/center]"
+text = "Cards here are in Play "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="4/ColorRect3"]
+anchor_left = -0.00342461
+anchor_right = -0.00342461
+margin_left = 174.613
+margin_top = 212.0
+margin_right = 2081.61
+margin_bottom = 1161.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "When you play a card it moves here and its effects are resolved. The bottom right of each card shows how long it remains in play"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect4" type="Panel" parent="4"]
+margin_left = 1383.43
+margin_top = 361.0
+margin_right = 2899.43
+margin_bottom = 1200.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="4/ColorRect4"]
+margin_left = 76.5193
+margin_top = 30.0822
+margin_right = 1360.52
+margin_bottom = 329.082
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Your Reaction Pile [/center]"
+text = "Your Reaction Pile "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="4/ColorRect4"]
+anchor_left = -0.00313784
+anchor_right = -0.00313785
+margin_left = 98.4092
+margin_top = 248.836
+margin_right = 1955.41
+margin_bottom = 1009.84
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "When you take damage the top card of this pile will be resolved and may effect the damage taken. Press V to view"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeckHandDiscard" type="Sprite" parent="4"]
+scale = Vector2( 0.749721, 0.749721 )
+texture = ExtResource( 5 )
+centered = false
+
+[node name="Skip2" type="Panel" parent="4"]
+margin_left = 838.998
+margin_top = 70.7064
+margin_right = 1845.0
+margin_bottom = 281.706
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="4/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 166.398
+margin_top = -5.33191
+margin_right = 773.393
+margin_bottom = 204.668
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Got it
+ [/center]"
+text = "Got it
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="5" type="Node2D" parent="."]
+visible = false
+
+[node name="DeckHandDiscard" type="Sprite" parent="5"]
+scale = Vector2( 0.749721, 0.749721 )
+texture = ExtResource( 6 )
+centered = false
+
+[node name="ColorRect2" type="Panel" parent="5"]
+margin_left = -7.3038
+margin_top = 262.873
+margin_right = 1494.7
+margin_bottom = 1231.87
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="5/ColorRect2"]
+margin_left = 203.23
+margin_top = 55.0513
+margin_right = 1311.23
+margin_bottom = 248.051
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Adventurer [/center]"
+text = "Adventurer "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="5/ColorRect2"]
+anchor_left = 1.0159e-08
+margin_left = 138.0
+margin_top = 276.0
+margin_right = 1959.0
+margin_bottom = 1200.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "Adventurer sets your energy and draws you a new hand at the start of every turn. You can always right click a card to get more info"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect3" type="Panel" parent="5"]
+margin_left = 673.467
+margin_top = 676.622
+margin_right = 2312.47
+margin_bottom = 1610.62
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="5/ColorRect3"]
+margin_left = 537.0
+margin_top = 5.0
+margin_right = 1201.0
+margin_bottom = 255.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Cards here are in Play [/center]"
+text = "Cards here are in Play "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="5/ColorRect3"]
+anchor_left = -0.00659904
+anchor_top = -0.0055708
+anchor_right = -0.0065991
+anchor_bottom = -0.0055708
+margin_left = 195.88
+margin_top = 218.416
+margin_right = 2102.88
+margin_bottom = 1167.42
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "This is the Void swallowing the world. When it grows it consumes a tile and gains health. You can hover over an enemy to see more information"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect4" type="Panel" parent="5"]
+margin_left = 1397.57
+margin_top = 297.354
+margin_right = 2913.57
+margin_bottom = 1136.35
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="5/ColorRect4"]
+margin_left = 137.134
+margin_top = -10.3277
+margin_right = 1421.13
+margin_bottom = 288.672
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Void Pile [/center]"
+text = "Void Pile "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="5/ColorRect4"]
+anchor_left = -0.00313785
+anchor_right = -0.00313784
+margin_left = 118.757
+margin_top = 173.0
+margin_right = 1975.76
+margin_bottom = 1078.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "Cards sacrificed to the void. Whenever a void card is discarded from play, all cards here are returned to your discard"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip2" type="Panel" parent="5"]
+margin_left = 808.15
+margin_top = 65.2979
+margin_right = 1814.15
+margin_bottom = 276.298
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="5/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 146.193
+margin_top = -5.59705
+margin_right = 753.188
+margin_bottom = 204.403
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Got it
+ [/center]"
+text = "Got it
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="6" type="Node2D" parent="."]
+visible = false
+
+[node name="DeckHandDiscard" type="Sprite" parent="6"]
+scale = Vector2( 0.749721, 0.749721 )
+texture = ExtResource( 7 )
+centered = false
+
+[node name="ColorRect3" type="Panel" parent="6"]
+margin_left = 273.0
+margin_top = 757.0
+margin_right = 1912.0
+margin_bottom = 1600.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="6/ColorRect3"]
+margin_left = 446.0
+margin_top = 5.0
+margin_right = 1201.0
+margin_bottom = 255.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]The Map [/center]"
+text = "The Map "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="6/ColorRect3"]
+anchor_left = -0.0065991
+anchor_top = -0.0055708
+anchor_right = -0.0065991
+anchor_bottom = -0.0055708
+margin_left = 80.8159
+margin_top = 218.696
+margin_right = 2267.82
+margin_bottom = 1051.7
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "Use WASD or arrow keys to move your view around. Use Q and E or the scroll wheel to zoom "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Skip2" type="Panel" parent="6"]
+margin_left = 935.0
+margin_top = 824.0
+margin_right = 2740.0
+margin_bottom = 1203.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="6/Skip2"]
+anchor_left = 0.00219166
+anchor_right = 0.035
+margin_left = 103.044
+margin_top = 71.0
+margin_right = 1667.82
+margin_bottom = 296.0
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]I'm Ready, Let's Start!
+ [/center]"
+text = "I'm Ready, Let's Start!
+ "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="gui_input" from="1/Skip" to="." method="_on_Skip_gui_input"]
+[connection signal="gui_input" from="1/Skip2" to="." method="goNext"]
+[connection signal="gui_input" from="2/Skip2" to="." method="goNext"]
+[connection signal="gui_input" from="3/Skip2" to="." method="goNext"]
+[connection signal="gui_input" from="4/Skip2" to="." method="goNext"]
+[connection signal="gui_input" from="5/Skip2" to="." method="goNext"]
+[connection signal="gui_input" from="6/Skip2" to="." method="_on_Skip_gui_input"]

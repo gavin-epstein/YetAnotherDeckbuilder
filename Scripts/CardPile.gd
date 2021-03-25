@@ -14,7 +14,7 @@ func updateDisplay():
 	if not ondisplay:
 		for card in cards:
 			card.moveTo($AnimatedSprite.position - Vector2(100,300), Vector2(.15,.15), false)
-			card.z_index = 0
+			card.base_z = 0
 		get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 	else:
 		var startx= 200
@@ -25,7 +25,7 @@ func updateDisplay():
 		for card in dispcards:
 			card.moveTo(Vector2(x,y), Vector2(.2,.2))
 			card.visible = true
-			card.z_index = 7
+			card.base_z = 7
 			card.updateDisplay()
 			x+=xsep
 			if x > startx + xsep*10:

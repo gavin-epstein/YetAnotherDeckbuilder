@@ -5,7 +5,6 @@ var policy="stretch"
 var head: Executable
 var title
 var needstospring
-var needstodie
 
 const checkdelay = .2
 var time = 0
@@ -18,6 +17,7 @@ func _process(delta:float):
 		if end == null:
 			queue_free()
 			return
+	
 	#Set self position
 	var up:Vector2 = ends[1].position - ends[0].position
 	$Image.rotation = up.angle() + PI/2
@@ -33,21 +33,12 @@ func _process(delta:float):
 	if time >= checkdelay:
 		
 		time=0
-		var resetdie =true
-		for end in ends:
-			if end == null:
-				if needstodie:
-					queue_free()
-					return
-				else:
-					resetdie = false
-					needstodie = true
-		if resetdie:
-			if ends[0].has_method("isUnit") and  ends[1].has_method("isUnit"):
-				self.z_index = min(ends[0].z_index,ends[1].z_index)-1
-			else:
-				self.z_index = 4
-			needstodie = false
+		
+		if ends[0].has_method("isUnit") and  ends[1].has_method("isUnit"):
+			self.z_index = min(ends[0].z_index,ends[1].z_index)-1
+		else:
+			self.z_index = 4
+		
 		if getTile(ends[0]) !=null and getTile(ends[1])!=null and not getTile(ends[0]) in getTile(ends[1]).neighs:
 			if needstospring:
 				if ends[0].has_method("isUnit") and not ends[1].has_method("isUnit"):
@@ -55,6 +46,9 @@ func _process(delta:float):
 				elif ends[1].has_method("isUnit") and not ends[0].has_method("isUnit"):
 					spring(ends[1], ends[0])
 				elif ends[0].has_method("isUnit") and ends[1].has_method("isUnit"):
+					if head == null:
+						queue_free()
+						return
 					var disttohead0 = Utility.sqDistToNode(ends[0].position, head)
 					var disttohead1 = Utility.sqDistToNode(ends[1].position, head)
 					if disttohead0 < disttohead1:

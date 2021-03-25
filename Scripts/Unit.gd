@@ -300,6 +300,7 @@ func _eraseSelf():
 	print("Erasing")
 	for component in components:
 		if component != null and component!=self:
+			component.tile.occupants.erase(component)
 			print("Removing component" + component.title)
 			component.queue_free()
 	for link in links:
@@ -466,9 +467,9 @@ func playAnimation(action):
 	debug = $AnimatedSprite
 	if $AnimatedSprite.frames.has_animation(action):
 		$AnimatedSprite.play(action)
-	if not $AnimatedSprite.frames.get_animation_loop(action):
-		yield($AnimatedSprite,"animation_finished")
-		playAnimation("idle")
+		if not $AnimatedSprite.frames.get_animation_loop(action):
+			yield($AnimatedSprite,"animation_finished")
+			playAnimation("idle")
 		
 func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 	if not size is Vector2:

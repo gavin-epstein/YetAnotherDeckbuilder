@@ -54,6 +54,7 @@ removetrigger(endofturn, true,1);
 
 title("Altostratus");
 cost(3)
+types(cloud,attack)
 rarity(5)
 $Block=9
 $Damage=9
@@ -89,3 +90,5 @@ trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Dra
 types(cloud,attack)
 rarity(5);
 removetrigger(endofturn,true,1)
+
+#Discard a card, gain an armor per type it has
