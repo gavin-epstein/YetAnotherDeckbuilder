@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 13;
+var maxdifficulty = 6;
 var map
 var units=[]
 var Player

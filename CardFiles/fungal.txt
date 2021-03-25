@@ -10,9 +10,9 @@ text("Gain $Block block. When a unit dies while this is in play, increase its bl
 removetrigger(endofturn, true, 2);
 image("res://Images/CardArt/DetritovorousFlesh.png");
 
-title("Fungal Hammer");
+title("Parasite");
 cost(2);
-types(fungal, hammer,attack)
+types(fungal,attack)
 $Damage=0
 $Range=2
 rarity(1)
@@ -21,6 +21,7 @@ trigger(onPlay, do(damage, ($Damage,(crush,fungal),(any),$Range),true))
 text("Deal $Damage damage at a range of $Range.\nWhile this is in play, when a card gains damage, this card does too")
 removetrigger(endofturn,true,2);
 modifiers(unique);
+
 title(Infest);
 cost(2);
 types(fungal, attack);

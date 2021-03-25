@@ -19,7 +19,6 @@ trigger(onPlay,do(purge(self)));
 text("Permanently add $Increment energy to the energy gain of a non eternal card in play.\nPurge");
 removetrigger(endofturn, true, 0);
 cost(2);
-types(fire,hammer)
 modifiers(hammer)
 rarity(2)
 
@@ -45,3 +44,28 @@ text("Draw $Draw, then permanently add $Increment draw to a draw number of a non
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/WindHammer.png")
 modifiers(hammer);
+
+title("Fungal Hammer")
+types(fungal,hammer)
+$Increment=1
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Increment)),"Pick a card to upgrade")),Increment,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Permanently add $Increment to the increase of a non eternal card in play.\nPurge");
+removetrigger(endofturn, true, 0);
+cost(1);
+modifiers(hammer)
+rarity(2)
+
+title("Armorer's Hammer");
+cost(1);
+types(hammer);
+$Armor=1
+$Increment=1
+rarity(1);
+trigger(onPlay,do(armor($Armor)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Armor)),"Pick a card to upgrade")),Armor,$Increment)))
+trigger(onPlay,do(purge(self)));
+text("Gain $Armor armor, then permanently add $Increment armor to an armor card in play.\nPurge");
+removetrigger(endofturn, true, 0);
+image("res://Images/CardArt/Blacksmith'sHammer.png")
+

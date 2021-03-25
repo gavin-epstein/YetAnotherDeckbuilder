@@ -1,8 +1,8 @@
 title(Shadow Slice);
-text("Deal $Damage shadow slash damage to an adjacent enemy, silently\n Discard from play immediately");
+text("Deal $Damage shadow slash damage to an adjacent enemy.\n Discard from play immediately");
 cost(0);
-trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),$Range),true))
-trigger(onPlay, do(move, (Play, Discard, self), true));
+trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),$Range),false))
+trigger(onPlay, do(move, (Play, Discard, self), false));
 types(attack, slash, shadow);
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/ShadowSlice.png");
@@ -24,18 +24,55 @@ rarity(10)
 title(Shadow Self);
 $Times=2
 cost(0)
-trigger(onPlay, repeat( (do(create("Shadow",Hand))),$Times))
+trigger(onPlay, repeat( (do(createByMod((shadow),Hand))),$Times))
 removetrigger(endofturn,true,1)
-types(shadow,ritual)
+types(shadow)
 text("Add $Times shadows to your hand")
-rarity(7)
+rarity(10)
 
-title(Shadow);
+title(Fluttering Shadow);
 cost(0)
-types(shadow,ritual)
-removetrigger(endofturn,true,2)
-trigger(onRemoveFromPlay, purge(self))
-text("On remove from play, purge")
+$Draw=1
+types(shadow,wind)
+removetrigger(endofturn,true,0)
+trigger(onPlay, do(draw($Draw)))
+trigger(onPlay, do(purge(self)))
+text("Draw $Draw, purge")
+modifiers(shadow)
+rarity(0)
+
+title(Violent Shadow);
+cost(0)
+$Damage=2
+$Range=2
+types(shadow,attack)
+trigger(onPlay, do(damage($Damage,(shadow),(any),$Range)))
+trigger(onPlay, do(purge(self)))
+removetrigger(endofturn,true,0)
+text("Deal $Damage damage, range $Range.\npurge")
+modifiers(shadow)
+rarity(0)
+
+title(Stoic Shadow);
+cost(0)
+$Block=2
+types(shadow)
+trigger(onPlay, do(block($Block)))
+trigger(onPlay, do(purge(self)))
+removetrigger(endofturn,true,0)
+text("block $Block.\npurge")
+modifiers(shadow)
+rarity(0)
+
+title(Clouded Shadow);
+cost(0)
+$Block=2
+types(shadow,cloud)
+trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard"))),false));
+trigger(onPlay, do(purge(self)))
+removetrigger(endofturn,true,0)
+text("Discard a card.\npurge")
+modifiers(shadow)
 rarity(0)
 
 title(After Image);
@@ -44,6 +81,29 @@ types(shadow)
 $Block=1
 text("When you play a card, gain $Block block")
 trigger(play,block($Block))
-removetrigger(play,true,15)
+removetrigger(endofturn,true,3)
 rarity(2)
 
+title(Midnight Breeze);
+types(wind,shadow)
+cost(1)
+$Count=3
+$Draw=1
+$currentCount=0
+text(For every $Count cards you play, draw $Draw)
+trigger(play,do(addVar(self,currentCount,1)))
+trigger(play,if(($currentCount=Count),(do(draw($Draw)))))
+trigger(play,if(($currentCount=Count),(do(setVar(self,currentCount,0)))))
+removetrigger(endofturn,true,4)
+rarity(4)
+
+title(Slide);
+types(shadow);
+cost(0);
+trigger(onPlay,do(move(Hand,Play,(select(Hand,(not (hasModifier(self, unplayable))),"Pick a card to put in play")))))
+text("Put a card from your hand into play without playing it")
+rarity(7);
+removetrigger(endofturn,true,1)
+
+#light and shadow - energy per shadow card
+#Knives in the dark : make a kitchen knife, get a shadow. Make a shadow get a kitchen knife

@@ -20,6 +20,7 @@ var mouseon
 var tooltips=[]
 var iconsdone = false
 var targetvis=true
+var base_z = 0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	if self.image!=null:
@@ -27,33 +28,28 @@ func _ready() -> void:
 	
 func _process(delta: float) -> void: 
 	#normal movement 
-	if not mouseon:
-		if target_position != null:
-			self.position = self.position.linear_interpolate(target_position, min(1,speed*delta))
-			if (position-target_position).length_squared() < 9:
-				self.position = target_position
-				if target_scale != null:
-					scale = target_scale
-				self.visible = targetvis
-		if target_scale != null:
-			self.scale = self.scale.linear_interpolate(target_scale,speed*delta)
+
+	if target_position != null:
+		self.position = self.position.linear_interpolate(target_position, min(1,speed*delta))
+		if (position-target_position).length_squared() < 9:
+			self.position = target_position
+			if target_scale != null:
+				scale = target_scale
+			self.visible = targetvis
+	if target_scale != null:
+		self.scale = self.scale.linear_interpolate(target_scale,speed*delta)
 
 	
 	#zoom on mouseover
-	#var rect = $CardFrame/Area2D/CollisionShape2D
-	var mousedist = get_global_mouse_position() - $Resizer.get_global_transform().get_origin()
-	var extents = Vector2(750, 1050)*$Resizer.get_global_transform().get_scale()
-	#print(mousedist, extents)
-	if self.visible and mousedist.x < extents.x and mousedist.y < extents.y and mousedist.x > 0 and mousedist.y > 0:
-		if controller.takeFocus(self):
+	if mouseon and controller.takeFocus(self):
 			if $Resizer.scale.x ==1:
-				z_index = 5
+				z_index = base_z+5
 				$AnimationPlayer.play("Grow")
 			yield($AnimationPlayer,"animation_finished")
 	else:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
-			z_index = 0
+		z_index = base_z
 		controller.releaseFocus(self)
 
 
@@ -187,15 +183,7 @@ func dehighlight():
 	$Resizer/CardHighlight.visible = false
 
 		
-func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	#mouseon = true
-	if event.is_action_pressed("left_click"):
-		#print("Click on "+ self.title)
-		if get_parent().has_method("cardClicked"):
-			get_parent().cardClicked(self)
-	if event.is_action_pressed("right_click"):
-		#print("Right Click on " + self.title)
-		controller.get_node("CardDisplay").display(self)
+
 func isCard():
 	return true	
 
@@ -234,3 +222,21 @@ func loadFromSave(save:Dictionary):
 			vars[key] = int(vars[key])
 	self.visible = save.visible
 	self.updateDisplay()
+
+
+
+func _on_ColorRect_mouse_exited() -> void:
+	mouseon = false
+	controller.releaseFocus(self)
+
+
+func _on_ColorRect_gui_input(event: InputEvent) -> void:
+	if controller.takeFocus(self):
+		mouseon = true
+	if event.is_action_pressed("left_click") and controller.takeFocus(self):
+		controller.releaseFocus(self)
+		if get_parent().has_method("cardClicked"):
+			get_parent().cardClicked(self)
+	if event.is_action_pressed("right_click"):
+		controller.get_node("CardDisplay").display(self)
+		mouseon=false

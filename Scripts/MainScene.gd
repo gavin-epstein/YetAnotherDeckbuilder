@@ -17,6 +17,8 @@ func _ready() -> void:
 		loadAll()
 	
 func loadAll():
+	var tutorial = load("res://Images/UIArt/Tutorial/Tutorial.tscn").instance()
+	add_child(tutorial)
 	var step = enemyController.Load(self)
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")

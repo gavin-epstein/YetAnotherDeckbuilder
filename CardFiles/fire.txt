@@ -68,6 +68,7 @@ trigger(onPlay, do(addStatus("immune:fire",$Status)))
 trigger(onPlay, do(voided(self,Play)))
 text("Block $Block, gain $Status turns of immunity to fire damage. Void")
 removetrigger(endofturn,true,1);
+image("res://Images/CardArt/Firewall.png");
 
 title("Blinding Flash");
 types(fire,light,attack)
@@ -79,6 +80,7 @@ text("Deal damage equal to your energy, range $Range, then void a card in your h
 types(fire);
 removetrigger(endofturn, true, 1);
 rarity(5)
+image("res://Images/CardArt/BlindingFlash.png");
 
 title("Ashes");
 types(fire)
@@ -87,7 +89,7 @@ $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
 trigger(onPlay,do(voided,((select(Play,(! hasModifier(self,"Eternal")),"-",1,true))),Play))
-text(Gain $Block X block, then void a random card from play);
+text(Gain $Block X block, then void a random non-eternal card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
 
