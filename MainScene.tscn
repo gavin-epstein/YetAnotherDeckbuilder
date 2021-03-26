@@ -1,4 +1,4 @@
-[gd_scene load_steps=390 format=2]
+[gd_scene load_steps=389 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -385,9 +385,6 @@ shader_param/tex3 = ExtResource( 274 )
 shader_param/tex4 = ExtResource( 279 )
 shader_param/tex5 = ExtResource( 280 )
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 958.873, 398.783 )
-
 [sub_resource type="StyleBoxFlat" id=15]
 bg_color = Color( 0.6, 0.6, 0.6, 0.454902 )
 corner_radius_top_left = 40
@@ -510,12 +507,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MapArea" type="Area2D" parent="Center/MapLayer/Map/MeshInstance2D"]
-position = Vector2( 0, -120 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Center/MapLayer/Map/MeshInstance2D/MapArea"]
-position = Vector2( 0.247616, 88.6631 )
-shape = SubResource( 2 )
+[node name="MapArea2" type="ColorRect" parent="Center/MapLayer/Map/MeshInstance2D"]
+margin_left = -958.0
+margin_top = -425.0
+margin_right = 963.0
+margin_bottom = 366.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="EnemyController" type="Node2D" parent="Center/MapLayer"]
 script = ExtResource( 273 )
@@ -561,7 +561,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 59
+frame = 92
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -602,7 +602,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 60
+frame = 93
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -643,7 +643,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 59
+frame = 92
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -701,7 +701,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 49
+frame = 72
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -733,7 +733,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 23
+frame = 56
 playing = true
 script = ExtResource( 264 )
 
@@ -798,7 +798,7 @@ centered = false
 script = ExtResource( 6 )
 
 [node name="CardPileDisplay" type="Node2D" parent="CardController"]
-z_index = 10
+z_index = 6
 script = ExtResource( 376 )
 
 [node name="Panel" type="Panel" parent="CardController/CardPileDisplay"]
@@ -964,7 +964,7 @@ __meta__ = {
 visible = false
 position = Vector2( 620.746, 95.6628 )
 scale = Vector2( 0.8, 0.8 )
-[connection signal="input_event" from="Center/MapLayer/Map/MeshInstance2D/MapArea" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
+[connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]

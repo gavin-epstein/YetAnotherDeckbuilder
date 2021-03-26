@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 
 	
 	#zoom on mouseover
-	if mouseon and controller.takeFocus(self):
+	if mouseon:
 			if $Resizer.scale.x ==1:
 				z_index = base_z+5
 				$AnimationPlayer.play("Grow")
@@ -50,7 +50,7 @@ func _process(delta: float) -> void:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
 		z_index = base_z
-		controller.releaseFocus(self)
+		
 
 
 func hasType(type)->bool:
@@ -232,6 +232,7 @@ func _on_ColorRect_mouse_exited() -> void:
 
 func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if controller.takeFocus(self):
+		controller.releaseFocus(self)
 		mouseon = true
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
@@ -240,3 +241,4 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("right_click"):
 		controller.get_node("CardDisplay").display(self)
 		mouseon=false
+	

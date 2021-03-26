@@ -92,8 +92,8 @@ $Draw=1
 $currentCount=0
 text(For every $Count cards you play, draw $Draw)
 trigger(play,do(addVar(self,currentCount,1)))
-trigger(play,if(($currentCount=Count),(do(draw($Draw)))))
-trigger(play,if(($currentCount=Count),(do(setVar(self,currentCount,0)))))
+trigger(play,if(($currentCount=$Count),(do(draw($Draw)))))
+trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 removetrigger(endofturn,true,4)
 rarity(4)
 

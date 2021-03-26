@@ -60,7 +60,7 @@ trigger(onReaction,do(move(Reaction,Play,self)));
 trigger(startofturn,do(gainEnergy($Energy)));
 removetrigger(endofturn,true,1);
 text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
-types(fire,reaction);
+types(light,reaction);
 rarity(7);
 
 title(Black Lettuce);
