@@ -17,6 +17,8 @@ var map
 var lastPlayed
 var lastTargets
 var consumed
+var focusStack=[]
+var lastfocus
 class_name CardController
 
 func Load(parent)-> void: 
@@ -45,7 +47,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Crossbow"))
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
-	#Deck.add_card(Library.getCardByName("Windmill"))
+	#Deck.add_card(Library.getCardByName("Gust"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -105,7 +107,7 @@ func play(card)->bool:
 	if cost is int:
 		Energy -= cost
 	lastPlayed = card
-	self.focus = self
+	forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
 	self.move("Hand","Play", card)
@@ -113,7 +115,6 @@ func play(card)->bool:
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
-	
 	updateDisplay()
 	releaseFocus(self)
 	inputAllowed = true
@@ -201,26 +202,48 @@ func purge(card):
 	return false
 
 func takeFocus(item) -> bool:
+	printFocus()
 	if $Choice.visible and not item in $Choice.cards:
 		return false
+	
 	if focus == null:
 		focus = item
-#		if "name" in item:
-#			print("Focus: "+item.name)
-#		if "title" in item:
-#			print("Focus "+ item.title)
+		printFocus()
 		return true
+		
 	elif focus == item:
 		return true
 	return false
 
 func releaseFocus(item) -> bool:
+	printFocus()
 	if focus == item:
 		#print("Focus Released")
-		focus = null
+		if focusStack.size()>0:
+			focus= focusStack.pop_back()
+		else:
+			focus = null
+		printFocus()
 		return true
 	return false
-	
+func forceFocus(item):
+	printFocus()
+	if focus == item:
+		return false
+	focusStack.push_back(focus)
+	focus = item
+	printFocus()
+	return true
+func printFocus():
+	if focus ==lastfocus:
+		return
+	if focus != null:
+		print("Focus is on ", focus.get("name"),": ", focus.get("title")," ", focus.get_parent().get("name"))
+	else:
+		print("Focus is null")	
+	if focusStack.size() >0:
+		print("FocusStack: ", str(focusStack))
+	lastfocus = focus
 func create(card, loc):
 	loc = get_node(loc)
 	var added
@@ -348,7 +371,7 @@ func select(loc, predicate,message,num = 1,random=false):
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
-	focus=self
+	takeFocus(self)
 	$Message.visible = false
 	if loc is CardPile:
 		$CardPileDisplay.undisplay()
@@ -356,28 +379,39 @@ func select(loc, predicate,message,num = 1,random=false):
 func cardClicked(card):
 	selectedCard = card
 	inputAllowed  = true
+	releaseFocus(card)
 	for card in Hand.cards:
 		card.dehighlight()
 	for card in Play.cards:
 		card.dehighlight()
+	for card in Deck.cards:
+		card.dehighlight()
+	for card in $Reaction.cards:
+		card.dehighlight()
+	for card in $Voided.cards:
+		card.dehighlight()
+	for card in $Discard.cards:
+		card.dehighlight()
 	emit_signal("resumeExecution")
 	
 func movePlayer(dist,terrains = ["any"]):
-	focus=map#force it
+	forceFocus(map)
 	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to");
 	if tile is GDScriptFunctionState:
 		tile = yield(tile, "completed")
 	if tile == null:
+		releaseFocus(map)
 		return false
 	enemyController.move(enemyController.Player, tile)
-	focus=self
+	releaseFocus(map)
 	return true
 	
 func selectTiles(targets, distance, tile):
 	#Let them choose on the map, but not play another card
-	focus = map
+	
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
+	forceFocus(map)
 	if (tile is String and tile == "Player") or tile == null:
 		tile = enemyController.Player.tile
 	var enemies = []
@@ -391,6 +425,7 @@ func selectTiles(targets, distance, tile):
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		if enemy ==null:
+			releaseFocus(map)
 			return []
 		enemies.append(enemy)
 	elif targets[0]=="splash" and targets.size() >=4:
@@ -400,7 +435,7 @@ func selectTiles(targets, distance, tile):
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
 	lastTargets = enemies
-	focus=self
+	releaseFocus(map)
 	return enemies
 	
 func damage(amount, types, targets,distance, tile =null):
@@ -413,7 +448,7 @@ func damage(amount, types, targets,distance, tile =null):
 		targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
-	focus = map
+
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:
 		enemies = yield(enemies,"completed")
@@ -431,7 +466,6 @@ func damage(amount, types, targets,distance, tile =null):
 				lastPlayed.Triggered("slay",[unit])
 			if dmg.size()>0:
 				lastPlayed.Triggered("attack",dmg)
-	focus =self	 
 	return true
 func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	var property
@@ -440,11 +474,10 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
-	focus = map
+
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:
 		enemies = yield(enemies,"completed")
-	focus = self
 	if not enemies is Array:
 		enemies = [enemies]
 	for enemy in enemies:
@@ -484,6 +517,7 @@ func summon(unitName, targets, distance,tile="Player") :
 		terrains = ["any"]
 	else:
 		terrains = targets[1]
+
 	targets = [targets[0],terrains,"empty"]
 	locs = selectTiles(targets,distance,tile)
 	if locs is GDScriptFunctionState:

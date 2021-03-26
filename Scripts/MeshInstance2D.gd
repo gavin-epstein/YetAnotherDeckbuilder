@@ -213,32 +213,32 @@ func getTerrainColor(terrain:int) -> Vector2:
 	return Vector2(.5*cos(angle),.5*sin(angle))
 
 
-func _on_MapArea_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if acceptinput:
-		if cardController.takeFocus(self):
-			if event.is_action_pressed("left_click"):
-				var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
-				if selectableNodes.size() > 0:
-					var closest = selectableNodes[0]
-					for node in selectableNodes:
-						if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
-							closest = node
-					selectedNode = closest
-					emit_signal("nodeSelected")
-			cardController.releaseFocus(self)
-		else:
-			var other  = cardController.focus
-			if other != null:
-				pass
-				print("Focus is on ", cardController.focus.get("name"),": ", other.get("title")," ", other.get_parent().get("name"))
-			
+func _on_MapArea_input_event( event: InputEvent) -> void:
+	if acceptinput and event.is_action_pressed("left_click"):
+		print("map click")
+		if cardController.takeFocus(self):			
+			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
+			if selectableNodes.size() > 0:
+				var closest = selectableNodes[0]
+				for node in selectableNodes:
+					if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
+						closest = node
+				selectedNode = closest
+				print("pre-signal")
+				cardController.releaseFocus(self)
+				emit_signal("nodeSelected")
+				print("signaled")
+			else:
+				cardController.releaseFocus(self)
+
 func doPhysics(time): 
 	print("Physics going")
-	cardController.takeFocus(self)
+	var oldinputAllowed = cardController.inputAllowed
+	cardController.inputAllowed = false
 	self.physics_on  = true
 	yield(get_tree().create_timer(time), "timeout")
 	self.physics_on = false
-	cardController.releaseFocus(self)
+	cardController.inputAllowed = oldinputAllowed
 func getRandomEmptyNode(terrains):
 	var possible = []
 	for node in nodes:
