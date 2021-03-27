@@ -213,10 +213,10 @@ func getTerrainColor(terrain:int) -> Vector2:
 	return Vector2(.5*cos(angle),.5*sin(angle))
 
 
-func _on_MapArea_input_event( event: InputEvent) -> void:
+func on_MapArea_input_event( event: InputEvent) -> void:
 	if acceptinput and event.is_action_pressed("left_click"):
 		print("map click")
-		if cardController.takeFocus(self):			
+		if cardController.takeFocus(self):
 			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
 			if selectableNodes.size() > 0:
 				var closest = selectableNodes[0]
@@ -233,12 +233,12 @@ func _on_MapArea_input_event( event: InputEvent) -> void:
 
 func doPhysics(time): 
 	print("Physics going")
-	var oldinputAllowed = cardController.inputAllowed
-	cardController.inputAllowed = false
+	#var oldinputAllowed = cardController.inputAllowed
+	#cardController.inputAllowed = false
 	self.physics_on  = true
 	yield(get_tree().create_timer(time), "timeout")
 	self.physics_on = false
-	cardController.inputAllowed = oldinputAllowed
+#	cardController.inputAllowed = true
 func getRandomEmptyNode(terrains):
 	var possible = []
 	for node in nodes:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scripts/Unit.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Intent.gd" type="Script" id=2]
@@ -11,9 +11,6 @@
 [ext_resource path="res://Images/StatusIcons/sting.png" type="Texture" id=9]
 [ext_resource path="res://Images/StatusIcons/immovable.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/Audio.gd" type="Script" id=11]
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 450, 450 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -52,11 +49,16 @@ script = ExtResource( 1 )
 volume_db = -4.0
 script = ExtResource( 11 )
 
-[node name="HoverRect" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HoverRect"]
-position = Vector2( 0, -231.125 )
-shape = SubResource( 1 )
+[node name="HoverRect" type="ColorRect" parent="."]
+margin_left = -416.0
+margin_top = -648.0
+margin_right = 425.0
+margin_bottom = 237.0
+mouse_filter = 1
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -249.721 )
@@ -71,7 +73,7 @@ scale = Vector2( 0.4, 0.4 )
 script = ExtResource( 2 )
 
 [node name="Attack" type="Sprite" parent="Intent"]
-position = Vector2( -1613.75, -2142.63 )
+position = Vector2( -1619.03, -2147.91 )
 texture = ExtResource( 4 )
 
 [node name="Buff" type="Sprite" parent="Intent"]
@@ -141,10 +143,10 @@ scale = Vector2( 0.235154, 0.235154 )
 texture = ExtResource( 10 )
 
 [node name="RichTextLabel3" type="RichTextLabel" parent="HoverText/TextContainer"]
-margin_left = 146.0
-margin_top = 384.446
-margin_right = 1960.0
-margin_bottom = 891.446
+margin_left = 148.112
+margin_top = 386.558
+margin_right = 1962.11
+margin_bottom = 893.558
 rect_scale = Vector2( 0.5, 0.5 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 8 )
@@ -180,5 +182,6 @@ __meta__ = {
 position = Vector2( 53.0931, 472.027 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 9 )
+[connection signal="gui_input" from="HoverRect" to="." method="_on_HoverRect_gui_input"]
 [connection signal="mouse_entered" from="HoverRect" to="." method="_on_HoverRect_mouse_entered"]
 [connection signal="mouse_exited" from="HoverRect" to="." method="_on_HoverRect_mouse_exited"]

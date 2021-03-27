@@ -44,7 +44,7 @@ $Range=1
 trigger(onPlay,do(damage, ($Damage,(fungal),(all),$Range)));
 trigger(startofturn,do(addVar(self,Damage,$Increment)));
 text(Deal $Damage damage to all adjacent units. At the start of your turn, increase this cards damage by $Increment);
-removetrigger(endofturn,true,10);
+removetrigger(endofturn,true,6);
 image("res://Images/CardArt/OvergrownMachinery.png");
 
 title(Ubiquitous Growth);
