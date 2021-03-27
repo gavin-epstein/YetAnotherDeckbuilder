@@ -511,7 +511,7 @@ func facing(angle):
 
 
 func _on_HoverRect_mouse_entered() -> void:
-	if head!=self:
+	if head!=self and head!=null:
 		return head._on_HoverRect_mouse_entered()
 	mouseon = true
 	yield(get_tree().create_timer(.2),"timeout")
@@ -583,3 +583,8 @@ func loadFromSave(save:Dictionary):
 	if not self.trap:
 		self.tile.occupants.append(self)
 	
+
+
+func _on_HoverRect_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		controller.map.on_MapArea_input_event(event) #pass input to map click

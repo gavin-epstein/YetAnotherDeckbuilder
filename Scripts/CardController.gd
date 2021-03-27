@@ -165,6 +165,7 @@ func discardAll(silent = false):
 		if not card.modifiers.has("retain"):
 			Action("discard", [card, silent], silent);
 		else:
+			card.Triggered("onRetain",[card])
 			ind+=1
 	return true
 	
@@ -202,13 +203,13 @@ func purge(card):
 	return false
 
 func takeFocus(item) -> bool:
-	printFocus()
+	#printFocus()
 	if $Choice.visible and not item in $Choice.cards:
 		return false
 	
 	if focus == null:
 		focus = item
-		printFocus()
+		#printFocus()
 		return true
 		
 	elif focus == item:
@@ -216,23 +217,23 @@ func takeFocus(item) -> bool:
 	return false
 
 func releaseFocus(item) -> bool:
-	printFocus()
+	#printFocus()
 	if focus == item:
 		#print("Focus Released")
 		if focusStack.size()>0:
 			focus= focusStack.pop_back()
 		else:
 			focus = null
-		printFocus()
+		#printFocus()
 		return true
 	return false
 func forceFocus(item):
-	printFocus()
+	#printFocus()
 	if focus == item:
 		return false
 	focusStack.push_back(focus)
 	focus = item
-	printFocus()
+	#printFocus()
 	return true
 func printFocus():
 	if focus ==lastfocus:
@@ -285,7 +286,7 @@ func startofturn():
 
 
 func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event.is_action("left_click") and inputdelay > .2 and takeFocus(self):
+	if event.is_action_pressed("left_click") and takeFocus(self):
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -304,7 +305,7 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 			yield(res,"completed")
 		
 func select(loc, predicate,message,num = 1,random=false):
-	inputAllowed = false
+	
 	loc = get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
@@ -360,6 +361,7 @@ func select(loc, predicate,message,num = 1,random=false):
 			cardClicked(prototype)
 			return prototype
 	#finally, let the player click
+	#inputAllowed = false
 	releaseFocus(self)
 	if loc is CardPile:
 		loc.display()
@@ -378,7 +380,7 @@ func select(loc, predicate,message,num = 1,random=false):
 	return selectedCard
 func cardClicked(card):
 	selectedCard = card
-	inputAllowed  = true
+	#inputAllowed  = true
 	releaseFocus(card)
 	for card in Hand.cards:
 		card.dehighlight()

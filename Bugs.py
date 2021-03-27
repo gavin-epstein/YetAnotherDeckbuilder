@@ -41,7 +41,7 @@ title screen warnings for save not found, save will be erased
 
 #multitile entities spawning is fucked. They arent ending up on the tiles
 #multitile enities mouseover
-?multitile dying
+!multitile dying
 
 #improve pathfinding of enemies - they should be able to go around things
 
@@ -59,8 +59,8 @@ sounds
 
 add range, speed to unit mouseover
 
-When selecting from pile, move the message
-When selecting from pile, fix the z-index
+#When selecting from pile, move the message
+#When selecting from pile, fix the z-index
 
 #add number background to status icon numbers
 

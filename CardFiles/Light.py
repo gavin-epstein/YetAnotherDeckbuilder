@@ -38,7 +38,7 @@ trigger(onPlay, do(armor($X)))
 text("Gain X armor");
 types("light");
 removetrigger(endofturn, true, 4);
-rarity(2);
+rarity(6);
 
 title("Self Immolate");
 types(fire,light)
@@ -46,7 +46,7 @@ cost(0)
 $Energy=2
 $Status=1
 trigger(onPlay,do(gainEnergy($Energy)))
-trigger(onPlay,do(addStatus(flaming,$Energy)))
+trigger(onPlay,do(addStatus(flaming,$Status)))
 text("Gain $Energy energy, and $Status burn")
 removetrigger(endofturn, true, 1);
 rarity(3);
@@ -84,3 +84,17 @@ types(light,wind)
 text("Draw $Draw, gain $Energy energy")
 removetrigger(endofturn,true,2)
 rarity(6)
+
+title(Sword of Light);
+cost(1);
+$Range=1
+$Damage=6
+$ModDamage=6
+types(light,attack)
+trigger(gainEnergy,do(addVar(self,ModDamage,argv[0])))
+trigger(onPlay,do(damage, ($ModDamage,(slash),(any),$Range)));
+trigger(onPlay,do(setVar(self, ModDamage,$Damage)));
+removetrigger(endofturn,true,3);
+modifiers(retain);
+rarity(3);
+text("Deal $ModDamage damage, range $Range. While in play when you gain energy increase this cards damage by the same amount until played again")

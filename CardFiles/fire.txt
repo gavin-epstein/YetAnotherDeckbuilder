@@ -75,7 +75,7 @@ types(fire,light,attack)
 cost(0);
 $Range=3;
 trigger(onPlay, do(damage((count("Energy","Energy")),(fire),(any),$Range)));
-trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Scald)")),Hand),false));
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Blinding Flash)")),Hand),false));
 text("Deal damage equal to your energy, range $Range, then void a card in your hand");
 types(fire);
 removetrigger(endofturn, true, 1);
@@ -95,7 +95,7 @@ removetrigger(endofturn, true, 1);
 
 title("Renewal")
 types(fire, light,wind)
-text("Void your hand, draw a card and gain an energy for each card voided.void")
+text("Void your hand, draw a card and gain an energy for each card voided.\nVoid")
 rarity(1);
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))

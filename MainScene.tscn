@@ -466,7 +466,7 @@ transform = Transform2D( 1, 0, 0, 1, 960, 410 )
 script = ExtResource( 277 )
 
 [node name="Sprite" type="Sprite" parent="Center/MapLayer"]
-position = Vector2( -1.92761, 0 )
+position = Vector2( -1.92761, 2.41721 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 278 )
 
@@ -512,6 +512,7 @@ margin_left = -958.0
 margin_top = -425.0
 margin_right = 963.0
 margin_bottom = 366.0
+mouse_filter = 1
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -561,7 +562,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 92
+frame = 21
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -602,7 +603,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 93
+frame = 22
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -643,7 +644,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 92
+frame = 21
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -701,7 +702,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 72
+frame = 48
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -733,7 +734,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 56
+frame = 111
 playing = true
 script = ExtResource( 264 )
 
@@ -964,7 +965,7 @@ __meta__ = {
 visible = false
 position = Vector2( 620.746, 95.6628 )
 scale = Vector2( 0.8, 0.8 )
-[connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="_on_MapArea_input_event"]
+[connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
