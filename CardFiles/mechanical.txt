@@ -27,7 +27,7 @@ types(mechanical)
 cost(2)
 rarity(5)
 $Block=4
-trigger(startofturn, do block($Block))
-text("At the start of your turn, gain block $Block")
+trigger(startofturn, do(block($Block)))
+text("At the start of your turn, gain $Block block")
 rarity(7)
 removetrigger(endofturn, true,8);

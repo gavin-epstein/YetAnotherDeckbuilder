@@ -1,7 +1,7 @@
 extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
-var maxdifficulty = 13;
+var maxdifficulty = 6;
 var map
 var units=[]
 var Player
@@ -101,6 +101,8 @@ func move(unit, node):
 			return false
 		else:
 			node = node[0]
+	if unit ==null or node == null:
+		return false
 	unit.facing((node.position - unit.position).angle())
 	if not node.sentinel and not unit.status.has("immovable"):
 		unit.tile.occupants.erase(unit)
@@ -111,6 +113,8 @@ func enemyTurn():
 	for unit in units:
 		if unit == null:
 			units.erase(unit)
+		elif unit.health <0:
+			unit.die()
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
@@ -199,6 +203,8 @@ func addBlock(unit,amount):
 	else:
 		units= unit
 	for unit in units:
+		if !unit.has_method("isUnit") and unit.occupants.size() > 0:
+			unit = unit.occupants[0]
 		unit.block+=amount
 		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()

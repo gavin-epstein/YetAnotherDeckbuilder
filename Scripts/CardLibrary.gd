@@ -91,7 +91,7 @@ func getRandom(maxRarity:int = 100, types = []):
 	if types.size() ==0:
 		types = ["any"]
 	else:
-		if not "hammer" in types:
+		for i in range(floor(types.size()/7.0)):#more hammers
 			types.append("hammer")
 		
 	var select = []
