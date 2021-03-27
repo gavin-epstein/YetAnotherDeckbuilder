@@ -300,6 +300,7 @@ func _eraseSelf():
 	print("Erasing")
 	for component in components:
 		if component != null and component!=self:
+			component.tile.occupants.erase(component)
 			print("Removing component" + component.title)
 			component.queue_free()
 	for link in links:
@@ -466,9 +467,9 @@ func playAnimation(action):
 	debug = $AnimatedSprite
 	if $AnimatedSprite.frames.has_animation(action):
 		$AnimatedSprite.play(action)
-	if not $AnimatedSprite.frames.get_animation_loop(action):
-		yield($AnimatedSprite,"animation_finished")
-		playAnimation("idle")
+		if not $AnimatedSprite.frames.get_animation_loop(action):
+			yield($AnimatedSprite,"animation_finished")
+			playAnimation("idle")
 		
 func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 	if not size is Vector2:
@@ -510,7 +511,7 @@ func facing(angle):
 
 
 func _on_HoverRect_mouse_entered() -> void:
-	if head!=self:
+	if head!=self and head!=null:
 		return head._on_HoverRect_mouse_entered()
 	mouseon = true
 	yield(get_tree().create_timer(.2),"timeout")
@@ -582,3 +583,8 @@ func loadFromSave(save:Dictionary):
 	if not self.trap:
 		self.tile.occupants.append(self)
 	
+
+
+func _on_HoverRect_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		controller.map.on_MapArea_input_event(event) #pass input to map click

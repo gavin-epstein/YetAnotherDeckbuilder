@@ -148,7 +148,7 @@ range(0)
 strength(0)
 $turncount=-1
 $Block=3
-trigger(turn,if( ($turncount=0), (do(addBlock(do(select((all,(any),"name:Moss"),1,tile)), $Block)))))
+trigger(turn,if( ($turncount=0), (do(addBlock( (do(select((all,(any),"name:Moss"),1,tile))), $Block)))))
 trigger(turn,if( ($turncount=1), (cardDo(create("Toxic Spores",Reaction)))))
 trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
 trigger(turn,do(addVar(self,turncount,1)))
@@ -247,5 +247,22 @@ strength(6);
 range(3);
 speed(1);
 trigger(turn,do(MoveAndAttack(self,friendly)))
-trigger(turn,do(AddStatus((select((all,(any),friendly),3,tile)),frost,2)))
+trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),frost,2)))
 image("res://Images/UnitArt/FrostGremlin.png")
+
+name("Rock Nautilus")
+difficulty(2);
+spawnable(stone)
+health(12);
+strength(4);
+range(1);
+speed(1);
+status(hardenedcarapace,true)
+trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
+trigger(turn,if( ($Intent=Debuff),(do(addArmor(self,1)))));
+trigger(turn,if( ($Intent=Debuff),(cardDo(create("Stun",Deck)))));
+trigger(turn,do(setVar(self,Intent,(random(Attack,Debuff)))))
+image("res://Images/UnitArt/RockNautilus.png")
+
+
+

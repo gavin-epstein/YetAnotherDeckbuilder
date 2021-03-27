@@ -68,17 +68,19 @@ trigger(onPlay, do(addStatus("immune:fire",$Status)))
 trigger(onPlay, do(voided(self,Play)))
 text("Block $Block, gain $Status turns of immunity to fire damage. Void")
 removetrigger(endofturn,true,1);
+image("res://Images/CardArt/Firewall.png");
 
 title("Blinding Flash");
 types(fire,light,attack)
 cost(0);
 $Range=3;
 trigger(onPlay, do(damage((count("Energy","Energy")),(fire),(any),$Range)));
-trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Scald)")),Hand),false));
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Blinding Flash)")),Hand),false));
 text("Deal damage equal to your energy, range $Range, then void a card in your hand");
 types(fire);
 removetrigger(endofturn, true, 1);
 rarity(5)
+image("res://Images/CardArt/BlindingFlash.png");
 
 title("Ashes");
 types(fire)
@@ -87,13 +89,13 @@ $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
 trigger(onPlay,do(voided,((select(Play,(! hasModifier(self,"Eternal")),"-",1,true))),Play))
-text(Gain $Block X block, then void a random card from play);
+text(Gain $Block X block, then void a random non-eternal card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
 
 title("Renewal")
 types(fire, light,wind)
-text("Void your hand, draw a card and gain an energy for each card voided.void")
+text("Void your hand, draw a card and gain an energy for each card voided.\nVoid")
 rarity(1);
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))

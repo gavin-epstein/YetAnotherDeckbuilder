@@ -16,8 +16,9 @@ renewal not voiding other cards
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 lifelink units gaining health on save reload
+fireball has some issues
 
-save quit crashes if not done loading
+!save quit crashes if not done loading
 
 plants/background images for different biomes, (naturally spawning traps)
 
@@ -40,9 +41,9 @@ title screen warnings for save not found, save will be erased
 
 #multitile entities spawning is fucked. They arent ending up on the tiles
 #multitile enities mouseover
-?multitile dying
+!multitile dying
 
-improve pathfinding of enemies - they should be able to go around things
+#improve pathfinding of enemies - they should be able to go around things
 
 sounds
     Attack for each damage type - multiple options would be good
@@ -58,15 +59,16 @@ sounds
 
 add range, speed to unit mouseover
 
-When selecting from pile, move the message
+#When selecting from pile, move the message
+#When selecting from pile, fix the z-index
 
 #add number background to status icon numbers
 
 add icons for immune, resistant, vulnerable by type
 
-o fuck a tutorial
+#o fuck a tutorial
 
-#Loading bars
+Loading Message and input lock
 
 performance improvement
 
@@ -74,6 +76,6 @@ devlog
 
 #website for feedback
 
-redo card clicked to use GUI
+#redo card clicked to use GUI
 
 old menu font color: ffc954
