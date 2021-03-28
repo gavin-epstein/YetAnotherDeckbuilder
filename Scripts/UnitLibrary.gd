@@ -42,7 +42,7 @@ func loadIcons(dirname, dictname):
 		if fname == "":
 			break
 		elif fname.ends_with(".png"):
-			dictname[fname.substr(0,fname.length()-4)] = load(dirname+fname)
+			dictname[fname.substr(0,fname.length()-4)] = load(dir.get_current_dir()+"/"+fname)
 
 	dir.list_dir_end()
 

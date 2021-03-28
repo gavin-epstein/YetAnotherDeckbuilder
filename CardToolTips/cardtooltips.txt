@@ -20,3 +20,4 @@ dodge: Reaction card that reduces incoming damage by 50-100%
 silent: Does not trigger the effects of any other cards
 transform: Turn a card into another card of the same type
 slay: Triggered when this card/unit kills an enemy
+retain: Not discard by anything that discards your whole hand

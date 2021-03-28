@@ -17,7 +17,8 @@ func Load():
 	loadIcons()
 	loadTooltips("res://CardToolTips/cardtooltips.txt")
 	var dir = Directory.new()
-	dir.open("res://Cardfiles/")
+	dir.open("res://CardFiles/")
+	print(dir.get_current_dir())
 	dir.list_dir_begin()
 
 	while true:
@@ -26,7 +27,7 @@ func Load():
 		if fname == "":
 			break
 		elif fname.ends_with(".txt") or fname.ends_with(".py"):
-			var count = loadallcards(fname)
+			var count = loadallcards(dir.get_current_dir()+"/"+fname)
 			if count is GDScriptFunctionState:
 				count = yield(count,"completed")
 			print("Loaded " + str(count) + " from "+fname )
@@ -35,8 +36,9 @@ func Load():
 	
 func loadallcards(fname) -> int:
 	var count = 0
+	print(fname)
 	var f = File.new()
-	f.open("res://CardFiles/"+fname, File.READ)
+	f.open(fname, File.READ)
 	var cardcode = ""
 	while not f.eof_reached():
 		var line = f.get_line()
@@ -54,6 +56,7 @@ func loadallcards(fname) -> int:
 		if not ";" in line and line!="":
 			line = line+";"
 		cardcode+=line
+	f.close()
 	return count
 func loadIcons():
 	var dir = Directory.new()
@@ -66,7 +69,7 @@ func loadIcons():
 			break
 		elif fname.ends_with(".png"):
 			print(fname.substr(0,fname.length()-4))
-			icons[fname.substr(0,fname.length()-4)] = load("res://Images/Icons/"+fname)
+			icons[fname.substr(0,fname.length()-4)] = load(dir.get_current_dir()+"/"+fname)
 
 	dir.list_dir_end()
 
