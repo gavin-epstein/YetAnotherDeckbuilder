@@ -81,7 +81,7 @@ spawnable(none)
 status(explosive,5)
 status(fuse,3)
 health(5)
-image("res://Images/UnitArt/BoomBloom.png")
+image("res://Images/UnitArt/boombloom.png")
 
 name("Anomalocaris")
 difficulty(7)
