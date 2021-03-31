@@ -3,10 +3,7 @@ onready var enemyController = $Center/MapLayer/EnemyController
 onready var map = $Center/MapLayer/Map/MeshInstance2D
 onready var cardController = $CardController
 const SAVE_NAME = "res://Saves/savefile.json"
-# Declare member variables here. Examples:
-# var a: int = 2
-# var b: String = "text"
-
+var loaded = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,6 +31,8 @@ func loadAll():
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("done")
+	$LoadingBar.queue_free()
+	loaded= true
 func save():
 	var save = {
 		"map":map.save(),
@@ -63,6 +62,8 @@ func loadFromSave():
 			step = cardController.loadFromSave(save.cardController, self)
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
+			$LoadingBar.queue_free()
+			loaded= true
 		else:
 			printerr("Corrupted data!")
 	else:

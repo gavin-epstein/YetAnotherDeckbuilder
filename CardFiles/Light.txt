@@ -91,10 +91,11 @@ $Range=1
 $Damage=6
 $ModDamage=6
 types(light,attack)
-trigger(gainEnergy,do(addVar(self,ModDamage,argv[0])))
+trigger(gainEnergy,do(addVar(self,ModDamage,(*,argv[0],3))))
 trigger(onPlay,do(damage, ($ModDamage,(slash),(any),$Range)));
 trigger(onPlay,do(setVar(self, ModDamage,$Damage)));
 removetrigger(endofturn,true,3);
 modifiers(retain);
 rarity(3);
-text("Deal $ModDamage damage, range $Range. While in play when you gain energy increase this cards damage by the same amount until played again")
+text("Deal $ModDamage damage, range $Range. While in play when you gain energy increase this cards damage by thrice that amount until played again")
+image("res://Images/CardArt/SwordofLight.png");
