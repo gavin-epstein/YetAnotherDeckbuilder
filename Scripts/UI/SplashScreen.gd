@@ -1,5 +1,5 @@
 extends Node2D
-const SAVE_NAME = "res://Saves/savefile.json"
+const SAVE_NAME = "user://savefile.json"
 const mainscene = preload("res://MainScene.tscn")
 func _ready() -> void:
 	var screensize = OS.get_screen_size()

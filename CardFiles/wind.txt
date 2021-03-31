@@ -16,7 +16,7 @@ trigger(onPlay, do(draw, ($Draw), true));
 types(wind, cloud);
 rarity(4);
 removetrigger(endofturn,true,1);
-image("res://Images/CardArt/Whirlwind.png");
+image("res://Images/CardArt/whirlwind.png");
 
 title(Quickstep);
 cost(0);
