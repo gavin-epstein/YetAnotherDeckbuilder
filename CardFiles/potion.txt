@@ -31,14 +31,3 @@ removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 rarity(3);
 image("res://Images/CardArt/Soup.png")
-
-title("Cleansing Water");
-cost(1);
-$Range=2
-types(water, potion)
-text("remove all status effects from a target.\n Range $Range. Retain.\nPurge")
-rarity(2);
-modifiers(potion,retain)
-removetrigger(endofturn, true, 0);
-trigger(onPlay,do(clearAllStatus((do(selectTiles(("any",("any"),"exists"),$Range,Player))))))
-trigger(onPlay, do(purge(self)));
