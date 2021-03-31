@@ -88,7 +88,7 @@ cost(X);
 $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
-trigger(onPlay,do(voided,((select(Play,(! hasModifier(self,"Eternal")),"-",1,true))),Play))
+trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"Eternal")),"-",1,true)),Play)))
 text(Gain $Block X block, then void a random non-eternal card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
