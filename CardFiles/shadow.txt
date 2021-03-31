@@ -108,10 +108,11 @@ trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 removetrigger(endofturn,true,4)
 rarity(4)
 
+
 title(Slide);
 types(shadow);
 cost(0);
-trigger(onPlay,do(move(Hand,Play,(select(Hand,(not (hasModifier(self, unplayable))),"Pick a card to put in play")))))
+trigger(onPlay,do(move(Hand,Play,(select(Hand,((not (hasModifier(self, unplayable)))),"Pick a card to put in play")))))
 text("Put a card from your hand into play without playing it")
 rarity(7);
 removetrigger(endofturn,true,1)

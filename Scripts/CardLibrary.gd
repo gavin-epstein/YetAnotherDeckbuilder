@@ -36,7 +36,7 @@ func Load():
 	
 func loadallcards(fname) -> int:
 	var count = 0
-	print(fname)
+	#print(fname)
 	var f = File.new()
 	f.open(fname, File.READ)
 	var cardcode = ""
@@ -65,10 +65,12 @@ func loadIcons():
 
 	while true:
 		var fname = dir.get_next()
+		print(fname)
 		if fname == "":
 			break
-		elif fname.ends_with(".png"):
-			print(fname.substr(0,fname.length()-4))
+		elif  fname.ends_with(".png.import"):
+			fname = fname.substr(0,fname.length()-7)
+			print(dir.get_current_dir()+"/"+fname)
 			icons[fname.substr(0,fname.length()-4)] = load(dir.get_current_dir()+"/"+fname)
 
 	dir.list_dir_end()
