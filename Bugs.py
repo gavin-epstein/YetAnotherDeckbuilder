@@ -15,11 +15,11 @@ cleansing water not working?
 renewal not voiding other cards
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
-lifelink units gaining health on save reload
 fireball has some issues
+slide not allowing select
 
 ?save quit crashes if not done loading
-
+lifelink units gaining health on save reload
 plants/background images for different biomes, (naturally spawning traps)
 
 #Birds of a feather not buffing

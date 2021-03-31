@@ -2,7 +2,7 @@ extends Node2D
 onready var enemyController = $Center/MapLayer/EnemyController
 onready var map = $Center/MapLayer/Map/MeshInstance2D
 onready var cardController = $CardController
-const SAVE_NAME = "res://Saves/savefile.json"
+const SAVE_NAME = "user://savefile.json"
 var loaded = false
 
 # Called when the node enters the scene tree for the first time.
@@ -39,6 +39,7 @@ func save():
 		"enemyController":enemyController.save(),
 		"cardController":cardController.save(),
 	}
+	print("saving")
 	var file = File.new()
 	file.open(SAVE_NAME, File.WRITE)
 	file.store_string(to_json(save))
