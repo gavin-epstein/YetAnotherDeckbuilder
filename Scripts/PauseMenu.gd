@@ -4,12 +4,13 @@ onready var splashscene = load("res://Splash.tscn")
 
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("escape"):
-		show()
-	elif event.is_action_pressed("error_report"):
-		var error = errortemplate.instance()
-		add_child(error)
-		get_tree().paused = true
+	if get_parent().loaded:		
+		if event.is_action_pressed("escape"):
+			show()
+		elif event.is_action_pressed("error_report"):
+			var error = errortemplate.instance()
+			add_child(error)
+			get_tree().paused = true
 
 func show() -> void:
 	$Back.visible = true

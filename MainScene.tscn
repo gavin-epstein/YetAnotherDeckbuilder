@@ -1,4 +1,4 @@
-[gd_scene load_steps=389 format=2]
+[gd_scene load_steps=390 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -385,7 +385,7 @@ shader_param/tex3 = ExtResource( 274 )
 shader_param/tex4 = ExtResource( 279 )
 shader_param/tex5 = ExtResource( 280 )
 
-[sub_resource type="StyleBoxFlat" id=15]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.6, 0.6, 0.6, 0.454902 )
 corner_radius_top_left = 40
 corner_radius_top_right = 40
@@ -433,14 +433,14 @@ corner_radius_top_right = 80
 corner_radius_bottom_right = 80
 corner_radius_bottom_left = 80
 
-[sub_resource type="StyleBoxFlat" id=13]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.137255, 0.701961, 1, 1 )
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxFlat" id=14]
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.137255, 0.701961, 1, 0.682353 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
@@ -453,6 +453,13 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id=13]
+bg_color = Color( 0.0352941, 0, 0, 1 )
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
 
 [node name="Scene" type="Node2D"]
 script = ExtResource( 276 )
@@ -536,7 +543,7 @@ margin_top = 280.0
 margin_right = 1527.0
 margin_bottom = 518.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 15 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Message" type="RichTextLabel" parent="CardController/Message"]
 margin_left = 3.0
@@ -562,7 +569,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 21
+frame = 37
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -603,7 +610,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 22
+frame = 38
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -644,7 +651,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 21
+frame = 37
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -702,7 +709,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 5 )
-frame = 48
+frame = 5
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -734,7 +741,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 6 )
-frame = 111
+frame = 1
 playing = true
 script = ExtResource( 264 )
 
@@ -817,7 +824,7 @@ margin_left = 834.359
 margin_top = 891.698
 margin_right = 1213.36
 margin_bottom = 978.698
-custom_styles/panel = SubResource( 13 )
+custom_styles/panel = SubResource( 10 )
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CardController/CardPileDisplay/Panel/Resume"]
 margin_left = 28.7833
@@ -846,7 +853,7 @@ margin_left = 750.0
 margin_top = 154.0
 margin_right = 1168.0
 margin_bottom = 624.0
-custom_styles/panel = SubResource( 14 )
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -965,6 +972,36 @@ __meta__ = {
 visible = false
 position = Vector2( 620.746, 95.6628 )
 scale = Vector2( 0.8, 0.8 )
+
+[node name="LoadingBar" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="LoadingBar"]
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="LoadingBar/ColorRect"]
+margin_left = 458.0
+margin_top = 522.0
+margin_right = 1487.0
+margin_bottom = 758.0
+custom_styles/panel = SubResource( 13 )
+
+[node name="RichTextLabel" type="RichTextLabel" parent="LoadingBar/ColorRect/Panel"]
+margin_left = 207.0
+margin_top = 44.0
+margin_right = 922.0
+margin_bottom = 376.0
+rect_scale = Vector2( 0.7, 0.7 )
+custom_fonts/normal_font = ExtResource( 133 )
+text = "Loading..."
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]

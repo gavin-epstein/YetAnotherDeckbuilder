@@ -2,10 +2,10 @@
 Null units showing up in unit list
     They are successfully being ignored
 
-card 1 in hand onclick not working well
-    not focus problem?
-    has do do with resizing, clicks aren't registering when resized
-    ##?? Control nodes(text) stealing mouse input?
+#card 1 in hand onclick not working well
+#    not focus problem?
+#    has do do with resizing, clicks aren't registering when resized
+#    ##?? Control nodes(text) stealing mouse input?
     
 cleansing water not working?
     Cleansing water select is broken
@@ -18,7 +18,7 @@ Dark deeds light whispers not activating part 2
 lifelink units gaining health on save reload
 fireball has some issues
 
-!save quit crashes if not done loading
+?save quit crashes if not done loading
 
 plants/background images for different biomes, (naturally spawning traps)
 
@@ -32,9 +32,9 @@ plants/background images for different biomes, (naturally spawning traps)
 #multitile units should be able to move through themselves
 #Consumed tile should be telegraphed
 
-Ehh i think it's fine
-    tile backgrounds coords based on map coords not screencoords
-    or add a viewport for the map, so that they change on shift but not scroll
+#Ehh i think it's fine
+#    tile backgrounds coords based on map coords not screencoords
+#    or add a viewport for the map, so that they change on shift but not scroll
 
 title screen warnings for save not found, save will be erased
 
@@ -68,7 +68,7 @@ add icons for immune, resistant, vulnerable by type
 
 #o fuck a tutorial
 
-Loading Message and input lock
+#Loading Message and input lock
 
 performance improvement
 
