@@ -49,6 +49,9 @@ func loadFromSave():
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
 		file.open(SAVE_NAME, File.READ)
+		if !file.is_open():
+			print("Failed to open "+ SAVE_NAME)
+			return 
 		var data = parse_json(file.get_as_text())
 		file.close()
 		if typeof(data) == TYPE_DICTIONARY:

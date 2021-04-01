@@ -65,9 +65,13 @@ func loadUnitsFromFile(fname):
 		if not ";" in line and line!="":
 			line = line+";"
 		code+=line
+	f.close()
 func loadLinkagesFromFile(fname):
 	var f = File.new()
 	f.open(fname, File.READ)
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return 
 	var code = ""
 	while not f.eof_reached():
 		var line = f.get_line()
@@ -82,15 +86,22 @@ func loadLinkagesFromFile(fname):
 		if not ";" in line and line!="":
 			line = line+";"
 		code+=line
+	f.close()
 func loadtooltips(fname):
 	var f = File.new()
 	f.open(fname, File.READ)
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return 
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return
 	while not f.eof_reached():
 		var line = f.get_line()
 		if line.find(":") != -1:
 			line = line.split(":")
 			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
-		
+	f.close()
 		
 func getUnitByName(name):
 	var other  = unittemplate.instance()
