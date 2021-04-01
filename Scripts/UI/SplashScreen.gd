@@ -11,7 +11,6 @@ func savefound()-> bool:
 
 func _on_NewGameButton_gui_input(event: InputEvent) -> void:
 	$Menu/NewGameButton.modulate=Color(.8,.8,.8)
-	
 	if event.is_action_pressed("left_click"):
 		if savefound():
 			var dir = Directory.new()
