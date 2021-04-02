@@ -17,6 +17,7 @@ Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 fireball has some issues
 slide not allowing select
+polished blades hitting every 
 
 ?save quit crashes if not done loading
 lifelink units gaining health on save reload
