@@ -31,15 +31,19 @@ func _on_CancelButton_pressed() -> void:
 
 func _on_SubmitButton_pressed() -> void:
 	
-
+	print("Submitting")
 	var type = getType($OptionButton.get_selected_id())
 	var http_request = HTTPRequest.new()
 	add_child(http_request)
+	http_request.connect("request_completed", self, "_onResponse")
 	var body = $TextEdit.text
-	var error = http_request.request("https://moraandtheendoftheworld.com/reports.php?type="+str(type), [], true, HTTPClient.METHOD_POST, body)
+	var error = http_request.request("https://moraandtheendoftheworld.com/reports.php?type="+str(type), ["Content-type:text/plain"], true, HTTPClient.METHOD_POST, body)
 	if error != OK:
 		print("An error occurred in the HTTP request.")
+	print(error)
 	get_tree().paused=false
+	yield(http_request,"request_completed")
+	print("response")
 	self.queue_free()
 func getType(input):
 	if input == 0:
@@ -56,3 +60,4 @@ func getType(input):
 		return "CRASH"
 	if input ==6:
 		return "OTHER"
+
