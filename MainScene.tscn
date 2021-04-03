@@ -1,4 +1,4 @@
-[gd_scene load_steps=390 format=2]
+[gd_scene load_steps=391 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -376,6 +376,7 @@
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=374]
 [ext_resource path="res://Images/UIArt/Settings.tscn" type="PackedScene" id=375]
 [ext_resource path="res://Scripts/UI/CardPileDisplay.gd" type="Script" id=376]
+[ext_resource path="res://Scripts/LoadingBar.shader" type="Shader" id=377]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -400,10 +401,7 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 510.515, 358.64 )
-
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
 "frames": [ ExtResource( 330 ), ExtResource( 326 ), ExtResource( 312 ), ExtResource( 316 ), ExtResource( 294 ), ExtResource( 284 ), ExtResource( 361 ), ExtResource( 311 ), ExtResource( 315 ), ExtResource( 307 ), ExtResource( 327 ), ExtResource( 297 ), ExtResource( 336 ), ExtResource( 345 ), ExtResource( 323 ), ExtResource( 290 ), ExtResource( 295 ), ExtResource( 332 ), ExtResource( 303 ), ExtResource( 319 ), ExtResource( 341 ), ExtResource( 371 ), ExtResource( 293 ), ExtResource( 324 ), ExtResource( 352 ), ExtResource( 286 ), ExtResource( 353 ), ExtResource( 289 ), ExtResource( 346 ), ExtResource( 285 ), ExtResource( 288 ), ExtResource( 358 ), ExtResource( 347 ), ExtResource( 309 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 325 ), ExtResource( 328 ), ExtResource( 292 ), ExtResource( 362 ), ExtResource( 304 ), ExtResource( 308 ), ExtResource( 313 ), ExtResource( 283 ), ExtResource( 317 ), ExtResource( 310 ), ExtResource( 287 ), ExtResource( 348 ), ExtResource( 344 ), ExtResource( 363 ), ExtResource( 335 ), ExtResource( 372 ), ExtResource( 302 ), ExtResource( 305 ), ExtResource( 349 ), ExtResource( 350 ), ExtResource( 333 ), ExtResource( 321 ), ExtResource( 337 ), ExtResource( 367 ), ExtResource( 339 ), ExtResource( 299 ), ExtResource( 351 ), ExtResource( 368 ), ExtResource( 291 ), ExtResource( 338 ), ExtResource( 298 ), ExtResource( 342 ), ExtResource( 369 ), ExtResource( 366 ), ExtResource( 370 ), ExtResource( 322 ), ExtResource( 359 ), ExtResource( 365 ), ExtResource( 354 ), ExtResource( 318 ), ExtResource( 320 ), ExtResource( 355 ), ExtResource( 343 ), ExtResource( 314 ), ExtResource( 356 ), ExtResource( 357 ), ExtResource( 296 ), ExtResource( 364 ), ExtResource( 340 ), ExtResource( 360 ), ExtResource( 334 ), ExtResource( 329 ), ExtResource( 331 ), ExtResource( 301 ) ],
 "loop": true,
@@ -411,7 +409,7 @@ animations = [ {
 "speed": 10.0
 } ]
 
-[sub_resource type="SpriteFrames" id=6]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
 "frames": [ ExtResource( 144 ), ExtResource( 158 ), ExtResource( 161 ), ExtResource( 205 ), ExtResource( 172 ), ExtResource( 203 ), ExtResource( 155 ), ExtResource( 154 ), ExtResource( 141 ), ExtResource( 145 ), ExtResource( 159 ), ExtResource( 146 ), ExtResource( 160 ), ExtResource( 192 ), ExtResource( 142 ), ExtResource( 148 ), ExtResource( 164 ), ExtResource( 206 ), ExtResource( 213 ), ExtResource( 143 ), ExtResource( 183 ), ExtResource( 184 ), ExtResource( 185 ), ExtResource( 186 ), ExtResource( 187 ), ExtResource( 188 ), ExtResource( 189 ), ExtResource( 190 ), ExtResource( 152 ), ExtResource( 214 ), ExtResource( 153 ), ExtResource( 215 ), ExtResource( 151 ), ExtResource( 163 ), ExtResource( 216 ), ExtResource( 217 ), ExtResource( 200 ), ExtResource( 207 ), ExtResource( 209 ), ExtResource( 218 ), ExtResource( 147 ), ExtResource( 219 ), ExtResource( 165 ), ExtResource( 166 ), ExtResource( 167 ), ExtResource( 168 ), ExtResource( 169 ), ExtResource( 170 ), ExtResource( 171 ), ExtResource( 261 ), ExtResource( 260 ), ExtResource( 220 ), ExtResource( 212 ), ExtResource( 254 ), ExtResource( 250 ), ExtResource( 221 ), ExtResource( 193 ), ExtResource( 194 ), ExtResource( 195 ), ExtResource( 222 ), ExtResource( 223 ), ExtResource( 224 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 196 ), ExtResource( 197 ), ExtResource( 257 ), ExtResource( 198 ), ExtResource( 199 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 176 ), ExtResource( 177 ), ExtResource( 233 ), ExtResource( 178 ), ExtResource( 179 ), ExtResource( 180 ), ExtResource( 253 ), ExtResource( 156 ), ExtResource( 255 ), ExtResource( 157 ), ExtResource( 149 ), ExtResource( 252 ), ExtResource( 201 ), ExtResource( 181 ), ExtResource( 234 ), ExtResource( 191 ), ExtResource( 262 ), ExtResource( 182 ), ExtResource( 263 ), ExtResource( 173 ), ExtResource( 174 ), ExtResource( 175 ), ExtResource( 210 ), ExtResource( 211 ), ExtResource( 202 ), ExtResource( 235 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 204 ), ExtResource( 208 ), ExtResource( 150 ), ExtResource( 162 ), ExtResource( 237 ), ExtResource( 139 ), ExtResource( 238 ), ExtResource( 239 ), ExtResource( 240 ), ExtResource( 138 ), ExtResource( 241 ), ExtResource( 242 ), ExtResource( 243 ), ExtResource( 140 ), ExtResource( 258 ), ExtResource( 244 ), ExtResource( 249 ), ExtResource( 245 ), ExtResource( 246 ), ExtResource( 256 ), ExtResource( 259 ), ExtResource( 247 ), ExtResource( 248 ) ],
 "loop": true,
@@ -419,42 +417,45 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=6]
 size = 144
 font_data = ExtResource( 266 )
 
-[sub_resource type="RectangleShape2D" id=8]
+[sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 531.325, 222.946 )
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0, 0, 0, 0.329412 )
 corner_radius_top_left = 80
 corner_radius_top_right = 80
 corner_radius_bottom_right = 80
 corner_radius_bottom_left = 80
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.137255, 0.701961, 1, 1 )
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 0.137255, 0.701961, 1, 0.682353 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="StyleBoxFlat" id=12]
+[sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 1, 0.658824, 0.317647, 1 )
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="StyleBoxFlat" id=13]
+[sub_resource type="ShaderMaterial" id=14]
+shader = ExtResource( 377 )
+
+[sub_resource type="StyleBoxFlat" id=12]
 bg_color = Color( 0.0352941, 0, 0, 1 )
 corner_radius_top_left = 40
 corner_radius_top_right = 40
@@ -569,14 +570,14 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 37
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
-margin_left = 1734.0
-margin_top = 809.141
-margin_right = 2279.0
-margin_bottom = 1072.14
+margin_left = 1771.0
+margin_top = 813.0
+margin_right = 2079.0
+margin_bottom = 1076.0
 rect_scale = Vector2( 0.3, 0.3 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
@@ -610,13 +611,13 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 38
+frame = 84
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
-margin_left = 43.9908
+margin_left = 41.3241
 margin_top = 617.167
-margin_right = 322.991
+margin_right = 320.324
 margin_bottom = 872.167
 rect_scale = Vector2( 0.2, 0.2 )
 custom_fonts/normal_font = ExtResource( 133 )
@@ -651,14 +652,14 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 37
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
-margin_left = 1105.15
-margin_top = 642.334
-margin_right = 1384.15
-margin_bottom = 889.334
+margin_left = 1104.48
+margin_top = 639.001
+margin_right = 1383.48
+margin_bottom = 886.001
 rect_scale = Vector2( 0.2, 0.2 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
@@ -695,11 +696,17 @@ position = Vector2( 970.728, 744.253 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 136 )
 
-[node name="Area2D" type="Area2D" parent="CardController/Choice/SkipButton"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/Choice/SkipButton/Area2D"]
-position = Vector2( -15.6426, -17.0645 )
-shape = SubResource( 4 )
+[node name="Area2D" type="ColorRect" parent="CardController/Choice/SkipButton"]
+anchor_right = 0.362
+anchor_bottom = 0.335
+margin_left = -527.0
+margin_top = -381.0
+margin_right = 117.348
+margin_bottom = 81.41
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Voided" type="Node2D" parent="CardController"]
 script = ExtResource( 137 )
@@ -708,8 +715,8 @@ hotkey = "Voided"
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Voided"]
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
-frames = SubResource( 5 )
-frame = 5
+frames = SubResource( 4 )
+frame = 55
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -740,8 +747,8 @@ __meta__ = {
 [node name="Energy" type="AnimatedSprite" parent="CardController"]
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
-frames = SubResource( 6 )
-frame = 1
+frames = SubResource( 5 )
+frame = 47
 playing = true
 script = ExtResource( 264 )
 
@@ -751,7 +758,7 @@ margin_top = -359.496
 margin_right = -208.498
 margin_bottom = -112.496
 rect_scale = Vector2( 3.5, 3.5 )
-custom_fonts/normal_font = SubResource( 7 )
+custom_fonts/normal_font = SubResource( 6 )
 custom_colors/default_color = Color( 0.341176, 0.0666667, 0.0313726, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]10[/center]"
@@ -769,7 +776,7 @@ texture = ExtResource( 265 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
 position = Vector2( -16.9785, 59.5385 )
-shape = SubResource( 8 )
+shape = SubResource( 7 )
 
 [node name="CardDisplay" type="Node2D" parent="CardController"]
 visible = false
@@ -790,7 +797,7 @@ margin_top = 128.0
 margin_right = 1650.0
 margin_bottom = 950.4
 mouse_filter = 2
-custom_styles/panel = SubResource( 9 )
+custom_styles/panel = SubResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -824,7 +831,7 @@ margin_left = 834.359
 margin_top = 891.698
 margin_right = 1213.36
 margin_bottom = 978.698
-custom_styles/panel = SubResource( 10 )
+custom_styles/panel = SubResource( 9 )
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CardController/CardPileDisplay/Panel/Resume"]
 margin_left = 28.7833
@@ -853,7 +860,7 @@ margin_left = 750.0
 margin_top = 154.0
 margin_right = 1168.0
 margin_bottom = 624.0
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -864,7 +871,7 @@ margin_top = 38.0
 margin_right = 380.0
 margin_bottom = 106.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 12 )
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -891,7 +898,7 @@ margin_top = 150.0
 margin_right = 380.0
 margin_bottom = 218.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 12 )
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -918,7 +925,7 @@ margin_top = 264.0
 margin_right = 380.0
 margin_bottom = 332.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 12 )
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -945,7 +952,7 @@ margin_top = 375.0
 margin_right = 380.0
 margin_bottom = 443.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 12 )
+custom_styles/panel = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -976,25 +983,20 @@ scale = Vector2( 0.8, 0.8 )
 [node name="LoadingBar" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="LoadingBar"]
-margin_right = 1920.0
-margin_bottom = 1080.0
-color = Color( 1, 1, 1, 0 )
+material = SubResource( 14 )
+margin_left = -0.994858
+margin_top = -0.994873
+margin_right = 1919.01
+margin_bottom = 1079.01
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="LoadingBar/ColorRect"]
-margin_left = 458.0
-margin_top = 522.0
-margin_right = 1487.0
-margin_bottom = 758.0
-custom_styles/panel = SubResource( 13 )
-
-[node name="RichTextLabel" type="RichTextLabel" parent="LoadingBar/ColorRect/Panel"]
-margin_left = 207.0
-margin_top = 44.0
-margin_right = 922.0
-margin_bottom = 376.0
+[node name="RichTextLabel" type="RichTextLabel" parent="LoadingBar/ColorRect"]
+margin_left = 673.305
+margin_top = 619.443
+margin_right = 1388.3
+margin_bottom = 951.443
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/normal_font = ExtResource( 133 )
 text = "Loading..."
@@ -1002,11 +1004,19 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Panel" type="Panel" parent="LoadingBar/ColorRect"]
+visible = false
+margin_left = 465.126
+margin_top = 575.443
+margin_right = 1494.13
+margin_bottom = 811.443
+custom_styles/panel = SubResource( 12 )
 [connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
-[connection signal="input_event" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
+[connection signal="gui_input" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
 [connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
 [connection signal="gui_input" from="CardController/CardPileDisplay/Panel/Resume" to="CardController/CardPileDisplay" method="_on_Resume_gui_input"]
