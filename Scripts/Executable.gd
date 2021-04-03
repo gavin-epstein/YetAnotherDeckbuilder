@@ -197,7 +197,7 @@ func execute(code, argv):
 		if not args[0].has_method("isCard"):
 			return false
 		return args[0].hasType(args[1])
-	elif code[0] == "hasname":
+	elif code[0] == "hasname" or code[0]=="hasName":
 		var args = []
 		for arg in code[1]:
 			arg = processArgs(arg,argv)

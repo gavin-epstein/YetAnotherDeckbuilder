@@ -88,7 +88,7 @@ cost(X);
 $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
-trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"Eternal")),"-",1,true)),Play)))
+trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"-",1,true)),Play)))
 text(Gain $Block X block, then void a random non-eternal card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
@@ -98,7 +98,7 @@ types(fire, light,wind)
 text("Void your hand, draw a card and gain an energy for each card voided.\nVoid")
 rarity(1);
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
-trigger(onPlay,repeat((do(voided((cardAt(Hand,0)),Hand))),$cardnumber))
+trigger(onPlay,repeat((do(voided((do(cardAt(Hand,0),true)),Hand))),$cardnumber))
 trigger(onPlay,do(draw($cardnumber)))
 trigger(onPlay,do(gainEnergy($cardnumber)))
 trigger(onPlay, do(voided(self,Play)))
