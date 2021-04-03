@@ -212,25 +212,6 @@ trigger(turn,if( ($Intent=Defend), (do(addBlock(self,8)))));
 trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
 image("res://Images/UnitArt/ScytheLarva.png");
 
-name("Wyrm")
-health(44)
-spawnable(any)
-difficulty(6)
-strength(7)
-range(1)
-speed(2)
-facing(topdown)
-image("res://Images/UnitArt/wormhead.png");
-trigger(turn,do(MoveAndAttack(self,friendly)));
-components(self, wormbod, wormbod)
-linkage(wormlink,0,1)
-linkage(wormlink,1,2)
-
-name("wormbod")
-difficulty(0)
-facing(topdown)
-image("res://Images/UnitArt/wormBod.png");
-
 name("Prickly Pear")
 spawnable(sand)
 trap
