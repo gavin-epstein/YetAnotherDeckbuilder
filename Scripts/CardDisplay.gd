@@ -19,8 +19,7 @@ func display(incard):
 	var text = RichTextLabel.new()
 	add_child(text)
 	var typescontent = "Types: " 
-	for type in card.types.keys():
-		typescontent+= type.capitalize()
+	typescontent+=Utility.join(", ",card.types.keys())
 	var lines =  ceil(typescontent.length()/19.6)
 	text.bbcode_text = typescontent
 	text.bbcode_enabled = true

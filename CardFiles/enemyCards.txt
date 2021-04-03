@@ -1,4 +1,5 @@
 title("Toxic Spores")
+types(reaction)
 trigger(onReaction, do(heal(1)));
 trigger(onReaction, do(addStatus(bleed,1)));
 trigger(onReaction, do(purge,(self),false));

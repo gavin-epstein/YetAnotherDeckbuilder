@@ -94,3 +94,22 @@ trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range)))
 removetrigger(endofturn,true,1)
 image("res://Images/CardArt/Lunge.png")
 rarity(0)
+
+title("Endure")
+types(starter, reaction)
+trigger(onReaction, do(heal(2)));
+trigger(onReaction, do(purge,(self),false));
+trigger(onReaction,do(move(Reaction,Reaction,self)));
+cost(-);
+text("Heal 2, shuffle this back into your reaction pile");
+removetrigger(endofturn, true, 0);
+rarity(0)
+
+title("Scratch")
+types(starter, reaction)
+trigger(onReaction, do(purge,(self),false));
+trigger(onReaction,do(move(Reaction,Reaction,self)));
+text("On reaction shuffle this back into your reaction pile");
+removetrigger(endofturn, true, 0);
+cost(-);
+rarity(0)
