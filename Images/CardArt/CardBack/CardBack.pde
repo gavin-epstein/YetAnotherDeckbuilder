@@ -16,7 +16,7 @@ void draw(){
   image1.beginDraw();
   image1.background(100);
   pattern1(image1);
-  diamond(image1);
+  //diamond(image1);
   roundcorners(image1);
   image1.endDraw();
   export.beginDraw();
@@ -104,12 +104,16 @@ void pattern1(PGraphics image){
    image.loadPixels();
    for (float x = 0.0; x< image.width; x++){
      for(float y = 0.0; y< image.height; y++){
-       if (x/image.width-y/image.height > .5 
+       /*if (x/image.width-y/image.height > .5 
          || x/image.width+y/image.height < .5  
          || -1.0*x/image.width+y/image.height > .5 
          || x/image.width+y/image.height > 1.5
-         ){
+         ){*/
+         
+       
        float rad = sqrt(distsq((int)x,(int)y,image.width/2, image.height/2));
+       if (rad > image.width/3)
+         {
        if (tan(-t+rad/15)/3 +sin(1.0*(y-image.height/2)/15) + sin(1.0*(x-image.width/2)/15) > .5 ){
          image.pixels[(int)y*image.width+(int)x] = color(0,50,100);
        } else {
@@ -117,6 +121,10 @@ void pattern1(PGraphics image){
          int g = (int)map(rad,0,image.height/2+image.width/2,175,50);
          image.pixels[(int)y*image.width+(int)x] = color(r,g,50);
        }
+       } else {
+         int r = (int)map(rad,0,image.height/2+image.width/2,255,100);
+         int g = (int)map(rad,0,image.height/2+image.width/2,175,50);
+         image.pixels[(int)y*image.width+(int)x] = color(r,g,50);
        }
      }
    }
