@@ -11,3 +11,4 @@ explosive:Explosive: On death, deals damage equal to explosive stacks to all adj
 thorns:Thorns: On recieving damage, deals damage equal to stacks back to the attacker
 armor:Armor:Reduces incoming damage by the armor amount, is decreased by one each hit
 block:Block:Block is removed before health when recieving damage. Excess block is removed at the start of turn
+frost:Frost:Lose strength equal to frost

@@ -41,7 +41,28 @@ func updateDisplay(unit, library):
 		text.scroll_active = false
 		text.add_font_override("normal_font",plainfont)
 		pos +=Vector2(0,85*lines + 40)
-	
+	if unit.intents.size()>0:
+		var intents = []
+		for intent in unit.intents:
+			if intent in library.intenttooltips:
+				intents.append(library.intenttooltips[intent])
+		var intentstring = "This unit intends to "
+		if intents.size()>1:
+			intents[intents.size()-1] = "and " + intents[intents.size()-1]
+		intentstring+=Utility.join(", ",intents)
+		text = RichTextLabel.new()
+		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		$TextContainer.add_child(text)
+		lines =  ceil(intentstring.length()/29.0)
+		text.bbcode_text = intentstring
+		text.bbcode_enabled = true
+		text.rect_size = Vector2(2100,170*lines)
+		text.rect_scale = Vector2(.5,.5)
+		text.rect_position = pos
+		text.visible = true
+		text.scroll_active = false
+		text.add_font_override("normal_font",plainfont)
+		pos +=Vector2(0,85*lines + 40)
 	
 	if unit.lore !=null:
 		text = RichTextLabel.new()

@@ -38,7 +38,7 @@ func addPlayerAndVoid():
 	var node = map.voidNode
 	theVoid = unit
 	addUnit(unit,node)
-	unit = $UnitLibrary.getUnitByName("Player")
+	unit = $UnitLibrary.getUnitByName("Mora")
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
@@ -114,7 +114,7 @@ func enemyTurn():
 		if unit == null:
 			units.erase(unit)
 		elif unit.health <0:
-			unit.die()
+			unit.die(null)
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
