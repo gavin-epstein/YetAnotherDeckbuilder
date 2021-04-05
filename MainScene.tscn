@@ -1,4 +1,4 @@
-[gd_scene load_steps=391 format=2]
+[gd_scene load_steps=390 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -387,7 +387,7 @@ shader_param/tex4 = ExtResource( 279 )
 shader_param/tex5 = ExtResource( 280 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.6, 0.6, 0.6, 0.454902 )
+bg_color = Color( 0.470588, 0.470588, 0.470588, 0.847059 )
 corner_radius_top_left = 40
 corner_radius_top_right = 40
 corner_radius_bottom_right = 40
@@ -421,38 +421,35 @@ animations = [ {
 size = 144
 font_data = ExtResource( 266 )
 
-[sub_resource type="RectangleShape2D" id=7]
-extents = Vector2( 531.325, 222.946 )
-
-[sub_resource type="StyleBoxFlat" id=8]
+[sub_resource type="StyleBoxFlat" id=7]
 bg_color = Color( 0, 0, 0, 0.329412 )
 corner_radius_top_left = 80
 corner_radius_top_right = 80
 corner_radius_bottom_right = 80
 corner_radius_bottom_left = 80
 
-[sub_resource type="StyleBoxFlat" id=9]
+[sub_resource type="StyleBoxFlat" id=8]
 bg_color = Color( 0.137255, 0.701961, 1, 1 )
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[sub_resource type="StyleBoxFlat" id=10]
+[sub_resource type="StyleBoxFlat" id=9]
 bg_color = Color( 0.137255, 0.701961, 1, 0.682353 )
 corner_radius_top_left = 50
 corner_radius_top_right = 50
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 50
 
-[sub_resource type="StyleBoxFlat" id=11]
+[sub_resource type="StyleBoxFlat" id=10]
 bg_color = Color( 1, 0.658824, 0.317647, 1 )
 corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
 
-[sub_resource type="ShaderMaterial" id=14]
+[sub_resource type="ShaderMaterial" id=11]
 shader = ExtResource( 377 )
 
 [sub_resource type="StyleBoxFlat" id=12]
@@ -570,7 +567,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 83
+frame = 10
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -611,7 +608,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 84
+frame = 11
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -652,7 +649,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 83
+frame = 10
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -716,7 +713,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 55
+frame = 78
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -748,7 +745,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 47
+frame = 100
 playing = true
 script = ExtResource( 264 )
 
@@ -772,11 +769,15 @@ position = Vector2( 1468.75, 835.998 )
 scale = Vector2( 0.2, 0.2 )
 texture = ExtResource( 265 )
 
-[node name="EndTurnButton" type="Area2D" parent="CardController/EndTurn"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CardController/EndTurn/EndTurnButton"]
-position = Vector2( -16.9785, 59.5385 )
-shape = SubResource( 7 )
+[node name="EndTurnButton" type="ColorRect" parent="CardController/EndTurn"]
+margin_left = -549.0
+margin_top = -153.0
+margin_right = 523.0
+margin_bottom = 270.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CardDisplay" type="Node2D" parent="CardController"]
 visible = false
@@ -786,6 +787,7 @@ script = ExtResource( 281 )
 [node name="ColorRect" type="ColorRect" parent="CardController/CardDisplay"]
 margin_right = 1900.0
 margin_bottom = 1080.0
+mouse_filter = 2
 color = Color( 0.45098, 0.427451, 0.494118, 0.556863 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -797,7 +799,31 @@ margin_top = 128.0
 margin_right = 1650.0
 margin_bottom = 950.4
 mouse_filter = 2
-custom_styles/panel = SubResource( 8 )
+custom_styles/panel = SubResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Done" type="Panel" parent="CardController/CardDisplay"]
+margin_left = 711.0
+margin_top = 935.0
+margin_right = 977.0
+margin_bottom = 1053.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="Back" type="RichTextLabel" parent="CardController/CardDisplay/Done"]
+margin_left = 23.0
+margin_top = 8.0
+margin_right = 450.0
+margin_bottom = 240.0
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Done[/center]"
+text = "Done"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -831,7 +857,8 @@ margin_left = 834.359
 margin_top = 891.698
 margin_right = 1213.36
 margin_bottom = 978.698
-custom_styles/panel = SubResource( 9 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 8 )
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CardController/CardPileDisplay/Panel/Resume"]
 margin_left = 28.7833
@@ -860,7 +887,8 @@ margin_left = 750.0
 margin_top = 154.0
 margin_right = 1168.0
 margin_bottom = 624.0
-custom_styles/panel = SubResource( 10 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -871,7 +899,7 @@ margin_top = 38.0
 margin_right = 380.0
 margin_bottom = 106.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -898,7 +926,7 @@ margin_top = 150.0
 margin_right = 380.0
 margin_bottom = 218.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -925,7 +953,7 @@ margin_top = 264.0
 margin_right = 380.0
 margin_bottom = 332.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -952,7 +980,7 @@ margin_top = 375.0
 margin_right = 380.0
 margin_bottom = 443.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 11 )
+custom_styles/panel = SubResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -983,7 +1011,7 @@ scale = Vector2( 0.8, 0.8 )
 [node name="LoadingBar" type="CanvasLayer" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="LoadingBar"]
-material = SubResource( 14 )
+material = SubResource( 11 )
 margin_left = -0.994858
 margin_top = -0.994873
 margin_right = 1919.01
@@ -1018,7 +1046,7 @@ custom_styles/panel = SubResource( 12 )
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
 [connection signal="gui_input" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
-[connection signal="input_event" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
+[connection signal="gui_input" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
 [connection signal="gui_input" from="CardController/CardPileDisplay/Panel/Resume" to="CardController/CardPileDisplay" method="_on_Resume_gui_input"]
 [connection signal="gui_input" from="Pause Menu/Back/Resume" to="Pause Menu" method="_ResumeButton"]
 [connection signal="gui_input" from="Pause Menu/Back/SaveQuit" to="Pause Menu" method="_SaveQuitButton"]

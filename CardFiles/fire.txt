@@ -113,3 +113,19 @@ cost(0)
 trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to void")),Deck))),$Repeat))
 removetrigger(endofturn, true,1)
 rarity(10)
+
+title("Bellows")
+types(fire,wind);
+cost(0);
+$Draw=3
+trigger(startofturn, do(draw($Draw)))
+trigger(startofturn, do(voided(self,Play)))
+removetrigger(endofturn, true,2)
+rarity(7);
+text(At the start of your next turn, draw $Draw and void this card);
+image("res://Images/CardArt/Bellows.png");
+
+#title("Explode")
+#types(fire,summon);
+#cost(1);
+

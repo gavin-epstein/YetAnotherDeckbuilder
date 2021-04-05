@@ -38,3 +38,14 @@ trigger(startofturn,do(draw($Draw)));
 removetrigger(endofturn,true,7);
 cost(2);
 rarity(3);
+
+title("Wind Blast");
+types(wind,attack);
+$Damage=2
+$Range=40
+text("Deal damage equal to $Damage times the number of cards in your hand, any range");
+trigger(onPlay, do(damage, ((* ,$Damage,(countModifier(Hand,any)),(wind),(any),$Range))))
+removetrigger(endofturn,true,1);
+image("res://Images/CardArt/WindBlast.png")
+cost(1);
+rarity(5);

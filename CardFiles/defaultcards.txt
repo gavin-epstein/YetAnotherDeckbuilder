@@ -113,3 +113,4 @@ text("On reaction shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);
 cost(-);
 rarity(0)
+image("res://Images/CardArt/Scratch.png")

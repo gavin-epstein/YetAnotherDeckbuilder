@@ -76,7 +76,7 @@ func execute(code, argv):
 		var arg2 = processArgs(code[1][1], argv)
 		if arg2 is GDScriptFunctionState:
 			arg2 = yield(arg2, "completed")
-		var result = controller.countModifiers(code[1][0],code[1][1])
+		var result = controller.countModifiers(arg1,arg2)
 		return result
 	elif code[0] =="if":
 		var condition

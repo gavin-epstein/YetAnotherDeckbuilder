@@ -44,7 +44,7 @@ func display(incard):
 		text.add_font_override("normal_font",plainfont)
 		pos +=Vector2(0,42*lines + 10)
 	$Panel.rect_size = Vector2(600, pos.y)
-
+	$ColorRect.mouse_filter = Control.MOUSE_FILTER_STOP
 func undisplay(): 
 	get_parent().releaseFocus(self)
 	self.visible = false
@@ -54,7 +54,7 @@ func undisplay():
 		if child is RichTextLabel:
 			child.queue_free()
 			remove_child(child)
-
+	$ColorRect.mouse_filter = Control.MOUSE_FILTER_PASS
 	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") or event.is_action_pressed("right_click"):

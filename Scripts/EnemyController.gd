@@ -324,12 +324,13 @@ func clearAllStatuses(tiles = "Player"):
 				unit.setStatus(stat, 0)
 	
 func Lose(enemy):
-
+	yield(get_tree().create_timer(1),"timeout")
 	if enemy !=null:
 		var image = enemy.get_node("Image").texture
 		get_node("/root/global").lossImage = image
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
+	yield(get_tree().create_timer(1),"timeout")
 	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():
