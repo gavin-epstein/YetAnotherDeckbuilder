@@ -567,7 +567,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 10
+frame = 76
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -608,7 +608,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 11
+frame = 77
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -649,7 +649,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 10
+frame = 76
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -713,7 +713,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 78
+frame = 82
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -745,7 +745,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 100
+frame = 40
 playing = true
 script = ExtResource( 264 )
 

@@ -7,6 +7,7 @@ var loaded = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	randomize()
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
 		loadFromSave()

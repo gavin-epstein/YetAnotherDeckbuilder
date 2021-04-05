@@ -29,9 +29,10 @@ var components=[]
 var componentnames=[]
 var links=[]
 var linkagenames = []
+var intents=[]
 var movementPolicy="Spring"
 signal animateHealthChange
-const buffintents = ["addArmor","addBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
+const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
 
 func onSummon(head, silent= false)->void:
 	self.head = head
@@ -59,6 +60,7 @@ func onSummon(head, silent= false)->void:
 					unit.health = sumHealth
 					unit.updateDisplay()
 	else:
+		intents = []
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	if self.image!=null:
 		_imagescale = 1000.0/max(image.get_width(), image.get_height())
@@ -248,9 +250,11 @@ func updateDisplay():
 		healthBar.get_node("Attack").visible = false
 	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
 	if tile.neighs.size()==0 or controller.Player == null or self.health <= 0:
+		intents=[]
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	else:
-		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
+		intents=getIntents()
+		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
 	if head !=self:
@@ -396,14 +400,21 @@ func getIntents():
 	var intents = []
 	for hit in hits:
 		if hit in buffintents:
-			intents.append("Buff")
-		elif hit == "Attack" or hit == "Summon" or hit == "Move":
+			if hit.split(":").size()>1 :
+				
+				if self.hasProperty(hit.split(":")[1]):
+					intents.append("Buff")
+				else:
+					intents.append("Debuff")
+			else:
+				intents.append("Buff")
+		elif hit in ["Attack", "Summon", "Move","addArmor","addBlock"]:
 			intents.append(hit)
 		elif hit == "move":
 			intents.append("Move")
-		elif hit == "MoveAndAttack":
-			intents.append("Move")
-			intents.append("Attack")
+		elif hit in ["create","createByModifier"]:
+			intents.append("MakeCard")
+			
 	vars = oldvars
 	return intents
 	

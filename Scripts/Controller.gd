@@ -6,7 +6,7 @@ var test = false
 const testMethods = ["Attack","addArmor","addBlock",
 					"gainStrength","gainMaxHealth",
 					"heal","Summon","setVar","addVar",
-					"getStatus","setStatus","clearAllStatus",
+					"setStatus","clearAllStatus",
 					"move","reshuffle","shuffle","draw",
 					"play","setEnergy","gainEnergy","discard",
 					"discardAll","cardreward","purge","create",
@@ -14,6 +14,7 @@ const testMethods = ["Attack","addArmor","addBlock",
 					"movePlayer","damage","moveUnits","summon",
 					"armor","block","consume","addStatus"
 					]
+const directedmethods= ["setStatus","addStatus"]
 var hits = []
 func _ready() -> void:
 	Play = get_node("/root/Scene/CardController/Play")
@@ -36,7 +37,24 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 		
 		if self.has_method(method):
 			if test and method in testMethods:
-				hits.append(method)
+				if method in directedmethods and argv[0]!=null:
+					var tiles = argv[0]
+					if not tiles is Array:
+						tiles = [tiles]
+					var enemy=false;
+					var friendly= false;
+					for tile in tiles:
+						if tile is Node2D and tile.has_method("hasOccupant") and tile.occupants.size()>0:
+							if tile.occupants[0].hasProperty("friendly"):
+								friendly =true
+							else:
+								enemy=true
+					if friendly:
+						hits.append(	method+":friendly")
+					else:
+						hits.append(method+":-friendly")
+				else:
+					hits.append(method)
 			else:
 				res =  self.callv(method, argv)
 				if res is GDScriptFunctionState:

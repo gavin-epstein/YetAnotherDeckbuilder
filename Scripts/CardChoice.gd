@@ -62,6 +62,6 @@ func generateReward(rarity, count = 3):
 	self.updateDisplay()
 
 
-func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_Area2D_input_event( event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		clear()
