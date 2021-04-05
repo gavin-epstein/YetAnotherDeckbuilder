@@ -23,9 +23,13 @@ fireball has some issues
 lifelink units gaining health on save reload
 plants/background images for different biomes, (naturally spawning traps)
 
-#Birds of a feather not buffing
+tutorial back button
 
-#hover text on units
+Almanac that can be accessed any time
+
+Lettering on card/enemies too small
+
+Open in center of screen
 
 #zoom and scroll on map
 

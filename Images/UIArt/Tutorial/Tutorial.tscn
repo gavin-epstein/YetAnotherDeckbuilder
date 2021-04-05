@@ -457,7 +457,7 @@ __meta__ = {
 }
 
 [node name="Intro2" type="RichTextLabel" parent="4/ColorRect4"]
-anchor_left = -0.00313784
+anchor_left = -0.00313785
 anchor_right = -0.00313785
 margin_left = 98.4092
 margin_top = 248.836
@@ -546,6 +546,7 @@ __meta__ = {
 
 [node name="Intro2" type="RichTextLabel" parent="5/ColorRect2"]
 anchor_left = 1.0159e-08
+anchor_right = 1.0159e-08
 margin_left = 138.0
 margin_top = 276.0
 margin_right = 1959.0
@@ -580,15 +581,15 @@ mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Cards here are in Play [/center]"
-text = "Cards here are in Play "
+bbcode_text = "[center]The Void [/center]"
+text = "The Void "
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Intro2" type="RichTextLabel" parent="5/ColorRect3"]
-anchor_left = -0.00659904
+anchor_left = -0.0065991
 anchor_top = -0.0055708
 anchor_right = -0.0065991
 anchor_bottom = -0.0055708

@@ -47,4 +47,5 @@ trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$Move)));
 text("Deal $Damage damage to enemy units on stone tiles and pull them $Move towards you");
 types(kinetic, attack);
 removetrigger(endofturn,true,1);
+image("res://Images/CardArt/Earthquake.png");
 #add earth synergy?

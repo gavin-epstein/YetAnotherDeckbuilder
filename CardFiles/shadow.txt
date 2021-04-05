@@ -86,12 +86,34 @@ text("Void a card from your hand.\nPurge")
 modifiers(shadow)
 rarity(0)
 
+title(Repulsive Shadow);
+cost(0)
+$Move=1
+types(shadow, kinetic)
+removetrigger(endofturn,true,0)
+trigger(onPlay, do(moveUnits((any,(any),"-empty"),0,Player,away,$Move)))
+trigger(onPlay, do(purge(self)))
+text("Push an adjacent unit.\nPurge")
+modifiers(shadow)
+rarity(0)
+
+title(Rapid Shadow);
+cost(0)
+$Move=1
+types(shadow, movement)
+removetrigger(endofturn,true,0)
+trigger(onPlay, do(movePlayer($Move)))
+trigger(onPlay, do(purge(self)))
+text("Move 1.\nPurge")
+modifiers(shadow)
+rarity(0)
+
 title(After Image);
 cost(1)
 types(shadow)
 $Block=1
 text("When you play a card, gain $Block block")
-trigger(play,block($Block))
+trigger(play,do(block($Block)))
 removetrigger(endofturn,true,3)
 rarity(2)
 
@@ -107,7 +129,6 @@ trigger(play,if(($currentCount=$Count),(do(draw($Draw)))))
 trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 removetrigger(endofturn,true,4)
 rarity(4)
-
 
 title(Slide);
 types(shadow);

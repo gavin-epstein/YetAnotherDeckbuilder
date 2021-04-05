@@ -6,7 +6,7 @@ func updateDisplay(unit, library):
 	for child in $TextContainer.get_children():
 		$TextContainer.remove_child(child)
 		child.queue_free()
-	var pos = Vector2(-60,0)
+	var pos = Vector2(0,0)
 	
 	var text = RichTextLabel.new()
 	text.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -21,11 +21,33 @@ func updateDisplay(unit, library):
 	pos+=Vector2(0,150)
 	#text.modulate = Color(.7,.7,.7)
 	text.add_font_override("normal_font",fancyfont)
+	var lines
+	if unit != unit.controller.Player:
+		var speedrange = ""
+		speedrange += "Speed: "+str(unit.speed)
+		if unit.attackrange>0:
+			speedrange+=", Range "+ str(unit.attackrange)+". "
+			speedrange+="This unit can attack if it starts its turn within "+str(max(unit.speed,1)+unit.attackrange-1)+" tiles" 
+		text = RichTextLabel.new()
+		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		$TextContainer.add_child(text)
+		lines =  ceil(speedrange.length()/29.0)
+		text.bbcode_text = speedrange
+		text.bbcode_enabled = true
+		text.rect_size = Vector2(2100,170*lines)
+		text.rect_scale = Vector2(.5,.5)
+		text.rect_position = pos
+		text.visible = true
+		text.scroll_active = false
+		text.add_font_override("normal_font",plainfont)
+		pos +=Vector2(0,85*lines + 40)
+	
+	
 	if unit.lore !=null:
 		text = RichTextLabel.new()
 		text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		$TextContainer.add_child(text)
-		var lines =  ceil(unit.lore.length()/29.0)
+		lines =  ceil(unit.lore.length()/29.0)
 		text.bbcode_text = unit.lore
 		text.bbcode_enabled = true
 		text.rect_size = Vector2(2100,170*lines)
@@ -35,7 +57,14 @@ func updateDisplay(unit, library):
 		text.scroll_active = false
 		text.add_font_override("normal_font",plainfont)
 		pos +=Vector2(0,85*lines + 40)
-	for stat in unit.status:
+	
+	var status = unit.status.duplicate()
+	if unit.armor !=0:
+		status["armor"]= unit.armor
+	if unit.block!=0:
+		status["block"]= unit.block
+	
+	for stat in status:
 		if stat in library.icons and stat in library.tooltips:
 			var sprite = Sprite.new()
 			$TextContainer.add_child(sprite)
@@ -47,7 +76,7 @@ func updateDisplay(unit, library):
 			text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			$TextContainer.add_child(text)
 			var content = library.tooltips[stat]
-			var lines =  ceil(content.length()/29.0)
+			lines =  ceil(content.length()/25.0)
 			text.bbcode_text = content
 			text.bbcode_enabled = true
 			text.rect_size = Vector2(1800,170*lines)

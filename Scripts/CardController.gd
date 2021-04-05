@@ -49,7 +49,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
 	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Slide"))
+	Deck.add_card(Library.getCardByName("Wind Walker"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -288,7 +288,8 @@ func startofturn():
 	return true
 
 
-func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_EndTurnButton_input_event(event: InputEvent) -> void:
+	print("Endturn")
 	if event.is_action_pressed("left_click") and takeFocus(self):
 		releaseFocus(self)
 		inputdelay = 0

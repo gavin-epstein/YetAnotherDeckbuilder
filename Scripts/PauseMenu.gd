@@ -1,7 +1,7 @@
 extends CanvasLayer
 const errortemplate = preload("res://Images/UIArt/ErrorReport.tscn")
 onready var splashscene = load("res://Splash.tscn")
-
+onready var buttons =[$Back/Resume,$Back/Resign,$Back/SaveQuit,$Settings]
 
 func _input(event: InputEvent) -> void:
 	if get_parent().loaded:		
