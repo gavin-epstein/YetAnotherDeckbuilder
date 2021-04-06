@@ -21,6 +21,7 @@ fireball has some issues
 wind blast does not attack
 knife drawer hitting every card
 endure disappearing
+push shadow select range is 0?
 
 #Void eating a tile is causing dissapearance, not death just for playe bc its checking units and player not in untis
 

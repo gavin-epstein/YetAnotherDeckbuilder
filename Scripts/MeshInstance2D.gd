@@ -215,19 +215,22 @@ func getTerrainColor(terrain:int) -> Vector2:
 
 func on_MapArea_input_event( event: InputEvent) -> void:
 	if acceptinput and event.is_action_pressed("left_click"):
-		print("map click")
+		
 		if cardController.takeFocus(self):
 			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
+			print(selectableNodes.size())
 			if selectableNodes.size() > 0:
-				var closest = selectableNodes[0]
-				for node in selectableNodes:
+				var closest = nodes[0]
+				for node in nodes:
 					if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
 						closest = node
-				selectedNode = closest
-				print("pre-signal")
-				cardController.releaseFocus(self)
-				emit_signal("nodeSelected")
-				print("signaled")
+			
+				if closest.highlighted:
+					selectedNode = closest
+					
+					cardController.releaseFocus(self)
+					emit_signal("nodeSelected")
+					return
 			else:
 				cardController.releaseFocus(self)
 

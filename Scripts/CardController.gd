@@ -49,7 +49,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
 	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Wind Walker"))
+	#Deck.add_card(Library.getCardByName("Ignite"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -57,9 +57,7 @@ func Load(parent)-> void:
 	
 	
 	
-func _process(delta: float) -> void:
-	inputdelay += delta
-	
+
 
 	
 
@@ -191,7 +189,6 @@ func updateDisplay():
 		enemyController.Player.updateDisplay()
 	
 func cardreward(rarity, count):
-	inputAllowed = false
 	Choice.generateReward(rarity, count)
 	return true
 
@@ -211,7 +208,7 @@ func takeFocus(item) -> bool:
 	
 	if focus == null:
 		focus = item
-		#printFocus()
+		printFocus()
 		return true
 		
 	elif focus == item:
@@ -226,18 +223,19 @@ func releaseFocus(item) -> bool:
 			focus= focusStack.pop_back()
 		else:
 			focus = null
-		#printFocus()
+		printFocus()
 		return true
 	return false
 func forceFocus(item):
-	#printFocus()
+	printFocus()
 	if focus == item:
 		return false
 	focusStack.push_back(focus)
 	focus = item
-	#printFocus()
+	printFocus()
 	return true
 func printFocus():
+	return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -371,7 +369,7 @@ func select(loc, predicate,message,num = 1,random=false):
 			return prototype
 	#finally, let the player click
 	#inputAllowed = false
-	releaseFocus(self)
+	forceFocus(null)
 	if loc is CardPile:
 		loc.display()
 		$Message.rect_position= Vector2(376,560)
@@ -382,7 +380,7 @@ func select(loc, predicate,message,num = 1,random=false):
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
-	takeFocus(self)
+	releaseFocus(selectedCard)
 	$Message.visible = false
 	if loc is CardPile:
 		$CardPileDisplay.undisplay()

@@ -13,15 +13,17 @@ var vars = {}
 func Triggered(method, argv):
 	
 	if triggers.has(method):
-		
+		var oldallowed = controller.cardController.inputAllowed
+		controller.cardController.inputAllowed=false
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
-	if not controller.test:
-		self.updateDisplay();
+		controller.cardController.inputAllowed = oldallowed
+		if not controller.test:
+			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
 	if interrupts.has(method):
 		var reslist = []
