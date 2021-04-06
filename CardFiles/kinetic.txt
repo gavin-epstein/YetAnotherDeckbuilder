@@ -14,7 +14,7 @@ types(kinetic,wind);
 
 title("Lure");
 cost(1)
-$Block=4
+$Block=6
 $Move=1
 text("Now and at the start of next turn, gain $Block block and pull a unit towards you");
 trigger(onPlay, do(block($Block)));

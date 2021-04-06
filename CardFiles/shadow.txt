@@ -91,7 +91,7 @@ cost(0)
 $Move=1
 types(shadow, kinetic)
 removetrigger(endofturn,true,0)
-trigger(onPlay, do(moveUnits((any,(any),"-empty"),0,Player,away,$Move)))
+trigger(onPlay, do(moveUnits((any),1,Player,away,$Move)))
 trigger(onPlay, do(purge(self)))
 text("Push an adjacent unit.\nPurge")
 modifiers(shadow)
