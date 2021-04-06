@@ -30,6 +30,7 @@ var componentnames=[]
 var links=[]
 var linkagenames = []
 var intents=[]
+var skipturn
 var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
@@ -39,7 +40,7 @@ func onSummon(head, silent= false)->void:
 	if head == self:
 		addHealthBar()
 		maxHealth  = health
-		if status.has("lifelink"):
+		if status.has("lifelink") and not silent:
 			var sumMaxHealth = self.maxHealth
 			var sumHealth = self.health
 			for unit in get_parent().units:
@@ -71,7 +72,7 @@ func onSummon(head, silent= false)->void:
 		playAnimation("idle")
 	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
-		self.addStatus("New",1)
+		self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
@@ -206,6 +207,10 @@ func startOfTurn():
 		changeHealth( -1*status.get("bleed"))
 		if self.health <=0:
 			die(null)
+	if status.has("stunned"):
+		skipturn = true
+	else:
+		skipturn = false
 	statusTickDown()
 	self.Triggered("startofturn",[]);
 func endOfTurn():
@@ -244,7 +249,7 @@ func updateDisplay():
 		healthBar.get_node("Armor").visible = true
 	else:
 		healthBar.get_node("Armor").visible = false
-	if  getStrength() > 0:
+	if  getStrength() != 0:
 		healthBar.get_node("Attack").visible = true
 	else:
 		healthBar.get_node("Attack").visible = false
@@ -257,10 +262,13 @@ func updateDisplay():
 		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
+	print(self.title + " dying")
 	if head !=self:
 		head.die(attacker)
 	if self == controller.Player:
+			print("Intended loss")
 			controller.Lose(attacker)
+			return
 	if self == controller.theVoid:
 			controller.Win()
 	if difficulty > 10:
@@ -401,7 +409,6 @@ func getIntents():
 	for hit in hits:
 		if hit in buffintents:
 			if hit.split(":").size()>1 :
-				
 				if self.hasProperty(hit.split(":")[1]):
 					intents.append("Buff")
 				else:

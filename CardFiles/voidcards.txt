@@ -7,7 +7,7 @@ trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
 trigger(play,if((hastype(argv[0],hammer)),(do(consume()))));
 trigger(play,if((hastype(argv[0],loot)),(do(consume()))));
-removetrigger(consume,true,4);
+removetrigger(endofturn,true,4);
 text("When you play a Loot or a Hammer card, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfGreed.png")
@@ -20,7 +20,7 @@ trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
 trigger(endofturn,do(consume()));
-removetrigger(consume,true,7);
+removetrigger(endofturn,true,7);
 text("At the end of your turn, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfPatience.png")
@@ -33,7 +33,7 @@ trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
-removetrigger(consume,true,10);
+removetrigger(endofturn,true,6);
 text("When you play an attack, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfAnger.png")
@@ -46,7 +46,24 @@ trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(death,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
-removetrigger(consume,true,4);
+removetrigger(endofturn,true,8);
 text("When a unit dies, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfDeath.png")
+
+title(Void of Anxiety);
+cost(-);
+types(void);
+modifiers(void);
+$Count=4
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(play,do(addVar(self,Count,-1)));
+trigger(play,if( ($Count=0),(do(consume()))))
+trigger(play,if( ($Count=0),(do(setVar(self,Count,4)))))
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(voidshift()));
+removetrigger(endofturn,true,7);
+text("Every time you play 4 cards, The Void grows ($Count more). On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/VoidOfDeath.png")
+

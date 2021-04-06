@@ -123,7 +123,7 @@ cost(1)
 $Count=3
 $Draw=1
 $currentCount=0
-text(For every $Count cards you play, draw $Draw)
+text(For every $Count cards you play, draw $Draw. ($currentCount played))
 trigger(play,do(addVar(self,currentCount,1)))
 trigger(play,if(($currentCount=$Count),(do(draw($Draw)))))
 trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
@@ -140,3 +140,4 @@ removetrigger(endofturn,true,1)
 
 #light and shadow - energy per shadow card
 #Knives in the dark : make a kitchen knife, get a shadow. Make a shadow get a kitchen knife
+#Shadow mechanical, endless wheel of darkness?

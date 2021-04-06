@@ -118,7 +118,7 @@ func enemyTurn():
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		if unit != null and unit.status.get("new")==null:
+		if unit != null and not unit.skipturn:
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
@@ -197,6 +197,8 @@ func addArmor(unit,amount):
 			unit.armor+=amount
 			unit.updateDisplay()
 func addBlock(unit,amount):
+	if unit ==null:
+		return false
 	var units
 	if not unit is Array:
 		units = [unit]
@@ -209,6 +211,8 @@ func addBlock(unit,amount):
 		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()
 func heal(unit, amount):
+	if unit ==null:
+		return false
 	var units
 	if not unit is Array:
 		units = [unit]
@@ -324,7 +328,7 @@ func clearAllStatuses(tiles = "Player"):
 				unit.setStatus(stat, 0)
 	
 func Lose(enemy):
-	yield(get_tree().create_timer(1),"timeout")
+	yield(get_tree().create_timer(.5),"timeout")
 	if enemy !=null:
 		var image = enemy.get_node("Image").texture
 		get_node("/root/global").lossImage = image

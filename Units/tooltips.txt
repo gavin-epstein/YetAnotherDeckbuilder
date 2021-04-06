@@ -12,3 +12,5 @@ thorns:Thorns: On recieving damage, deals damage equal to stacks back to the att
 armor:Armor:Reduces incoming damage by the armor amount, is decreased by one each hit
 block:Block:Block is removed before health when recieving damage. Excess block is removed at the start of turn
 frost:Frost:Lose strength equal to frost
+stunned:Stunned:Unit skips its turn
+trap:Terrain:Does not block movement, triggers its effect if a unit ends its turn here

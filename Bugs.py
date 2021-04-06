@@ -17,13 +17,18 @@ Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 fireball has some issues
 #slide not allowing select
-?polished blades hitting every card
+#polished blades hitting every card
+wind blast does not attack
+knife drawer hitting every card
+endure disappearing
+
+#Void eating a tile is causing dissapearance, not death just for playe bc its checking units and player not in untis
 
 ?save quit crashes if not done loading
 lifelink units gaining health on save reload
 plants/background images for different biomes, (naturally spawning traps)
 
-tutorial back button
+#tutorial back button
 
 Almanac that can be accessed any time
 

@@ -237,13 +237,14 @@ spawnable(sand)
 trap
 speed(0)
 range(0)
+status(trap,true)
 trigger(trap,do(addStatus(tile,thorns,1)))
 difficulty(0)
 image("res://Images/UnitArt/PricklyPear.png")
 lore("A common desert cactus, will add thorns to any nearby units")
 
 name("Frost Gremlin");
-difficulty(4);
+difficulty(9);
 spawnable(ice)
 health(13);
 strength(6);

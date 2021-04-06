@@ -294,9 +294,9 @@ func select(tile,dist,property,terrains, message):
 	getTiles(tile,dist,property,terrains)
 	if selectableNodes.size()==0:
 		return null
-	elif selectableNodes.size()==1:
-		selectableNodes[0].dehighlight()
-		return selectableNodes[0]
+	#elif selectableNodes.size()==1:
+	#	selectableNodes[0].dehighlight()
+	#	return selectableNodes[0]
 	$Message/Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message/Message.visible = true
 	yield(self,"nodeSelected")

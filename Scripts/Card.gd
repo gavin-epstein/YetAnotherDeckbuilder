@@ -157,9 +157,9 @@ func deepcopy(other)-> Card:
 	other.image = self.image
 	other.controller = self.controller
 	if other.modifiers.has("void"):
-		other.get_node("Resizer/FrameSprite").modulate = Color(.5,0,.5)
+		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,.7)
 	elif other.modifiers.has("unique"):
-		other.get_node("Resizer/FrameSprite").modulate = Color(.5,.5,1)
+		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,1)
 	other.updateDisplay()
 	return other
 		

@@ -279,11 +279,17 @@ func voided(card, loc):
 	return false
 
 func endofturn():
+	if enemyController.Player==null:
+		enemyController.Lose(null)
+		return false
 	enemyController.maxdifficulty+=.9
 	enemyController.Player.endOfTurn()
 	return true
 
 func startofturn():
+	if enemyController.Player==null:
+		enemyController.Lose(null)
+		return false
 	enemyController.Player.startOfTurn()
 	return true
 
@@ -544,6 +550,8 @@ func consume():
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
 			thing.die(theVoid)
+	if enemyController.Player.tile == consumed:
+		enemyController.Player.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)
 	enemyController.pickConsumed()
 	return true
