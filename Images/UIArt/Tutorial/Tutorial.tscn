@@ -1248,10 +1248,10 @@ __meta__ = {
 }
 
 [node name="ColorRect3" type="Panel" parent="7"]
-margin_left = 673.0
-margin_top = 677.0
-margin_right = 2312.0
-margin_bottom = 1443.0
+margin_left = 956.094
+margin_top = 420.031
+margin_right = 2387.09
+margin_bottom = 1186.03
 rect_scale = Vector2( 0.35, 0.35 )
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
@@ -1275,29 +1275,75 @@ __meta__ = {
 }
 
 [node name="Intro2" type="RichTextLabel" parent="7/ColorRect3"]
-anchor_left = -0.0065991
-anchor_top = -0.0055708
-anchor_right = -0.0065991
-anchor_bottom = -0.0055708
-margin_left = 195.816
-margin_top = 218.267
-margin_right = 2102.82
-margin_bottom = 940.267
+anchor_left = -0.00960505
+anchor_top = -0.00557079
+anchor_right = -0.00960505
+anchor_bottom = -0.00557077
+margin_left = 92.1793
+margin_top = 188.696
+margin_right = 1999.18
+margin_bottom = 910.696
 rect_scale = Vector2( 0.7, 0.7 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
-text = "This is the Void swallowing the world. When it grows it consumes a tile and gains health. Kill it to win the game"
+text = "This is the Void swallowing the world. The tentacles point to the next tile it will consume.  Kill it to win the game. "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect5" type="Panel" parent="7"]
+margin_left = 672.0
+margin_top = 704.0
+margin_right = 1868.0
+margin_bottom = 1645.0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro" type="RichTextLabel" parent="7/ColorRect5"]
+margin_left = 228.807
+margin_top = 52.6111
+margin_right = 966.807
+margin_bottom = 302.611
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Void Card [/center]"
+text = "Void Card "
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Intro2" type="RichTextLabel" parent="7/ColorRect5"]
+anchor_left = -0.00960505
+anchor_top = -0.00557079
+anchor_right = -0.00960505
+anchor_bottom = -0.00557077
+margin_left = 86.3664
+margin_top = 269.903
+margin_right = 1623.37
+margin_bottom = 1297.9
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 3 )
+custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
+text = "When this card's effect triggers the void removes a tile and has a chance to summon enemies"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect4" type="Panel" parent="7"]
-margin_left = 1397.57
-margin_top = 297.354
-margin_right = 2913.57
-margin_bottom = 1136.35
+margin_left = 1480.0
+margin_top = 252.0
+margin_right = 2647.0
+margin_bottom = 1279.0
 rect_scale = Vector2( 0.35, 0.35 )
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
@@ -1305,10 +1351,10 @@ __meta__ = {
 }
 
 [node name="Intro" type="RichTextLabel" parent="7/ColorRect4"]
-margin_left = 137.134
-margin_top = -10.3277
-margin_right = 1421.13
-margin_bottom = 288.672
+margin_left = -71.0379
+margin_top = 26.243
+margin_right = 1212.96
+margin_bottom = 325.243
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 2 )
 custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
@@ -1323,10 +1369,10 @@ __meta__ = {
 [node name="Intro2" type="RichTextLabel" parent="7/ColorRect4"]
 anchor_left = -0.00313785
 anchor_right = -0.00313784
-margin_left = 118.757
-margin_top = 173.0
-margin_right = 1975.76
-margin_bottom = 1078.0
+margin_left = 87.718
+margin_top = 248.934
+margin_right = 1538.72
+margin_bottom = 1438.93
 rect_scale = Vector2( 0.7, 0.7 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 3 )
@@ -1445,7 +1491,7 @@ __meta__ = {
 }
 
 [node name="Intro2" type="RichTextLabel" parent="8/ColorRect7"]
-anchor_left = -0.00554928
+anchor_left = -0.0055493
 anchor_top = -0.0117037
 anchor_right = -0.0055493
 anchor_bottom = -0.0117037

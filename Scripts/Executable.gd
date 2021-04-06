@@ -13,10 +13,13 @@ var vars = {}
 func Triggered(method, argv):
 	
 	if triggers.has(method):
+		
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
+			if res and method!="onPlay" and self.has_method("isCard"):
+				$AnimationPlayer.play("Triggered")
 	if not controller.test:
 		self.updateDisplay();
 func Interrupts(method, argv) -> bool:
@@ -146,6 +149,7 @@ func execute(code, argv):
 				if ex is GDScriptFunctionState:
 					ex = yield(ex,"completed")
 				return ex
+		return false
 	elif code[0] == "repeat":
 		var times = processArgs(code[1][1],argv)
 		if times is GDScriptFunctionState:
