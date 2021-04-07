@@ -105,7 +105,7 @@ func Load2():
 	var step = doPhysics(2);
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
-	acceptinput = true
+	#acceptinput = true
 	enemyController.addPlayerAndVoid()
 	emit_signal("mapGenerated")
 	
@@ -300,12 +300,14 @@ func select(tile,dist,property,terrains, message):
 	#elif selectableNodes.size()==1:
 	#	selectableNodes[0].dehighlight()
 	#	return selectableNodes[0]
+	acceptinput = true
 	$Message/Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message/Message.visible = true
 	yield(self,"nodeSelected")
 	$Message/Message.visible = false
 	for node in selectableNodes:
 		node.dehighlight()
+	acceptinput = false
 	return selectedNode
 func selectRandom(tile,dist,property,terrains):
 	getTiles(tile,dist,property,terrains)
@@ -404,4 +406,4 @@ func loadFromSave(save:Dictionary, parent):
 	voidNode = nodes[int(save.voidNode)]
 	
 	triangulate()
-	acceptinput = true
+	#acceptinput = true

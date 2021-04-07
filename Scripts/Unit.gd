@@ -272,11 +272,11 @@ func die(attacker):
 	if self == controller.theVoid:
 			controller.Win()
 	if difficulty > 10:
-		get_parent().cardController.Action("create",["Rare Loot","Discard"])
+		get_parent().cardController.Action("create",["Rare Loot","Hand"])
 	elif difficulty > 5:
-		get_parent().cardController.Action("create",["Uncommon Loot","Discard"])
-	elif self.difficulty > 1:
-		get_parent().cardController.Action("create",["Common Loot","Discard"])
+		get_parent().cardController.Action("create",["Uncommon Loot","Hand"])
+	elif not status.has("lootless") and not status.has("friendly"):
+		get_parent().cardController.Action("create",["Common Loot","Hand"])
 	if status.has("supplying") and attacker != null:
 		controller.gainStrength(attacker,self.strength)
 	if status.has("nourishing") and attacker != null:

@@ -98,16 +98,15 @@ rarity(0)
 title("Endure")
 types(starter, reaction)
 trigger(onReaction, do(heal(2)));
-trigger(onReaction, do(purge,(self),false));
 trigger(onReaction,do(move(Reaction,Reaction,self)));
 cost(-);
-text("Heal 2, shuffle this back into your reaction pile");
+text("On Reaction: Heal 2, shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);
 rarity(0)
+#art-heart
 
 title("Scratch")
 types(starter, reaction)
-trigger(onReaction, do(purge,(self),false));
 trigger(onReaction,do(move(Reaction,Reaction,self)));
 text("On reaction shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);

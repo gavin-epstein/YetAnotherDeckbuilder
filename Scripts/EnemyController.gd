@@ -230,6 +230,7 @@ func countNames(loc, name) -> int:
 		if unit.hasName(name):
 			count+=1
 	return count
+
 func select(targets,distance,tile):
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
@@ -381,7 +382,7 @@ func loadFromSave(save:Dictionary, parent):
 		unit.onSummon(unit,true)
 	self.windDirection = Vector2(save.windDirection[0], save.windDirection[1])
 	self.maxdifficulty = save.maxdifficulty
-	Player = $UnitLibrary.getUnitByName("Player")
+	Player = $UnitLibrary.getUnitByName("Mora")
 	Player.loadFromSave(save.player)
 	Player.scale = unitscale
 	add_child(Player)

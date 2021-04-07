@@ -237,6 +237,7 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):
+			print("click on " + self.title)
 			get_parent().cardClicked(self)
 	if event.is_action_pressed("right_click"):
 		controller.get_node("CardDisplay").display(self)

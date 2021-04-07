@@ -38,6 +38,7 @@ trigger(onPlay,do(createByMod,(("Dodge"), Reaction)));
 trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));
 text("Add a random dodge to your reaction pile, discard a random card")
 removetrigger(endofturn,true,2);
+image("res://Images/CardArt/ObscuringMist.png");
 
 title("Storm");
 types(cloud,attack)
