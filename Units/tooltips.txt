@@ -14,3 +14,4 @@ block:Block:Block is removed before health when recieving damage. Excess block i
 frost:Frost:Lose strength equal to frost
 stunned:Stunned:Unit skips its turn
 trap:Terrain:Does not block movement, triggers its effect if a unit ends its turn here
+lootless:Emptyhanded:Does not drop loot on death

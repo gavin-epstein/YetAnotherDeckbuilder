@@ -49,14 +49,17 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
 	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Ignite"))
+	#Deck.add_card(Library.getCardByName("Preignite"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
 		yield(step,"completed")
 	
-	
-	
+func _process(delta: float) -> void:
+	if inputAllowed:
+		$Discard.modulate = Color(1,1,1)	
+	else:
+		$Discard.modulate = Color(0,0,0)
 
 
 	
@@ -107,7 +110,7 @@ func play(card)->bool:
 	if cost is int:
 		Energy -= cost
 	lastPlayed = card
-	forceFocus(self)
+	#forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
 	self.move("Hand","Play", card)
@@ -116,7 +119,7 @@ func play(card)->bool:
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
 	updateDisplay()
-	releaseFocus(self)
+	#releaseFocus(self)
 	inputAllowed = true
 	return true
 	
@@ -187,7 +190,9 @@ func updateDisplay():
 	$Reaction.updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
-	
+		for unit in enemyController.units:
+			if unit !=null:
+				unit.updateDisplay()
 func cardreward(rarity, count):
 	Choice.generateReward(rarity, count)
 	return true
@@ -235,7 +240,7 @@ func forceFocus(item):
 	printFocus()
 	return true
 func printFocus():
-	return
+	#return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -293,7 +298,8 @@ func startofturn():
 
 
 func _on_EndTurnButton_input_event(event: InputEvent) -> void:
-	if event.is_action_pressed("left_click") and takeFocus(self):
+	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
+		inputAllowed = false
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -301,16 +307,16 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		#Enemies go here
 		takeFocus(self)
-		inputAllowed = false
+		
 		res = enemyController.enemyTurn()
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
-		inputAllowed = true
+		
 		releaseFocus(self)
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
-		
+		inputAllowed = true
 func select(loc, predicate,message,num = 1,random=false):
 	
 	loc = get_node(loc)
@@ -369,7 +375,7 @@ func select(loc, predicate,message,num = 1,random=false):
 			return prototype
 	#finally, let the player click
 	#inputAllowed = false
-	forceFocus(null)
+	#forceFocus(null)
 	if loc is CardPile:
 		loc.display()
 		$Message.rect_position= Vector2(376,560)
@@ -380,7 +386,7 @@ func select(loc, predicate,message,num = 1,random=false):
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
-	releaseFocus(selectedCard)
+	#releaseFocus(selectedCard)
 	$Message.visible = false
 	if loc is CardPile:
 		$CardPileDisplay.undisplay()

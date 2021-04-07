@@ -7,6 +7,7 @@ speed(0)
 range(0)
 health(200)
 status(immovable, true)
+status(lootless, true)
 
 name("Rock")
 difficulty(0)
@@ -17,6 +18,7 @@ speed(0)
 range(0)
 health(100)
 status(immovable, true)
+status(lootless, true)
 
 name("Tree Stump")
 difficulty(0)
@@ -27,6 +29,7 @@ range(0)
 health(40)
 status(immovable,true)
 status("vulnerable:fire",true)
+status(lootless, true)
 
 name("Tumbleweed")
 difficulty(0)
@@ -37,7 +40,7 @@ range(1)
 health(10)
 strength(5)
 damagetypes(stab)
-trigger(turn,do(MoveAndAttack(self,windDirection)))
+trigger(turn,do(MoveAndAttack(self,friendly)))
 trigger(onAttack,do(takeDamage(strength,null)))
 status(thorns,5)
 status("vulnerable:fire",true)
@@ -85,6 +88,7 @@ status(lifelink,true)
 strength(4)
 image("res://Images/UnitArt/MossCrab.png")
 
+
 name("Boom Bloom")
 difficulty(1)
 lore(Native to the sulfur rich slopes of the Pelathic Mountains, these flowers produce a gunpowder-like substance in their petals)
@@ -95,6 +99,7 @@ speed(0)
 range(0)
 health(5)
 image("res://Images/UnitArt/boombloom.png")
+status(lootless, true)
 
 name("Anomalocaris")
 difficulty(7)
@@ -117,13 +122,18 @@ spawnable(any)
 health(25)
 image("res://Images/UnitArt/SmallWizard.png")
 speed(2)
-range(0)
+range(40)
+strength(1)
 $power=0
 $lastTile=tile
+$Intent=boom
 trigger(turn,do(setVar(self,lastTile,tile)))
 trigger(turn,do(move(self,(select((1,(any),empty),speed, tile)))))
-trigger(turn,do(Summon($lastTile,"Boom Bloom")))
-trigger(turn,do(addStatus($lastTile,explosive,$power)))
+trigger(turn,if(($Intent=boom),( do(Summon($lastTile,"Boom Bloom"))  )))
+trigger(turn,if(($Intent=boom),( do(addStatus($lastTile,explosive,$power))   )))
+trigger(turn,if(($Intent=buff),( do(gainStrength((select((all,(any),"-friendly"),1,tile)))))))
+trigger(turn,if(($Intent=attack),( do(Attack(self,Player)))))
+trigger(turn,do(setVar(self,Intent,(random(boom,buff,attack)))))
 trigger(turn,do(addVar(self,power,1)))
 
 name("Barn Swallow")
@@ -212,6 +222,7 @@ trigger(turn,if( ($Intent=armor),  (do(addArmor ( ( select( (all,(any),-friendly
 trigger(turn,do(setVar(self,Intent,(random(thorns,armor)))))
 trigger(onDeath,if( ( argv[0]=expire  ), (do (Summon(tile,"Scythe Larva")))));
 image("res://Images/UnitArt/ScytheEgg.png");
+status(lootless, true)
 
 name("Scythe Larva");
 difficulty(12);
@@ -227,7 +238,7 @@ trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
 trigger(turn,if( ($Intent=Multiattack),  (do(MoveAndAttack(self,friendly))) ));
 trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
 trigger(turn,if( ($Intent=Sting),  (do(MoveAndAttack(self,friendly))) ));
-trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), sting, 5 ))) ));
+trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), sting, 3 ))) ));
 trigger(turn,if( ($Intent=Defend), (do(addBlock(self,8)))));
 trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
 image("res://Images/UnitArt/ScytheLarva.png");

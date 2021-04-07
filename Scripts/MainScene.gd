@@ -33,6 +33,7 @@ func loadAll():
 		step = yield(step,"completed")
 	print("done")
 	$LoadingBar.queue_free()
+	cardController.updateDisplay()
 	loaded= true
 func save():
 	var save = {
@@ -68,6 +69,7 @@ func loadFromSave():
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
 			$LoadingBar.queue_free()
+			cardController.updateDisplay()
 			loaded= true
 		else:
 			printerr("Corrupted data!")

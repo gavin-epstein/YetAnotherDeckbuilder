@@ -567,7 +567,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 76
+frame = 33
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -608,7 +608,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 77
+frame = 34
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -649,7 +649,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 76
+frame = 33
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -713,7 +713,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 82
+frame = 13
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -745,7 +745,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 40
+frame = 123
 playing = true
 script = ExtResource( 264 )
 
@@ -852,12 +852,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Blockinput" type="ColorRect" parent="CardController/CardPileDisplay/Panel"]
+margin_left = 255.0
+margin_top = 832.0
+margin_right = 1588.0
+margin_bottom = 1094.0
+color = Color( 1, 1, 1, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Resume" type="Panel" parent="CardController/CardPileDisplay/Panel"]
 margin_left = 834.359
 margin_top = 891.698
 margin_right = 1213.36
 margin_bottom = 978.698
-mouse_filter = 2
 custom_styles/panel = SubResource( 8 )
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="CardController/CardPileDisplay/Panel/Resume"]

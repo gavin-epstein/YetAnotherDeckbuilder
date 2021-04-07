@@ -84,7 +84,7 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 					res2 = yield(res2,"completed")
 				if unit in enemyController.units:
 					ind+=1
-	if self.has_method("updateDisplay"):
+	if self.has_method("updateDisplay") and not test:
 		self.call("updateDisplay")
 	return res
 
@@ -99,6 +99,7 @@ func endTest():
 	return enemyController.hits + cardController.hits
 	
 func setVar(card, varname, amount):
+	#print("set " + varname + " to " + str(amount) + " on " + card.title)
 	if card == null:
 		return false
 	card.vars["$" + varname] = amount
