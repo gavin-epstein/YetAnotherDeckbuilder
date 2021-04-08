@@ -54,12 +54,12 @@ func Load(parent)-> void:
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
 		yield(step,"completed")
-	
-func _process(delta: float) -> void:
-	if inputAllowed:
-		$Discard.modulate = Color(1,1,1)	
-	else:
-		$Discard.modulate = Color(0,0,0)
+
+#func _process(delta: float) -> void:
+#	if inputAllowed:
+#		$Discard.modulate = Color(1,1,1)	
+#	else:
+#		$Discard.modulate = Color(0,0,0)
 
 
 	
@@ -454,7 +454,7 @@ func selectTiles(targets, distance, tile):
 	return enemies
 	
 func damage(amount, types, targets,distance, tile =null):
-	amount+=enemyController.Player.getStrength()
+	amount=enemyController.Player.getStrength(amount)
 	if tile == null:
 		tile = "Player"
 	var property

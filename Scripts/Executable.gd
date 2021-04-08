@@ -304,6 +304,38 @@ func execute(code, argv):
 		if choice is GDScriptFunctionState:
 			choice = yield(choice,"completed")
 		return choice
+	elif code[0] == "hasStatus" or code[0] == "hasProperty":
+		var arg1 = processArgs(code[1][0], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[1][1], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		if arg1 != null and arg1.has_method("hasProperty"):
+			return arg1.hasProperty(arg2)
+		else:
+			return false
+	elif code[0] == "getDamage":
+		var args  = []
+		for arg in code[1]:
+			arg = processArgs(arg, argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg,"completed")
+			args.append(arg)
+		if args.size() == 0 and self.has_method("getStrength"):
+			return self.call("getStrength")
+		elif args.size() == 1:
+			if self.has_method("getStrength"):
+				return self.call("getStrength",args[0])
+			else:
+				if controller.enemyController.Player == null:
+					return 0
+				return controller.enemyController.Player.getStrength(args[0])
+		elif args.size() == 2 and args[0].has_method("getStrength"):
+			return args[0].getStrength(args[1])
+		else:
+			return 0
 	else:
 		var ret = []
 		for arg in code:

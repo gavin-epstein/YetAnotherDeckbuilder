@@ -135,9 +135,15 @@ func Summon(tile, unitname):
 		tiles = [tile]
 	else:
 		tiles= tile
-	var unit = $UnitLibrary.getUnitByName(unitname)
+	
 	for tile in tiles:
-		addUnit(unit, tile)
+		var empty = true
+		for other in units:
+			if other.tile== tile:
+				empty = false
+		if empty:
+			var unit = $UnitLibrary.getUnitByName(unitname)		
+			addUnit(unit, tile)
 func Attack(attacker, target):
 	attacker = attacker.head
 	if target  == null:
