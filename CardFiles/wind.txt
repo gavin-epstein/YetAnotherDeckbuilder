@@ -27,7 +27,7 @@ $Draw=1
 removetrigger(endofturn,true,2);
 trigger(onPlay, do(movePlayer,($Move),false))
 trigger(onPlay, do(draw,($Draw),false))
-text("Move $Move, draw $Draw")
+text("Move $Move , draw $Draw")
 image("res://Images/CardArt/Quickstep.png")
 
 title("Windmill");
@@ -43,7 +43,7 @@ title("Wind Blast");
 types(wind,attack);
 $Damage=2
 $Range=40
-text("Deal damage equal to $Damage times the number of cards in your hand, any range");
+text("Deal damage equal to (+,$Damage,0) times the number of cards in your hand, any range");
 trigger(onPlay, do(damage((* ,$Damage,(countModifier(Hand,any))),(wind),(any),$Range)))
 removetrigger(endofturn,true,1);
 image("res://Images/CardArt/WindBlast.png")

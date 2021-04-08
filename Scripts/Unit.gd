@@ -450,8 +450,8 @@ func deepcopy(other):
 	return other	
 func hasName(string)->bool:
 	return self.title.find(string)!=-1
-func getStrength():
-	var ret = self.strength
+func getStrength(amount = 0):
+	var ret = amount+  self.strength
 	if status.has("frost"):
 		ret -= status.frost
 	if status.has("flaming"):
