@@ -2,7 +2,7 @@ extends CanvasLayer
 const zoomspeed = 1
 const scrollspeed = 30
 const scrollerpspeed = 2
-const zoomamount = 1.05
+const zoomamount = 1.07
 var zoomfactor = 1.0
 var targetpos= Vector2(960,410)
 # Declare member variables here. Examples:

@@ -184,9 +184,13 @@ func gainStrength(unit,amount):
 	else:
 		units= unit
 	for unit in units:
-		if unit != Player:
-			unit.strength+=amount
-			unit.updateDisplay()
+		if unit.get("occupants")!=null:
+			if unit.occupants.size()>0:
+				unit = unit.occupants[0]
+			else:
+				continue		
+		unit.strength+=amount
+		unit.updateDisplay()
 	return true
 func addArmor(unit,amount):
 	var units

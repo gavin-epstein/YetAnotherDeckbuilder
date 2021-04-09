@@ -48,7 +48,7 @@ Open in center of screen
 #    or add a viewport for the map, so that they change on shift but not scroll
 
 title screen warnings for save not found, save will be erased
-
+random damage shouldnt hit friends. Aoe and targeted should
 
 #multitile entities spawning is fucked. They arent ending up on the tiles
 #multitile enities mouseover
@@ -68,7 +68,7 @@ sounds
     move
     loot opened
 
-add range, speed to unit mouseover
+#add range, speed to unit mouseover
 
 #When selecting from pile, move the message
 #When selecting from pile, fix the z-index
