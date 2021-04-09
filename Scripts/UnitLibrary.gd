@@ -3,6 +3,7 @@ var units = {}
 var icons = {}
 var intenticons={}
 var tooltips = {}
+var intenttooltips= {}
 var linkages = {}
 const unittemplate =preload("res://Unit.tscn")
 const linkagetemplate  = preload("res://Units/Linkage.tscn")
@@ -16,6 +17,7 @@ func Load() -> void:
 	loadIcons("res://Images/StatusIcons/",icons)
 	loadIcons("res://Images/IntentIcons/",intenticons)
 	loadtooltips("res://Units/tooltips.txt")
+	loadintenttooltips("res://Images/IntentIcons/intentTooltips.txt")
 	loadLinkagesFromFile("res://UnitFiles/linkages01.txt")
 func getRandomEnemy(difficulty, terrain):
 	if  difficulty  <10 and (rand_range(0,difficulty) < 1):
@@ -101,6 +103,21 @@ func loadtooltips(fname):
 		if line.find(":") != -1:
 			line = line.split(":")
 			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
+	f.close()
+func loadintenttooltips(fname):
+	var f = File.new()
+	f.open(fname, File.READ)
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return 
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return
+	while not f.eof_reached():
+		var line = f.get_line()
+		if line.find(":") != -1:
+			line = line.split(":")
+			intenttooltips[line[0]] = line[1]
 	f.close()
 		
 func getUnitByName(name):

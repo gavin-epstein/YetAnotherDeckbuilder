@@ -1,6 +1,6 @@
 extends CardLocation
 
-const bannedtypes = ["attack", "movement","starter","loot"]
+const bannedtypes = ["attack", "movement","starter","loot","void"]
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
@@ -53,15 +53,19 @@ func generateReward(rarity, count = 3):
 		for type in card.types:
 			if not type  in bannedtypes:
 				types.append(type)
-	if types == []:
-		types = ["any"]
-	for _i in range(count):
+	self.cards = []
+	while cards.size() < count:
 		var card  = get_parent().Library.getRandom(rarity, types)
-		self.add_card(card)
+		var skip = false
+		for other in cards:
+			if other.title == card.title:
+				skip=true
+		if not skip:
+			self.add_card(card)
 	self.visible = true
 	self.updateDisplay()
 
 
-func _on_Area2D_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_Area2D_input_event( event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		clear()

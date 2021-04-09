@@ -49,17 +49,18 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
 	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Slide"))
+	#Deck.add_card(Library.getCardByName("Whirlwind"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
 		yield(step,"completed")
-	
-	
-	
-func _process(delta: float) -> void:
-	inputdelay += delta
-	
+
+#func _process(delta: float) -> void:
+#	if inputAllowed:
+#		$Discard.modulate = Color(1,1,1)	
+#	else:
+#		$Discard.modulate = Color(0,0,0)
+
 
 	
 
@@ -109,7 +110,7 @@ func play(card)->bool:
 	if cost is int:
 		Energy -= cost
 	lastPlayed = card
-	forceFocus(self)
+	#forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
 	self.move("Hand","Play", card)
@@ -118,7 +119,7 @@ func play(card)->bool:
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
 	updateDisplay()
-	releaseFocus(self)
+	#releaseFocus(self)
 	inputAllowed = true
 	return true
 	
@@ -189,9 +190,10 @@ func updateDisplay():
 	$Reaction.updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
-	
+		for unit in enemyController.units:
+			if unit !=null:
+				unit.updateDisplay()
 func cardreward(rarity, count):
-	inputAllowed = false
 	Choice.generateReward(rarity, count)
 	return true
 
@@ -211,7 +213,7 @@ func takeFocus(item) -> bool:
 	
 	if focus == null:
 		focus = item
-		#printFocus()
+		printFocus()
 		return true
 		
 	elif focus == item:
@@ -226,18 +228,19 @@ func releaseFocus(item) -> bool:
 			focus= focusStack.pop_back()
 		else:
 			focus = null
-		#printFocus()
+		printFocus()
 		return true
 	return false
 func forceFocus(item):
-	#printFocus()
+	printFocus()
 	if focus == item:
 		return false
 	focusStack.push_back(focus)
 	focus = item
-	#printFocus()
+	printFocus()
 	return true
 func printFocus():
+	#return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -279,17 +282,24 @@ func voided(card, loc):
 	return false
 
 func endofturn():
+	if enemyController.Player==null:
+		enemyController.Lose(null)
+		return false
 	enemyController.maxdifficulty+=.9
 	enemyController.Player.endOfTurn()
 	return true
 
 func startofturn():
+	if enemyController.Player==null:
+		enemyController.Lose(null)
+		return false
 	enemyController.Player.startOfTurn()
 	return true
 
 
-func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
-	if event.is_action_pressed("left_click") and takeFocus(self):
+func _on_EndTurnButton_input_event(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
+		inputAllowed = false
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -297,16 +307,16 @@ func _on_EndTurnButton_input_event(viewport: Node, event: InputEvent, shape_idx:
 			yield(res,"completed")
 		#Enemies go here
 		takeFocus(self)
-		inputAllowed = false
+		
 		res = enemyController.enemyTurn()
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
-		inputAllowed = true
+		
 		releaseFocus(self)
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
-		
+		inputAllowed = true
 func select(loc, predicate,message,num = 1,random=false):
 	
 	loc = get_node(loc)
@@ -365,7 +375,7 @@ func select(loc, predicate,message,num = 1,random=false):
 			return prototype
 	#finally, let the player click
 	#inputAllowed = false
-	releaseFocus(self)
+	#forceFocus(null)
 	if loc is CardPile:
 		loc.display()
 		$Message.rect_position= Vector2(376,560)
@@ -376,7 +386,7 @@ func select(loc, predicate,message,num = 1,random=false):
 	$Message.visible = true
 	updateDisplay()
 	yield(self, "resumeExecution")
-	takeFocus(self)
+	#releaseFocus(selectedCard)
 	$Message.visible = false
 	if loc is CardPile:
 		$CardPileDisplay.undisplay()
@@ -444,13 +454,16 @@ func selectTiles(targets, distance, tile):
 	return enemies
 	
 func damage(amount, types, targets,distance, tile =null):
-	amount+=enemyController.Player.getStrength()
+	amount=enemyController.Player.getStrength(amount)
 	if tile == null:
 		tile = "Player"
 	var property
 	var terrains
 	if targets.size() < 2:
-		targets.append( ["any"])
+		if targets[0] is int:
+			targets.append(["-friendly"])
+		else:
+			targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
 
@@ -544,6 +557,8 @@ func consume():
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
 			thing.die(theVoid)
+	if enemyController.Player.tile == consumed:
+		enemyController.Player.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)
 	enemyController.pickConsumed()
 	return true

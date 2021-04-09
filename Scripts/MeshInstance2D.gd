@@ -105,7 +105,7 @@ func Load2():
 	var step = doPhysics(2);
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
-	acceptinput = true
+	#acceptinput = true
 	enemyController.addPlayerAndVoid()
 	emit_signal("mapGenerated")
 	
@@ -215,19 +215,22 @@ func getTerrainColor(terrain:int) -> Vector2:
 
 func on_MapArea_input_event( event: InputEvent) -> void:
 	if acceptinput and event.is_action_pressed("left_click"):
-		print("map click")
+		
 		if cardController.takeFocus(self):
 			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
+			print(selectableNodes.size())
 			if selectableNodes.size() > 0:
-				var closest = selectableNodes[0]
-				for node in selectableNodes:
+				var closest = nodes[0]
+				for node in nodes:
 					if Utility.sqDistToNode(pos, closest)> Utility.sqDistToNode(pos, node):
 						closest = node
-				selectedNode = closest
-				print("pre-signal")
-				cardController.releaseFocus(self)
-				emit_signal("nodeSelected")
-				print("signaled")
+			
+				if closest.highlighted:
+					selectedNode = closest
+					
+					cardController.releaseFocus(self)
+					emit_signal("nodeSelected")
+					return
 			else:
 				cardController.releaseFocus(self)
 
@@ -294,15 +297,17 @@ func select(tile,dist,property,terrains, message):
 	getTiles(tile,dist,property,terrains)
 	if selectableNodes.size()==0:
 		return null
-	elif selectableNodes.size()==1:
-		selectableNodes[0].dehighlight()
-		return selectableNodes[0]
+	#elif selectableNodes.size()==1:
+	#	selectableNodes[0].dehighlight()
+	#	return selectableNodes[0]
+	acceptinput = true
 	$Message/Message/Message.bbcode_text = "[center]"+message+"[/center]"
 	$Message/Message.visible = true
 	yield(self,"nodeSelected")
 	$Message/Message.visible = false
-	for node in selectableNodes:
+	for node in nodes:
 		node.dehighlight()
+	acceptinput = false
 	return selectedNode
 func selectRandom(tile,dist,property,terrains):
 	getTiles(tile,dist,property,terrains)
@@ -401,4 +406,4 @@ func loadFromSave(save:Dictionary, parent):
 	voidNode = nodes[int(save.voidNode)]
 	
 	triangulate()
-	acceptinput = true
+	#acceptinput = true

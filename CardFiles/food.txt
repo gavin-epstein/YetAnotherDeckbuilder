@@ -7,3 +7,12 @@ text("Summon a Carrot on a random empty grass tile. When killed the carrot grant
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
 image("res://Images/CardArt/CarrotSeeds.png")
+
+title(Fire Eater);
+cost(1);
+$Heal=2
+types(food,fire);
+trigger(voided,do(heal($Heal)));
+removeTrigger(endofturn,true,3);
+text(When you void a card, heal $Heal);
+rarity(6);

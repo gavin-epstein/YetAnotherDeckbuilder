@@ -7,6 +7,7 @@ var loaded = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	randomize()
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
 		loadFromSave()
@@ -32,6 +33,7 @@ func loadAll():
 		step = yield(step,"completed")
 	print("done")
 	$LoadingBar.queue_free()
+	cardController.updateDisplay()
 	loaded= true
 func save():
 	var save = {
@@ -67,6 +69,7 @@ func loadFromSave():
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
 			$LoadingBar.queue_free()
+			cardController.updateDisplay()
 			loaded= true
 		else:
 			printerr("Corrupted data!")

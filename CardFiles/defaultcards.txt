@@ -66,7 +66,7 @@ cost(1)
 types(starter,attack)
 $Damage=5
 $Range=2
-text(Deal $Damage crush damage, range of $Range)
+text("Deal (getDamage($Damage)) crush damage, range of $Range")
 trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)))
 removetrigger(endofturn,true,1)
 image("res://Images/CardArt/Smack.png")
@@ -76,7 +76,7 @@ title("Crossbow")
 cost(1)
 types(starter,attack)
 $Damage=5
-text(Deal $Damage stab damage, at any range)
+text("Deal $Damage stab damage, at any range")
 trigger(onPlay, do(damage, ($Damage,(stab),(any),40)))
 removetrigger(endofturn,true,2)
 rarity(0)
@@ -88,7 +88,7 @@ $Damage=4
 $Move=1
 $Range=1
 types(starter,attack)
-text("Move $Move, then deal $Damage stab damage at range of $Range")
+text("Move $Move, then deal (getDamage($Damage)) stab damage at range of $Range")
 trigger(onPlay, do(movePlayer($Move)))
 trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range)))
 removetrigger(endofturn,true,1)
@@ -98,18 +98,18 @@ rarity(0)
 title("Endure")
 types(starter, reaction)
 trigger(onReaction, do(heal(2)));
-trigger(onReaction, do(purge,(self),false));
 trigger(onReaction,do(move(Reaction,Reaction,self)));
 cost(-);
-text("Heal 2, shuffle this back into your reaction pile");
+text("On Reaction: Heal 2, shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);
 rarity(0)
+#art-heart
 
 title("Scratch")
 types(starter, reaction)
-trigger(onReaction, do(purge,(self),false));
 trigger(onReaction,do(move(Reaction,Reaction,self)));
 text("On reaction shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);
 cost(-);
 rarity(0)
+image("res://Images/CardArt/Scratch.png")

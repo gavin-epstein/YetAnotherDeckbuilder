@@ -10,7 +10,7 @@ image("res://Images/CardArt/DarkRecipe.png");
 cost(2);
 
 title(Ritual Components);
-types(ritual, wind);
+types(ritual);
 image("res://Images/CardArt/RitualComponent.png");
 rarity(1);
 cost(0);
@@ -95,7 +95,7 @@ image("res://Images/CardArt/SummoningRitual.png")
 title("Secrecy")
 types(ritual)
 text("At the end of your turn gain block equal to the number of ritual cards in play");
-trigger(endfofturn,block( (count(Play,ritual))))
+trigger(endofturn,block( (count(Play,ritual))))
 removetrigger(endofturn,true,5);
 cost(2);
 rarity(7);

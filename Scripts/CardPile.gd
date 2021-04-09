@@ -7,8 +7,10 @@ const ysep = 220
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(hotkey):
-		display()
-
+		if not ondisplay:
+			display()
+		else:
+			get_node("../CardPileDisplay").undisplay()
 
 func updateDisplay():
 	if not ondisplay:

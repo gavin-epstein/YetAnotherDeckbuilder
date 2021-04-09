@@ -1,0 +1,8 @@
+addArmor: give armor to itself and/or nearby allies
+addBlock: give block to itself and/or nearby allies
+Attack: attack
+Buff: apply a positive effect to itself and/or nearby allies
+Debuff: apply a negative effect to its enemies
+Move: move
+Summon: summon another unit
+MakeCard: Create a card

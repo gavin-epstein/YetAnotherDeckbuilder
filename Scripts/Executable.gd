@@ -13,12 +13,17 @@ var vars = {}
 func Triggered(method, argv):
 	
 	if triggers.has(method):
+		var oldallowed = controller.cardController.inputAllowed
+		controller.cardController.inputAllowed=false
 		for code in triggers[method]:
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
-	if not controller.test:
-		self.updateDisplay();
+			if res and method!="onPlay" and self.has_method("isCard"):
+				$AnimationPlayer.play("Triggered")
+		controller.cardController.inputAllowed = oldallowed
+		if not controller.test:
+			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
 	if interrupts.has(method):
 		var reslist = []
@@ -76,7 +81,7 @@ func execute(code, argv):
 		var arg2 = processArgs(code[1][1], argv)
 		if arg2 is GDScriptFunctionState:
 			arg2 = yield(arg2, "completed")
-		var result = controller.countModifiers(code[1][0],code[1][1])
+		var result = controller.countModifiers(arg1,arg2)
 		return result
 	elif code[0] =="if":
 		var condition
@@ -146,6 +151,7 @@ func execute(code, argv):
 				if ex is GDScriptFunctionState:
 					ex = yield(ex,"completed")
 				return ex
+		return false
 	elif code[0] == "repeat":
 		var times = processArgs(code[1][1],argv)
 		if times is GDScriptFunctionState:
@@ -298,6 +304,38 @@ func execute(code, argv):
 		if choice is GDScriptFunctionState:
 			choice = yield(choice,"completed")
 		return choice
+	elif code[0] == "hasStatus" or code[0] == "hasProperty":
+		var arg1 = processArgs(code[1][0], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[1][1], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		if arg1 != null and arg1.has_method("hasProperty"):
+			return arg1.hasProperty(arg2)
+		else:
+			return false
+	elif code[0] == "getDamage":
+		var args  = []
+		for arg in code[1]:
+			arg = processArgs(arg, argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg,"completed")
+			args.append(arg)
+		if args.size() == 0 and self.has_method("getStrength"):
+			return self.call("getStrength")
+		elif args.size() == 1:
+			if self.has_method("getStrength"):
+				return self.call("getStrength",args[0])
+			else:
+				if controller.enemyController.Player == null:
+					return 0
+				return controller.enemyController.Player.getStrength(args[0])
+		elif args.size() == 2 and args[0].has_method("getStrength"):
+			return args[0].getStrength(args[1])
+		else:
+			return 0
 	else:
 		var ret = []
 		for arg in code:
