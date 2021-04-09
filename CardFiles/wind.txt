@@ -11,8 +11,8 @@ title(Whirlwind);
 $Draw=5
 text("Discard your hand, draw $Draw cards");
 cost(1);
-trigger(onPlay, do(discardAll,(),true));
-trigger(onPlay, do(draw, ($Draw), true));
+trigger(onPlay, do(discardAll(false)));
+trigger(onPlay, do(draw($Draw)));
 types(wind, cloud);
 rarity(4);
 removetrigger(endofturn,true,1);
@@ -27,7 +27,7 @@ $Draw=1
 removetrigger(endofturn,true,2);
 trigger(onPlay, do(movePlayer,($Move),false))
 trigger(onPlay, do(draw,($Draw),false))
-text("Move $Move, draw $Draw")
+text("Move $Move , draw $Draw")
 image("res://Images/CardArt/Quickstep.png")
 
 title("Windmill");
@@ -38,3 +38,14 @@ trigger(startofturn,do(draw($Draw)));
 removetrigger(endofturn,true,7);
 cost(2);
 rarity(3);
+
+title("Wind Blast");
+types(wind,attack);
+$Damage=2
+$Range=40
+text("Deal damage equal to (+,$Damage,0) times the number of cards in your hand, any range");
+trigger(onPlay, do(damage((* ,$Damage,(countModifier(Hand,any))),(wind),(any),$Range)))
+removetrigger(endofturn,true,1);
+image("res://Images/CardArt/WindBlast.png")
+cost(1);
+rarity(5);

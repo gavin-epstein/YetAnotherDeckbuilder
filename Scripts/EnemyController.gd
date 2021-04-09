@@ -38,7 +38,7 @@ func addPlayerAndVoid():
 	var node = map.voidNode
 	theVoid = unit
 	addUnit(unit,node)
-	unit = $UnitLibrary.getUnitByName("Player")
+	unit = $UnitLibrary.getUnitByName("Mora")
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
@@ -114,11 +114,11 @@ func enemyTurn():
 		if unit == null:
 			units.erase(unit)
 		elif unit.health <0:
-			unit.die()
+			unit.die(null)
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		if unit != null and unit.status.get("new")==null:
+		if unit != null and not unit.skipturn:
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
@@ -135,9 +135,15 @@ func Summon(tile, unitname):
 		tiles = [tile]
 	else:
 		tiles= tile
-	var unit = $UnitLibrary.getUnitByName(unitname)
+	
 	for tile in tiles:
-		addUnit(unit, tile)
+		var empty = true
+		for other in units:
+			if other.tile== tile:
+				empty = false
+		if empty:
+			var unit = $UnitLibrary.getUnitByName(unitname)		
+			addUnit(unit, tile)
 func Attack(attacker, target):
 	attacker = attacker.head
 	if target  == null:
@@ -178,9 +184,13 @@ func gainStrength(unit,amount):
 	else:
 		units= unit
 	for unit in units:
-		if unit != Player:
-			unit.strength+=amount
-			unit.updateDisplay()
+		if unit.get("occupants")!=null:
+			if unit.occupants.size()>0:
+				unit = unit.occupants[0]
+			else:
+				continue		
+		unit.strength+=amount
+		unit.updateDisplay()
 	return true
 func addArmor(unit,amount):
 	var units
@@ -197,6 +207,8 @@ func addArmor(unit,amount):
 			unit.armor+=amount
 			unit.updateDisplay()
 func addBlock(unit,amount):
+	if unit ==null:
+		return false
 	var units
 	if not unit is Array:
 		units = [unit]
@@ -209,6 +221,8 @@ func addBlock(unit,amount):
 		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()
 func heal(unit, amount):
+	if unit ==null:
+		return false
 	var units
 	if not unit is Array:
 		units = [unit]
@@ -226,6 +240,7 @@ func countNames(loc, name) -> int:
 		if unit.hasName(name):
 			count+=1
 	return count
+
 func select(targets,distance,tile):
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
@@ -324,12 +339,13 @@ func clearAllStatuses(tiles = "Player"):
 				unit.setStatus(stat, 0)
 	
 func Lose(enemy):
-
+	yield(get_tree().create_timer(.5),"timeout")
 	if enemy !=null:
 		var image = enemy.get_node("Image").texture
 		get_node("/root/global").lossImage = image
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
+	yield(get_tree().create_timer(1),"timeout")
 	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():
@@ -376,7 +392,7 @@ func loadFromSave(save:Dictionary, parent):
 		unit.onSummon(unit,true)
 	self.windDirection = Vector2(save.windDirection[0], save.windDirection[1])
 	self.maxdifficulty = save.maxdifficulty
-	Player = $UnitLibrary.getUnitByName("Player")
+	Player = $UnitLibrary.getUnitByName("Mora")
 	Player.loadFromSave(save.player)
 	Player.scale = unitscale
 	add_child(Player)

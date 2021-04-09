@@ -12,7 +12,7 @@
 [ext_resource path="res://Images/StatusIcons/immovable.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/Audio.gd" type="Script" id=11]
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=1]
 animations = [ {
 "frames": [  ],
 "loop": true,
@@ -20,14 +20,14 @@ animations = [ {
 "speed": 20.0
 } ]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0.411765 )
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "Fade"
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
@@ -62,7 +62,7 @@ __meta__ = {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -249.721 )
-frames = SubResource( 2 )
+frames = SubResource( 1 )
 
 [node name="Image" type="Sprite" parent="."]
 position = Vector2( 0, -249.721 )
@@ -82,7 +82,9 @@ texture = ExtResource( 5 )
 
 [node name="HoverText" type="Node2D" parent="."]
 modulate = Color( 1, 1, 1, 0 )
-position = Vector2( 0, -332 )
+position = Vector2( -120, -213 )
+scale = Vector2( 1.2, 1.2 )
+z_index = 3
 script = ExtResource( 7 )
 
 [node name="Background" type="Panel" parent="HoverText"]
@@ -91,14 +93,14 @@ margin_top = -602.0
 margin_right = 1524.0
 margin_bottom = 432.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Fader" type="AnimationPlayer" parent="HoverText"]
 playback_speed = 10.0
-anims/Fade = SubResource( 4 )
+anims/Fade = SubResource( 3 )
 
 [node name="TextContainer" type="Node2D" parent="HoverText"]
 position = Vector2( 428.182, -567.407 )

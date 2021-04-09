@@ -77,7 +77,7 @@ title(Knife Drawer);
 cost("2")
 types(knife, wind);
 $Draw=1
-trigger(play, if((hasmodifier(argv[0],kitchenknife)),(do(draw($Draw)))));
+trigger(play, if((hasModifier(argv[0],kitchenknife)),(do(draw($Draw)))));
 text("When you play a kitchen knife draw $Draw");
 removetrigger(endofturn,true,5)
 rarity(2)
@@ -86,7 +86,8 @@ title(Knife Sharpener);
 cost("2");
 types(knife);
 $Increment=3;
-trigger(onCreate,if((hasmodifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
+text("While this in play all kitchen knives you create gain $Increment damage")
+trigger(onCreate,if((hasModifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
 removetrigger(endofturn,true,5);
 rarity(2);
 

@@ -29,16 +29,18 @@ var components=[]
 var componentnames=[]
 var links=[]
 var linkagenames = []
+var intents=[]
+var skipturn
 var movementPolicy="Spring"
 signal animateHealthChange
-const buffintents = ["addArmor","addBlock", "gainMaxHealth","gainStrength","addStatus","setStatus"]
+const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
 
 func onSummon(head, silent= false)->void:
 	self.head = head
 	if head == self:
 		addHealthBar()
 		maxHealth  = health
-		if status.has("lifelink"):
+		if status.has("lifelink") and not silent:
 			var sumMaxHealth = self.maxHealth
 			var sumHealth = self.health
 			for unit in get_parent().units:
@@ -59,6 +61,7 @@ func onSummon(head, silent= false)->void:
 					unit.health = sumHealth
 					unit.updateDisplay()
 	else:
+		intents = []
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	if self.image!=null:
 		_imagescale = 1000.0/max(image.get_width(), image.get_height())
@@ -69,7 +72,7 @@ func onSummon(head, silent= false)->void:
 		playAnimation("idle")
 	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
-		self.addStatus("New",1)
+		self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
@@ -102,6 +105,10 @@ func hasProperty(prop:String):
 		prop = prop.substr(1)
 	if prop == 'any' or prop == "exists":
 		ret =true
+	elif prop == "friendly-player":
+		if status.has("friendly") and self!=controller.Player:
+			return true
+		return false
 	elif prop == self.title:
 		ret = true
 	elif status.has(prop):
@@ -204,6 +211,10 @@ func startOfTurn():
 		changeHealth( -1*status.get("bleed"))
 		if self.health <=0:
 			die(null)
+	if status.has("stunned"):
+		skipturn = true
+	else:
+		skipturn = false
 	statusTickDown()
 	self.Triggered("startofturn",[]);
 func endOfTurn():
@@ -242,29 +253,34 @@ func updateDisplay():
 		healthBar.get_node("Armor").visible = true
 	else:
 		healthBar.get_node("Armor").visible = false
-	if  getStrength() > 0:
+	if  getStrength() != 0:
 		healthBar.get_node("Attack").visible = true
 	else:
 		healthBar.get_node("Attack").visible = false
 	healthBar.get_node("Statuses").updateDisplay(status, get_parent().get_node("UnitLibrary").icons)
 	if tile.neighs.size()==0 or controller.Player == null or self.health <= 0:
+		intents=[]
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	else:
-		$Intent.updateDisplay(getIntents(), get_parent().get_node("UnitLibrary").intenticons)
+		intents=getIntents()
+		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker):
+	print(self.title + " dying")
 	if head !=self:
 		head.die(attacker)
 	if self == controller.Player:
+			print("Intended loss")
 			controller.Lose(attacker)
+			return
 	if self == controller.theVoid:
 			controller.Win()
 	if difficulty > 10:
-		get_parent().cardController.Action("create",["Rare Loot","Discard"])
+		get_parent().cardController.Action("create",["Rare Loot","Hand"])
 	elif difficulty > 5:
-		get_parent().cardController.Action("create",["Uncommon Loot","Discard"])
-	elif self.difficulty > 1:
-		get_parent().cardController.Action("create",["Common Loot","Discard"])
+		get_parent().cardController.Action("create",["Uncommon Loot","Hand"])
+	elif not status.has("lootless") and not status.has("friendly"):
+		get_parent().cardController.Action("create",["Common Loot","Hand"])
 	if status.has("supplying") and attacker != null:
 		controller.gainStrength(attacker,self.strength)
 	if status.has("nourishing") and attacker != null:
@@ -396,14 +412,20 @@ func getIntents():
 	var intents = []
 	for hit in hits:
 		if hit in buffintents:
-			intents.append("Buff")
-		elif hit == "Attack" or hit == "Summon" or hit == "Move":
+			if hit.split(":").size()>1 :
+				if self.hasProperty(hit.split(":")[1]):
+					intents.append("Buff")
+				else:
+					intents.append("Debuff")
+			else:
+				intents.append("Buff")
+		elif hit in ["Attack", "Summon", "Move","addArmor","addBlock"]:
 			intents.append(hit)
 		elif hit == "move":
 			intents.append("Move")
-		elif hit == "MoveAndAttack":
-			intents.append("Move")
-			intents.append("Attack")
+		elif hit in ["create","createByModifier"]:
+			intents.append("MakeCard")
+			
 	vars = oldvars
 	return intents
 	
@@ -432,8 +454,8 @@ func deepcopy(other):
 	return other	
 func hasName(string)->bool:
 	return self.title.find(string)!=-1
-func getStrength():
-	var ret = self.strength
+func getStrength(amount = 0):
+	var ret = amount+  self.strength
 	if status.has("frost"):
 		ret -= status.frost
 	if status.has("flaming"):

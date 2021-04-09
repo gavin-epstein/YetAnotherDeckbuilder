@@ -92,10 +92,6 @@ func updateDisplay():
 	
 func getRandom(maxRarity:int = 100, types = []):
 	#print("types " +str(types) )
-	types.erase("attack")
-	types.erase("movement")
-	types.erase("starter")
-	types.erase("void")
 	if types.size() ==0:
 		types = ["any"]
 	else:

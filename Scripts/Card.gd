@@ -101,6 +101,7 @@ func loadCardFromString(string):
 			self.vars["$BaseCost"] = cost
 		elif parsed[0] =="text":
 			self.text =  Utility.join(" ",parsed[1]).replace("\\n","\n")
+			self.text = self.text.replace(" $Damage "," (getDamage($Damage)) ")
 		elif parsed[0] == "image":
 			self.image = load(parsed[1][0])
 		elif parsed[0] == "title":
@@ -119,10 +120,8 @@ func updateDisplay():
 	var titlescale = min(.5,6.0/title.length())
 	titlebox.rect_scale = Vector2(titlescale,titlescale)
 	titlebox.rect_size = Vector2(583.0/titlescale,211)
-	var displaytext = text
-	for key in vars:
-		if vars[key] is String or vars[key] is int:
-			displaytext = displaytext.replace(key, vars[key])
+	var displaytext = processText(text)
+	
 	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(vars["$removecount"]) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
@@ -157,9 +156,9 @@ func deepcopy(other)-> Card:
 	other.image = self.image
 	other.controller = self.controller
 	if other.modifiers.has("void"):
-		other.get_node("Resizer/FrameSprite").modulate = Color(.5,0,.5)
+		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,.7)
 	elif other.modifiers.has("unique"):
-		other.get_node("Resizer/FrameSprite").modulate = Color(.5,.5,1)
+		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,1)
 	other.updateDisplay()
 	return other
 		
@@ -237,8 +236,27 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):
+			print("click on " + self.title)
 			get_parent().cardClicked(self)
 	if event.is_action_pressed("right_click"):
 		controller.get_node("CardDisplay").display(self)
 		mouseon=false
-	
+func processText(text):
+	var out =""
+	var tokens = Utility.parseCardCode(text)
+	#print(Utility.join("--",tokens))
+	for token in tokens:
+		
+		if token is Array:
+			var res = processArgs(token,[])
+			if res is GDScriptFunctionState:
+				print("There should be no player input on card text")
+				yield(res,"completed")
+			out+=str(res)+" "
+		elif token is String and token[0] =="$":
+			var v = token.rstrip(".,")
+			if v in vars:
+				out += str(vars[v]) + " "
+		else:
+			out += str(token) + " "
+	return out
