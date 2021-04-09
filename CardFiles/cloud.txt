@@ -99,7 +99,7 @@ $Move=0
 $Increment=1
 trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Hot Air Balloon)")),Hand),false));
 trigger(onPlay,do(addVar (self, Move,1)));
-trigger(onPlay, do(movePlayer,($Move)));
+trigger(onDiscard, do(movePlayer,($Move)));
 text("When played: void a card from your hand and increase this cards movement by $Increment \n When discarded: move $Move")
 removetrigger(endofturn, true,1);
 rarity(3);
