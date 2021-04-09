@@ -254,7 +254,9 @@ func processText(text):
 				yield(res,"completed")
 			out+=str(res)+" "
 		elif token is String and token[0] =="$":
-			out += str(vars[token.rstrip(".,")])
+			var v = token.rstrip(".,")
+			if v in vars:
+				out += str(vars[v]) + " "
 		else:
 			out += str(token) + " "
 	return out

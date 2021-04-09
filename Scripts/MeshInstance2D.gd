@@ -305,7 +305,7 @@ func select(tile,dist,property,terrains, message):
 	$Message/Message.visible = true
 	yield(self,"nodeSelected")
 	$Message/Message.visible = false
-	for node in selectableNodes:
+	for node in nodes:
 		node.dehighlight()
 	acceptinput = false
 	return selectedNode
