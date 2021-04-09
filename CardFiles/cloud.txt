@@ -29,6 +29,7 @@ trigger(startofturn, do(create,("Wind Power",Hand),false));
 removetrigger(endofturn,true,6);
 text("At the start of your turn, add a Wind Power to your hand");
 rarity(2);
+image("res://Images/CardArt/FloatingTurbine.png");
 
 title(Obscuring Mist);
 cost(0);
@@ -50,7 +51,7 @@ trigger(onDiscard,do(setVar(self,Cost,0)))
 trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
 trigger(onDiscard,do(play(self)));
 trigger(onPlay, do(damage, ($Damage,(none),(all),1),false));
-text("Deal $Damage damage to all adjacent enemies. If this card is discarded, play it");
+text("Deal $Damage damage to all adjacent units. If this card is discarded, play it");
 removetrigger(endofturn, true,1);
 
 title("Altostratus");
@@ -86,10 +87,22 @@ $Repeat=3
 $Draw=4
 $Range=2
 trigger(onPlay,do(damage,($Damage,(wind),($Repeat),$Range)));
-text("Deal $Damage damage to $Repeat random enemies in range $Range, and discard the top $Draw cards of your deck");
+text("Deal $Damage damage to $Repeat random units in range $Range, and discard the top $Draw cards of your deck");
 trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
 types(cloud,attack)
 rarity(5);
 removetrigger(endofturn,true,1)
+
+title("Hot Air Balloon");
+cost(0);
+$Move=0
+$Increment=1
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Hot Air Balloon)")),Hand),false));
+trigger(onPlay,do(addVar (self, Move,1)));
+trigger(onPlay, do(movePlayer,($Move)));
+text("When played: void a card from your hand and increase this cards movement by $Increment \n When discarded: move $Move")
+removetrigger(endofturn, true,1);
+rarity(3);
+types(cloud,fire,movement);
 
 #Discard a card, gain an armor per type it has

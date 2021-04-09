@@ -49,7 +49,7 @@ func Load(parent)-> void:
 	Deck.add_card(Library.getCardByName("Dash"))
 	Deck.add_card(Library.getCardByName("Lunge"))
 	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Preignite"))
+	#Deck.add_card(Library.getCardByName("Birds of a Feather"))
 	shuffle()
 	step = Action("draw",[5])
 	if step is GDScriptFunctionState:
@@ -460,7 +460,10 @@ func damage(amount, types, targets,distance, tile =null):
 	var property
 	var terrains
 	if targets.size() < 2:
-		targets.append( ["any"])
+		if targets[0] is int:
+			targets.append(["-friendly"])
+		else:
+			targets.append( ["any"])
 	if targets.size() < 3:
 		targets.append("-Player")
 

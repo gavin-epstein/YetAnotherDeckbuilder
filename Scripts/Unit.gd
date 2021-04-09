@@ -105,6 +105,10 @@ func hasProperty(prop:String):
 		prop = prop.substr(1)
 	if prop == 'any' or prop == "exists":
 		ret =true
+	elif prop == "friendly-player":
+		if status.has("friendly") and self!=controller.Player:
+			return true
+		return false
 	elif prop == self.title:
 		ret = true
 	elif status.has(prop):

@@ -247,12 +247,14 @@ func processText(text):
 	#print(Utility.join("--",tokens))
 	for token in tokens:
 		
-		if token is Array or (token is String and token[0] =="$"):
+		if token is Array:
 			var res = processArgs(token,[])
 			if res is GDScriptFunctionState:
 				print("There should be no player input on card text")
 				yield(res,"completed")
 			out+=str(res)+" "
+		elif token is String and token[0] =="$":
+			out += str(vars[token.rstrip(".,")])
 		else:
 			out += str(token) + " "
 	return out

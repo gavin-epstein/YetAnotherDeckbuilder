@@ -9,13 +9,12 @@ rarity(2);
 image("res://Images/CardArt/Fly.png");
 
 title(Feather Cloak);
-types(wind,avian);
-cost(1);
+types(cloud,avian);
+cost(2);
 $Armor=1
-trigger(onPlay,do(armor,($Armor),false));
-trigger(onPlay,do(armor,($Armor),true));
+trigger(onPlay,enemyDo(addArmor( (enemyDo(select((all,(any),"friendly"),40,Player) )), $Armor)));
 trigger(onDiscard,do(armor,($Armor),false));
-text("Gain $Armor armor when discarded. Gain twice that when played");
+text("On Discard: gain $Armor armor. On Play: give $Armor armor to all friendly units");
 rarity(5);
 removetrigger(endofturn,true,3);
 image("res://Images/CardArt/FeatherCloak.png");
@@ -43,8 +42,8 @@ cost(2);
 $CreateCount=0
 $TotalUses=2
 text("Give all friendly units +1/+1. The first $TotalUses times you play this, also add a Flock Together to your hand");
-trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
-trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),friendly),40,Player))))));
+trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),"friendly-player"),40,Player))))));
+trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),"friendly-player"),40,Player))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(create("Flock Together",Hand))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(addVar(self,CreateCount,1)))));
 rarity(1);
