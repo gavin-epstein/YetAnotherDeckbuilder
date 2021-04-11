@@ -606,7 +606,7 @@ func Reaction(amount:float, attacker)-> float:
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
 	amount = getVar(card, "DamageTaken")
-	#$Reaction.remove_card(card)
+	displayReaction(card)
 	return amount
 func voidshift():
 	Action("devoidAll",[])
@@ -651,3 +651,10 @@ func loadFromSave(save:Dictionary,parent):
 	consumed = map.nodes[int(save.consumed)]
 	print(Hand.cards.size())
 	print("AllDone")
+func displayReaction(card):
+	var displaycard = cardtemplate.instance()
+	card.deepcopy(displaycard)
+	add_child(displaycard)
+	displaycard.moveTo(get_node("Reaction/AnimatedSprite").position- Vector2(100,200), Vector2(.2,.2 ))
+	yield(get_tree().create_timer(1),"timeout")
+	displaycard.queue_free()
