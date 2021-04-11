@@ -400,3 +400,8 @@ func loadFromSave(save:Dictionary, parent):
 	
 	voidNext = map.nodes[int(save.voidNext)]
 	theVoid = units[int(save.theVoid)]
+
+func testAllUnits():
+	for unitname in $UnitLibrary.units:
+		if unitname!= "Mora":
+			Summon( map.getRandomEmptyNode(["any"]), unitname)
