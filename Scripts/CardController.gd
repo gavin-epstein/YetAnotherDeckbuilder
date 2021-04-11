@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-
+const testmode = false
 signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
@@ -39,22 +39,26 @@ func Load(parent)-> void:
 	map = parent.map
 	enemyController = parent.enemyController
 	self.updateDisplay()
-	for _i in range(2):
-		Deck.add_card(Library.getCardByName("Common Loot"))
-		Deck.add_card(Library.getCardByName("Smack"))
-		$Reaction.add_card(Library.getCardByName("Scratch"))
-	for _i in range(3):
-		Deck.add_card(Library.getCardByName("Defend"))
-	Deck.add_card(Library.getCardByName("Crossbow"))
-	Deck.add_card(Library.getCardByName("Dash"))
-	Deck.add_card(Library.getCardByName("Lunge"))
-	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Whirlwind"))
-	shuffle()
-	step = Action("draw",[5])
-	if step is GDScriptFunctionState:
-		yield(step,"completed")
-
+	if not testmode:
+		for _i in range(2):
+			Deck.add_card(Library.getCardByName("Common Loot"))
+			Deck.add_card(Library.getCardByName("Smack"))
+			$Reaction.add_card(Library.getCardByName("Scratch"))
+		for _i in range(3):
+			Deck.add_card(Library.getCardByName("Defend"))
+		Deck.add_card(Library.getCardByName("Crossbow"))
+		Deck.add_card(Library.getCardByName("Dash"))
+		Deck.add_card(Library.getCardByName("Lunge"))
+		$Reaction.add_card(Library.getCardByName("Endure"))
+		#Deck.add_card(Library.getCardByName("Whirlwind"))
+		shuffle()
+		step = Action("draw",[5])
+		if step is GDScriptFunctionState:
+			yield(step,"completed")
+	else:
+		for card in Library.cards:
+			Deck.add_card(Library.getCardByName(card.title))
+		enemyController.testAllUnits()
 #func _process(delta: float) -> void:
 #	if inputAllowed:
 #		$Discard.modulate = Color(1,1,1)	

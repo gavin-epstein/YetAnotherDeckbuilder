@@ -33,7 +33,6 @@ trigger(onPlay, do(damage, ($Damage,(kinetic),(all),50),false));
 trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
 removetrigger(endofturn, true, 1);
 types(attack, kinetic);
-image("res://Images/CardArt/WindBlast.png");
 rarity(3)
 cost(1)
 
