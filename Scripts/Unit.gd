@@ -123,6 +123,8 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	if amount is GDScriptFunctionState:
+		yield(amount, "completed")
 	if self.trap:
 		return [0]
 	if self.health <=0:
@@ -151,7 +153,9 @@ func takeDamage(amount,types, attacker):
 			amount = amount*1.5
 			
 	if self == controller.Player and attacker != null:
-		amount = controller.cardController.Reaction(amount,attacker)		
+		amount = controller.cardController.Reaction(amount,attacker)
+		if amount is GDScriptFunctionState:
+			amount = yield(amount,"completed")	
 	if "stab" in types and block > 0:
 		amount+=1
 	

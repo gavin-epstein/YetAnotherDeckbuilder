@@ -184,7 +184,7 @@ func execute(code, argv):
 			res = yield(res, "completed")
 		return res
 	elif code[0] == "decrementRemoveCount":
-		if hasVariable("removecount"):
+		if hasVariable("removecount") and vars["$removecount"] is int:
 			vars["$removecount"] = vars["$removecount"]-1 
 			if vars["$removecount"] <= 0:
 				var res = self.Triggered("onRemoveFromPlay",argv)
