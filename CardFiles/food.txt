@@ -13,6 +13,6 @@ cost(1);
 $Heal=2
 types(food,fire);
 trigger(voided,do(heal($Heal)));
-removeTrigger(endofturn,true,3);
+removetrigger(endofturn,true,3);
 text(When you void a card, heal $Heal);
 rarity(6);
