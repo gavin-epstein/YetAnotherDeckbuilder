@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-
+const testmode = false
 signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
@@ -39,27 +39,26 @@ func Load(parent)-> void:
 	map = parent.map
 	enemyController = parent.enemyController
 	self.updateDisplay()
-	for _i in range(2):
-		Deck.add_card(Library.getCardByName("Common Loot"))
-		Deck.add_card(Library.getCardByName("Smack"))
-		$Reaction.add_card(Library.getCardByName("Scratch"))
-	for _i in range(3):
-		Deck.add_card(Library.getCardByName("Defend"))
-	Deck.add_card(Library.getCardByName("Crossbow"))
-	Deck.add_card(Library.getCardByName("Dash"))
-	Deck.add_card(Library.getCardByName("Lunge"))
-	$Reaction.add_card(Library.getCardByName("Endure"))
-	#Deck.add_card(Library.getCardByName("Whirlwind"))
-	shuffle()
-	step = Action("draw",[5])
-	if step is GDScriptFunctionState:
-		yield(step,"completed")
-
-#func _process(delta: float) -> void:
-#	if inputAllowed:
-#		$Discard.modulate = Color(1,1,1)	
-#	else:
-#		$Discard.modulate = Color(0,0,0)
+	if not testmode:
+		for _i in range(2):
+			Deck.add_card(Library.getCardByName("Common Loot"))
+			Deck.add_card(Library.getCardByName("Smack"))
+			$Reaction.add_card(Library.getCardByName("Scratch"))
+		for _i in range(3):
+			Deck.add_card(Library.getCardByName("Defend"))
+		Deck.add_card(Library.getCardByName("Crossbow"))
+		Deck.add_card(Library.getCardByName("Dash"))
+		Deck.add_card(Library.getCardByName("Lunge"))
+		$Reaction.add_card(Library.getCardByName("Endure"))
+		Deck.add_card(Library.getCardByName("Flock Together"))
+		shuffle()
+		step = Action("draw",[5])
+		if step is GDScriptFunctionState:
+			yield(step,"completed")
+	else:
+		for card in Library.cards:
+			Deck.add_card(Library.getCardByName(card.title))
+		enemyController.testAllUnits()
 
 
 	
@@ -602,7 +601,7 @@ func Reaction(amount:float, attacker)-> float:
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
 	amount = getVar(card, "DamageTaken")
-	#$Reaction.remove_card(card)
+	displayReaction(card)
 	return amount
 func voidshift():
 	Action("devoidAll",[])
@@ -647,3 +646,10 @@ func loadFromSave(save:Dictionary,parent):
 	consumed = map.nodes[int(save.consumed)]
 	print(Hand.cards.size())
 	print("AllDone")
+func displayReaction(card):
+	var displaycard = cardtemplate.instance()
+	card.deepcopy(displaycard)
+	add_child(displaycard)
+	displaycard.moveTo(get_node("Reaction/AnimatedSprite").position- Vector2(100,200), Vector2(.2,.2 ))
+	yield(get_tree().create_timer(1),"timeout")
+	displaycard.queue_free()

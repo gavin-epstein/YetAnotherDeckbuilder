@@ -21,7 +21,7 @@ func Triggered(method, argv):
 				res = yield(res, "completed")
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
-		controller.cardController.inputAllowed = oldallowed
+		controller.cardController.inputAllowed = true#oldallowed
 		if not controller.test:
 			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
@@ -184,7 +184,7 @@ func execute(code, argv):
 			res = yield(res, "completed")
 		return res
 	elif code[0] == "decrementRemoveCount":
-		if hasVariable("removecount"):
+		if hasVariable("removecount") and vars["$removecount"] is int:
 			vars["$removecount"] = vars["$removecount"]-1 
 			if vars["$removecount"] <= 0:
 				var res = self.Triggered("onRemoveFromPlay",argv)

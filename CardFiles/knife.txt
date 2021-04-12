@@ -93,7 +93,7 @@ rarity(2);
 
 title(Polished Blades);
 cost("2")
-types(knife, light);
+types(knife);
 $Energy=1
 trigger(play, if((hasname(argv[0],knife)),(do(gainEnergy($Energy)))));
 text("When you play a card whose name has 'Knife' gain $Energy energy");

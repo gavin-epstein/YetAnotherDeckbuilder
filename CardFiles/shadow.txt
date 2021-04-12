@@ -22,7 +22,7 @@ image("res://Images/CardArt/OminousWind.png");
 rarity(10)
 
 title(Shadow Self);
-$Times=2
+$Times=3
 cost(0)
 trigger(onPlay, repeat( (do(createByMod((shadow),Hand))),$Times))
 removetrigger(endofturn,true,1)
