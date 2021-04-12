@@ -19,10 +19,12 @@ fireball has some issues
 #slide not allowing select
 #polished blades hitting every card
 wind blast does not attack
-knife drawer hitting every card
+#knife drawer hitting every card
 endure disappearing
-push shadow select range is 0?
+#push shadow select range is 0?
+when first card has retain, no discarding
 
+input not allowed nonsense
 #Void eating a tile is causing dissapearance, not death just for playe bc its checking units and player not in untis
 
 ?save quit crashes if not done loading
@@ -33,7 +35,7 @@ plants/background images for different biomes, (naturally spawning traps)
 
 Almanac that can be accessed any time
 
-Lettering on card/enemies too small
+#Lettering on card/enemies too small
 
 Open in center of screen
 

@@ -100,6 +100,8 @@ func addHealthBar():
 func hasProperty(prop:String):
 	var negate = false
 	var ret
+	if prop == "-friendly" and status.has("neutral"):
+		return false
 	if prop[0] == "-":
 		negate = true
 		prop = prop.substr(1)
@@ -160,17 +162,18 @@ func takeDamage(amount,types, attacker):
 		amount+=1
 	
 	if amount > 0:
-		if armor > 0:
-			amount =max(amount -  armor, 0)
-			armor -=1
-			if status.has("hardenedcarapace"):
-				controller.Action("addBlock", [self, 2])
 		if block >amount:
 			block -=floor(amount)
 			amount = 0
 		elif block > 0:
 			amount -= block
 			block = 0
+		if armor > 0 and amount > 0:
+			amount =max(amount -  armor, 0)
+			armor -=1
+			if status.has("hardenedcarapace"):
+				controller.Action("addBlock", [self, 2])
+		
 	#effects on unblocked damage
 	if amount > 0:
 		if "fire" in types and attacker!=null:

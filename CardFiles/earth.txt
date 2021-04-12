@@ -54,4 +54,14 @@ removetrigger(never, true, 0);
 rarity(1)
 image("res://Images/CardArt/Diamond.png")
 
+title("Obsidian Knife")
+cost(-)
+$Armor=1
+types(earth,knife)
+text("On draw, Add a random kitchen knife to your hand.\nUnplayable")
+trigger(onDraw,do(createByMod,(("kitchenknife"), Hand)));
+modifiers(unplayable)
+removetrigger(never, true, 0);
+rarity(3)
+
 #Pyroclastic flow. void unplayable cards, deal short range aoe damage for each

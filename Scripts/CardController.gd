@@ -50,7 +50,7 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		#Deck.add_card(Library.getCardByName("Whirlwind"))
+		Deck.add_card(Library.getCardByName("Flock Together"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -59,11 +59,6 @@ func Load(parent)-> void:
 		for card in Library.cards:
 			Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
-#func _process(delta: float) -> void:
-#	if inputAllowed:
-#		$Discard.modulate = Color(1,1,1)	
-#	else:
-#		$Discard.modulate = Color(0,0,0)
 
 
 	
