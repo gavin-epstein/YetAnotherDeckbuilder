@@ -19,7 +19,7 @@ func updateDisplay():
 			card.base_z = 0
 		get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 	else:
-		var startx= 200
+		var startx= 130
 		var x = startx
 		var y = 100
 		var dispcards = cards.duplicate()
@@ -30,7 +30,7 @@ func updateDisplay():
 			card.base_z = 7
 			card.updateDisplay()
 			x+=xsep
-			if x > startx + xsep*10:
+			if x > startx + xsep*7:
 				x = startx
 				y += ysep
 

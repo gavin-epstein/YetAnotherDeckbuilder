@@ -252,7 +252,7 @@ func select(targets,distance,tile):
 			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
 	elif targets[0] == "all":	
 		enemies = map.selectAll(tile,distance,targets[2],targets[1])
-	elif targets[0]=="splash" and targets.size >=4:
+	elif targets[0]=="splash" and targets.size() >=4:
 		var centers = callv("select",targets[3])
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
@@ -400,3 +400,8 @@ func loadFromSave(save:Dictionary, parent):
 	
 	voidNext = map.nodes[int(save.voidNext)]
 	theVoid = units[int(save.theVoid)]
+
+func testAllUnits():
+	for unitname in $UnitLibrary.units:
+		if unitname!= "Mora":
+			Summon( map.getRandomEmptyNode(["any"]), unitname)

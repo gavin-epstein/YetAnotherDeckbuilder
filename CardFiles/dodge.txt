@@ -2,7 +2,7 @@ title("Dancing Master");
 cost(1);
 types(dodge,movement)
 rarity(2)
-trigger(move,do(createByMod,(("Dodge"), Reaction)));
+trigger(movePlayer,do(createByMod,(("Dodge"), Reaction)));
 removetrigger(move,true,5);
 text("When you move, add a random dodge to your reaction pile");
 

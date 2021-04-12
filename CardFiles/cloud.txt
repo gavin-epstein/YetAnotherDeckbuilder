@@ -45,7 +45,7 @@ title("Storm");
 types(cloud,attack)
 cost(4);
 rarity(2);
-$Damage=15
+$Damage=20
 trigger(onDiscard,do(move(Discard,Hand,self)));
 trigger(onDiscard,do(setVar(self,Cost,0)))
 trigger(onPlay,do(setVar(self,Cost,$BaseCost)));

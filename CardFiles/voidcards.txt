@@ -19,9 +19,9 @@ modifiers(void);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
-trigger(endofturn,do(consume()));
+trigger(startofturn,do(consume()));
 removetrigger(endofturn,true,7);
-text("At the end of your turn, The Void grows. On discard from play, transform");
+text("At the start of your turn, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfPatience.png")
 
@@ -65,5 +65,17 @@ trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(endofturn,true,7);
 text("Every time you play 4 cards, The Void grows ($Count more). On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/VoidOfDeath.png")
+image("res://Images/CardArt/VoidOfAnxiety.png")
 
+title(Void of Haste);
+cost(-);
+types(void);
+modifiers(void);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(movePlayer,do(consume()));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(voidshift()));
+removetrigger(endofturn,true,10);
+text("When you move, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/VoidOfHaste.png")

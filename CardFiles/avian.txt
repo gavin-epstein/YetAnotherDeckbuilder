@@ -69,5 +69,13 @@ trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
 trigger(onPlay, do(draw($Draw)));
 text("Deal $Damage stab damage, range $Range.\nDraw $Draw");
 removetrigger(endofturn, true, 1);
-types(avian)
+types(avian);
 rarity(9);
+
+title("Henhouse")
+cost(1);
+trigger(onPlay, do(summon("Mother Hen",(any),1)));
+text("Summon a hen on an adjacent tile");
+removetrigger(endofturn, true, 3);
+types(avian, summon);
+rarity(6);
