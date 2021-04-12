@@ -23,7 +23,7 @@ removetrigger(endofturn,true,2);
 modifiers(unique);
 
 title(Infest);
-cost(2);
+cost(1);
 types(fungal, attack);
 $Damage=4
 $Increment=4
@@ -50,7 +50,7 @@ image("res://Images/CardArt/OvergrownMachinery.png");
 title(Ubiquitous Growth);
 cost(2);
 types(fungal)
-$Increment=1
+$Increment=2
 text("Add $Increment damage to all attacks in play. On remove from play, subtract $Increment damage from all attacks in play")
 trigger(onPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(do(addVar($Card,Damage,$Increment)))))
 trigger(onRemoveFromPlay,foreach(Card,(select(Play,(hasVariable(self,Damage)),"-",all)),(do(addVar($Card,Damage,(*,-1,$Increment))))))
@@ -69,3 +69,14 @@ text("Gain $Energy energy. Increase this card's energy gain by $Increment up to 
 removetrigger(endofturn,true,2);
 types(light,fungal)
 rarity(6)
+
+title("Mycorhizome");
+cost(1);
+$Increment=1
+$Heal=1
+types(fungal, earth, food);
+trigger(onPlay, do(heal($Heal)));
+removetrigger(endofturn, true, 4);
+trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(addVar(self,Heal,$Increment)))));
+text("Heal $Heal . While in play, when you draw an unplayable card increase this card heal by $Increment");
+rarity(2);
