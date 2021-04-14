@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 			position = position.linear_interpolate(destination, min(1,delta))
 		#springyness
 		for neigh in neighs:
-			if true:
+			if neigh!=null:
 				var dir:Vector2 = neigh.position - self.position
 				var length = dir.length_squared()
 				if length < map.minSqDist:

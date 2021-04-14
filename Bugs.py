@@ -28,7 +28,7 @@ input not allowed nonsense
 #Void eating a tile is causing dissapearance, not death just for playe bc its checking units and player not in untis
 
 ?save quit crashes if not done loading
-lifelink units gaining health on save reload
+?lifelink units gaining health on save reload
 plants/background images for different biomes, (naturally spawning traps)
 
 #tutorial back button
