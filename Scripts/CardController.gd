@@ -20,7 +20,11 @@ var consumed
 var focusStack=[]
 var lastfocus
 class_name CardController
-
+func _process(delta: float) -> void:
+	if inputAllowed:
+		$Reaction.modulate = Color(0,0,0)
+	else:
+		$Reaction.modulate = Color(1,1,1)
 func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
@@ -50,7 +54,7 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		Deck.add_card(Library.getCardByName("Flock Together"))
+		#Deck.add_card(Library.getCardByName("Sift"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
