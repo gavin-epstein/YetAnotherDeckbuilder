@@ -20,11 +20,11 @@ var consumed
 var focusStack=[]
 var lastfocus
 class_name CardController
-func _process(delta: float) -> void:
-	if inputAllowed:
-		$Reaction.modulate = Color(0,0,0)
-	else:
-		$Reaction.modulate = Color(1,1,1)
+#func _process(delta: float) -> void:
+#	if inputAllowed:
+#		$Reaction.modulate = Color(0,0,0)
+#	else:
+#		$Reaction.modulate = Color(1,1,1)
 func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
