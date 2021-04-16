@@ -54,7 +54,7 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		#Deck.add_card(Library.getCardByName("Sift"))
+		#Deck.add_card(Library.getCardByName("Stoneskin"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -167,12 +167,13 @@ func setEnergy(num):
 func discardAll(silent = false):
 	var ind =0;
 	while Hand.cards.size() >ind:
-		var card = Hand.cards[0]
+		var card = Hand.cards[ind]
 		if not card.modifiers.has("retain"):
 			Action("discard", [card, silent], silent);
 		else:
 			card.Triggered("onRetain",[card])
-			ind+=1
+			if card in Hand.cards:
+				ind+=1
 	return true
 	
 func discard(card, silent = false, loc = "Hand"):
@@ -198,6 +199,7 @@ func updateDisplay():
 				unit.updateDisplay()
 func cardreward(rarity, count):
 	Choice.generateReward(rarity, count)
+	yield(Choice,"cardchosen")
 	return true
 
 func purge(card):
@@ -270,6 +272,7 @@ func createByMod(modifiers, loc):
 	var added = Library.getRandomByModifier(modifiers)
 	
 	loc.add_card(added)
+	triggerAll("onCreate",[added,loc])
 	return added
 	
 func gainEnergy(num):
@@ -463,12 +466,12 @@ func damage(amount, types, targets,distance, tile =null):
 	var property
 	var terrains
 	if targets.size() < 2:
-		if targets[0] is int:
-			targets.append(["-friendly"])
-		else:
-			targets.append( ["any"])
+		targets.append( ["any"])
 	if targets.size() < 3:
-		targets.append("-Player")
+		if targets[0] is int:
+			targets.append("-friendly")
+		else:
+			targets.append("-Player")
 
 	var enemies = selectTiles(targets,distance,tile)
 	if enemies is GDScriptFunctionState:

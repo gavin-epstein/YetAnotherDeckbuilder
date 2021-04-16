@@ -24,6 +24,7 @@ trigger(startofturn, do(moveUnits((any),40,Player,towards,$Move)));
 removetrigger(startofturn,true,1);
 rarity(5);
 types(kinetic);
+image("res://Images/CardArt/lure.png");
 
 title(Kinetic Blast);
 $Damage=1
@@ -35,6 +36,7 @@ removetrigger(endofturn, true, 1);
 types(attack, kinetic);
 rarity(3)
 cost(1)
+image("res://Images/CardArt/KineticBlast.png");
 
 title(Earthquake);
 cost(1);

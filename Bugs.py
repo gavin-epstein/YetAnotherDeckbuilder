@@ -16,9 +16,9 @@ cleansing water not working?
 Ashes not voiding a card
 Dark deeds light whispers not activating part 2
 fireball has some issues
-#slide not allowing select
-#polished blades hitting every card
-wind blast does not attack
+?knife sharpener not working
+cheese grater not attacking
+#wind blast does not attack
 #knife drawer hitting every card
 endure disappearing
 #push shadow select range is 0?
