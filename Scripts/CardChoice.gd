@@ -1,5 +1,5 @@
 extends CardLocation
-
+signal cardchosen
 const bannedtypes = ["attack", "movement","starter","loot","void"]
 # Declare member variables here. Examples:
 # var a: int = 2
@@ -31,7 +31,8 @@ func clear():
 	for card in cards:
 		card.queue_free()
 	cards = []
-	get_parent().inputAllowed = true
+	emit_signal("cardchosen")
+	
 	
 	
 

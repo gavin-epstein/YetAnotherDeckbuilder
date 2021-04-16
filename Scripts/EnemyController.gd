@@ -42,6 +42,7 @@ func addPlayerAndVoid():
 	Player = unit
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
+	Player.setStatus("stunned",0)
 	pickConsumed()
 func addUnit(unit, node,head=null):
 	if head == null:
@@ -55,7 +56,11 @@ func addUnit(unit, node,head=null):
 	unit.position = node.position
 	add_child(unit)
 	unit.onSummon(head)
-	units.append(unit)
+	if unit.hasProperty("friendly"):
+		#friendly units go first
+		units.push_front(unit)
+	else:
+		units.append(unit)
 	if unit.componentnames.size()>0:
 		for link in unit.linkagenames:
 			var linkname = link[0]
@@ -192,6 +197,21 @@ func gainStrength(unit,amount):
 		unit.strength+=amount
 		unit.updateDisplay()
 	return true
+func setStrength(unit,amount):
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		if unit.get("occupants")!=null:
+			if unit.occupants.size()>0:
+				unit = unit.occupants[0]
+			else:
+				continue		
+		unit.strength=amount
+		unit.updateDisplay()
+	return true
 func addArmor(unit,amount):
 	var units
 	if not unit is Array:
@@ -218,6 +238,7 @@ func addBlock(unit,amount):
 		if !unit.has_method("isUnit") and unit.occupants.size() > 0:
 			unit = unit.occupants[0]
 		unit.block+=amount
+		unit.Triggered("blockchanged",[amount])
 		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()
 func heal(unit, amount):
@@ -328,6 +349,20 @@ func addStatus(tile, statname, val):
 	for tile in units:
 		if tile.occupants.size() > 0:
 			tile.occupants[0].addStatus(statname, val)
+func getStatus(tile, statname) -> int:
+	if tile == null:
+		return 0
+	var units
+	if not tile is Array:
+		units = [tile]
+	else:
+		units= tile
+	var sum = 0
+	for tile in units:
+		if tile.occupants.size() > 0:
+			var val = tile.occupants[0].getStatus(statname)
+			sum += val
+	return sum
 func clearAllStatuses(tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
@@ -402,6 +437,7 @@ func loadFromSave(save:Dictionary, parent):
 	theVoid = units[int(save.theVoid)]
 
 func testAllUnits():
-	for unitname in $UnitLibrary.units:
-		if unitname!= "Mora":
-			Summon( map.getRandomEmptyNode(["any"]), unitname)
+	Summon( map.getRandomEmptyNode(["any"]), "Mountain Beast")
+#	for unitname in $UnitLibrary.units:
+#		if unitname!= "Mora":
+#			Summon( map.getRandomEmptyNode(["any"]), unitname)
