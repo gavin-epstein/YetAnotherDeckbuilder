@@ -64,4 +64,19 @@ modifiers(unplayable)
 removetrigger(never, true, 0);
 rarity(3)
 
+title("Stoneskin")
+cost(1)
+types(earth)
+$Block=5
+$Armor=1
+$Status=1
+text("Gain $Block block, $Armor armor and keep your block at the start of next turn. Add a dazed to your deck")
+trigger(onPlay,do(block($Block)))
+trigger(onPlay,do(armor($Armor)))
+trigger(onPlay,do(create("Dazed",Deck)))
+removetrigger(endofturn, true,2)
+trigger(onPlay,do(addStatus(stoneskin,$Status)))
+rarity(3)
+
 #Pyroclastic flow. void unplayable cards, deal short range aoe damage for each
+#Barrage: purge unplayable cards, deal targeted damage for each

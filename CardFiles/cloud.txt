@@ -53,6 +53,7 @@ trigger(onDiscard,do(play(self)));
 trigger(onPlay, do(damage, ($Damage,(none),(all),1),false));
 text("Deal $Damage damage to all adjacent units. If this card is discarded, play it");
 removetrigger(endofturn, true,1);
+image("res://Images/CardArt/Storm.png");
 
 title("Altostratus");
 cost(3)
@@ -68,6 +69,7 @@ trigger(onDiscard,do(addVar(self,Cost,-1)));
 trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
 text("Block $Block, Deal $Damage damage, range 2. When discarded, return this to your hand and lower the cost by one until played")
 removetrigger(endofturn,true,1);
+image("res://Images/CardArt/Altostratus.png");
 
 title(Sifting Breath);
 cost(1);
