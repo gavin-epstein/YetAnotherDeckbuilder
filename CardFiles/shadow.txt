@@ -28,6 +28,7 @@ trigger(onPlay, repeat( (do(createByMod((shadow),Hand))),$Times))
 removetrigger(endofturn,true,1)
 types(shadow)
 text("Add $Times random shadows to your hand")
+image("res://Images/CardArt/ShadowSelf.png");
 rarity(10)
 
 title(Fluttering Shadow);
@@ -130,14 +131,24 @@ trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 removetrigger(endofturn,true,4)
 rarity(4)
 
-title(Slide);
+title(Sleight of Hand);
 types(shadow);
 cost(0);
 trigger(onPlay,do(move(Hand,Play,(select(Hand,((not (hasModifier(self, unplayable)))),"Pick a card to put in play")))))
 text("Put a card from your hand into play without playing it")
 rarity(7);
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/SleightOfHand.png");
+
+title(Wheel of Darkness);
+types(shadow,mechanical)
+cost(1);
+trigger(startofturn, do(createByMod((shadow),Hand)))
+text("At the start of your turn, add a shadow to your hand")
+rarity(6);
+removetrigger(endofturn,true,10);
 
 #light and shadow - energy per shadow card
 #Knives in the dark : make a kitchen knife, get a shadow. Make a shadow get a kitchen knife
-#Shadow mechanical, endless wheel of darkness?
+
+

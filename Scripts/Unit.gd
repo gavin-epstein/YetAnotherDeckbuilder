@@ -193,8 +193,8 @@ func takeDamage(amount,types, attacker):
 			if unit != null and unit.title == self.title:
 				unit.health = self.health
 				unit.updateDisplay()
-	if amount > 0:	
-		self.Triggered("damaged",[amount,types,attacker])
+	
+	self.Triggered("damaged",[amount,types,attacker])
 	if health <= 0:
 		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
 		if status.has("lifelink"):
@@ -211,7 +211,8 @@ func takeDamage(amount,types, attacker):
 func startOfTurn():
 	if status.has("flaming"):
 		takeDamage(4,["fire"],null)
-	block = 0;
+	if not status.has("stoneskin"):
+		block = 0;
 	if status.has("fuse"):
 		addStatus("explosive",1)
 	if status.has("bleed"):
@@ -282,9 +283,9 @@ func die(attacker):
 			return
 	if self == controller.theVoid:
 			controller.Win()
-	if difficulty > 10:
+	if difficulty > 12:
 		get_parent().cardController.Action("create",["Rare Loot","Hand"])
-	elif difficulty > 5:
+	elif difficulty > 7:
 		get_parent().cardController.Action("create",["Uncommon Loot","Hand"])
 	elif not status.has("lootless") and not status.has("friendly"):
 		get_parent().cardController.Action("create",["Common Loot","Hand"])
@@ -357,6 +358,21 @@ func setStatus(stat, val):
 		status.erase(stat)
 	else:
 		status[stat] = val
+func getStatus(stat)->int:
+	if self.head != self:
+		return head.getStatus(stat)
+	if stat in ["block","strength","armor","maxHealth","health","speed"]:
+		var val = self.get(stat)
+		if val==null:
+			return 0
+		return val
+	var val = status.get(stat)
+	if val==null or val == false:
+		return 0
+	if val == true:
+		return 1
+	return val
+	
 func loadUnitFromString(string):
 	$AnimatedSprite.visible = false
 	var lines = string.split(";")

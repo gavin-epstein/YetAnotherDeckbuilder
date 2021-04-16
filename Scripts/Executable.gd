@@ -200,7 +200,7 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg = yield(arg, "complete")
 			args.append(arg)
-		if not args[0].has_method("isCard"):
+		if  args[0] == null or not args[0].has_method("isCard"):
 			return false
 		return args[0].hasType(args[1])
 	elif code[0] == "hasname" or code[0]=="hasName":
@@ -210,7 +210,7 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg = yield(arg, "complete")
 			args.append(arg)
-		if not args[0].has_method("isCard"):
+		if  args[0] == null or not args[0].has_method("isCard"):
 			return false
 		return args[0].hasName(args[1])
 	elif code[0] == "hasModifier" or code[0] == "hasmod":
@@ -220,7 +220,7 @@ func execute(code, argv):
 			if arg is GDScriptFunctionState:
 				arg = yield(arg, "complete")
 			args.append(arg)
-		if not args[0].has_method("isCard"):
+		if  args[0] == null or not args[0].has_method("isCard"):
 			return false
 		return args[0].hasModifier(args[1])
 	elif code[0] == "hasVariable" or code[0] == "hasvar":
