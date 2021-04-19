@@ -148,7 +148,15 @@ text("At the start of your turn, add a shadow to your hand")
 rarity(6);
 removetrigger(endofturn,true,10);
 
-#light and shadow - energy per shadow card
-#Knives in the dark : make a kitchen knife, get a shadow. Make a shadow get a kitchen knife
+title(Knives in the Dark)
+types(knife,shadow)
+cost(1)
+trigger(onCreate,if((hasModifier(argv[0],kitchenknife)),(do(createByMod((shadow),Hand,true)))));
+trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife),Hand,true)))));
+text("When you create a shadow, also get a kitchen knife, and vice versa")
+removetrigger(onCreate,(+,(hasModifier(argv[0],kitchenknife)),(hasModifier(argv[0],shadow))),10);
+rarity(2)
 
+#piercing attack
+#light and shadow - energy per shadow card
 

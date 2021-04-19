@@ -255,7 +255,7 @@ func printFocus():
 	if focusStack.size() >0:
 		print("FocusStack: ", str(focusStack))
 	lastfocus = focus
-func create(card, loc):
+func create(card, loc,silent=false):
 	loc = get_node(loc)
 	var added
 	if card is String:
@@ -265,14 +265,16 @@ func create(card, loc):
 		card.deepcopy(added)
 	loc.add_card(added)
 	added.updateDisplay()
-	triggerAll("onCreate",[added,loc])
+	if not silent:
+		triggerAll("onCreate",[added,loc])
 	return added
-func createByMod(modifiers, loc):
+func createByMod(modifiers, loc,silent=false):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
 	
 	loc.add_card(added)
-	triggerAll("onCreate",[added,loc])
+	if not silent:
+		triggerAll("onCreate",[added,loc])
 	return added
 	
 func gainEnergy(num):
@@ -660,3 +662,8 @@ func displayReaction(card):
 	displaycard.moveTo(get_node("Reaction/AnimatedSprite").position- Vector2(100,200), Vector2(.2,.2 ))
 	yield(get_tree().create_timer(1),"timeout")
 	displaycard.queue_free()
+func addhandsize(amount):
+	if not amount is int:
+		return false
+	Hand.maxHandSize+=amount
+	return true
