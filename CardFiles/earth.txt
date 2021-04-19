@@ -73,7 +73,7 @@ $Status=1
 text("Gain $Block block, $Armor armor and keep your block at the start of next turn. Add a dazed to your deck")
 trigger(onPlay,do(block($Block)))
 trigger(onPlay,do(armor($Armor)))
-trigger(onPlay,do(create("Dazed",Deck)))
+trigger(onPlay,do(create("Dazed",Deck)))    
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(addStatus(stoneskin,$Status)))
 rarity(3)

@@ -255,13 +255,13 @@ speed(2);
 $Multistrike=3
 $Intent=Multiattack;
 damagetypes(slash)
-trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
 trigger(turn,if( ($Intent=Multiattack),  (do(MoveAndAttack(self,friendly))) ));
-trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
 trigger(turn,if( ($Intent=Sting),  (do(MoveAndAttack(self,friendly))) ));
 trigger(turn,if( ($Intent=Sting),  (do(addStatus(  (select(lastTargets,0,0)), sting, 3 ))) ));
 trigger(turn,if( ($Intent=Defend), (do(addBlock(self,8)))));
 trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
+trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
+trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
 image("res://Images/UnitArt/ScytheLarva.png");
 
 name("Prickly Pear")

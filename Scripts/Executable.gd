@@ -274,10 +274,13 @@ func execute(code, argv):
 		var arg2 = processArgs(code[2], argv)
 		if arg2 is GDScriptFunctionState:
 			arg2 = yield(arg2, "completed")
-		if arg1 != null and arg2 !=null:
-			return arg1*arg2
-		else:
+		if arg1 == null or arg2 == null:
 			return 0
+		if arg1 is bool and arg2 is bool:
+			return arg1 and arg2
+		if arg1 is int and arg2 is int:
+			return arg1*arg2
+		return 0
 	elif code[0] == "+":
 		var arg1 = processArgs(code[1], argv)
 		if arg1 is GDScriptFunctionState:
@@ -286,10 +289,14 @@ func execute(code, argv):
 		var arg2 = processArgs(code[2], argv)
 		if arg2 is GDScriptFunctionState:
 			arg2 = yield(arg2, "completed")
-		if arg1 != null and arg2 !=null:
-			return arg1+arg2
-		else:
+		if arg1 == null or arg2 == null:
 			return 0
+		if arg1 is bool and arg2 is bool:
+			return arg1 or arg2
+		if arg1 is int and arg2 is int:
+			return arg1+arg2
+		
+		return 0
 	elif code[0] == "!" or code[0] == "not":
 		var arg = processArgs(code.slice(1,code.size()-1), argv)
 		if arg is GDScriptFunctionState:

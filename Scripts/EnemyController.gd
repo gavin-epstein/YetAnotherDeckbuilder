@@ -114,6 +114,9 @@ func move(unit, node):
 		unit.tile =  node
 		if not unit.trap:
 			node.occupants.append(unit)
+		if unit.status.has("corruption") and unit.status.corruption is int:
+			unit.takeDamage(unit.status.corruption, ["corruption"],null )
+			unit.setStatus("corruption",0)
 func enemyTurn():
 	for unit in units:
 		if unit == null:

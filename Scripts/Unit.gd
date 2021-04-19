@@ -137,6 +137,10 @@ func takeDamage(amount,types, attacker):
 		addStatus("flaming",-1)
 	if "ice" in types:
 		addStatus("frost",1)
+	if "shadow" in types:
+		addStatus("corruption",1)
+	if "light" in types:
+		addStatus("dazzled",1)
 	#thorns
 	if (status.has("thorns") and status.thorns is int and attacker !=null):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
@@ -483,9 +487,9 @@ func getStrength(amount = 0):
 		ret -= status.frost
 	if status.has("flaming"):
 		ret += status.flaming
-	if status.has("weak"):
-		ret*= .5
-	return ret
+	if status.has("dazzled"):
+		ret*= .66
+	return int(ret)
 func isUnit()->bool:
 	return true
 func changeHealth(amount)-> void:

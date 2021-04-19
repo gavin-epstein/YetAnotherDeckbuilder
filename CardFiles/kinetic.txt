@@ -11,6 +11,7 @@ trigger(onPlay, do(draw($Draw)));
 removetrigger(endofturn,true,1);
 rarity(6);
 types(kinetic,wind);
+image("res://Images/CardArt/Gust.png");
 
 title("Lure");
 cost(1)
