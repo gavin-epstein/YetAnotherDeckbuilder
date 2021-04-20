@@ -1,5 +1,5 @@
 title("Toxic Spores")
-types(reaction)
+types(reaction,evil)
 trigger(onReaction, do(heal(1)));
 trigger(onReaction, do(addStatus(bleed,1)));
 trigger(onReaction, do(purge,(self),false));
@@ -9,6 +9,7 @@ removetrigger(endofturn, true, 0);
 rarity(0)
 
 title("Dazed")
+types(evil)
 cost(-);
 trigger(onRetain, do(purge,(self)))
 text("Unplayable. on retain, purge")
@@ -16,3 +17,27 @@ modifiers(retain,unplayable)
 rarity(0)
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/stunned.png")
+
+title("Sear")
+types(fire,evil)
+cost(-);
+removetrigger(endofturn,true,4);
+text("At the start of your turn void a card from your hand or lose 3 health")
+trigger(startofturn, do(create("Ouch!",Hand)));
+trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Sear)")),Hand),false));
+trigger(startofturn, do(purge((select(Hand,(hasName(self,"Ouch!")),"-",1,true)))));
+trigger(onRemoveFromPlay,do(purge(self)))
+image("res://Images/CardArt/Sear.png")
+rarity(0)
+
+title("Ouch!")
+types(evil)
+cost(-);
+removetrigger(endofturn,true,0)
+modifiers(unplayable)
+trigger(onVoided, do(heal(-3),true))
+trigger(onVoided, do(purge(self)))
+text("When voided: purge this and lose 3 health. Otherwise Purge")
+rarity(0)
+
+

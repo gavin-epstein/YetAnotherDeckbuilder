@@ -138,7 +138,7 @@ func takeDamage(amount,types, attacker):
 	if "ice" in types:
 		addStatus("frost",1)
 	if "shadow" in types:
-		addStatus("corruption",1)
+		addStatus("corruption",2)
 	if "light" in types:
 		addStatus("dazzled",1)
 	#thorns

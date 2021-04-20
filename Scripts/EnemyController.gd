@@ -440,7 +440,7 @@ func loadFromSave(save:Dictionary, parent):
 	theVoid = units[int(save.theVoid)]
 
 func testAllUnits():
-	Summon( map.getRandomEmptyNode(["any"]), "Mountain Beast")
+	Summon( map.getRandomEmptyNode(["any"]), "Johnny The Grill")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)
