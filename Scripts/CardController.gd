@@ -54,7 +54,7 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		#Deck.add_card(Library.getCardByName("Stoneskin"))
+		#Deck.add_card(Library.getCardByName("Butter"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -112,6 +112,7 @@ func play(card)->bool:
 		Energy = 0
 	if cost is int:
 		Energy -= cost
+	
 	lastPlayed = card
 	#forceFocus(self)
 	card.mouseon= false
@@ -121,6 +122,7 @@ func play(card)->bool:
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
+	setVar(card,"Cost",getVar(card,"BaseCost"))
 	updateDisplay()
 	#releaseFocus(self)
 	inputAllowed = true
@@ -532,7 +534,7 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 				enemyController.move(enemy.occupants[0],dest)
 func heal(amount):
 	enemyController.heal(enemyController.Player,amount)
-
+	return true
 
 func summon(unitName, targets, distance,tile="Player") :
 	var terrains

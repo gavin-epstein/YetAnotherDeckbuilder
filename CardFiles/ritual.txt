@@ -100,3 +100,31 @@ removetrigger(endofturn,true,5);
 cost(2);
 rarity(7);
 image("res://Images/CardArt/Secrecy.png")
+
+title("Dark Deeds")
+types(ritual, attack, shadow)
+cost(2)
+$Damage=16
+$Range=2
+trigger(onPlay, if( (countNames(Play,"Light Whispers")>0),(do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)) ),Cost,0))))
+trigger(onPlay, do(damage($Damage,(ritual),(any),$Range)))
+trigger(onPlay, do(create("Light Whispers",Deck)))
+trigger(onRemoveFromPlay,do(purge(self)))
+removetrigger(endofturn,true,2)
+image("res://Images/CardArt/DarkDeeds.png")
+rarity(3)
+text("Deal $Damage damage at $Range range. If there is a Light Whispers in play, make a random card in hand cost 0 until played. Add a Light Whispers to your deck. On remove from play, purge")
+
+title("Light Whispers")
+types(ritual,light)
+cost(1)
+$Block=9
+$Energy=2
+trigger(onPlay, do(block($Block)))
+removetrigger(endofturn,true,3)
+trigger(onPlay, if( (countNames(Play,"Dark Deeds")>0),(do(gainEnergy($Energy)))))
+trigger(onPlay, do(create("Dark Deeds",Deck)))
+trigger(onRemoveFromPlay,do(purge(self)))
+rarity(4)
+image("res://Images/CardArt/LightWhispers.png")
+text("Gain $Block block. If there is a Dark Deeds in play, also gain $Energy energy. Add a Dark Deeds to your deck. On remove from play, purge")
