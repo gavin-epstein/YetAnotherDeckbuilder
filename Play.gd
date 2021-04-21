@@ -13,7 +13,7 @@ var ysep = 150
 func updateDisplay():
 	var startx= 300
 	var x = startx
-	var rows = int(cards.size()/11)
+	var rows = int((cards.size()-1)/11)
 	var y = 700 - ysep*rows
 	for card in cards:
 		card.moveTo(Vector2(x,y), Vector2(.15,.15))
