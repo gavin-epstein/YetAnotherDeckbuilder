@@ -167,7 +167,7 @@ $CardTotal=7
 $CardsPlayed=7
 trigger(onPlay, do(damage, ($Damage,(shadow,piercing),(any),$Range)));
 removetrigger(endofturn,true,1)
-trigger(play, addVar(self,$CardsPlayed,-1))
+trigger(play, do(addVar(self,$CardsPlayed,-1)))
 trigger(play, if(($CardsPlayed=0),(do(addVar(self,Damage,$Increment)))));
 trigger(play, if(($CardsPlayed=0),(do(move, (Play, Discard, self)))));
 trigger(play, if(($CardsPlayed=0),(do(setVar( self, CardsPlayed,$CardTotal)))))

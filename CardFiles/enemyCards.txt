@@ -7,6 +7,7 @@ cost(-);
 text("Heal 1, gain 1 bleed");
 removetrigger(endofturn, true, 0);
 rarity(0)
+image("res://Images/CardArt/toxicspores.png")
 
 title("Dazed")
 types(evil)
@@ -38,6 +39,7 @@ modifiers(unplayable)
 trigger(onVoided, do(heal(-3),true))
 trigger(onVoided, do(purge(self)))
 text("When voided: purge this and lose 3 health. Otherwise Purge")
+image("res://Images/CardArt/Ouch.png")
 rarity(0)
 
 

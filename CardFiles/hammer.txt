@@ -75,7 +75,7 @@ types(hammer,shadow);
 $Increment=1
 rarity(2)
 $Card=null
-trigger(onPlay,do(setVar((Card,select(Play,(if(($Cost<0),true)),"Pick a card to upgrade")))))
+trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost<0),true)),"Pick a card to upgrade")))))
 trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
 trigger(onPlay,do(setVar($Card,Cost,BaseCost)))
 trigger(onPlay,do(purge(self)));
@@ -89,7 +89,7 @@ types(hammer);
 $Block=2
 $Increment=3
 rarity(1);
-trigger(onPlay,do(block($Block));
+trigger(onPlay,do(block($Block)));
 trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Block)),"Pick a card to upgrade")),Block,$Increment)));
 trigger(onPlay,do(purge(self)));
 text("Gain $Block block, then permanently add $Increment block to a block card play.\nPurge");

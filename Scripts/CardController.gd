@@ -207,7 +207,7 @@ func cardreward(rarity, count):
 func purge(card):
 	if card == null:
 		return false
-	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card):
+	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
 		card.queue_free()
 		return true
@@ -247,7 +247,7 @@ func forceFocus(item):
 	printFocus()
 	return true
 func printFocus():
-	#return
+	return
 	if focus ==lastfocus:
 		return
 	if focus != null:
