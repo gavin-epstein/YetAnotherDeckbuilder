@@ -1032,7 +1032,7 @@ rect_scale = Vector2( 0.7, 0.7 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 0.682353, 0, 1 )
-text = "Cards have an energy cost in the top right corner, you spend energy to play cards."
+text = "Cards have an energy cost in the top left corner, you spend energy to play cards."
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

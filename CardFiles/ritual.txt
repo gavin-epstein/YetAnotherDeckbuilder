@@ -86,17 +86,46 @@ cost(1)
 types(ritual, summon)
 $RitualCount=7
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-trigger(onRemoveFromPlay,do(voided(self, Discard)))
-trigger(play,if((count(Play, ritual) > $RitualCount), (do(summon("Imp",(any),1)))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(summon("Imp",(any),1)))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 text("When you have $RitualCount ritual cards in play, void this and summon an Imp");
 rarity(1)
 image("res://Images/CardArt/SummoningRitual.png")
 
 title("Secrecy")
 types(ritual)
-text("At the end of your turn gain block equal to the number of ritual cards in play");
-trigger(endofturn,block( (count(Play,ritual))))
+$Block=2
+text("At the end of your turn gain block equal to $Block times the number of ritual cards in play");
+trigger(endofturn,do(block((*,$Block, (count(Play,ritual))))))
 removetrigger(endofturn,true,5);
 cost(2);
 rarity(7);
 image("res://Images/CardArt/Secrecy.png")
+
+title("Dark Deeds")
+types(ritual, attack, shadow)
+cost(2)
+$Damage=16
+$Range=2
+trigger(onPlay, if( (countNames(Play,"Light Whispers")=1),(do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)),Cost,0)))))
+trigger(onPlay, do(damage($Damage,(ritual),(any),$Range)))
+trigger(onPlay, do(create("Light Whispers",Deck)))
+trigger(onRemoveFromPlay,do(purge(self)))
+removetrigger(endofturn,true,2)
+image("res://Images/CardArt/DarkDeeds.png")
+rarity(3)
+text("Deal $Damage damage at $Range range. If there is exactly one Light Whispers in play, make a random card in hand cost 0 until played. Add a Light Whispers to your deck. On remove from play, purge")
+
+title("Light Whispers")
+types(ritual,light)
+cost(1)
+$Block=9
+$Energy=2
+trigger(onPlay, do(block($Block)))
+removetrigger(endofturn,true,3)
+trigger(onPlay, if( (countNames(Play,"Dark Deeds")=1),(do(gainEnergy($Energy)))))
+trigger(onPlay, do(create("Dark Deeds",Deck)))
+trigger(onRemoveFromPlay,do(purge(self)))
+rarity(4)
+image("res://Images/CardArt/LightWhispers.png")
+text("Gain $Block block. If there is exactly one Dark Deeds in play, also gain $Energy energy. Add a Dark Deeds to your deck. On remove from play, purge")

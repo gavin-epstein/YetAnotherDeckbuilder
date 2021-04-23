@@ -114,6 +114,9 @@ func move(unit, node):
 		unit.tile =  node
 		if not unit.trap:
 			node.occupants.append(unit)
+		if unit.status.has("corruption") and unit.status.corruption is int:
+			unit.takeDamage(unit.status.corruption, ["corruption"],null )
+			unit.setStatus("corruption",0)
 func enemyTurn():
 	for unit in units:
 		if unit == null:
@@ -376,7 +379,7 @@ func clearAllStatuses(tiles = "Player"):
 func Lose(enemy):
 	yield(get_tree().create_timer(.5),"timeout")
 	if enemy !=null:
-		var image = enemy.get_node("Image").texture
+		var image = enemy.get_node("Resizer/Image").texture
 		get_node("/root/global").lossImage = image
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
@@ -437,7 +440,7 @@ func loadFromSave(save:Dictionary, parent):
 	theVoid = units[int(save.theVoid)]
 
 func testAllUnits():
-	Summon( map.getRandomEmptyNode(["any"]), "Mountain Beast")
+	Summon( map.getRandomEmptyNode(["any"]), "Johnny The Grill")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)

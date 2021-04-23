@@ -12,4 +12,4 @@ func _ready() -> void:
 
 func _on_HSlider_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(_bus, linear2db(value))
-
+	

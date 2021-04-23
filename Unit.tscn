@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/Unit.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Intent.gd" type="Script" id=2]
@@ -12,7 +12,24 @@
 [ext_resource path="res://Images/StatusIcons/immovable.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/Audio.gd" type="Script" id=11]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="Animation" id=1]
+resource_name = "Bob"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Resizer:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.05, 0.95 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [  ],
 "loop": true,
@@ -20,15 +37,14 @@ animations = [ {
 "speed": 20.0
 } ]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0.411765 )
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
 corner_radius_bottom_left = 100
 
-[sub_resource type="Animation" id=3]
-resource_name = "Fade"
+[sub_resource type="Animation" id=4]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -43,11 +59,17 @@ tracks/0/keys = {
 }
 
 [node name="Unit" type="Node2D"]
+scale = Vector2( 1.01378, 0.986222 )
 script = ExtResource( 1 )
 
 [node name="Audio" type="AudioStreamPlayer" parent="."]
 volume_db = -4.0
+bus = "SFX"
 script = ExtResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Bob"
+anims/Bob = SubResource( 1 )
 
 [node name="HoverRect" type="ColorRect" parent="."]
 margin_left = -416.0
@@ -60,12 +82,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-position = Vector2( 0, -249.721 )
-frames = SubResource( 1 )
+[node name="Resizer" type="Node2D" parent="."]
+scale = Vector2( 1.00851, 0.991486 )
 
-[node name="Image" type="Sprite" parent="."]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Resizer"]
 position = Vector2( 0, -249.721 )
+scale = Vector2( 1, 1 )
+frames = SubResource( 2 )
+
+[node name="Image" type="Sprite" parent="Resizer"]
+position = Vector2( 0, -249.721 )
+scale = Vector2( 1, 1 )
 texture = ExtResource( 3 )
 
 [node name="Intent" type="Node2D" parent="."]
@@ -93,14 +120,14 @@ margin_top = -602.0
 margin_right = 1524.0
 margin_bottom = 432.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Fader" type="AnimationPlayer" parent="HoverText"]
 playback_speed = 10.0
-anims/Fade = SubResource( 3 )
+anims/Fade = SubResource( 4 )
 
 [node name="TextContainer" type="Node2D" parent="HoverText"]
 position = Vector2( 428.182, -567.407 )

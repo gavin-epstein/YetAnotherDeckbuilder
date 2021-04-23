@@ -13,14 +13,14 @@ image("res://Images/CardArt/Blacksmith'sHammer.png")
 
 title("Power Hammer")
 types(light,hammer)
-$Increment=1
+$Increment=2
 trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Energy)),"Pick a card to upgrade")),Energy,$Increment)));
 trigger(onPlay,do(purge(self)));
 text("Permanently add $Increment energy to the energy gain of a non eternal card in play.\nPurge");
 removetrigger(endofturn, true, 0);
 cost(2);
 modifiers(hammer)
-rarity(2)
+rarity(1)
 
 title("Sledgehammer")
 types(hammer)
@@ -67,5 +67,30 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Armor)),"Pick a card to 
 trigger(onPlay,do(purge(self)));
 text("Gain $Armor armor, then permanently add $Increment armor to an armor card in play.\nPurge");
 removetrigger(endofturn, true, 0);
-image("res://Images/CardArt/Blacksmith'sHammer.png")
+modifiers(hammer)
 
+title("Shadow Hammer");
+cost(1)
+types(hammer,shadow);
+$Increment=1
+rarity(2)
+$Card=null
+trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost>0),true)),"Pick a card to upgrade")))))
+trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
+trigger(onPlay,do(addVar($Card,Cost,(*,-1,$Increment))))
+trigger(onPlay,do(purge(self)));
+text("Decrease the cost of a card by 1.\nPurge");
+removetrigger(endofturn, true, 0);
+modifiers(hammer)
+
+title("Shieldsmith's Hammer");
+cost(1);
+types(hammer);
+$Block=2
+$Increment=3
+rarity(1);
+trigger(onPlay,do(block($Block)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Block)),"Pick a card to upgrade")),Block,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Gain $Block block, then permanently add $Increment block to a block card play.\nPurge");
+removetrigger(endofturn, true, 0);

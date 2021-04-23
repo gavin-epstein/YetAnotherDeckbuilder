@@ -65,8 +65,8 @@ func onSummon(head, silent= false)->void:
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	if self.image!=null:
 		_imagescale = 1000.0/max(image.get_width(), image.get_height())
-		$Image.texture = image
-		$Image.scale = Vector2(_imagescale,_imagescale)
+		$Resizer/Image.texture = image
+		$Resizer/Image.scale = Vector2(_imagescale,_imagescale)
 	else:
 		_imagescale = 1
 		playAnimation("idle")
@@ -79,7 +79,10 @@ func onSummon(head, silent= false)->void:
 			components[0] = self
 		else:
 			components = [self]
-	
+	if status.has("neutral"):
+		$AnimationPlayer.playback_speed = .1
+	else:
+		$AnimationPlayer.playback_speed =rand_range(.5,1)
 func _process(delta: float) -> void:
 	if tile != null and (self.position - tile.position).length_squared()>100:
 		self.position  = self.position.linear_interpolate(tile.position, min(1, tilespeed*delta))
@@ -137,6 +140,10 @@ func takeDamage(amount,types, attacker):
 		addStatus("flaming",-1)
 	if "ice" in types:
 		addStatus("frost",1)
+	if "shadow" in types:
+		addStatus("corruption",2)
+	if "light" in types:
+		addStatus("dazzled",1)
 	#thorns
 	if (status.has("thorns") and status.thorns is int and attacker !=null):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
@@ -161,7 +168,7 @@ func takeDamage(amount,types, attacker):
 	if "stab" in types and block > 0:
 		amount+=1
 	
-	if amount > 0:
+	if amount > 0 and not "piercing" in types:
 		if block >amount:
 			block -=floor(amount)
 			amount = 0
@@ -374,7 +381,7 @@ func getStatus(stat)->int:
 	return val
 	
 func loadUnitFromString(string):
-	$AnimatedSprite.visible = false
+	$Resizer/AnimatedSprite.visible = false
 	var lines = string.split(";")
 	for line in lines:
 		if line == "" or line == " ":
@@ -413,8 +420,8 @@ func loadUnitFromString(string):
 			trap = true
 		elif parsed[0] == "animation":
 			callv("loadAnimation", parsed[1])
-			$Image.visible = false
-			$AnimatedSprite.visible = true
+			$Resizer/Image.visible = false
+			$Resizer/AnimatedSprite.visible = true
 		elif parsed[0] == "facing":
 			self.facingtype = parsed[1]
 		elif parsed[0] == "lore":
@@ -465,13 +472,13 @@ func deepcopy(other):
 			other.set(name, val);
 		else:
 			pass
-	if $Image.visible:
+	if $Resizer/Image.visible:
 		other.image = self.image
-		other.get_node("AnimatedSprite").visible = false
+		other.get_node("Resizer/AnimatedSprite").visible = false
 	else: 
-		other.get_node("Image").visible = false
-		other.get_node("AnimatedSprite").visible = true
-	other.get_node("AnimatedSprite").frames = $AnimatedSprite.frames
+		other.get_node("Resizer/Image").visible = false
+		other.get_node("Resizer/AnimatedSprite").visible = true
+	other.get_node("Resizer/AnimatedSprite").frames = $Resizer/AnimatedSprite.frames
 	other.controller = self.controller
 	other.updateDisplay()
 	return other	
@@ -483,9 +490,9 @@ func getStrength(amount = 0):
 		ret -= status.frost
 	if status.has("flaming"):
 		ret += status.flaming
-	if status.has("weak"):
-		ret*= .5
-	return ret
+	if status.has("dazzled"):
+		ret*= .66
+	return int(ret)
 func isUnit()->bool:
 	return true
 func changeHealth(amount)-> void:
@@ -509,11 +516,11 @@ func changeHealth(amount)-> void:
 #size (1,1)
 #count (2,3)
 func playAnimation(action):
-	debug = $AnimatedSprite
-	if $AnimatedSprite.frames.has_animation(action):
-		$AnimatedSprite.play(action)
-		if not $AnimatedSprite.frames.get_animation_loop(action):
-			yield($AnimatedSprite,"animation_finished")
+	debug = $Resizer/AnimatedSprite
+	if $Resizer/AnimatedSprite.frames.has_animation(action):
+		$Resizer/AnimatedSprite.play(action)
+		if not $Resizer/AnimatedSprite.frames.get_animation_loop(action):
+			yield($Resizer/AnimatedSprite,"animation_finished")
 			playAnimation("idle")
 		
 func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
@@ -529,7 +536,7 @@ func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 			f.atlas = tex
 			f.region = Rect2(size.x*x, size.y*y, size.x, size.y)
 			sheet.append(f)
-	var frames = $AnimatedSprite.frames
+	var frames = $Resizer/AnimatedSprite.frames
 	frames.add_animation(action)
 	for frame in sheetframes:
 		frames.add_frame(action,sheet[frame])
@@ -538,21 +545,21 @@ func loadAnimation(action,file, sheetframes,size,count,animspeed=1,loop=false):
 		frames.set_animation_loop(action,true)
 	else:
 		frames.set_animation_loop(action,false)
-	$AnimatedSprite.frames = frames
-	debug = $AnimatedSprite
+	$Resizer/AnimatedSprite.frames = frames
+	debug = $Resizer/AnimatedSprite
 func facing(angle):
 	if facingtype[0] == "none":
 		return
 	if facingtype[0] == "flip":
 		if angle < PI/2 or angle > 3*PI/2 :
-			$Image.scale = Vector2(-1*_imagescale,_imagescale)
-			$AnimatedSprite.scale = Vector2(-1*_imagescale,_imagescale)
+			$Resizer/Image.scale = Vector2(-1*_imagescale,_imagescale)
+			$Resizer/AnimatedSprite.scale = Vector2(-1*_imagescale,_imagescale)
 		else:
-			$Image.scale = Vector2(_imagescale,_imagescale)
-			$AnimatedSprite.scale = Vector2(_imagescale,_imagescale)
+			$Resizer/Image.scale = Vector2(_imagescale,_imagescale)
+			$Resizer/AnimatedSprite.scale = Vector2(_imagescale,_imagescale)
 	elif facingtype[0] == "topdown":
-		$Image.rotation = angle + PI/2
-		$AnimatedSprite.rotation = angle+ PI/2
+		$Resizer/Image.rotation = angle + PI/2
+		$Resizer/AnimatedSprite.rotation = angle+ PI/2
 
 
 func _on_HoverRect_mouse_entered() -> void:

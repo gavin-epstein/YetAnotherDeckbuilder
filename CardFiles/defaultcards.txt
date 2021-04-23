@@ -103,7 +103,7 @@ cost(-);
 text("On Reaction: Heal 2, shuffle this back into your reaction pile");
 removetrigger(endofturn, true, 0);
 rarity(0)
-#art-heart
+image("res://Images/CardArt/Endure.png") 
 
 title("Scratch")
 types(starter, reaction)
