@@ -196,7 +196,7 @@ strength(0)
 $turncount=0
 $Block=3
 trigger(turn,if( ($turncount=0), (do(addBlock( (do(select((all,(any),"name:Moss"),1,tile))), $Block)))))
-trigger(turn,if( ($turncount=1), (cardDo(create("Toxic Spores",Reaction)))))
+trigger(turn,if( ($turncount=1), (cardDo(create("Toxic Spores",Reaction,self)))))
 trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
@@ -296,7 +296,7 @@ speed(2);
 status(hardenedcarapace,true)
 trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
 trigger(turn,if( ($Intent=Debuff),(do(addArmor(self,1)))));
-trigger(turn,if( ($Intent=Debuff),(cardDo(create("Dazed",Deck)))));
+trigger(turn,if( ($Intent=Debuff),(cardDo(create("Dazed",Deck,self)))));
 trigger(turn,do(setVar(self,Intent,(random(Attack,Debuff)))))
 image("res://Images/UnitArt/RockNautilus.png")
 
@@ -349,7 +349,7 @@ health(15)
 strength(4)
 $turncount=0
 trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self, friendly)))))
-trigger(turn,if( ($turncount=0), (cardDo(create("Sear",Play)))))
+trigger(turn,if( ($turncount=0), (cardDo(create("Sear",Play,self)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/GrillSpider.png")
