@@ -19,7 +19,7 @@ func updateDisplay():
 			card.base_z = 0
 		get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 	else:
-		var startx= 130
+		var startx= 100
 		var x = startx
 		var y = 100
 		var dispcards = cards.duplicate()

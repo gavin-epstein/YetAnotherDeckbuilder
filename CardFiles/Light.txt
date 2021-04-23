@@ -99,3 +99,6 @@ modifiers(retain);
 rarity(3);
 text("Deal (getDamage($ModDamage)) damage, range $Range. While in play when you gain energy increase this cards damage by thrice that amount until played again")
 image("res://Images/CardArt/SwordofLight.png");
+
+#Lightspeed: on gainenergy, move
+#Blast: X damage to all enemies in range x

@@ -13,8 +13,8 @@ Ashes not voiding a card
 #Dark deeds not reducing cost
 fireball has some issues
 ?knife sharpener not working
-?Knives in the dark triggering but not creating cards
-?Piercing damage
+#Knives in the dark triggering but not creating cards
+#Piercing damage
 #cheese grater not attacking
 #wind blast does not attack
 #knife drawer hitting every card

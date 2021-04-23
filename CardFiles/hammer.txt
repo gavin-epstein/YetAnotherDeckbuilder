@@ -75,9 +75,9 @@ types(hammer,shadow);
 $Increment=1
 rarity(2)
 $Card=null
-trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost<0),true)),"Pick a card to upgrade")))))
+trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost>0),true)),"Pick a card to upgrade")))))
 trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
-trigger(onPlay,do(setVar($Card,Cost,BaseCost)))
+trigger(onPlay,do(addVar($Card,Cost,(*,-1,$Increment))))
 trigger(onPlay,do(purge(self)));
 text("Decrease the cost of a card by 1.\nPurge");
 removetrigger(endofturn, true, 0);

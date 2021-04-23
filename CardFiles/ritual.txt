@@ -86,16 +86,17 @@ cost(1)
 types(ritual, summon)
 $RitualCount=7
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-trigger(onRemoveFromPlay,do(voided(self, Discard)))
-trigger(play,if((count(Play, ritual) > $RitualCount), (do(summon("Imp",(any),1)))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(summon("Imp",(any),1)))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 text("When you have $RitualCount ritual cards in play, void this and summon an Imp");
 rarity(1)
 image("res://Images/CardArt/SummoningRitual.png")
 
 title("Secrecy")
 types(ritual)
-text("At the end of your turn gain block equal to the number of ritual cards in play");
-trigger(endofturn,block( (count(Play,ritual))))
+$Block=2
+text("At the end of your turn gain block equal to $Block times the number of ritual cards in play");
+trigger(endofturn,do(block((*,$Block, (count(Play,ritual))))))
 removetrigger(endofturn,true,5);
 cost(2);
 rarity(7);
@@ -106,7 +107,7 @@ types(ritual, attack, shadow)
 cost(2)
 $Damage=16
 $Range=2
-trigger(onPlay, if( (countNames(Play,"Light Whispers")=1),(do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick a card to 0 cost")),Cost,0)))))
+trigger(onPlay, if( (countNames(Play,"Light Whispers")=1),(do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)),Cost,0)))))
 trigger(onPlay, do(damage($Damage,(ritual),(any),$Range)))
 trigger(onPlay, do(create("Light Whispers",Deck)))
 trigger(onRemoveFromPlay,do(purge(self)))

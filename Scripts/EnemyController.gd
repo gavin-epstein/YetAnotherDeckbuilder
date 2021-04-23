@@ -379,7 +379,7 @@ func clearAllStatuses(tiles = "Player"):
 func Lose(enemy):
 	yield(get_tree().create_timer(.5),"timeout")
 	if enemy !=null:
-		var image = enemy.get_node("Image").texture
+		var image = enemy.get_node("Resizer/Image").texture
 		get_node("/root/global").lossImage = image
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
