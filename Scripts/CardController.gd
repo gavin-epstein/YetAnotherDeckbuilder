@@ -54,7 +54,10 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		#Deck.add_card(Library.getCardByName("Butter"))
+#		#Test Cards
+#		Deck.add_card(Library.getCardByName("Secrecy"))
+#		Deck.add_card(Library.getCardByName("Sifting Breath"))
+#		Deck.add_card(Library.getCardByName("Windmill"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -72,11 +75,11 @@ func draw(x)->bool:
 	for i in range(x):
 
 		if Hand.is_full():
-			return i==0
+			return i!=0
 
 		if Deck.size() == 0:
 			if Discard.size() ==0:
-				return i==0
+				return i!=0
 			else:
 				Action("reshuffle",[])
 		var card = Deck.getCard(0)
