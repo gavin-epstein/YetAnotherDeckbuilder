@@ -257,23 +257,32 @@ func printFocus():
 	if focusStack.size() >0:
 		print("FocusStack: ", str(focusStack))
 	lastfocus = focus
-func create(card, loc,silent=false):
+func create(card, loc,spawner=null,silent=false):
 	loc = get_node(loc)
-	var added
+	var added: Node2D
 	if card is String:
 		added = Library.getCardByName(card)
 	else:
 		added = cardtemplate.instance();
 		card.deepcopy(added)
+	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		add_child(added)
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
+		added.updateDisplay()
+		added.set_process(false)
+		yield(get_tree().create_timer(.1),"timeout")
+		added.set_process(true)
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
 		triggerAll("onCreate",[added,loc])
 	return added
-func createByMod(modifiers, loc,silent=false):
+func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
-	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
 		triggerAll("onCreate",[added,loc])

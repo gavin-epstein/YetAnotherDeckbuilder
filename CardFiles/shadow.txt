@@ -24,7 +24,7 @@ rarity(10)
 title(Shadow Self);
 $Times=3
 cost(0)
-trigger(onPlay, repeat( (do(createByMod((shadow),Hand))),$Times))
+trigger(onPlay, repeat( (do(createByMod((shadow),Hand,self))),$Times))
 removetrigger(endofturn,true,1)
 types(shadow)
 text("Add $Times random shadows to your hand")
@@ -143,7 +143,7 @@ image("res://Images/CardArt/SleightOfHand.png");
 title(Wheel of Darkness);
 types(shadow,mechanical)
 cost(1);
-trigger(startofturn, do(createByMod((shadow),Hand)))
+trigger(startofturn, do(createByMod((shadow),Hand,self)))
 text("At the start of your turn, add a shadow to your hand")
 rarity(6);
 removetrigger(endofturn,true,10);
@@ -151,8 +151,8 @@ removetrigger(endofturn,true,10);
 title(Knives in the Dark)
 types(knife,shadow)
 cost(1)
-trigger(onCreate,if((hasModifier(argv[0],kitchenknife)),(do(createByMod((shadow),Hand,true)))));
-trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife),Hand,true)))));
+trigger(onCreate,if((hasModifier(argv[0],kitchenknife)),(do(createByMod((shadow),Hand,self,true)))));
+trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife),Hand,self,true)))));
 text("When you create a shadow, also get a kitchen knife, and vice versa")
 removetrigger(onCreate,(+,(hasModifier(argv[0],kitchenknife)),(hasModifier(argv[0],shadow))),10);
 rarity(2)
@@ -167,7 +167,7 @@ $CardTotal=7
 $CardsPlayed=7
 trigger(onPlay, do(damage, ($Damage,(shadow,piercing),(any),$Range)));
 removetrigger(endofturn,true,1)
-trigger(play, do(addVar(self,$CardsPlayed,-1)))
+trigger(play, do(addVar(self,CardsPlayed,-1)))
 trigger(play, if(($CardsPlayed=0),(do(addVar(self,Damage,$Increment)))));
 trigger(play, if(($CardsPlayed=0),(do(move, (Play, Discard, self)))));
 trigger(play, if(($CardsPlayed=0),(do(setVar( self, CardsPlayed,$CardTotal)))))
