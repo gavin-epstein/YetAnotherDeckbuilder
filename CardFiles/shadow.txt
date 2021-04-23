@@ -148,7 +148,32 @@ text("At the start of your turn, add a shadow to your hand")
 rarity(6);
 removetrigger(endofturn,true,10);
 
-#light and shadow - energy per shadow card
-#Knives in the dark : make a kitchen knife, get a shadow. Make a shadow get a kitchen knife
+title(Knives in the Dark)
+types(knife,shadow)
+cost(1)
+trigger(onCreate,if((hasModifier(argv[0],kitchenknife)),(do(createByMod((shadow),Hand,self,true)))));
+trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife),Hand,self,true)))));
+text("When you create a shadow, also get a kitchen knife, and vice versa")
+removetrigger(onCreate,(+,(hasModifier(argv[0],kitchenknife)),(hasModifier(argv[0],shadow))),10);
+rarity(2)
 
+title(Piercing Root);
+types(shadow, fungal,attack);
+cost(0);
+$Range=2
+$Damage=1
+$Increment=4
+$CardTotal=7
+$CardsPlayed=7
+trigger(onPlay, do(damage, ($Damage,(shadow,piercing),(any),$Range)));
+removetrigger(endofturn,true,1)
+trigger(play, do(addVar(self,CardsPlayed,-1)))
+trigger(play, if(($CardsPlayed=0),(do(addVar(self,Damage,$Increment)))));
+trigger(play, if(($CardsPlayed=0),(do(move, (Play, Discard, self)))));
+trigger(play, if(($CardsPlayed=0),(do(setVar( self, CardsPlayed,$CardTotal)))))
+trigger(onRemoveFromPlay, do(setVar( self, CardsPlayed,$CardTotal)))
+rarity(4)
+text("Deal $Damage piercing shadow damage range $Range. If you play $CardsPlayed more cards this turn, increase this cards damage by $Increment and discard it from play")
+
+#light and shadow - energy per shadow card
 

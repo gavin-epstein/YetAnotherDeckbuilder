@@ -2,36 +2,34 @@
 Null units showing up in unit list
     They are successfully being ignored
 
-#card 1 in hand onclick not working well
-#    not focus problem?
-#    has do do with resizing, clicks aren't registering when resized
-#    ##?? Control nodes(text) stealing mouse input?
     
 cleansing water not working?
     Cleansing water select is broken
 
 #Traps render behind
 
-?renewal not voiding other cards
+#renewal not voiding other cards
 Ashes not voiding a card
-Dark deeds light whispers not activating part 2
+#Dark deeds not reducing cost
 fireball has some issues
 ?knife sharpener not working
-cheese grater not attacking
+#Knives in the dark triggering but not creating cards
+#Piercing damage
+#cheese grater not attacking
 #wind blast does not attack
 #knife drawer hitting every card
-endure disappearing
+#endure disappearing
 #push shadow select range is 0?
-when first card has retain, no discarding
+#when first card has retain, no discarding
 
 input not allowed nonsense
-#Void eating a tile is causing dissapearance, not death just for playe bc its checking units and player not in untis
 
-?save quit crashes if not done loading
+
+#save quit crashes if not done loading
 ?lifelink units gaining health on save reload
 plants/background images for different biomes, (naturally spawning traps)
 
-#tutorial back button
+laggy when opening cardpile and theres a lot there
 
 Almanac that can be accessed any time
 
@@ -39,18 +37,9 @@ Almanac that can be accessed any time
 
 Open in center of screen
 
-#zoom and scroll on map
-
-#zoom and tooltips on cards
-#multitile units should be able to move through themselves
-#Consumed tile should be telegraphed
-
-#Ehh i think it's fine
-#    tile backgrounds coords based on map coords not screencoords
-#    or add a viewport for the map, so that they change on shift but not scroll
 
 title screen warnings for save not found, save will be erased
-random damage shouldnt hit friends. Aoe and targeted should
+#random damage shouldnt hit friends. Aoe and targeted should
 
 #multitile entities spawning is fucked. They arent ending up on the tiles
 #multitile enities mouseover

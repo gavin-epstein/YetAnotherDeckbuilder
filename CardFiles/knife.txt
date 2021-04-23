@@ -3,7 +3,7 @@ cost("1");
 types(knife);
 text("When you gain block add a random kitchen knife to your hand");
 rarity(4);
-trigger(block,do(createByMod,(("kitchenknife"), Hand)));
+trigger(block,do(createByMod,(("kitchenknife"), Hand,self)));
 removetrigger(block,true,4);
 image("res://Images/CardArt/knifeBlock.png")
 
@@ -52,7 +52,7 @@ cost("0");
 $Block=4
 types(knife)
 trigger(onPlay,do(block($Block)));
-trigger(onPlay,do(createByMod,(("kitchenknife"), Hand)));
+trigger(onPlay,do(createByMod,(("kitchenknife"), Hand,self)));
 removetrigger(endofturn, true, 1);
 text("Gain $Block block and add a random kitchen knife to your hand");
 rarity(7);

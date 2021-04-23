@@ -31,3 +31,14 @@ removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 rarity(3);
 image("res://Images/CardArt/Soup.png")
+
+title("Potion of Light");
+cost(0);
+rarity(2);
+$Energy=4
+trigger(onPlay,do(gainEnergy($Energy)));
+text("Gain $Energy energy.Retain. Purge")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion,retain);
+types(wind,potion);

@@ -54,7 +54,10 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
-		#Deck.add_card(Library.getCardByName("Stoneskin"))
+#		#Test Cards
+#		Deck.add_card(Library.getCardByName("Secrecy"))
+#		Deck.add_card(Library.getCardByName("Sifting Breath"))
+#		Deck.add_card(Library.getCardByName("Windmill"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -72,11 +75,11 @@ func draw(x)->bool:
 	for i in range(x):
 
 		if Hand.is_full():
-			return i==0
+			return i!=0
 
 		if Deck.size() == 0:
 			if Discard.size() ==0:
-				return i==0
+				return i!=0
 			else:
 				Action("reshuffle",[])
 		var card = Deck.getCard(0)
@@ -112,6 +115,7 @@ func play(card)->bool:
 		Energy = 0
 	if cost is int:
 		Energy -= cost
+	
 	lastPlayed = card
 	#forceFocus(self)
 	card.mouseon= false
@@ -121,6 +125,7 @@ func play(card)->bool:
 	var results = card.Triggered("onPlay",[card])
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
+	setVar(card,"Cost",getVar(card,"BaseCost"))
 	updateDisplay()
 	#releaseFocus(self)
 	inputAllowed = true
@@ -205,7 +210,7 @@ func cardreward(rarity, count):
 func purge(card):
 	if card == null:
 		return false
-	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card):
+	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
 		card.queue_free()
 		return true
@@ -245,7 +250,7 @@ func forceFocus(item):
 	printFocus()
 	return true
 func printFocus():
-	#return
+	return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -255,24 +260,35 @@ func printFocus():
 	if focusStack.size() >0:
 		print("FocusStack: ", str(focusStack))
 	lastfocus = focus
-func create(card, loc):
+func create(card, loc,spawner=null,silent=false):
 	loc = get_node(loc)
-	var added
+	var added: Node2D
 	if card is String:
 		added = Library.getCardByName(card)
 	else:
 		added = cardtemplate.instance();
 		card.deepcopy(added)
+	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		add_child(added)
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
+		added.updateDisplay()
+		added.set_process(false)
+		yield(get_tree().create_timer(.1),"timeout")
+		added.set_process(true)
 	loc.add_card(added)
 	added.updateDisplay()
-	triggerAll("onCreate",[added,loc])
+	if not silent:
+		triggerAll("onCreate",[added,loc])
 	return added
-func createByMod(modifiers, loc):
+func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
-	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
-	triggerAll("onCreate",[added,loc])
+	if not silent:
+		triggerAll("onCreate",[added,loc])
 	return added
 	
 func gainEnergy(num):
@@ -530,7 +546,7 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 				enemyController.move(enemy.occupants[0],dest)
 func heal(amount):
 	enemyController.heal(enemyController.Player,amount)
-
+	return true
 
 func summon(unitName, targets, distance,tile="Player") :
 	var terrains
@@ -660,3 +676,8 @@ func displayReaction(card):
 	displaycard.moveTo(get_node("Reaction/AnimatedSprite").position- Vector2(100,200), Vector2(.2,.2 ))
 	yield(get_tree().create_timer(1),"timeout")
 	displaycard.queue_free()
+func addhandsize(amount):
+	if not amount is int:
+		return false
+	Hand.maxHandSize+=amount
+	return true

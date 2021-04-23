@@ -16,3 +16,5 @@ stunned:Stunned:Unit skips its turn
 trap:Terrain:Does not block movement, triggers its effect if a unit ends its turn here
 lootless:Emptyhanded:Does not drop loot on death
 stoneskin:Stone Skin:Block is not removed
+dazzled:Dazzled:Strength is reduced by 33 percent
+corruption:Corrupt:The next time this unit moves or is moved it takes damage equal to the stacks of corrupt and clears all corrupt.
