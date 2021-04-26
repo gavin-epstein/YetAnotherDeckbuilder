@@ -100,5 +100,21 @@ rarity(3);
 text("Deal (getDamage($ModDamage)) damage, range $Range. While in play when you gain energy increase this cards damage by thrice that amount until played again")
 image("res://Images/CardArt/SwordofLight.png");
 
-#Lightspeed: on gainenergy, move
-#Blast: X damage to all enemies in range x
+title("Lightspeed")
+cost(1)
+$Move=1
+types(light,movement)
+trigger(gainEnergy,do(movePlayer( $Move)));
+removetrigger(gainEnergy,true,5);
+text("When you gain energy, move $Move")
+rarity(2);
+
+title("Smite")
+cost(X)
+$X="X"
+types(light, attack)
+text(Deal X light damage to all enemies in range X)
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+trigger(onPlay, do(damage ($X,(light),(all),$X)));
+removetrigger(endofturn,true,2);
+rarity(3);

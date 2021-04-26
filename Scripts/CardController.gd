@@ -348,7 +348,7 @@ func select(loc, predicate,message,num = 1,random=false):
 			card.highlight()
 			selectcount+=1
 	print("selectcount: " + str(selectcount))	
-	if random: #random
+	if random and num is int: #random
 		var possible = []
 		for card in loc.cards:
 			if card.highlighted:
