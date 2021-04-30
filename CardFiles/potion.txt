@@ -42,3 +42,4 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 types(wind,potion);
+image("res://Images/CardArt/PotionOfLight.png")

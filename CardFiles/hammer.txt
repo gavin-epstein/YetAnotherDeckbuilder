@@ -88,9 +88,25 @@ cost(1);
 types(hammer);
 $Block=2
 $Increment=3
-rarity(1);
+rarity(3);
 trigger(onPlay,do(block($Block)));
 trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Block)),"Pick a card to upgrade")),Block,$Increment)));
 trigger(onPlay,do(purge(self)));
 text("Gain $Block block, then permanently add $Increment block to a block card play.\nPurge");
 removetrigger(endofturn, true, 0);
+
+title("Double-headed Hammer")
+cost(1);
+types(hammer);
+rarity(2);
+text("Copy a card in your hand")
+trigger(onPlay, do(create( (select(Hand,true,"Pick a card to copy")),Hand  )))
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn, true, 0);
+
+#Multihammer - the next 3 hammers you play add a copy to your hand
+#hammer machine - make lots of hammers
+#wrecking ball - purge your deck
+#Autohammer - extend turns in play by 2
+#Smithy - when you play a hammer gain 4 block
+#Movement hammer

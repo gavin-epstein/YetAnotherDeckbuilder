@@ -14,6 +14,13 @@ func display(caller):
 	$Panel.visible=true
 	oldinputallowed = get_parent().inputAllowed
 	get_parent().inputAllowed = false
+	var vertsize = caller.cards.size()*(240/8)
+	$Panel/VScrollBar.value = 0
+	if vertsize > 900:
+		$Panel/VScrollBar.visible=true
+		$Panel/VScrollBar.max_value = vertsize
+	else:
+		$Panel/VScrollBar.visible=false
 	
 func _on_Resume_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("left_click")):
