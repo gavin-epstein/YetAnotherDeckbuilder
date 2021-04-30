@@ -216,7 +216,7 @@ func getTerrainColor(terrain:int) -> Vector2:
 func on_MapArea_input_event( event: InputEvent) -> void:
 	if acceptinput and event.is_action_pressed("left_click"):
 		
-		if cardController.takeFocus(self):
+		#if cardController.takeFocus(self):
 			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
 			print(selectableNodes.size())
 			if selectableNodes.size() > 0:
@@ -228,11 +228,11 @@ func on_MapArea_input_event( event: InputEvent) -> void:
 				if closest.highlighted:
 					selectedNode = closest
 					
-					cardController.releaseFocus(self)
+					#cardController.releaseFocus(self)
 					emit_signal("nodeSelected")
 					return
-			else:
-				cardController.releaseFocus(self)
+			#else:
+			#	cardController.releaseFocus(self)
 
 func doPhysics(time): 
 	print("Physics going")
@@ -258,7 +258,7 @@ func destroyNodeAndSpawn(node):
 	doPhysics(3)
 	
 	
-func getTiles(tile,dist:int,property,terrains):
+func getTiles(tile,dist:int,property,terrains,canfly=false,hitsstealth=false):
 	if tile == null:
 		return []
 	var possible
@@ -281,11 +281,11 @@ func getTiles(tile,dist:int,property,terrains):
 				possible.append(next)
 			if next.dist < dist:
 				for neigh in next.neighs:
-					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null and not (property== "empty" and neigh.occupants.size() >0):
+					if not (neigh.sentinel and neigh.occupants.size() ==0) and neigh.dist  == null and not (property== "empty" and not canfly and neigh.occupants.size() >0):
 						neigh.dist = next.dist+1
 						q.append(neigh)
 	for node in possible:
-		if node.hasTerrain(terrains) and node.hasOccupant(property) and not (node.sentinel and node.occupants.size() == 0):
+		if node.hasTerrain(terrains) and node.hasOccupant(property,hitsstealth) and not (node.sentinel and node.occupants.size() == 0):
 			node.highlight()
 			selectableNodes.append(node)
 	if selectableNodes.size() ==0:
@@ -293,8 +293,8 @@ func getTiles(tile,dist:int,property,terrains):
 		#assert(false, "Implement this case")
 	
 	
-func select(tile,dist,property,terrains, message):
-	getTiles(tile,dist,property,terrains)
+func select(tile,dist,property,terrains, message,canfly=false,hitsstealth=false):
+	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	if selectableNodes.size()==0:
 		return null
 	#elif selectableNodes.size()==1:
@@ -309,16 +309,16 @@ func select(tile,dist,property,terrains, message):
 		node.dehighlight()
 	acceptinput = false
 	return selectedNode
-func selectRandom(tile,dist,property,terrains):
-	getTiles(tile,dist,property,terrains)
+func selectRandom(tile,dist,property,terrains,canfly=false,hitsstealth=false):
+	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	for node in selectableNodes:
 		node.dehighlight()
 	if selectableNodes.size()==0:
 		return null
 	return selectableNodes[randi()%selectableNodes.size()]
 	
-func selectAll(tile,dist,property,terrains):
-	getTiles(tile,dist,property,terrains)
+func selectAll(tile,dist,property,terrains,canfly=false,hitsstealth=false):
+	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	for node in selectableNodes:
 		node.dehighlight()
 	return selectableNodes

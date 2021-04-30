@@ -86,11 +86,21 @@ $Range=3
 text(purge all unplayable cards in hand, deal $Damage damage range $Range for each card purged)
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
-trigger(onPlay,do(Loopcard,(select(hand, (hasModifier(self, unplayable)),"-",all)),(do (purge($Loopcard )))))
+trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (purge($Loopcard )))))
 trigger(onPlay, if( ($cardnumber>0),(do(damage($Damage,(earth),(any),$Range)))))
-trigger(onPlay, if( ($cardnumber>1),(do(repeat( (do(damage($Damage,(earth),(lastTargets),$Range ))),$cardnumber)))))
+trigger(onPlay, if( ($cardnumber>1),(repeat( (do(damage($Damage,(earth),(lastTargets),$Range ))),(+,-1,$cardnumber)))))
 removetrigger(endofturn,true,1);
 rarity(7);
 
-#Pyroclastic flow. void unplayable cards, deal short range aoe damage for each
-
+title(Pyroclastic Flow)
+cost(1)
+types(earth,fire, attack)
+$Damage=7
+$Range=1
+text(void all unplayable cards in hand, deal $Damage damage to all adjacent enemies for each card voided)
+removetrigger(endofturn, true,2)
+trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
+trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (voided($Loopcard, Hand )))))
+trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(earth,fire),(all),$Range ))),$cardnumber))))
+removetrigger(endofturn,true,1);
+rarity(7);

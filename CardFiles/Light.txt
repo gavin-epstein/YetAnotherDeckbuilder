@@ -62,6 +62,7 @@ removetrigger(endofturn,true,1);
 text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
 types(light,reaction);
 rarity(7);
+image("res://Images/CardArt/GlowingBlood.png")
 
 title(Black Lettuce);
 text("Gain $Energy energy.\nVoid.");
@@ -112,9 +113,10 @@ rarity(2);
 title("Smite")
 cost(X)
 $X="X"
+$Damage=3
 types(light, attack)
-text(Deal X light damage to all enemies in range X)
+text(Deal $Damage X light damage to all enemies in range X)
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
-trigger(onPlay, do(damage ($X,(light),(all),$X)));
+trigger(onPlay, do(damage ( (*,$Damage,$X),(light),(all),$X)));
 removetrigger(endofturn,true,2);
 rarity(3);

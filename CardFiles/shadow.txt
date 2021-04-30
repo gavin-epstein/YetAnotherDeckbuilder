@@ -41,6 +41,7 @@ trigger(onPlay, do(purge(self)))
 text("Draw $Draw, purge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/flutteringshadow.png");
 
 title(Violent Shadow);
 cost(0)
@@ -53,6 +54,7 @@ removetrigger(endofturn,true,0)
 text("Deal $Damage damage, range $Range.\npurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/violentshadow.png");
 
 title(Stoic Shadow);
 cost(0)
@@ -64,6 +66,7 @@ removetrigger(endofturn,true,0)
 text("Block $Block.\npurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/stoicshadow.png");
 
 title(Clouded Shadow);
 cost(0)
@@ -75,6 +78,7 @@ removetrigger(endofturn,true,0)
 text("Discard a card.\nPurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/cloudedshadow.png");
 
 title(Burning Shadow);
 cost(0)
@@ -86,6 +90,7 @@ trigger(onPlay, do(purge(self)))
 text("Void a card from your hand.\nPurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/burningshadow.png");
 
 title(Repulsive Shadow);
 cost(0)
@@ -97,6 +102,7 @@ trigger(onPlay, do(purge(self)))
 text("Push an adjacent unit.\nPurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/repulsiveshadow.png");
 
 title(Rapid Shadow);
 cost(0)
@@ -108,6 +114,7 @@ trigger(onPlay, do(purge(self)))
 text("Move 1.\nPurge")
 modifiers(shadow)
 rarity(0)
+image("res://Images/CardArt/rapidshadow.png");
 
 title(After Image);
 cost(1)
