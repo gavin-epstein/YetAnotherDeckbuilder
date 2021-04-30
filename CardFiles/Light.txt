@@ -85,6 +85,7 @@ types(light,wind)
 text("Draw $Draw, gain $Energy energy")
 removetrigger(endofturn,true,2)
 rarity(6)
+image("res://Images/CardArt/lightBreeze.png")
 
 title(Sword of Light);
 cost(1);

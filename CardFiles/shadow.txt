@@ -154,6 +154,7 @@ trigger(startofturn, do(createByMod((shadow),Hand)))
 text("At the start of your turn, add a shadow to your hand")
 rarity(6);
 removetrigger(endofturn,true,10);
+image("res://Images/CardArt/WheelOfDarkness.png");
 
 title(Knives in the Dark)
 types(knife,shadow)
