@@ -100,12 +100,20 @@ func endTest():
 	
 func setVar(card, varname, amount):
 	#print("set " + varname + " to " + str(amount) + " on " + card.title)
-	if card == null:
+	if card is Array:
+		if card.size()==0:
+			return false
+		card = card[0]
+	if card == null :
 		return false
 	card.vars["$" + varname] = amount
 	return true
 func addVar(card, varname, amount):
-	if card == null:
+	if card is Array:
+		if card.size()==0:
+			return false
+		card = card[0]
+	if card == null :
 		return false
 	if card.vars.has("$"  +varname):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount

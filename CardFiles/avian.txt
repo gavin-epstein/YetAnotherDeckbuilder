@@ -79,3 +79,5 @@ text("Summon a hen on an adjacent tile");
 removetrigger(endofturn, true, 3);
 types(avian, summon);
 rarity(6);
+
+

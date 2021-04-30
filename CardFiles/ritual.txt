@@ -85,7 +85,7 @@ title("Ritual Summons")
 cost(1)
 types(ritual, summon)
 $RitualCount=7
-removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+removetrigger(play, (count(Play, ritual) > (+,1,$RitualCount)), 1);
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(summon("Imp",(any),1)))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 text("When you have $RitualCount ritual cards in play, void this and summon an Imp");

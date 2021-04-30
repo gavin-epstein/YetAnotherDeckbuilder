@@ -62,6 +62,7 @@ removetrigger(endofturn,true,1);
 text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
 types(light,reaction);
 rarity(7);
+image("res://Images/CardArt/GlowingBlood.png")
 
 title(Black Lettuce);
 text("Gain $Energy energy.\nVoid.");
@@ -84,6 +85,7 @@ types(light,wind)
 text("Draw $Draw, gain $Energy energy")
 removetrigger(endofturn,true,2)
 rarity(6)
+image("res://Images/CardArt/lightBreeze.png")
 
 title(Sword of Light);
 cost(1);
@@ -100,5 +102,22 @@ rarity(3);
 text("Deal (getDamage($ModDamage)) damage, range $Range. While in play when you gain energy increase this cards damage by thrice that amount until played again")
 image("res://Images/CardArt/SwordofLight.png");
 
-#Lightspeed: on gainenergy, move
-#Blast: X damage to all enemies in range x
+title("Lightspeed")
+cost(1)
+$Move=1
+types(light,movement)
+trigger(gainEnergy,do(movePlayer( $Move)));
+removetrigger(gainEnergy,true,5);
+text("When you gain energy, move $Move")
+rarity(2);
+
+title("Smite")
+cost(X)
+$X="X"
+$Damage=3
+types(light, attack)
+text(Deal $Damage X light damage to all enemies in range X)
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+trigger(onPlay, do(damage ( (*,$Damage,$X),(light),(all),$X)));
+removetrigger(endofturn,true,2);
+rarity(3);

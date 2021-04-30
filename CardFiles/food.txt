@@ -24,3 +24,4 @@ rarity(3)
 interrupt(block,do(heal(argv[0])))
 types(food);
 removetrigger(endofturn,true,5);
+image("res://Images/CardArt/butter.png")

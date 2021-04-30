@@ -82,14 +82,14 @@ func hasTerrain(terrains):
 		elif t == Utility.interpretTerrain(terrain):
 			return true
 	return false
-func hasOccupant(occupant):
+func hasOccupant(occupant,hitstealth=false):
 	if occupant == "any":
 		return true
 	elif occupant == "empty" and occupants.size() == 0:
 		return true
 	else:
 		for thing in occupants:
-			if thing!=null and  thing.hasProperty(occupant):
+			if thing!=null and  thing.hasProperty(occupant) and (hitstealth or not thing.hasProperty("stealth") ):
 				return true
 	return false
 func highlight():

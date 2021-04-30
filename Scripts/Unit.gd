@@ -489,7 +489,9 @@ func getStrength(amount = 0):
 	if status.has("frost"):
 		ret -= status.frost
 	if status.has("flaming"):
-		ret += status.flaming
+		ret += 2*status.flaming
+	if status.has("rage"):
+		ret+=status.rage
 	if status.has("dazzled"):
 		ret*= .66
 	return int(ret)
