@@ -55,9 +55,9 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-#		Deck.add_card(Library.getCardByName("Secrecy"))
-#		Deck.add_card(Library.getCardByName("Sifting Breath"))
-#		Deck.add_card(Library.getCardByName("Windmill"))
+		Deck.add_card(Library.getCardByName("Ritual Summons"))
+		for _i in range(7):
+			Deck.add_card(Library.getCardByName("Ritual Components"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -335,6 +335,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		
 		releaseFocus(self)
+		
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
@@ -433,7 +434,7 @@ func cardClicked(card):
 	
 func movePlayer(dist,terrains = ["any"]):
 	forceFocus(map)
-	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to");
+	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to",true);
 	if tile is GDScriptFunctionState:
 		tile = yield(tile, "completed")
 	if tile == null:
@@ -456,7 +457,7 @@ func selectTiles(targets, distance, tile):
 		for _i in range(int(targets[0])):
 			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
 	elif targets[0] == "all":	
-		enemies = map.selectAll(tile,distance,targets[2],targets[1])
+		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,false)
 	elif targets[0]=="any":
 		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
 		if enemy is GDScriptFunctionState:

@@ -1,6 +1,6 @@
 bleed:Bleed: At the start of turn, take damage equal to stacks
 hardenedcarapace:Hardened Carapace: When losing armor, gain 2 block per armor lost
-flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to burn
+flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to twice burn
 lifelink:Life Link: This unit shares health with all other units of the same name
 friendly:Friendly: You and your allies
 sting:Sting: Unit cannot heal
@@ -18,3 +18,6 @@ lootless:Emptyhanded:Does not drop loot on death
 stoneskin:Stone Skin:Block is not removed
 dazzled:Dazzled:Strength is reduced by 33 percent
 corruption:Corrupt:The next time this unit moves or is moved it takes damage equal to the stacks of corrupt and clears all corrupt.
+stealth:Stealth:This unit can not be hit by targeted and random attacks and effects.
+rage:Rage:Rage adds 1 strength per stack
+boss:Boss:This unit is a boss

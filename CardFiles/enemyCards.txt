@@ -35,7 +35,6 @@ title("Ouch!")
 types(evil)
 cost(-);
 removetrigger(endofturn,true,0)
-modifiers(unplayable)
 trigger(onVoided, do(heal(-3),true))
 trigger(onVoided, do(purge(self)))
 text("When voided: purge this and lose 3 health. Otherwise Purge")
