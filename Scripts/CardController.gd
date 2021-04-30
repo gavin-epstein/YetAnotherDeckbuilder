@@ -55,9 +55,10 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		Deck.add_card(Library.getCardByName("Ritual Summons"))
-		for _i in range(7):
-			Deck.add_card(Library.getCardByName("Ritual Components"))
+		#Deck.add_card(Library.getCardByName("Whirlwind"))
+		#Deck.add_card(Library.getCardByName("Altostratus"))
+		#Deck.add_card(Library.getCardByName("Altostratus"))
+		#Deck.add_card(Library.getCardByName("Altostratus"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -171,10 +172,15 @@ func setEnergy(num):
 	return true
 func discardAll(silent = false):
 	var ind =0;
-	while Hand.cards.size() >ind:
+	var backind = Hand.cards.size()
+	while backind >ind:
 		var card = Hand.cards[ind]
 		if not card.modifiers.has("retain"):
 			Action("discard", [card, silent], silent);
+			#Dealing with altostratus
+			
+			backind-=1
+			
 		else:
 			card.Triggered("onRetain",[card])
 			if card in Hand.cards:
