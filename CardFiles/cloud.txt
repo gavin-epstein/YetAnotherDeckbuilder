@@ -108,3 +108,5 @@ rarity(3);
 types(cloud,fire,movement);
 
 #Discard a card, gain an armor per type it has
+#cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded
+#Dust: earth cloud, wind?:  on discard draw 2 unplayable
