@@ -25,3 +25,7 @@ interrupt(block,do(heal(argv[0])))
 types(food);
 removetrigger(endofturn,true,5);
 image("res://Images/CardArt/butter.png")
+
+#when you overheal gain maxhealth then take damage
+
+#when you heal, gain thorns
