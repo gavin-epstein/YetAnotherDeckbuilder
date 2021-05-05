@@ -60,9 +60,13 @@ difficulty(0)
 health(200)
 speed(0)
 range(0)
+$BossesSummoned=0
 trigger(onSummon,do(addArmor(self,10)))
 trigger(consume, do(gainMaxHealth(self,1)))
 trigger(voidshift, do(clearAllStatuses(tile)))
+trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(do(setStatus(tile,stealth,true))))))
+trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(cardDo(purge( (cardDo( )))))))#purge void from play, need to add cardSelect to enemycontroller
+trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(cardDo(create("Void of Silence","Play"))))))
 image("res://Images/UnitArt/void.png")
 status(immovable, true)
 status(boss,true)
