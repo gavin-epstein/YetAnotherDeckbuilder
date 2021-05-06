@@ -61,12 +61,15 @@ health(200)
 speed(0)
 range(0)
 $BossesSummoned=0
+$BossBreakpoint=100
 trigger(onSummon,do(addArmor(self,10)))
 trigger(consume, do(gainMaxHealth(self,1)))
 trigger(voidshift, do(clearAllStatuses(tile)))
-trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(do(setStatus(tile,stealth,true))))))
-trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(cardDo(purge( (cardDo( )))))))#purge void from play, need to add cardSelect to enemycontroller
-trigger(damaged, if( ($BossesSummoned<1) ,(if (getStatus(tile,health)<100),(cardDo(create("Void of Silence","Play"))))))
+trigger(damaged, if( ($BossesSummoned<1) ,(if (((do(getStatus(tile,health)))<$BossBreakpoint),(do(spawnMiniBoss()))))))
+trigger(spawnMiniBoss,do(setStatus(tile,stealth,true)))
+trigger(spawnMiniBoss,cardDo(purge( (selectCards(Play,(hasModifier(self,void)),"-",1,true)))))
+trigger(spawnMiniBoss,cardDo(create("Void of Silence","Play")))
+trigger(spawnMiniBoss,do(addVar(self,BossesSummoned,1)))
 image("res://Images/UnitArt/void.png")
 status(immovable, true)
 status(boss,true)
@@ -107,6 +110,7 @@ speed(0)
 range(0)
 health(5)
 image("res://Images/UnitArt/boombloom.png")
+lore(This plant uses the sulfur rich soil of its native biome to synthesize explosive compounds.) 
 status(lootless, true)
 
 name("Anomalocaris")
@@ -386,4 +390,30 @@ trigger(onSummon,do(addArmor(self,2)))
 trigger(turn, do(MoveAndAttack(self,friendly)))
 image("res://Images/UnitArt/FrogWarrior.png")
 
+name("Queen Orla")
+spawnable(none)
+difficulty(44)
+strength(15);
+range(30);
+health(45);
+speed(1);
+status(boss,true);
+$Intent=push
+trigger(turn,if( ($Intent=root), (do(addStatus( ( select( (all,(any),friendly),50,tile) ) ,entangled,2)))))
+trigger(turn,if( ($Intent=attack),  (do(MoveAndAttack(self,friendly)))))
+trigger(turn,if( ($Intent=push),  (cardDo(moveUnits( (all,(any),friendly),50,tile,away,1)))))
+trigger(turn,do(setVar(self,Intent,(random(root,attack,push)))))
+trigger(turn,if( (do(hasProperty(Player,entangled))) ,(do(setVar(self,Intent,attack)))))
+image("res://Images/UnitArt/catqueen.png")
+
+name("Cactus Wren")
+spawnable(none)
+difficulty(0)
+strength(1)
+health(3)
+speed(2)
+status(friendly,true)
+trigger(turn,do(addStatus((selectTiles( (all,(any),friendly&-thorns),1,tile)),thorns,5)))
+trigger(turn,do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/CactusWren.png")
 

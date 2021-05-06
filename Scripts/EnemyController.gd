@@ -7,6 +7,7 @@ var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var voidNext
+var boss1
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
 func Load(parent):
@@ -17,6 +18,7 @@ func Load(parent):
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
+	boss1 = Utility.choice(["Queen Orla"])
 func countDifficulty():
 	totaldifficulty = 0
 	for _i in units.count(null):
@@ -107,7 +109,7 @@ func move(unit, node):
 	if unit ==null or node == null:
 		return false
 	unit.facing((node.position - unit.position).angle())
-	if not node.sentinel and not unit.status.has("immovable"):
+	if not node.sentinel and not (unit.status.has("immovable") or unit.status.has("entangled")):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
 		if not unit.trap:
@@ -335,20 +337,7 @@ func addStatus(tile, statname, val):
 	for tile in units:
 		if tile.occupants.size() > 0:
 			tile.occupants[0].addStatus(statname, val)
-func getStatus(tile, statname) -> int:
-	if tile == null:
-		return 0
-	var units
-	if not tile is Array:
-		units = [tile]
-	else:
-		units= tile
-	var sum = 0
-	for tile in units:
-		if tile.occupants.size() > 0:
-			var val = tile.occupants[0].getStatus(statname)
-			sum += val
-	return sum
+
 func clearAllStatuses(tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
@@ -386,7 +375,12 @@ func pickConsumed():
 	else:
 		theVoid.links[0].setup(theVoid,consumed,theVoid)
 	cardController.consumed = consumed
-
+func spawnMiniBoss():
+	print("spawn call")
+	if getVar(theVoid,"BossesSummoned")==0:
+		print("spawn attempt")
+		Summon(selectTiles( [1 ,["any"], "empty"],1, theVoid.tile ), boss1)
+		return true
 func save()->Dictionary:
 	var saveunits=[]
 	for unit in units:
@@ -422,7 +416,9 @@ func loadFromSave(save:Dictionary, parent):
 	
 	voidNext = map.nodes[int(save.voidNext)]
 	theVoid = units[int(save.theVoid)]
-
+#For backwards complatibility
+func select(targets, distance, tile):
+	return selectTiles(targets, distance, tile)
 func testAllUnits():
 	Summon( map.getRandomEmptyNode(["any"]), "Chameleon Knight")
 #	for unitname in $UnitLibrary.units:

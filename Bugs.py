@@ -3,8 +3,9 @@ Null units showing up in unit list
     They are successfully being ignored
 
     
-cleansing water not working?
-    Cleansing water select is broken
+make status tick down happen at start of player turn always
+add health bar
+add boss loot
 
 #Traps render behind
 
