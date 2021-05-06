@@ -179,7 +179,7 @@ func execute(code, argv):
 		elif code[0] == "enemyDo":
 			res = controller.enemyController.Action(code[1][0], args, silence)
 		elif code[0] == "cardDo":
-			res = controller.enemyController.cardController.Action(code[1][0], args, silence)
+			res = controller.cardController.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
 		return res

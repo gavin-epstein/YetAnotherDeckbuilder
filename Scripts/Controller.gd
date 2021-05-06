@@ -130,7 +130,7 @@ func getVar(card, varname):
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
 	
-	loc = get_node(loc)
+	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
 		if card.processArgs(predicate, []):
@@ -223,7 +223,6 @@ func cardClicked(card):
 	
 func selectTiles(targets, distance, tile):
 	#Let them choose on the map, but not play another card
-	
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
 	cardController.forceFocus(map)
@@ -234,7 +233,7 @@ func selectTiles(targets, distance, tile):
 		for _i in range(int(targets[0])):
 			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
 	elif targets[0] == "all":	
-		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,false)
+		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,true)
 	elif targets[0]=="any":
 		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
 		if enemy is GDScriptFunctionState:
@@ -253,3 +252,31 @@ func selectTiles(targets, distance, tile):
 	cardController.releaseFocus(map)
 	return enemies
 	
+func hasProperty(tile, prop, mode="or"):
+	if tile ==null or tile is Array and tile ==[]:
+		return false
+	if not tile is Array:
+		tile = [tile]
+	for thing in tile:
+		if thing is GridNode:
+			if thing.hasOccupant(prop):
+				if mode=="or":
+					return true
+			else:
+				if mode == "and":
+					return false
+	return mode == "and"
+func getStatus(tile, statname) -> int:
+	if tile == null:
+		return 0
+	var units
+	if not tile is Array:
+		units = [tile]
+	else:
+		units= tile
+	var sum = 0
+	for tile in units:
+		if tile.occupants.size() > 0:
+			var val = tile.occupants[0].getStatus(statname)
+			sum += val
+	return sum

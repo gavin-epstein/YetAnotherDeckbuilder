@@ -171,6 +171,8 @@ func setEnergy(num):
 	$Energy.updateDisplay()
 	return true
 func discardAll(silent = false):
+	if Hand.cards.size()==0:
+		return false
 	var ind =0;
 	var backind = Hand.cards.size()
 	while backind >ind:
@@ -185,6 +187,8 @@ func discardAll(silent = false):
 			card.Triggered("onRetain",[card])
 			if card in Hand.cards:
 				ind+=1
+			else:
+				backind -=1
 	return true
 	
 func discard(card, silent = false, loc = "Hand"):
@@ -349,6 +353,8 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 
 	
 func movePlayer(dist,terrains = ["any"]):
+	if enemyController.Player.status.has("entangled"):
+		return false
 	forceFocus(map)
 	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to",true);
 	if tile is GDScriptFunctionState:
@@ -416,9 +422,9 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		else:
 			var dir
 			if direction is String and direction == "away":
-				dir = enemy.position - enemyController.Player.tile.position
+				dir = enemy.position - tile.position
 			elif direction is String and direction == "towards":
-				dir = enemyController.Player.tile.position-enemy.position 
+				dir = tile.position-enemy.position 
 			else:
 				dir = Vector2(direction[0],direction[1])
 			var dest = enemy
