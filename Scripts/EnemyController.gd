@@ -2,13 +2,12 @@ extends "res://Scripts/Controller.gd"
 
 var totaldifficulty = 0;
 var maxdifficulty = 6;
-var map
 var units=[]
 var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
-var lastTargets
 var voidNext
+var boss1
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
 func Load(parent):
@@ -19,6 +18,8 @@ func Load(parent):
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
+	boss1 = Utility.choice(["Queen Orla"])
+	
 func countDifficulty():
 	totaldifficulty = 0
 	for _i in units.count(null):
@@ -43,6 +44,8 @@ func addPlayerAndVoid():
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
 	Player.setStatus("stunned",0)
+	get_node("/root/Scene/morahealthbar").unit = Player
+	get_node("/root/Scene/voidhealthbar").unit = theVoid
 	pickConsumed()
 func addUnit(unit, node,head=null):
 	if head == null:
@@ -109,7 +112,7 @@ func move(unit, node):
 	if unit ==null or node == null:
 		return false
 	unit.facing((node.position - unit.position).angle())
-	if not node.sentinel and not unit.status.has("immovable"):
+	if not node.sentinel and not (unit.status.has("immovable") or unit.status.has("entangled")):
 		unit.tile.occupants.erase(unit)
 		unit.tile =  node
 		if not unit.trap:
@@ -266,23 +269,7 @@ func countNames(loc, name) -> int:
 			count+=1
 	return count
 
-func select(targets,distance,tile):
-	if targets[0] is String and targets[0] == "lastTargets":
-		return lastTargets
-	if (tile is String and tile == "Player") or tile == null:
-		tile = enemyController.Player.tile
-	var enemies = []
-	if targets[0] is int:
-		for _i in range(targets[0]):
-			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
-	elif targets[0] == "all":	
-		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,false)
-	elif targets[0]=="splash" and targets.size() >=4:
-		var centers = callv("select",targets[3])
-		for c in centers:
-			enemies += map.selectAll(c,distance,targets[2],targets[1],true,false)
-	lastTargets = enemies
-	return enemies #was enemies[0], but I'm pretty sure it should be an array right?
+
 func getTileInDirection(tile, dir1,dir2=0):
 	if dir1 is Vector2:
 		return map.getTileInDirection(tile, dir1)
@@ -353,20 +340,7 @@ func addStatus(tile, statname, val):
 	for tile in units:
 		if tile.occupants.size() > 0:
 			tile.occupants[0].addStatus(statname, val)
-func getStatus(tile, statname) -> int:
-	if tile == null:
-		return 0
-	var units
-	if not tile is Array:
-		units = [tile]
-	else:
-		units= tile
-	var sum = 0
-	for tile in units:
-		if tile.occupants.size() > 0:
-			var val = tile.occupants[0].getStatus(statname)
-			sum += val
-	return sum
+
 func clearAllStatuses(tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
@@ -404,7 +378,12 @@ func pickConsumed():
 	else:
 		theVoid.links[0].setup(theVoid,consumed,theVoid)
 	cardController.consumed = consumed
-
+func spawnMiniBoss():
+	print("spawn call")
+	if getVar(theVoid,"BossesSummoned")==0:
+		print("spawn attempt")
+		Summon(selectTiles( [1 ,["any"], "empty"],1, theVoid.tile ), boss1)
+		return true
 func save()->Dictionary:
 	var saveunits=[]
 	for unit in units:
@@ -440,7 +419,9 @@ func loadFromSave(save:Dictionary, parent):
 	
 	voidNext = map.nodes[int(save.voidNext)]
 	theVoid = units[int(save.theVoid)]
-
+#For backwards complatibility
+func select(targets, distance, tile):
+	return selectTiles(targets, distance, tile)
 func testAllUnits():
 	Summon( map.getRandomEmptyNode(["any"]), "Chameleon Knight")
 #	for unitname in $UnitLibrary.units:

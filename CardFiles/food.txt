@@ -1,6 +1,6 @@
 title(Carrot Seeds);
 cost(1);
-types(food, summon, plant)
+types(food, summon)
 rarity(4);
 removetrigger(endofturn,true,0);
 text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
@@ -29,3 +29,4 @@ image("res://Images/CardArt/butter.png")
 #when you overheal gain maxhealth then take damage
 
 #when you heal, gain thorns
+#Chomp. deal damage, heal equal to unblocked damage dealt

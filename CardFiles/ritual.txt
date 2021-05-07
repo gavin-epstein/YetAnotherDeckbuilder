@@ -32,7 +32,7 @@ modifiers(unique)
 
 title(Pentaract);
 types(ritual, movement);
-text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and void this card");
+text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and void this card. Cannot be upgraded.");
 removetrigger(endofturn, true, 5);
 trigger(onRemoveFromPlay, do(heal(5)))
 trigger(onRemoveFromPlay, do(block(5)))
@@ -129,3 +129,13 @@ trigger(onRemoveFromPlay,do(purge(self)))
 rarity(4)
 image("res://Images/CardArt/LightWhispers.png")
 text("Gain $Block block. If there is exactly one Dark Deeds in play, also gain $Energy energy. Add a Dark Deeds to your deck. On remove from play, purge")
+
+title("Black Candle")
+$Energy=1
+cost(3)
+trigger(onPlay,do(gainEnergy($Energy)))
+trigger(startofturn,do(gainEnergy($Energy)))
+text("now and at the start of your next $removecount turns gain $Energy energy")
+rarity(6)
+removetrigger(endofturn,true,4)
+types(ritual, light)

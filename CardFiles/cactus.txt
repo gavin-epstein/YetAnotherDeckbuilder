@@ -1,0 +1,18 @@
+title(Prickly Pear)
+types(cactus,food)
+cost(1)
+$Heal=4
+$Thorns=2
+trigger(onPlay,do(heal($Heal)))
+trigger(onPlay,do(addStatus(thorns,$Thorns)))
+text("Heal $Heal . gain $Thorns thorns")
+rarity(7)
+removetrigger(endofturn,true,1)
+
+title(Barrel Cactus)
+types(cactus)
+cost(1)
+trigger(onPlay,do(block( (do(getStatus(Player,thorns ))))))
+text(Gain block equal to your thorns)
+rarity(3)
+removetrigger(endofturn,true,0)
