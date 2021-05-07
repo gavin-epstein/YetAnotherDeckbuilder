@@ -6,22 +6,11 @@ Null units showing up in unit list
 make status tick down happen at start of player turn always
 add health bar
 add boss loot
-
-#Traps render behind
+Hammers are inconsistent
 
 #renewal not voiding other cards
 Ashes not voiding a card
-#Dark deeds not reducing cost
-#fireball has some issues
-#knife sharpener not working
-#Knives in the dark triggering but not creating cards
-#Piercing damage
-#cheese grater not attacking
-#wind blast does not attack
-#knife drawer hitting every card
-#endure disappearing
-#push shadow select range is 0?
-#when first card has retain, no discarding
+
 
 input not allowed nonsense
     Lightspeed+ luminous earth locking out select
@@ -35,9 +24,7 @@ laggy when opening cardpile and theres a lot there
 
 Almanac that can be accessed any time
 
-#Lettering on card/enemies too small
-
-Open in center of screen
+work on pathfinding
 
 
 title screen warnings for save not found, save will be erased

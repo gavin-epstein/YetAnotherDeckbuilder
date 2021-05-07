@@ -3,7 +3,7 @@ text("Deal $Damage shadow slash damage to an adjacent enemy.\n Discard from play
 cost(0);
 trigger(onPlay, do(damage, ($Damage,(shadow,slash),(any),$Range),false))
 trigger(onPlay, do(move, (Play, Discard, self), false));
-types(attack, slash, shadow);
+types(attack, shadow);
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/ShadowSlice.png");
 rarity(7);

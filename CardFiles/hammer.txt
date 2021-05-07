@@ -30,6 +30,7 @@ text("Purge a card in your hand.\nPurge");
 removetrigger(endofturn, true, 0);
 rarity(5)
 cost(1)
+modifiers(hammer)
 
 title("Wind Hammer");
 cost(1);
@@ -79,7 +80,7 @@ trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost>0),true)),"Pick a car
 trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
 trigger(onPlay,do(addVar($Card,Cost,(*,-1,$Increment))))
 trigger(onPlay,do(purge(self)));
-text("Decrease the cost of a card by 1.\nPurge");
+text("Decrease the cost of a card in play by 1.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 
@@ -94,6 +95,7 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Block)),"Pick a card to 
 trigger(onPlay,do(purge(self)));
 text("Gain $Block block, then permanently add $Increment block to a block card play.\nPurge");
 removetrigger(endofturn, true, 0);
+modifiers(hammer)
 
 title("Double-headed Hammer")
 cost(1);
@@ -103,6 +105,40 @@ text("Copy a card in your hand")
 trigger(onPlay, do(create( (select(Hand,true,"Pick a card to copy")),Hand  )))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
+modifiers(hammer)
+
+title("Undying Light")
+cost(0);
+rarity(0);
+$Increment=1
+types(hammer,light)
+text("At the start of every turn gain an extra energy. Purge")
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,EternalEnergy)),"Pick a card to upgrade")),EternalEnergy,$Increment)));
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(bossReward)
+
+title("Eternal Breeze")
+cost(0);
+rarity(0);
+$Increment=1
+types(hammer,wind)
+text("At the start of every turn draw an extra card. Purge")
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,EternalDraw)),"Pick a card to upgrade")),EternalDraw,$Increment)));
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(bossReward)
+
+title("Heroic Feat")
+cost(0);
+rarity(0);
+types(hammer)
+$Increment=2
+text("Permanently gain $Increment strength")
+trigger(onPlay, enemyDo(gainStrength(Player,$Increment)))
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn,true,0);
+modifiers(bossReward)
 
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers
