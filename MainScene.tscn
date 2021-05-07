@@ -1,4 +1,4 @@
-[gd_scene load_steps=390 format=2]
+[gd_scene load_steps=399 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -377,6 +377,11 @@
 [ext_resource path="res://Images/UIArt/Settings.tscn" type="PackedScene" id=375]
 [ext_resource path="res://Scripts/UI/CardPileDisplay.gd" type="Script" id=376]
 [ext_resource path="res://Scripts/LoadingBar.shader" type="Shader" id=377]
+[ext_resource path="res://Images/UIArt/morahead.png" type="Texture" id=378]
+[ext_resource path="res://Images/UIArt/VerticalHealthBar.shader" type="Shader" id=379]
+[ext_resource path="res://Scripts/UI/VerticalHealthBar.gd" type="Script" id=380]
+[ext_resource path="res://Images/UIArt/voidhead.png" type="Texture" id=381]
+[ext_resource path="res://Images/UIArt/bossIcons/Queen Orla.png" type="Texture" id=382]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -459,6 +464,42 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
+[sub_resource type="ShaderMaterial" id=15]
+shader = ExtResource( 379 )
+shader_param/speed = 1.0
+shader_param/xdir = -2.7
+shader_param/yoffset = 0.0
+shader_param/r = 0.5
+shader_param/g = 0.41
+shader_param/b = 0.215
+
+[sub_resource type="ShaderMaterial" id=16]
+shader = ExtResource( 379 )
+shader_param/speed = 1.0
+shader_param/xdir = 2.7
+shader_param/yoffset = 0.0
+shader_param/r = 1.0
+shader_param/g = 0.82
+shader_param/b = 0.43
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = ExtResource( 379 )
+shader_param/speed = -1.0
+shader_param/xdir = -2.7
+shader_param/yoffset = 0.0
+shader_param/r = 0.05
+shader_param/g = 0.08
+shader_param/b = 0.28
+
+[sub_resource type="ShaderMaterial" id=18]
+shader = ExtResource( 379 )
+shader_param/speed = -1.0
+shader_param/xdir = 2.7
+shader_param/yoffset = 0.0
+shader_param/r = 0.1
+shader_param/g = 0.16
+shader_param/b = 0.56
+
 [node name="Scene" type="Node2D"]
 script = ExtResource( 276 )
 
@@ -513,10 +554,10 @@ __meta__ = {
 }
 
 [node name="MapArea2" type="ColorRect" parent="Center/MapLayer/Map/MeshInstance2D"]
-margin_left = -958.0
-margin_top = -425.0
-margin_right = 963.0
-margin_bottom = 366.0
+margin_left = -959.311
+margin_top = -424.704
+margin_right = 961.689
+margin_bottom = 366.296
 mouse_filter = 1
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
@@ -567,7 +608,7 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 104
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -608,7 +649,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 105
+frame = 84
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -649,7 +690,7 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 104
+frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -713,7 +754,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 23
+frame = 26
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -745,7 +786,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 68
+frame = 47
 playing = true
 script = ExtResource( 264 )
 
@@ -1028,19 +1069,19 @@ scale = Vector2( 0.8, 0.8 )
 
 [node name="ColorRect" type="ColorRect" parent="LoadingBar"]
 material = SubResource( 11 )
-margin_left = -0.994858
-margin_top = -0.994873
-margin_right = 1919.01
-margin_bottom = 1079.01
+margin_left = 0.375503
+margin_top = 0.375427
+margin_right = 1920.38
+margin_bottom = 1080.38
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="LoadingBar/ColorRect"]
-margin_left = 673.305
-margin_top = 619.443
-margin_right = 1388.3
-margin_bottom = 951.443
+margin_left = 799.372
+margin_top = 516.671
+margin_right = 1514.37
+margin_bottom = 848.671
 rect_scale = Vector2( 0.7, 0.7 )
 custom_fonts/normal_font = ExtResource( 133 )
 text = "Loading..."
@@ -1056,6 +1097,146 @@ margin_top = 575.443
 margin_right = 1494.13
 margin_bottom = 811.443
 custom_styles/panel = SubResource( 12 )
+
+[node name="morahealthbar" type="Node2D" parent="."]
+position = Vector2( 41.2652, 111.972 )
+script = ExtResource( 380 )
+
+[node name="Back" type="ColorRect" parent="morahealthbar"]
+margin_right = 60.0
+margin_bottom = 583.0
+color = Color( 0.607843, 0.419608, 0.0196078, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="front1" type="ColorRect" parent="morahealthbar"]
+material = SubResource( 15 )
+margin_top = 234.0
+margin_right = 60.0
+margin_bottom = 587.0
+color = Color( 1, 0.819608, 0.431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="front2" type="ColorRect" parent="morahealthbar"]
+material = SubResource( 16 )
+margin_top = 234.0
+margin_right = 60.0
+margin_bottom = 585.0
+color = Color( 1, 0.819608, 0.431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="morahead" type="Sprite" parent="morahealthbar"]
+position = Vector2( 40.7149, -37.5331 )
+scale = Vector2( 0.053415, 0.053415 )
+texture = ExtResource( 378 )
+
+[node name="maxhealthlabel" type="RichTextLabel" parent="morahealthbar"]
+modulate = Color( 0, 0, 0, 1 )
+margin_right = 298.0
+margin_bottom = 166.0
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]200[/center]"
+text = "200"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currenthealthlabel" type="RichTextLabel" parent="morahealthbar"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 1.0
+margin_top = 234.0
+margin_right = 298.0
+margin_bottom = 413.0
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]200[/center]"
+text = "200"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="voidhealthbar" type="Node2D" parent="."]
+position = Vector2( 1825.27, 113.061 )
+script = ExtResource( 380 )
+
+[node name="Back" type="ColorRect" parent="voidhealthbar"]
+margin_right = 60.0
+margin_bottom = 583.0
+color = Color( 0.0784314, 0.0470588, 0.278431, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="front1" type="ColorRect" parent="voidhealthbar"]
+material = SubResource( 17 )
+margin_top = 234.0
+margin_right = 60.0
+margin_bottom = 587.0
+color = Color( 1, 0.819608, 0.431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="front2" type="ColorRect" parent="voidhealthbar"]
+material = SubResource( 18 )
+margin_top = 142.0
+margin_right = 60.0
+margin_bottom = 585.0
+color = Color( 1, 0.819608, 0.431373, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="bossIcon1" type="Node2D" parent="voidhealthbar"]
+position = Vector2( 0, 168 )
+
+[node name="Queen Orla" type="Sprite" parent="voidhealthbar/bossIcon1"]
+position = Vector2( 29, 26 )
+scale = Vector2( 0.06, 0.06 )
+texture = ExtResource( 382 )
+
+[node name="voidhead" type="Sprite" parent="voidhealthbar"]
+position = Vector2( 24.296, -26.7087 )
+scale = Vector2( 0.053, 0.053 )
+texture = ExtResource( 381 )
+
+[node name="maxhealthlabel" type="RichTextLabel" parent="voidhealthbar"]
+margin_right = 298.0
+margin_bottom = 166.0
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]200[/center]"
+text = "200"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="currenthealthlabel" type="RichTextLabel" parent="voidhealthbar"]
+margin_left = 2.37061
+margin_top = 235.37
+margin_right = 299.371
+margin_bottom = 414.37
+rect_scale = Vector2( 0.2, 0.2 )
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]200[/center]"
+text = "200"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]

@@ -179,7 +179,7 @@ func execute(code, argv):
 		elif code[0] == "enemyDo":
 			res = controller.enemyController.Action(code[1][0], args, silence)
 		elif code[0] == "cardDo":
-			res = controller.enemyController.cardController.Action(code[1][0], args, silence)
+			res = controller.cardController.Action(code[1][0], args, silence)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
 		return res
@@ -233,14 +233,14 @@ func execute(code, argv):
 		if not args[0].has_method("hasVariable"):
 			return false
 		return args[0].hasVariable(args[1])
-	elif code[0] =="select":
+	elif code[0] =="select" or code[0]=="selectCards" or code[0]=="selectTiles":
 		var args = []
 		var arg = processArgs(code[1][0],argv)
 		if arg is GDScriptFunctionState:
 			arg = yield(arg, "completed")
 		
 		args.append(arg)
-		if self.has_method("isCard"):
+		if self.has_method("isCard") or code[0]=="selectCards":
 			arg = code[1][1]
 		else:
 			arg = processArgs(code[1][1],argv)
@@ -254,7 +254,12 @@ func execute(code, argv):
 				if arg is GDScriptFunctionState:
 					arg = yield(arg,"completed")
 				args.append(arg)
-		var ret = controller.callv("select", args)
+				
+		var ret
+		if self.has_method("isCard") or code[0]=="selectCards":
+			ret = controller.callv("selectCards", args)
+		else:
+			ret = controller.callv("selectTiles", args)
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed")
 		return ret
