@@ -19,6 +19,7 @@ func Load(parent):
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	boss1 = Utility.choice(["Queen Orla"])
+	
 func countDifficulty():
 	totaldifficulty = 0
 	for _i in units.count(null):
@@ -43,6 +44,8 @@ func addPlayerAndVoid():
 	addUnit(unit, map.getRandomEmptyNode(["any"]))
 	units.erase(Player)
 	Player.setStatus("stunned",0)
+	get_node("/root/Scene/morahealthbar").unit = Player
+	get_node("/root/Scene/voidhealthbar").unit = theVoid
 	pickConsumed()
 func addUnit(unit, node,head=null):
 	if head == null:

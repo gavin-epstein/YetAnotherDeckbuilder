@@ -297,6 +297,8 @@ func die(attacker):
 			return
 	if self == controller.theVoid:
 			controller.Win()
+	if status.has("boss"):
+		get_parent().cardController.Action("create",["Boss Loot","Hand"])
 	if difficulty > 12:
 		get_parent().cardController.Action("create",["Rare Loot","Hand"])
 	elif difficulty > 7:

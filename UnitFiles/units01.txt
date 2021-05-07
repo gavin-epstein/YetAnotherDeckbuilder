@@ -61,7 +61,7 @@ health(200)
 speed(0)
 range(0)
 $BossesSummoned=0
-$BossBreakpoint=100
+$BossBreakpoint=150
 trigger(onSummon,do(addArmor(self,10)))
 trigger(consume, do(gainMaxHealth(self,1)))
 trigger(voidshift, do(clearAllStatuses(tile)))
@@ -395,10 +395,10 @@ spawnable(none)
 difficulty(44)
 strength(15);
 range(30);
-health(45);
+health(63);
 speed(1);
 status(boss,true);
-$Intent=push
+$Intent=attack
 trigger(turn,if( ($Intent=root), (do(addStatus( ( select( (all,(any),friendly),50,tile) ) ,entangled,2)))))
 trigger(turn,if( ($Intent=attack),  (do(MoveAndAttack(self,friendly)))))
 trigger(turn,if( ($Intent=push),  (cardDo(moveUnits( (all,(any),friendly),50,tile,away,1)))))

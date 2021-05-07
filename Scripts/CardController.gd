@@ -98,7 +98,7 @@ func reshuffle()->bool:
 	Discard.cards = []
 	return true
 func shuffle()->bool:
-	if Deck.size() ==0:
+	if Deck.size()==0:
 		return false
 	Deck.cards.shuffle()
 	return true
@@ -207,16 +207,17 @@ func updateDisplay():
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
 	$Reaction.updateDisplay()
+	get_node("/root/Scene/morahealthbar").updateDisplay()
+	get_node("/root/Scene/voidhealthbar").updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
 		for unit in enemyController.units:
 			if unit !=null:
 				unit.updateDisplay()
 func cardreward(rarity, count):
-	Choice.generateReward(rarity, count)
-	yield(Choice,"cardchosen")
-	return true
-
+		Choice.generateReward(rarity, count)
+		yield(Choice,"cardchosen")
+		return true
 func purge(card):
 	if card == null:
 		return false
@@ -317,7 +318,7 @@ func endofturn():
 	if enemyController.Player==null:
 		enemyController.Lose(null)
 		return false
-	enemyController.maxdifficulty+=.9
+	enemyController.maxdifficulty+=1
 	enemyController.Player.endOfTurn()
 	return true
 
