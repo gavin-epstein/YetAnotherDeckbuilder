@@ -293,7 +293,7 @@ func getTiles(tile,dist:int,property,terrains,canfly=false,hitsstealth=false):
 		#assert(false, "Implement this case")
 	
 	
-func select(tile,dist,property,terrains, message,canfly=false,hitsstealth=false):
+func select(tile,dist,property,terrains, message,canfly=true,hitsstealth=false):
 	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	if selectableNodes.size()==0:
 		return null
@@ -309,7 +309,7 @@ func select(tile,dist,property,terrains, message,canfly=false,hitsstealth=false)
 		node.dehighlight()
 	acceptinput = false
 	return selectedNode
-func selectRandom(tile,dist,property,terrains,canfly=false,hitsstealth=false):
+func selectRandom(tile,dist,property,terrains,canfly=true,hitsstealth=false):
 	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	for node in selectableNodes:
 		node.dehighlight()
@@ -317,7 +317,7 @@ func selectRandom(tile,dist,property,terrains,canfly=false,hitsstealth=false):
 		return null
 	return selectableNodes[randi()%selectableNodes.size()]
 	
-func selectAll(tile,dist,property,terrains,canfly=false,hitsstealth=false):
+func selectAll(tile,dist,property,terrains,canfly=true,hitsstealth=true):
 	getTiles(tile,dist,property,terrains,canfly,hitsstealth)
 	for node in selectableNodes:
 		node.dehighlight()

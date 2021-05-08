@@ -1,7 +1,7 @@
 title("Wind Walker");
 text("When you play a wind card, draw a card for each wind card in play");
 trigger(play, if((hastype(argv[0],wind)),(do(draw,((count(Play, wind))),false))));
-types(wind, enchantment);
+types(wind);
 removetrigger(play,(hastype(argv[0],wind)),6);
 image("res://Images/CardArt/WindWalk.png");
 rarity(1);

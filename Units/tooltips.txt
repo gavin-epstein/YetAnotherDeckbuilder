@@ -4,7 +4,7 @@ flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to twice 
 lifelink:Life Link: This unit shares health with all other units of the same name
 friendly:Friendly: You and your allies
 sting:Sting: Unit cannot heal
-immovable:Immovable
+immovable:Immovable: Unit cannot move or be moved
 expire:Expire: This unit will die or transform when expire runs out
 fuse:Fuse: This unit will explode when fuse runs out. Gains 1 stack of explosive each turn
 explosive:Explosive: On death, deals damage equal to explosive stacks to all adjacent units
@@ -21,3 +21,4 @@ corruption:Corrupt:The next time this unit moves or is moved it takes damage equ
 stealth:Stealth:This unit can not be hit by targeted and random attacks and effects.
 rage:Rage:Rage adds 1 strength per stack
 boss:Boss:This unit is a boss
+entangled:Entangled:This unit cannot move or be moved

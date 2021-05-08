@@ -37,35 +37,48 @@ func clear():
 	
 
 func generateReward(rarity, count = 3):
-	var types = []
-	for card in get_parent().Play.cards:
-		for type in card.types:
-			if not type in bannedtypes:
-				types.append(type)
-	for card in get_parent().Discard.cards:
-		for type in card.types:
-			if not type  in bannedtypes:
-				types.append(type)
-	for card in get_parent().Deck.cards:
-		for type in card.types:
-			if not type  in bannedtypes:
-				types.append(type)
-	for card in get_parent().Hand.cards:
-		for type in card.types:
-			if not type  in bannedtypes:
-				types.append(type)
-	self.cards = []
-	while cards.size() < count:
-		var card  = get_parent().Library.getRandom(rarity, types)
-		var skip = false
-		for other in cards:
-			if other.title == card.title:
-				skip=true
-		if not skip:
-			self.add_card(card)
-	self.visible = true
-	self.updateDisplay()
-
+	if rarity is int:
+		var types = []
+		for card in get_parent().Play.cards:
+			for type in card.types:
+				if not type in bannedtypes:
+					types.append(type)
+		for card in get_parent().Discard.cards:
+			for type in card.types:
+				if not type  in bannedtypes:
+					types.append(type)
+		for card in get_parent().Deck.cards:
+			for type in card.types:
+				if not type  in bannedtypes:
+					types.append(type)
+		for card in get_parent().Hand.cards:
+			for type in card.types:
+				if not type  in bannedtypes:
+					types.append(type)
+		self.cards = []
+		while cards.size() < count:
+			var card  = get_parent().Library.getRandom(rarity, types)
+			var skip = false
+			for other in cards:
+				if other.title == card.title:
+					skip=true
+			if not skip:
+				self.add_card(card)
+		self.visible = true
+		self.updateDisplay()
+	else:
+		var timeout = 0
+		while cards.size() <count and timeout<100:
+			timeout+=1
+			var card  = get_parent().Library.getRandomByModifier([rarity])
+			var skip = false
+			for other in cards:
+				if other.title == card.title:
+					skip=true
+			if not skip:
+				self.add_card(card)
+		self.visible = true
+		self.updateDisplay()
 
 func _on_Area2D_input_event( event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
