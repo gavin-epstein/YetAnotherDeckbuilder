@@ -1,6 +1,5 @@
 extends "res://Scripts/Controller.gd"
 const testmode = false
-signal resumeExecution
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -8,14 +7,13 @@ var Discard
 var Hand
 var Library
 var Choice
+var Reaction
+var Voided
 var Energy
 var inputdelay = 0
 var inputAllowed = true
 var focus
-var selectedCard
-var map
 var lastPlayed
-var lastTargets
 var consumed
 var focusStack=[]
 var lastfocus
@@ -33,6 +31,8 @@ func Load(parent)-> void:
 	Play = get_node("Play")
 	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
+	Reaction = get_node("Reaction")
+	Voided = get_node("Voided")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
@@ -55,10 +55,10 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Whirlwind"))
-		#Deck.add_card(Library.getCardByName("Altostratus"))
-		#Deck.add_card(Library.getCardByName("Altostratus"))
-		#Deck.add_card(Library.getCardByName("Altostratus"))
+		#Deck.add_card(Library.getCardByName("Feather Cloak"))
+		#Deck.add_card(Library.getCardByName("Cactus Wren"))
+		#Deck.add_card(Library.getCardByName("Liftoff"))
+		#Deck.add_card(Library.getCardByName("Birds of a Feather"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -98,7 +98,7 @@ func reshuffle()->bool:
 	Discard.cards = []
 	return true
 func shuffle()->bool:
-	if Deck.size() ==0:
+	if Deck.size()==0:
 		return false
 	Deck.cards.shuffle()
 	return true
@@ -171,6 +171,8 @@ func setEnergy(num):
 	$Energy.updateDisplay()
 	return true
 func discardAll(silent = false):
+	if Hand.cards.size()==0:
+		return false
 	var ind =0;
 	var backind = Hand.cards.size()
 	while backind >ind:
@@ -185,6 +187,8 @@ func discardAll(silent = false):
 			card.Triggered("onRetain",[card])
 			if card in Hand.cards:
 				ind+=1
+			else:
+				backind -=1
 	return true
 	
 func discard(card, silent = false, loc = "Hand"):
@@ -203,16 +207,17 @@ func updateDisplay():
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
 	$Reaction.updateDisplay()
+	get_node("/root/Scene/morahealthbar").updateDisplay()
+	get_node("/root/Scene/voidhealthbar").updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
 		enemyController.Player.updateDisplay()
 		for unit in enemyController.units:
 			if unit !=null:
 				unit.updateDisplay()
 func cardreward(rarity, count):
-	Choice.generateReward(rarity, count)
-	yield(Choice,"cardchosen")
-	return true
-
+		Choice.generateReward(rarity, count)
+		yield(Choice,"cardchosen")
+		return true
 func purge(card):
 	if card == null:
 		return false
@@ -313,7 +318,7 @@ func endofturn():
 	if enemyController.Player==null:
 		enemyController.Lose(null)
 		return false
-	enemyController.maxdifficulty+=.9
+	enemyController.maxdifficulty+=1
 	enemyController.Player.endOfTurn()
 	return true
 
@@ -346,99 +351,11 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
-func select(loc, predicate,message,num = 1,random=false):
-	
-	loc = get_node(loc)
-	var selectcount = 0
-	for card in loc.cards:
-		if card.processArgs(predicate, []):
-			card.highlight()
-			selectcount+=1
-	print("selectcount: " + str(selectcount))	
-	if random and num is int: #random
-		var possible = []
-		for card in loc.cards:
-			if card.highlighted:
-				possible.append(card)
-		
-		var cards  = Utility.choosex(possible,num)
-		if cards.size()==1:
-			cardClicked(cards[0])
-			return cards[0]
-		if cards.size()>0:
-			cardClicked(cards[0])
-		return cards
-	if num is String and num == "all": #all
-		var possible = []
-		for card in loc.cards:
-			if card.highlighted:
-				possible.append(card)
-		if possible.size()>0:
-			cardClicked(possible[0])
-		return possible
-	#otherwise select 1.
-	#if only 1 is available return it
-	if selectcount == 1:
-		for card in loc.cards:
-			if card.highlighted:
-				cardClicked(card)
-				return card
-		print("Selectable Card has Moved?")
-	#if none available, null
-	elif selectcount == 0:
-		return null
-	#if all are the same return the first one
-	else:
-		var prototype = null
-		var alltheSame = true
-		for card in loc.cards:
-			if card.highlighted:
-				if prototype == null:
-					prototype = card
-				else:
-					if not prototype.isIdentical(card):
-						alltheSame = false
-						break
-		if alltheSame:
-			cardClicked(prototype)
-			return prototype
-	#finally, let the player click
-	#inputAllowed = false
-	#forceFocus(null)
-	if loc is CardPile:
-		loc.display()
-		$Message.rect_position= Vector2(376,560)
-	else:
-		$Message.rect_position= Vector2(376,280)
-	selectedCard = null
-	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
-	$Message.visible = true
-	updateDisplay()
-	yield(self, "resumeExecution")
-	#releaseFocus(selectedCard)
-	$Message.visible = false
-	if loc is CardPile:
-		$CardPileDisplay.undisplay()
-	return selectedCard
-func cardClicked(card):
-	selectedCard = card
-	#inputAllowed  = true
-	releaseFocus(card)
-	for card in Hand.cards:
-		card.dehighlight()
-	for card in Play.cards:
-		card.dehighlight()
-	for card in Deck.cards:
-		card.dehighlight()
-	for card in $Reaction.cards:
-		card.dehighlight()
-	for card in $Voided.cards:
-		card.dehighlight()
-	for card in $Discard.cards:
-		card.dehighlight()
-	emit_signal("resumeExecution")
+
 	
 func movePlayer(dist,terrains = ["any"]):
+	if enemyController.Player.status.has("entangled"):
+		return false
 	forceFocus(map)
 	var tile = map.select(enemyController.Player.tile, dist,"empty", terrains,"Pick a tile to move to",true);
 	if tile is GDScriptFunctionState:
@@ -449,38 +366,7 @@ func movePlayer(dist,terrains = ["any"]):
 	enemyController.move(enemyController.Player, tile)
 	releaseFocus(map)
 	return true
-	
-func selectTiles(targets, distance, tile):
-	#Let them choose on the map, but not play another card
-	
-	if targets[0] is String and targets[0] == "lastTargets":
-		return lastTargets
-	forceFocus(map)
-	if (tile is String and tile == "Player") or tile == null:
-		tile = enemyController.Player.tile
-	var enemies = []
-	if targets[0] is int or targets[0] is float:
-		for _i in range(int(targets[0])):
-			enemies.append(map.selectRandom(tile,distance,targets[2],targets[1]))
-	elif targets[0] == "all":	
-		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,false)
-	elif targets[0]=="any":
-		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
-		if enemy is GDScriptFunctionState:
-			enemy = yield(enemy,"completed")
-		if enemy ==null:
-			releaseFocus(map)
-			return []
-		enemies.append(enemy)
-	elif targets[0]=="splash" and targets.size() >=4:
-		var centers = callv("selectTiles",targets[3])
-		if centers is GDScriptFunctionState:
-			centers = yield(centers, "completed")
-		for c in centers:
-			enemies += map.selectAll(c,distance,targets[2],targets[1])
-	lastTargets = enemies
-	releaseFocus(map)
-	return enemies
+
 	
 func damage(amount, types, targets,distance, tile =null):
 	amount=enemyController.Player.getStrength(amount)
@@ -537,9 +423,9 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		else:
 			var dir
 			if direction is String and direction == "away":
-				dir = enemy.position - enemyController.Player.tile.position
+				dir = enemy.position - tile.position
 			elif direction is String and direction == "towards":
-				dir = enemyController.Player.tile.position-enemy.position 
+				dir = tile.position-enemy.position 
 			else:
 				dir = Vector2(direction[0],direction[1])
 			var dest = enemy

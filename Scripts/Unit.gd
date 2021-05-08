@@ -64,7 +64,10 @@ func onSummon(head, silent= false)->void:
 		intents = []
 		$Intent.updateDisplay([],get_parent().get_node("UnitLibrary").intenticons)
 	if self.image!=null:
-		_imagescale = 1000.0/max(image.get_width(), image.get_height())
+		var  imagesize =1000.0
+		if status.has("boss"):
+			imagesize=1400.0
+		_imagescale = imagesize/max(image.get_width(), image.get_height())
 		$Resizer/Image.texture = image
 		$Resizer/Image.scale = Vector2(_imagescale,_imagescale)
 	else:
@@ -72,7 +75,8 @@ func onSummon(head, silent= false)->void:
 		playAnimation("idle")
 	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
-		self.addStatus("stunned",1)
+		if not self.status.has("boss"):
+			self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
@@ -101,6 +105,15 @@ func addHealthBar():
 	updateDisplay()
 	
 func hasProperty(prop:String):
+	#Multi property things. e.g. -player&friendly
+	if prop.find("&")!=-1:
+		var props = prop.split("&")
+		print(str(props))
+		for thing in props:
+			if not self.hasProperty(thing):
+				return false
+		return true
+		
 	var negate = false
 	var ret
 	if prop == "-friendly" and status.has("neutral"):
@@ -110,10 +123,6 @@ func hasProperty(prop:String):
 		prop = prop.substr(1)
 	if prop == 'any' or prop == "exists":
 		ret =true
-	elif prop == "friendly-player":
-		if status.has("friendly") and self!=controller.Player:
-			return true
-		return false
 	elif prop == self.title:
 		ret = true
 	elif status.has(prop):
@@ -290,6 +299,8 @@ func die(attacker):
 			return
 	if self == controller.theVoid:
 			controller.Win()
+	if status.has("boss"):
+		get_parent().cardController.Action("create",["Boss Loot","Hand"])
 	if difficulty > 12:
 		get_parent().cardController.Action("create",["Rare Loot","Hand"])
 	elif difficulty > 7:
@@ -374,9 +385,9 @@ func getStatus(stat)->int:
 			return 0
 		return val
 	var val = status.get(stat)
-	if val==null or val == false:
+	if val==null or val is bool and val == false:
 		return 0
-	if val == true:
+	if val is bool and  val == true:
 		return 1
 	return val
 	
