@@ -399,10 +399,10 @@ health(63);
 speed(1);
 status(boss,true);
 $Intent=attack
+trigger(turn,if( ($Intent=root),  (cardDo(moveUnits( (all,(any),friendly),50,tile,away,1)))))
 trigger(turn,if( ($Intent=root), (do(addStatus( ( select( (all,(any),friendly),50,tile) ) ,entangled,2)))))
 trigger(turn,if( ($Intent=attack),  (do(MoveAndAttack(self,friendly)))))
-trigger(turn,if( ($Intent=push),  (cardDo(moveUnits( (all,(any),friendly),50,tile,away,1)))))
-trigger(turn,do(setVar(self,Intent,(random(root,attack,push)))))
+trigger(turn,do(setVar(self,Intent,(random(root,attack)))))
 trigger(turn,if( (do(hasProperty(Player,entangled))) ,(do(setVar(self,Intent,attack)))))
 image("res://Images/UnitArt/catqueen.png")
 
@@ -413,7 +413,7 @@ strength(1)
 health(3)
 speed(2)
 status(friendly,true)
-trigger(turn,do(addStatus((selectTiles( (all,(any),friendly&-thorns),1,tile)),thorns,5)))
+trigger(turn,do(addStatus((selectTiles( (all,(any),"friendly&-thorns"),1,tile)),thorns,5)))
 trigger(turn,do(MoveAndAttack(self,-friendly)))
 image("res://Images/UnitArt/CactusWren.png")
 
