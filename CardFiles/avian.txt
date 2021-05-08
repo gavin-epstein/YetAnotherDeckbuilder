@@ -12,7 +12,7 @@ title(Feather Cloak);
 types(cloud,avian);
 cost(2);
 $Armor=1
-trigger(onPlay,enemyDo(addArmor( (enemyDo(select((all,(any),"friendly-player"),40,Player) )), $Armor)));
+trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), $Armor)));
 trigger(onDiscard,do(armor,($Armor),false));
 text("On Discard: gain $Armor armor. On Play: give $Armor armor to all allies");
 rarity(5);
@@ -36,14 +36,15 @@ cost(1);
 trigger(onPlay, repeat((do(summon("Barn Swallow",(any),2))) , ( count(Play,avian)) ));  
 trigger(onPlay, do(voided,(self, Play)));
 removetrigger(endofturn, true, 0);
+image("res://Images/CardArt/FlockTogether.png");
 
 title("Birds of a Feather");
 cost(2);
 $CreateCount=0
 $TotalUses=2
 text("Give all friendly units +1/+1. The first $TotalUses times you play this, also add a Flock Together to your hand");
-trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),"friendly&-player"),40,Player))))));
-trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),"friendly&-player"),40,Player))))));
+trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
+trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(create("Flock Together",Hand))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(addVar(self,CreateCount,1)))));
 rarity(1);
@@ -89,11 +90,12 @@ text("Summon a Cactus Wren within range 3. Void");
 removetrigger(endofturn, true, 0);
 types(avian,summon,cactus);
 rarity(2);
+image("res://Images/CardArt/CactusWren.png");
 
 title("Liftoff")
 cost(0);
-trigger(onPlay, do(moveUnits((any,(any),friendly&-player),40,Player,any,40)))
-text("Move any friendly unit to any empty space")
+trigger(onPlay, do(moveUnits((any,(any),"friendly&-Player"),40,Player,any,40)))
+text("Move any ally to any empty space")
 removetrigger(endofturn,true,1);
 types(avian,kinetic)
 rarity(5);

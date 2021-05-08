@@ -311,7 +311,7 @@ func MoveAndAttack(unit,target):
 					Action("move", [nextTile.occupants[0], curTile])
 				else:
 					for neigh in curTile.neighs:
-						if neigh.dist !=null and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
+						if neigh.dist !=null and curTile.dist!=0 and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
 							nextTile = neigh
 							Action("move", [unit, nextTile])
 							break

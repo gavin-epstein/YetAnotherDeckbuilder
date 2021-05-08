@@ -75,7 +75,8 @@ func onSummon(head, silent= false)->void:
 		playAnimation("idle")
 	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
-		self.addStatus("stunned",1)
+		if not self.status.has("boss"):
+			self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
@@ -107,6 +108,7 @@ func hasProperty(prop:String):
 	#Multi property things. e.g. -player&friendly
 	if prop.find("&")!=-1:
 		var props = prop.split("&")
+		print(str(props))
 		for thing in props:
 			if not self.hasProperty(thing):
 				return false
@@ -383,9 +385,9 @@ func getStatus(stat)->int:
 			return 0
 		return val
 	var val = status.get(stat)
-	if val==null or val == false:
+	if val==null or val is bool and val == false:
 		return 0
-	if val == true:
+	if val is bool and  val == true:
 		return 1
 	return val
 	

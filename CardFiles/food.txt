@@ -26,6 +26,14 @@ types(food);
 removetrigger(endofturn,true,5);
 image("res://Images/CardArt/butter.png")
 
+title(Fast Food);
+cost(1);
+text("When you move, heal the same amount");
+types(food,movement);
+removetrigger(movePlayer,true,5);
+trigger(movePlayer,do(heal(argv[0])));
+rarity(4);
+
 #when you overheal gain maxhealth then take damage
 
 #when you heal, gain thorns
