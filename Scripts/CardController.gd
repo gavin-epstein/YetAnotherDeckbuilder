@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-const testmode = false
+const testmode = true
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -55,9 +55,8 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Feather Cloak"))
-		#Deck.add_card(Library.getCardByName("Cactus Wren"))
-		#Deck.add_card(Library.getCardByName("Liftoff"))
+		#Deck.add_card(Library.getCardByName("Fast Food"))
+		#Deck.add_card(Library.getCardByName("Light Whispers"))
 		#Deck.add_card(Library.getCardByName("Birds of a Feather"))
 		shuffle()
 		step = Action("draw",[5])
@@ -76,10 +75,12 @@ func draw(x)->bool:
 	for i in range(x):
 
 		if Hand.is_full():
+			enemyController.Player.say("My Hand is full")
 			return i!=0
 
 		if Deck.size() == 0:
 			if Discard.size() ==0:
+				enemyController.Player.say("No cards to draw")
 				return i!=0
 			else:
 				Action("reshuffle",[])
@@ -110,6 +111,7 @@ func play(card)->bool:
 		return false
 	var cost = getVar(card, "Cost")
 	if cost is int and cost > Energy:
+		enemyController.Player.say("Not enough energy")
 		return false
 	elif cost is String and cost == "X":
 		setVar(card,"X",Energy)
@@ -543,6 +545,7 @@ func loadFromSave(save:Dictionary,parent):
 	Play = get_node("Play")
 	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
+	Reaction = get_node("Reaction")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")

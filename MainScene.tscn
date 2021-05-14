@@ -464,7 +464,7 @@ corner_radius_top_right = 40
 corner_radius_bottom_right = 40
 corner_radius_bottom_left = 40
 
-[sub_resource type="ShaderMaterial" id=15]
+[sub_resource type="ShaderMaterial" id=13]
 shader = ExtResource( 379 )
 shader_param/speed = 1.0
 shader_param/xdir = -2.7
@@ -473,7 +473,7 @@ shader_param/r = 0.5
 shader_param/g = 0.41
 shader_param/b = 0.215
 
-[sub_resource type="ShaderMaterial" id=16]
+[sub_resource type="ShaderMaterial" id=14]
 shader = ExtResource( 379 )
 shader_param/speed = 1.0
 shader_param/xdir = 2.7
@@ -482,7 +482,7 @@ shader_param/r = 1.0
 shader_param/g = 0.82
 shader_param/b = 0.43
 
-[sub_resource type="ShaderMaterial" id=17]
+[sub_resource type="ShaderMaterial" id=15]
 shader = ExtResource( 379 )
 shader_param/speed = -1.0
 shader_param/xdir = -2.7
@@ -491,7 +491,7 @@ shader_param/r = 0.05
 shader_param/g = 0.08
 shader_param/b = 0.28
 
-[sub_resource type="ShaderMaterial" id=18]
+[sub_resource type="ShaderMaterial" id=16]
 shader = ExtResource( 379 )
 shader_param/speed = -1.0
 shader_param/xdir = 2.7
@@ -608,7 +608,6 @@ hotkey = "Reaction"
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -649,7 +648,7 @@ hotkey = "Deck"
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 84
+frame = 1
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -690,7 +689,6 @@ hotkey = "Discard"
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 83
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -754,7 +752,7 @@ hotkey = "Voided"
 position = Vector2( 1690.96, 842.897 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 26
+frame = 76
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -786,7 +784,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 47
+frame = 90
 playing = true
 script = ExtResource( 264 )
 
@@ -1111,7 +1109,7 @@ __meta__ = {
 }
 
 [node name="front1" type="ColorRect" parent="morahealthbar"]
-material = SubResource( 15 )
+material = SubResource( 13 )
 margin_top = 234.0
 margin_right = 60.0
 margin_bottom = 587.0
@@ -1121,7 +1119,7 @@ __meta__ = {
 }
 
 [node name="front2" type="ColorRect" parent="morahealthbar"]
-material = SubResource( 16 )
+material = SubResource( 14 )
 margin_top = 234.0
 margin_right = 60.0
 margin_bottom = 585.0
@@ -1178,7 +1176,7 @@ __meta__ = {
 }
 
 [node name="front1" type="ColorRect" parent="voidhealthbar"]
-material = SubResource( 17 )
+material = SubResource( 15 )
 margin_top = 234.0
 margin_right = 60.0
 margin_bottom = 587.0
@@ -1188,7 +1186,7 @@ __meta__ = {
 }
 
 [node name="front2" type="ColorRect" parent="voidhealthbar"]
-material = SubResource( 18 )
+material = SubResource( 16 )
 margin_top = 142.0
 margin_right = 60.0
 margin_bottom = 585.0
@@ -1200,7 +1198,15 @@ __meta__ = {
 [node name="bossIcon1" type="Node2D" parent="voidhealthbar"]
 position = Vector2( 0, 168 )
 
-[node name="Queen Orla" type="Sprite" parent="voidhealthbar/bossIcon1"]
+[node name="ColorRect" type="ColorRect" parent="voidhealthbar/bossIcon1"]
+margin_right = 60.0
+margin_bottom = 60.0
+color = Color( 0.0117647, 0.0156863, 0.0156863, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="image" type="Sprite" parent="voidhealthbar/bossIcon1"]
 position = Vector2( 29, 26 )
 scale = Vector2( 0.06, 0.06 )
 texture = ExtResource( 382 )

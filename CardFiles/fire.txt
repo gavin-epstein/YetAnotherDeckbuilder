@@ -143,3 +143,4 @@ trigger(play, if( (hasName(argv[0],"Spark")) ,(do(draw($Draw)))))
 rarity(5);
 text("When you play a Spark draw $Draw. Add $Times Sparks to your hand");
 removetrigger(play,(hasName(argv[0],"Spark")),4)
+

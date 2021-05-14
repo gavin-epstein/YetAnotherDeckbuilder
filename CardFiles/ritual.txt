@@ -77,8 +77,8 @@ $RitualCount=7
 $Times=3
 text("When you have $RitualCount ritual cards in play, void this and add $Times random potions to your hand")
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(createByMod((potion),Hand))),$Times))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-trigger(onRemoveFromPlay,do(voided(self, Discard)))
 image("res://Images/CardArt/WitchsCauldron.png")
 
 title("Ritual Summons")
@@ -139,3 +139,14 @@ text("now and at the start of your next $removecount turns gain $Energy energy")
 rarity(6)
 removetrigger(endofturn,true,4)
 types(ritual, light)
+
+title("Ritual of Unburning");
+$RitualCount=5
+types(ritual, fire)
+trigger(play,if((count(Play, ritual) > $RitualCount), (do(devoidAll()))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+text("When you have $RitualCount ritual cards in play, put all cards from your void pile into your discard, then void this");
+rarity(3);
+cost(1);
+

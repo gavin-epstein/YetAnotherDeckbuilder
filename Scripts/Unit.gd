@@ -75,8 +75,8 @@ func onSummon(head, silent= false)->void:
 		playAnimation("idle")
 	if self.head == self and not silent:
 		self.Triggered("onSummon",[])
-		if not self.status.has("boss"):
-			self.addStatus("stunned",1)
+
+		self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
 			components.resize(componentnames.size())
@@ -143,7 +143,8 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
-	
+	if amount >=20 and amount < armor+health+block:
+		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
 	#put out fire
 	if ("water" in types or "ice" in types) and status.has("flaming"):
 		addStatus("flaming",-1)
@@ -653,3 +654,10 @@ func loadFromSave(save:Dictionary):
 func _on_HoverRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		controller.map.on_MapArea_input_event(event) #pass input to map click
+
+func say(text, time = 2):
+	$SpeechBubble/Text.bbcode_enabled = true
+	$SpeechBubble/Text.bbcode_text = "[center]"+text+"[/center]"
+	$SpeechBubble.visible = true
+	yield(get_tree().create_timer(time),"timeout")
+	$SpeechBubble.visible = false
