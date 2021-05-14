@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-const testmode = true
+const testmode = false
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -55,8 +55,8 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Fast Food"))
-		#Deck.add_card(Library.getCardByName("Light Whispers"))
+		#Deck.add_card(Library.getCardByName("Ritual Components"))
+		#Deck.add_card(Library.getCardByName("Ritual of Unburning"))
 		#Deck.add_card(Library.getCardByName("Birds of a Feather"))
 		shuffle()
 		step = Action("draw",[5])
@@ -483,8 +483,8 @@ func triggerAll(trigger, argv):
 	for card in Play.cards:
 		card.Triggered(trigger,argv)
 func devoidAll():
-	for card in $Voided.cards:
-		move("Voided", "Discard",card)
+	while $Voided.cards.size()>0:
+		move("Voided", "Discard",$Voided.cards[0])
 func addStatus(stat, amount, tiles ="Player"):
 	if tiles is String and tiles == "Player":
 		tiles = [enemyController.Player.tile]
