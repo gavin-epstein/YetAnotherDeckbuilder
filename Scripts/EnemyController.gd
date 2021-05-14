@@ -7,6 +7,8 @@ var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var voidNext
+const bossnames = ["Queen Orla", "LORD OF THE SWAMP"]
+const bossicons = ["res://Images/UIArt/bossIcons/Queen Orla.png", "res://Images/UIArt/bossIcons/SwampLord.png"]
 var boss1
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
@@ -18,8 +20,9 @@ func Load(parent):
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
-	boss1 = Utility.choice(["Queen Orla"])
-	
+	var boss = randi()%bossnames.size()
+	boss1 = bossnames[boss]
+	get_node("/root/Scene/voidhealthbar/bossIcon1/image").texture = load(bossicons[boss])
 func countDifficulty():
 	totaldifficulty = 0
 	for _i in units.count(null):
@@ -422,8 +425,22 @@ func loadFromSave(save:Dictionary, parent):
 #For backwards complatibility
 func select(targets, distance, tile):
 	return selectTiles(targets, distance, tile)
+func say(unit, message, time=0):
+	if unit == null:
+		return false
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for tile in units:
+		if time == 0:
+			tile.say(message)
+		else:
+			tile.say(message,time)
+
 func testAllUnits():
-	Summon( map.getRandomEmptyNode(["any"]), "Chameleon Knight")
+	Summon( map.getRandomEmptyNode(["any"]), "LORD OF THE SWAMP")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)
