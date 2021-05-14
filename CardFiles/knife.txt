@@ -47,6 +47,20 @@ modifiers(kitchenknife);
 rarity(0);
 image("res://Images/CardArt/BreadKnife.png")
 
+title("Steak Knife");
+cost("1");
+$Damage=6
+$Range=2
+$Status=2
+types(knife,attack);
+text("Deal $Damage slash damage at $Range range. If the target is bleeding add $Status more bleed. Purge");
+trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range),false));
+trigger(onPlay, if( (do(hasProperty( (do(selectTiles((lastTargets),0,0)))  , bleed))),(do(addStatus(bleed,$Status, (do(selectTiles((lastTargets),0,0)))))))) ;
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(kitchenknife);
+rarity(0);
+
 title("Cutting Board");
 cost("0");
 $Block=4
@@ -69,9 +83,6 @@ text("Deal $Damage damage to a random unit within in $Range tiles $Times times")
 rarity(2);
 image("res://Images/CardArt/CheeseGrater.png")
 removetrigger(endofturn, true, 3);
-
-#Steak knife
-#add 2 bleed if bleeding
 
 title(Knife Drawer);
 cost("2")

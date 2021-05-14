@@ -16,7 +16,7 @@ const testMethods = ["Attack","addArmor","addBlock",
 					"discardAll","cardreward","purge","create",
 					"createByMod","voided","endofturn","startofturn",
 					"movePlayer","damage","moveUnits","summon",
-					"armor","block","consume","addStatus"
+					"armor","block","consume","addStatus","say"
 					]
 const directedmethods= ["setStatus","addStatus"]
 var hits = []

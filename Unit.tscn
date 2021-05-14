@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/Unit.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Intent.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Images/StatusIcons/sting.png" type="Texture" id=9]
 [ext_resource path="res://Images/StatusIcons/immovable.png" type="Texture" id=10]
 [ext_resource path="res://Scripts/Audio.gd" type="Script" id=11]
+[ext_resource path="res://Images/UIArt/speechBubble.png" type="Texture" id=12]
 
 [sub_resource type="Animation" id=1]
 resource_name = "Bob"
@@ -38,7 +39,7 @@ animations = [ {
 } ]
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.196078, 0.196078, 0.196078, 0.411765 )
+bg_color = Color( 0.196078, 0.196078, 0.196078, 0.796078 )
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
@@ -87,12 +88,10 @@ scale = Vector2( 1.00851, 0.991486 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Resizer"]
 position = Vector2( 0, -249.721 )
-scale = Vector2( 1, 1 )
 frames = SubResource( 2 )
 
 [node name="Image" type="Sprite" parent="Resizer"]
 position = Vector2( 0, -249.721 )
-scale = Vector2( 1, 1 )
 texture = ExtResource( 3 )
 
 [node name="Intent" type="Node2D" parent="."]
@@ -100,7 +99,8 @@ scale = Vector2( 0.4, 0.4 )
 script = ExtResource( 2 )
 
 [node name="Attack" type="Sprite" parent="Intent"]
-position = Vector2( -1619.03, -2147.91 )
+position = Vector2( -1614.23, -2147.91 )
+scale = Vector2( 1.0096, 1 )
 texture = ExtResource( 4 )
 
 [node name="Buff" type="Sprite" parent="Intent"]
@@ -211,6 +211,32 @@ __meta__ = {
 position = Vector2( 53.0931, 472.027 )
 scale = Vector2( 0.25, 0.25 )
 texture = ExtResource( 9 )
+
+[node name="SpeechBubble" type="Node2D" parent="."]
+visible = false
+
+[node name="speechBubble" type="Sprite" parent="SpeechBubble"]
+position = Vector2( 724.54, -892.306 )
+texture = ExtResource( 12 )
+
+[node name="Text" type="RichTextLabel" parent="SpeechBubble"]
+margin_left = 361.0
+margin_top = -1164.0
+margin_right = 1445.0
+margin_bottom = -425.0
+rect_scale = Vector2( 0.7, 0.7 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 6 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "Lore: Lorem ipsum dolor sit amet rgs erg esr re ag gafag fwaer fawersg agres waef wef awa f fwef ewfw ea fe feszrg rew resrtdyj hrsesrr ar srgg rggg
+"
+text = "Lore: Lorem ipsum dolor sit amet rgs erg esr re ag gafag fwaer fawersg agres waef wef awa f fwef ewfw ea fe feszrg rew resrtdyj hrsesrr ar srgg rggg
+"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="gui_input" from="HoverRect" to="." method="_on_HoverRect_gui_input"]
 [connection signal="mouse_entered" from="HoverRect" to="." method="_on_HoverRect_mouse_entered"]
 [connection signal="mouse_exited" from="HoverRect" to="." method="_on_HoverRect_mouse_exited"]

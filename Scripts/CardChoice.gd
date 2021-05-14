@@ -56,8 +56,12 @@ func generateReward(rarity, count = 3):
 				if not type  in bannedtypes:
 					types.append(type)
 		self.cards = []
+		var card =  get_parent().Library.getRandomByModifier([])
+		self.add_card(card)
+		
+		print(cards[0])
 		while cards.size() < count:
-			var card  = get_parent().Library.getRandom(rarity, types)
+			card  = get_parent().Library.getRandom(rarity, types)
 			var skip = false
 			for other in cards:
 				if other.title == card.title:

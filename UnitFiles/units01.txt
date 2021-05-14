@@ -146,6 +146,7 @@ trigger(turn,if(($Intent=boom),( do(addStatus($lastTile,explosive,$power))   )))
 trigger(turn,if(($Intent=buff),( do(gainStrength((select((all,(any),"-friendly"),1,tile)),1)))))
 trigger(turn,if(($Intent=buff),( do(gainStrength(tile,1)))))
 trigger(turn,if(($Intent=attack),( do(Attack(self,Player)))))
+trigger(turn,if((random(1,0,0,0,0,0,0,0)>0),(do(say(self,"جЖ٧o آЭعё Gшش.")))))
 trigger(turn,do(setVar(self,Intent,(random(boom,buff,attack)))))
 trigger(turn,do(addVar(self,power,1)))
 
@@ -417,3 +418,18 @@ trigger(turn,do(addStatus((selectTiles( (all,(any),"friendly&-thorns"),1,tile)),
 trigger(turn,do(MoveAndAttack(self,-friendly)))
 image("res://Images/UnitArt/CactusWren.png")
 
+name("LORD OF THE SWAMP");
+spawnable(none)
+difficulty(44);
+strength(14);
+speed(3);
+range(1);
+health(56);
+$turncount=1
+status(boss,true);
+trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
+trigger(turn,if( ($turncount=0), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/SwampLord.png")
