@@ -183,5 +183,12 @@ trigger(onRemoveFromPlay, do(setVar( self, CardsPlayed,$CardTotal)))
 rarity(4)
 text("Deal $Damage piercing shadow damage range $Range. If you play $CardsPlayed more cards this turn, increase this cards damage by $Increment and discard it from play")
 
-#light and shadow - energy per shadow card
+#light and shadow - energy per shadow card in hand
 
+##title("Shadow Step")
+##cost(1);
+##text("Move to a random empty tile adjacent to any enemy you choose")
+##trigger(onPlay, enemyDo(move(Player, (selectTiles( (splash,(any),empty,((any,(any),-friendly),40,Player)),1 ))),true))
+##trigger(onPlay,do(move,0))
+##removetrigger(endofturn,true,1)
+##rarity(5);

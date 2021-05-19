@@ -7,6 +7,7 @@ make status tick down happen at start of player turn always
 add health bar
 add boss loot
 Hammers are inconsistent
+sword of light + parasite
 
 #renewal not voiding other cards
 Ashes not voiding a card
