@@ -75,6 +75,7 @@ def main():
                     # call read text file function
                     read_text_file(file_path,trie,alltypes)
 
+    alltypes.pop("meme");
     for i in range(1):
         pickrandom(trie,alltypes)
 

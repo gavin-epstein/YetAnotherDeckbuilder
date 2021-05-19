@@ -7,8 +7,8 @@ var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
 var voidNext
-const bossnames = ["Queen Orla", "LORD OF THE SWAMP"]
-const bossicons = ["res://Images/UIArt/bossIcons/Queen Orla.png", "res://Images/UIArt/bossIcons/SwampLord.png"]
+const bossnames = ["Queen Orla", "LORD OF THE SWAMP","The Last Automaton"]
+const bossicons = ["res://Images/UIArt/bossIcons/Queen Orla.png", "res://Images/UIArt/bossIcons/SwampLord.png","res://Images/UIArt/bossIcons/Cog.png"]
 var boss1
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
@@ -114,6 +114,10 @@ func move(unit, node):
 			node = node[0]
 	if unit ==null or node == null:
 		return false
+	if unit.has_method("hasOccupant"):
+		if unit.occupants.size==0:
+			return false
+		unit = unit.occupants[0]
 	unit.facing((node.position - unit.position).angle())
 	if not node.sentinel and not (unit.status.has("immovable") or unit.status.has("entangled")):
 		unit.tile.occupants.erase(unit)
@@ -132,7 +136,7 @@ func enemyTurn():
 	for unit in units:
 		unit.startOfTurn()
 	for unit in units:
-		if unit != null and not unit.skipturn:
+		if unit != null and not unit.skipturn and not unit.status.has("stunned"):
 			unit.Triggered("turn",[])
 			yield(get_tree().create_timer(.1), "timeout")
 	for unit in units:
@@ -158,12 +162,16 @@ func Summon(tile, unitname):
 		if empty:
 			var unit = $UnitLibrary.getUnitByName(unitname)		
 			addUnit(unit, tile)
-func Attack(attacker, target):
-	attacker = attacker.head
+func Attack(attacker, target,types = [],damage = -1):
+	if attacker!=null:
+		attacker = attacker.head
 	if target  == null:
 		return false
 	
-
+	if target is Array:
+		for thing in target:
+			Attack(attacker,thing, types, damage)
+		return true
 	if not target.has_method("isUnit"):
 		if target.occupants.size() ==0:
 			return false
@@ -171,17 +179,23 @@ func Attack(attacker, target):
 	target = target.get("head")
 	if target.status.has("stealth"):
 		return false
-	attacker.facing((target.position - attacker.position).angle())
-	target.facing((attacker.position - target.position).angle())
-	var damage = attacker.getStrength()
-	var types = attacker.damagetypes
-	attacker.playAnimation("attack")
+	if attacker!=null:
+		attacker.facing((target.position - attacker.position).angle())
+		target.facing((attacker.position - target.position).angle())
+	if damage < 0 and attacker!=null: 
+		damage = attacker.getStrength()
+	
+	if types.size() ==0 and attacker!=null:
+		 types = attacker.damagetypes
+	if attacker!=null:
+		attacker.playAnimation("attack")
 	target.playAnimation("defend")
 	var res = target.takeDamage(damage, types, attacker)
 	if res is GDScriptFunctionState:
 		res = yield(res, "completed")
 	if res.size() > 1 and res[1] =="kill":
 		attacker.Triggered("slay",[target])
+	return true
 func gainMaxHealth(unit,amount):
 	var units
 	if not unit is Array:
@@ -314,7 +328,7 @@ func MoveAndAttack(unit,target):
 					Action("move", [nextTile.occupants[0], curTile])
 				else:
 					for neigh in curTile.neighs:
-						if neigh.dist !=null and curTile.dist!=0 and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
+						if neigh.dist !=null and curTile.dist!=0  and curTile.dist !=null and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
 							nextTile = neigh
 							Action("move", [unit, nextTile])
 							break
@@ -382,9 +396,7 @@ func pickConsumed():
 		theVoid.links[0].setup(theVoid,consumed,theVoid)
 	cardController.consumed = consumed
 func spawnMiniBoss():
-	print("spawn call")
 	if getVar(theVoid,"BossesSummoned")==0:
-		print("spawn attempt")
 		Summon(selectTiles( [1 ,["any"], "empty"],1, theVoid.tile ), boss1)
 		return true
 func save()->Dictionary:
@@ -440,7 +452,7 @@ func say(unit, message, time=0):
 			tile.say(message,time)
 
 func testAllUnits():
-	Summon( map.getRandomEmptyNode(["any"]), "LORD OF THE SWAMP")
+	Summon( map.getRandomEmptyNode(["any"]), "The Last Automaton")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)

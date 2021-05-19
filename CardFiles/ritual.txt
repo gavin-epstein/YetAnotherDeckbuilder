@@ -150,3 +150,14 @@ text("When you have $RitualCount ritual cards in play, put all cards from your v
 rarity(3);
 cost(1);
 
+title("Ritual of The Earth Mother")
+types(ritual,earth)
+$RitualCount=8
+$CreateCount=3
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Luminous Earth", Draw,self ))),$CreateCount))));
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Dust Devil", Draw,self ))),$CreateCount))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and void this card");
+cost(2);
+rarity(2);
