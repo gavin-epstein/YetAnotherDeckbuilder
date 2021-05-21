@@ -42,6 +42,7 @@ trigger(onPlay,do(createByMod,(("unplayable"), Deck)));
 trigger(onPlay,do(createByMod,(("unplayable"), Hand)));
 trigger(onPlay,do(createByMod,(("unplayable"), Discard)));
 rarity(2)
+image("res://Images/CardArt/Mine.png")
 
 title(Diamond);
 cost(-)
@@ -63,6 +64,7 @@ trigger(onDraw,do(createByMod,(("kitchenknife"), Hand)));
 modifiers(unplayable)
 removetrigger(never, true, 0);
 rarity(3)
+image("res://Images/CardArt/ObsidianKnife.png")
 
 title("Stoneskin")
 cost(1)
@@ -104,3 +106,14 @@ trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-
 trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(earth,fire),(all),$Range ))),$cardnumber))))
 removetrigger(endofturn,true,1);
 rarity(7);
+
+title("Dust Devil");
+cost(-);
+types(earth,wind);
+$Draw=2
+text("On draw, draw $Draw. \nUnplayable");
+rarity(4);
+removetrigger(never, true, 0);
+trigger(onDraw, do(draw,($Draw)));
+modifiers(unplayable);
+

@@ -253,7 +253,6 @@ trigger(turn,if( ($Intent=armor),  (do(addArmor ( ( select( (all,(any),-friendly
 trigger(turn,do(setVar(self,Intent,(random(thorns,armor)))))
 trigger(onDeath,if( ( argv[0]=expire  ), (do (Summon(tile,"Scythe Larva")))));
 image("res://Images/UnitArt/ScytheEgg.png");
-status(lootless, true)
 
 name("Scythe Larva");
 difficulty(12);
@@ -388,6 +387,7 @@ range(1)
 health(1)
 strength(7)
 trigger(onSummon,do(addArmor(self,2)))
+trigger(onSummon,do(say(self,(random("I shall defend the swamp!", "The Order of the Lily Pad stands strong","My honor is unparalleled" )))))
 trigger(turn, do(MoveAndAttack(self,friendly)))
 image("res://Images/UnitArt/FrogWarrior.png")
 
@@ -408,6 +408,7 @@ trigger(turn,if( (do(hasProperty(Player,entangled))) ,(do(setVar(self,Intent,att
 image("res://Images/UnitArt/catqueen.png")
 
 name("Cactus Wren")
+lore("This small bird is light enough that it can perch atop cactus spines without getting pricked")
 spawnable(none)
 difficulty(0)
 strength(1)
@@ -433,3 +434,31 @@ trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/SwampLord.png")
+
+name("Spare Cog")
+spawnable(none);
+difficulty(1);
+strength(3);
+speed(1);
+range(2);
+health(10);
+status(lootless,true);
+trigger(turn, do(MoveAndAttack(self,friendly)))
+image("res://Images/UnitArt/LooseCog.png")
+facing(topdown)
+
+name("The Last Automaton")
+spawnable(none);
+status(boss, true);
+difficulty(44);
+strength(16);
+speed(0);
+range(6);
+health(70);
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), ( do(say(self, (random("HAHA MISSED ME", "COGS, DEFEND ME", "YOU CANNOT REACH ME", "MY MINIONS WILL PROTECT ME")))))))
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(Attack( argv[2],(select((1,(any),"name:Spare Cog"),1,tile)),argv[1],argv[0])))))
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(setVar(self,DamageAmount, 0)))))
+trigger(turn,      if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(Attack(self, Player)))))
+trigger(turn,      if( (! do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))),  (do(Summon( (select((2,("any"),empty),1,tile)),"Spare Cog" )))))                                                                                                      
+trigger(onSummon,  do(Summon((select((1,("any"),empty),1,tile)),"Spare Cog")))
+image("res://Images/UnitArt/Automaton.png")

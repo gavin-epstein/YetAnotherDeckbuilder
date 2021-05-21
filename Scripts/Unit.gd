@@ -143,6 +143,12 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
+	if self.interrupts.has("damaged"):
+		self.vars["$DamageAmount"] = amount
+		self.Interrupts("damaged", [amount,types, attacker])
+		amount = self.vars["$DamageAmount"]
+		if amount == 0:
+			return [0]
 	if amount >=20 and amount < armor+health+block:
 		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
 	#put out fire
@@ -213,7 +219,7 @@ func takeDamage(amount,types, attacker):
 	
 	self.Triggered("damaged",[amount,types,attacker])
 	if health <= 0:
-		get_parent().map.cardController.triggerAll("death",[self,types,attacker])
+		get_parent().cardController.triggerAll("death",[self,types,attacker])
 		if status.has("lifelink"):
 			for unit in get_parent().units:
 				if unit!=null:
@@ -240,12 +246,15 @@ func startOfTurn():
 		skipturn = true
 	else:
 		skipturn = false
-	statusTickDown()
+	if self == controller.Player:
+		statusTickDown()
 	self.Triggered("startofturn",[]);
 func endOfTurn():
 	self.Triggered("endofturn",[]);
 	if self.trap and self.tile.occupants.size() != 0:
 		self.Triggered("trap",[tile.occupants[0]])
+	if self != controller.Player:
+		statusTickDown()
 func statusTickDown():
 	if status.has("fuse") and status.fuse ==1:
 		setStatus("fuse",0)
@@ -403,6 +412,9 @@ func loadUnitFromString(string):
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
+		elif parsed[0]=="interrupt":
+			var trigger = parsed[1]
+			Utility.addtoDict(interrupts,trigger[0],  trigger.slice(1,trigger.size()-1))
 		elif parsed[0] == "image":
 			self.image= load(parsed[1][0])
 		elif parsed[0] == "damagetypes":

@@ -15,7 +15,7 @@ cost(0)
 $Draw=1
 trigger(onPlay,do(draw($Draw)))
 trigger(startofturn,do(draw($Draw)))
-types(shadow,ritual,wind)
+types(shadow,wind)
 text("Now and at the start of your next turn, draw $Draw")
 removetrigger(endofturn,true,2)
 image("res://Images/CardArt/OminousWind.png");
@@ -137,6 +137,7 @@ trigger(play,if(($currentCount=$Count),(do(draw($Draw)))))
 trigger(play,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 removetrigger(endofturn,true,4)
 rarity(4)
+image("res://Images/CardArt/MidnightBreeze.png");
 
 title(Sleight of Hand);
 types(shadow);
@@ -183,5 +184,12 @@ trigger(onRemoveFromPlay, do(setVar( self, CardsPlayed,$CardTotal)))
 rarity(4)
 text("Deal $Damage piercing shadow damage range $Range. If you play $CardsPlayed more cards this turn, increase this cards damage by $Increment and discard it from play")
 
-#light and shadow - energy per shadow card
+title("Shadow Step")
+cost(1);
+text("Move to a random empty tile adjacent to any enemy you choose")
+trigger(onPlay, enemyDo(move(Player, (do(selectTiles( (splash,(any),empty,((any,(any),-friendly),40,Player)),1, Player )))),true))
+trigger(onPlay,do(move,0))
+removetrigger(endofturn,true,1)
+rarity(5);
 
+#light and shadow - energy per shadow card in hand

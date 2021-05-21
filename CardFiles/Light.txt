@@ -97,7 +97,6 @@ trigger(gainEnergy,do(addVar(self,ModDamage,(*,argv[0],3))))
 trigger(onPlay,do(damage, ($ModDamage,(slash),(any),$Range)));
 trigger(onPlay,do(setVar(self, ModDamage,$Damage)));
 removetrigger(endofturn,true,3);
-modifiers(retain);
 rarity(3);
 text("Deal (getDamage($ModDamage)) damage, range $Range. While in play when you gain energy increase this cards damage by thrice that amount until played again")
 image("res://Images/CardArt/SwordofLight.png");

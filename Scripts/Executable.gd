@@ -36,7 +36,7 @@ func Interrupts(method, argv) -> bool:
 		#So do without interrupting should look like
 		#interrupt(method, false)
 		#interrupt(method, do( ... ))
-		print(reslist)
+		#print(reslist)
 		for res in reslist:
 			if res is bool:
 				return res
@@ -212,6 +212,8 @@ func execute(code, argv):
 			args.append(arg)
 		if  args[0] == null or not args[0].has_method("isCard"):
 			return false
+		if args.size()>2:
+			return args[0].hasName(args[1], args[2])
 		return args[0].hasName(args[1])
 	elif code[0] == "hasModifier" or code[0] == "hasmod":
 		var args = []

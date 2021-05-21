@@ -55,9 +55,11 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Ritual Components"))
-		#Deck.add_card(Library.getCardByName("Ritual of Unburning"))
-		#Deck.add_card(Library.getCardByName("Birds of a Feather"))
+	#	Hand.add_card(Library.getCardByName("Ritual of the Earth Mother"))
+	#	for _i in range(10):
+	#		Deck.add_card(Library.getCardByName("Ritual Components"))
+		
+		
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -320,7 +322,7 @@ func endofturn():
 	if enemyController.Player==null:
 		enemyController.Lose(null)
 		return false
-	enemyController.maxdifficulty+=1
+	enemyController.maxdifficulty+=.8
 	enemyController.Player.endOfTurn()
 	return true
 
@@ -442,7 +444,11 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 func heal(amount):
 	enemyController.heal(enemyController.Player,amount)
 	return true
-
+func gainMaxHealth(amount):
+	enemyController.gainMaxHealth(enemyController.Player,amount)
+func unheal(amount):
+	enemyController.heal(enemyController.Player,-1*amount)
+	return true
 func summon(unitName, targets, distance,tile="Player") :
 	var terrains
 	var locs = []
@@ -546,6 +552,7 @@ func loadFromSave(save:Dictionary,parent):
 	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
 	Reaction = get_node("Reaction")
+	Voided = get_node("Voided")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
@@ -557,8 +564,8 @@ func loadFromSave(save:Dictionary,parent):
 	Deck.loadFromSave(save.deck)
 	Discard.loadFromSave(save.discard)
 	Play.loadFromSave(save.play)
-	$Voided.loadFromSave(save.voided)
-	$Reaction.loadFromSave(save.reaction)
+	Voided.loadFromSave(save.voided)
+	Reaction.loadFromSave(save.reaction)
 	print("Energy:" + str(save.energy) + " "+  str(int(save.energy)))
 	Energy = int(save.energy)
 	$Energy.updateDisplay()

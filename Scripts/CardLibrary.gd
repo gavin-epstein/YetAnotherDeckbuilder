@@ -108,14 +108,18 @@ func getRandom(maxRarity:int = 100, types = []):
 		return getRandom(maxRarity)
 	var ret = cardtemplate.instance()
 	return select[CardRng.randi() % select.size()].deepcopy(ret)
-func getRandomByModifier(mods):
+func getRandomByModifier(mods,raritysensitive = false):
 	if mods.size() ==0:
 		mods= ["any"]
 	var select = []
 	for card in cards:
 		for mod in mods:
 			if card.hasModifier(mod):
-				select.append(card)
+				if (!raritysensitive):
+					select.append(card)
+				else:
+					for _waaah in range(card.rarity):
+						select.append(card)
 	var ret = cardtemplate.instance()
 	if select.size() == 0:
 		return false
