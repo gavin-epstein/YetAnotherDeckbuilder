@@ -55,9 +55,11 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Ritual Components"))
-		#Deck.add_card(Library.getCardByName("Ritual of Unburning"))
-		#Deck.add_card(Library.getCardByName("Birds of a Feather"))
+	#	Hand.add_card(Library.getCardByName("Ritual of the Earth Mother"))
+	#	for _i in range(10):
+	#		Deck.add_card(Library.getCardByName("Ritual Components"))
+		
+		
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -442,6 +444,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 func heal(amount):
 	enemyController.heal(enemyController.Player,amount)
 	return true
+func gainMaxHealth(amount):
+	enemyController.gainMaxHealth(enemyController.Player,amount)
 func unheal(amount):
 	enemyController.heal(enemyController.Player,-1*amount)
 	return true

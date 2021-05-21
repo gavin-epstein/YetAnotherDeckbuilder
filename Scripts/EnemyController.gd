@@ -10,6 +10,7 @@ var voidNext
 const bossnames = ["Queen Orla", "LORD OF THE SWAMP","The Last Automaton"]
 const bossicons = ["res://Images/UIArt/bossIcons/Queen Orla.png", "res://Images/UIArt/bossIcons/SwampLord.png","res://Images/UIArt/bossIcons/Cog.png"]
 var boss1
+var boss
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
 func Load(parent):
@@ -20,7 +21,7 @@ func Load(parent):
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
-	var boss = randi()%bossnames.size()
+	boss = randi()%bossnames.size()
 	boss1 = bossnames[boss]
 	get_node("/root/Scene/voidhealthbar/bossIcon1/image").texture = load(bossicons[boss])
 func countDifficulty():
@@ -115,7 +116,7 @@ func move(unit, node):
 	if unit ==null or node == null:
 		return false
 	if unit.has_method("hasOccupant"):
-		if unit.occupants.size==0:
+		if unit.occupants.size()==0:
 			return false
 		unit = unit.occupants[0]
 	unit.facing((node.position - unit.position).angle())
@@ -410,7 +411,9 @@ func save()->Dictionary:
 		"maxdifficulty": maxdifficulty,
 		"player": Player.save(),
 		"voidNext":map.nodes.find(voidNext),
-		"theVoid":units.find(theVoid)
+		"theVoid":units.find(theVoid),
+		"boss":boss,
+		"boss1":boss1
 	}
 func loadFromSave(save:Dictionary, parent):
 	var step = self.Load(parent)
@@ -431,9 +434,14 @@ func loadFromSave(save:Dictionary, parent):
 	Player.scale = unitscale
 	add_child(Player)
 	Player.onSummon(Player,true)
+	boss1 = save.boss1
+	boss = int(save.boss)
 	
 	voidNext = map.nodes[int(save.voidNext)]
 	theVoid = units[int(save.theVoid)]
+	get_node("/root/Scene/morahealthbar").unit = Player
+	get_node("/root/Scene/voidhealthbar").unit = theVoid
+	get_node("/root/Scene/voidhealthbar/bossIcon1/image").texture = load(bossicons[boss])
 #For backwards complatibility
 func select(targets, distance, tile):
 	return selectTiles(targets, distance, tile)
