@@ -61,6 +61,8 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 				else:
 					hits.append(method)
 			else:
+			#	print(method)
+			#	print(argv)
 				res =  self.callv(method, argv)
 				if res is GDScriptFunctionState:
 					res = yield(res,"completed")

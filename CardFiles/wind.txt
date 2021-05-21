@@ -59,3 +59,4 @@ cost(2);
 text("Increase your maximum hand size by 2");
 trigger(onPlay, do(addhandsize(2)));
 rarity(1);
+image("res://Images/CardArt/SacredBreath.png")

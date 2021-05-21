@@ -47,13 +47,15 @@ title(Sausage)
 types(food,blood)
 cost(1);
 $Blood=5
-$dothething=false
+$dothething=0
 $MaxHealth=1
 text("When you would heal but are at full health, gain $MaxHealth max health, then lose $Blood health")
-trigger(heal,if( ( (do(getStatus(Player,"health"))) = (do(getStatus(Player,"maxHealth")))), (do(setVar(self,dothething,true) ))))
-trigger(heal,if($dothething, (enemydo(gainMaxHealth(Player, $MaxHealth)))))
-trigger(heal,if($dothething, do(unheal($Blood))))
-trigger(heal,do(setVar(dothething,false)));
+trigger(heal,if( ( (do(getStatus(Player,"health"))) = (do(getStatus(Player,"maxHealth")))), (do(setVar(self,dothething,1) ))))
+trigger(heal,if( ($dothething>0), (do(gainMaxHealth($MaxHealth)))))
+trigger(heal,if( ($dothething>0), (do(unheal($Blood)))))
+removetrigger(heal, ($dothething>0), 5);
+trigger(heal,do(setVar(self,dothething,0)));
+
 
 title("Vending Machine")
 types(food, mechanical)

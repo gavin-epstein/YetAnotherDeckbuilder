@@ -50,6 +50,7 @@ text("Choose 1 of 3 boss rewards to add to your hand \n purge");
 trigger(onPlay, do(cardreward,("bossReward",3),false));
 trigger(onPlay, do(purge,(self),false));
 removetrigger(endofturn, true, 0)
+image("res://Images/CardArt/bossLoot.png");
 
 title("Dash");
 cost(1);

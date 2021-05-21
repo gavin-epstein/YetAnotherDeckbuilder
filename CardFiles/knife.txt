@@ -60,6 +60,7 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(kitchenknife);
 rarity(0);
+image("res://Images/CardArt/steakknife.png")
 
 title("Cutting Board");
 cost("0");
