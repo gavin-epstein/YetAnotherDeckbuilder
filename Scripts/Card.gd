@@ -61,7 +61,9 @@ func hasType(type)->bool:
 		return true
 	return false
 	
-func hasName(string)->bool:
+func hasName(string, exact=false)->bool:
+	if exact:
+		return self.title.to_lower() == string.to_lower()
 	return self.title.to_lower().find(string.to_lower())!=-1
 	
 func hasModifier(string) -> bool:
@@ -255,9 +257,12 @@ func processText(text):
 				yield(res,"completed")
 			out+=str(res)+" "
 		elif token is String and token[0] =="$":
+			var punct = ""
+			if token[-1] in [".",","]:
+				punct = token[-1]
 			var v = token.rstrip(".,")
 			if v in vars:
-				out += str(vars[v]) + " "
+				out += str(vars[v]) + punct+" "
 		else:
 			out += str(token) + " "
 	return out

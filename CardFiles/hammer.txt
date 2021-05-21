@@ -21,6 +21,7 @@ removetrigger(endofturn, true, 0);
 cost(2);
 modifiers(hammer)
 rarity(1)
+image("res://Images/CardArt/PowerHammer.png")
 
 title("Sledgehammer")
 types(hammer)

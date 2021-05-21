@@ -1,9 +1,10 @@
 title("Golden Blades")
 types(loot,knife)
 cost(1)
-trigger(play, if((hasType(argv[0], loot)),(do(createByMod,(("kitchenknife"), Hand,self)))))
-removetrigger(play,(hasType(argv[0], loot)),7)
+trigger(play, if((hastype(argv[0], loot)),(do(createByMod,(("kitchenknife"), Hand,self)))))
+removetrigger(play,(hastype(argv[0], loot)),7)
 text("When you play a loot card add a random kitchen knife to your hand")
 rarity(2)
 
 #card rewards have +1 card. (deal with boss loot)
+#when you play a loot card, draw 1

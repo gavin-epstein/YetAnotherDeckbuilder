@@ -69,6 +69,7 @@ text("Gain $Energy energy. Increase this card's energy gain by $Increment up to 
 removetrigger(endofturn,true,2);
 types(light,fungal)
 rarity(6)
+image("res://Images/CardArt/Bioluminescence.png");
 
 title("Mycorhizome");
 cost(1);
@@ -80,3 +81,4 @@ removetrigger(endofturn, true, 4);
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(addVar(self,Heal,$Increment)))));
 text("Heal $Heal . While in play, when you draw an unplayable card increase this card heal by $Increment");
 rarity(2);
+image("res://Images/CardArt/Mycorhizome.png");

@@ -19,7 +19,7 @@ func goBack(event:InputEvent):
 func doGoNext(inc=1):
 		get_node(str(curFrame)).visible = false
 		curFrame +=inc
-		if curFrame > 10 or curFrame <0:
+		if curFrame > 11 or curFrame <0:
 			self.queue_free()
 		else:
 			get_node(str(curFrame)).visible = true

@@ -38,6 +38,7 @@ trigger(startofturn,do(draw($Draw)));
 removetrigger(endofturn,true,7);
 cost(2);
 rarity(3);
+image("res://Images/CardArt/Windmill.png")
 
 title("Wind Blast");
 types(wind,attack);
@@ -58,3 +59,4 @@ cost(2);
 text("Increase your maximum hand size by 2");
 trigger(onPlay, do(addhandsize(2)));
 rarity(1);
+image("res://Images/CardArt/SacredBreath.png")
