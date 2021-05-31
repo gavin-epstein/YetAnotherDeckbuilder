@@ -6,6 +6,7 @@ var map
 var selectedCard = null
 var test = false
 var lastTargets= null
+onready var Message = get_node("/root/Scene/Message")
 signal resumeExecution
 const testMethods = ["Attack","addArmor","addBlock",
 					"gainStrength","gainMaxHealth",
@@ -189,20 +190,16 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	#finally, let the player click
 	#inputAllowed = false
 	#forceFocus(null)
-	if loc is CardPile:
-		loc.display()
-		$Message.rect_position= Vector2(376,560)
-	else:
-		$Message.rect_position= Vector2(376,280)
+	
 	selectedCard = null
-	$Message/Message.bbcode_text = "[center]"+message+"[/center]"
-	$Message.visible = true
+	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
+	Message.visible = true
 	cardController.updateDisplay()
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
-	$Message.visible = false
+	Message.visible = false
 	if loc is CardPile:
-		$CardPileDisplay.undisplay()
+		cardController.get_node("CardPileDisplay").undisplay()
 	return selectedCard
 
 func cardClicked(card):
@@ -250,6 +247,8 @@ func selectTiles(targets, distance, tile):
 			centers = yield(centers, "completed")
 		for c in centers:
 			enemies += map.selectAll(c,distance,targets[2],targets[1])
+	elif targets[0]=="direct":
+		enemies = targets[1]
 	lastTargets = enemies
 	cardController.releaseFocus(map)
 	return enemies

@@ -16,3 +16,21 @@ trigger(onPlay,do(block( (do(getStatus(Player,thorns ))))))
 text(Gain block equal to your thorns)
 rarity(3)
 removetrigger(endofturn,true,0)
+
+title(Blood of The Nopal)
+types(cactus, blood)
+cost(2)
+$Thorns=3
+trigger(unheal,do(addStatus(thorns,$Thorns)))
+text("When you lose health, gain $Thorns thorns")
+rarity(3)
+removetrigger(unheal,true,7)
+
+title(Firestick Cactus);
+types(cactus, fire)
+cost(1)
+$Thorns=1
+trigger(voided,do(addStatus(thorns,$Thorns)))
+rarity(6)
+removetrigger(endofturn, true, 5)
+text("When you void a card, gain $Thorns thorns")

@@ -7,6 +7,7 @@ removetrigger(endofturn,true,1);
 rarity(10);
 types(cloud);
 text("Draw $Draw, discard 1");
+image("res://Images/CardArt/Sift.png");
 
 title(Wind Power);
 $Energy=1
@@ -88,7 +89,7 @@ $Damage=4
 $Repeat=3
 $Draw=4
 $Range=2
-trigger(onPlay,do(damage,($Damage,(wind),($Repeat),$Range)));
+trigger(onPlay,do(damage,($Damage,(cloud),($Repeat),$Range)));
 text("Deal $Damage damage to $Repeat random units in range $Range, and discard the top $Draw cards of your deck");
 trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
 types(cloud,attack)
@@ -106,6 +107,34 @@ text("When played: void a card from your hand and increase this cards movement b
 removetrigger(endofturn, true,1);
 rarity(3);
 types(cloud,fire,movement);
+
+title("Cirrus")
+cost(1);
+$Damage=10
+$Draw=1
+types(cloud,reaction,attack);
+text("Add this to your reaction pile. On reaction, counterattack $Damage , draw $Draw , and discard 1")
+trigger(onPlay,do(move(Play,Reaction,self)));
+trigger(onReaction,do(move(Reaction,Play,self)));
+trigger(onReaction, do(damage($Damage, (cloud), (direct, (tile($Attacker))),~)));
+trigger(onReaction, do(draw($Draw)))
+trigger(onReaction, do(discard,((select(Hand,true,"pick a card to discard (Cirrus)"))),false));
+removetrigger(endofturn, true,1);
+rarity(6);
+
+title("Mushroom Cloud")
+types(cloud,fungus,fire,attack)
+cost(0)
+$Damage=2
+$Increment=2
+$Range=2
+text("Deal $Damage fire damage range $Range, then void. On discard add a copy with + $Increment Damage to your hand")
+trigger(onCreate, if ( (argv[0]=self), (do(addVar(self,Damage,$Increment)))))
+trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
+trigger(onPlay,do(voided(self, Play)))
+rarity(1)
+trigger(onDiscard, do(create(self,Hand)))
+removetrigger(endofturn, true,0);
 
 #Discard a card, gain an armor per type it has
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded

@@ -17,6 +17,7 @@ var lastPlayed
 var consumed
 var focusStack=[]
 var lastfocus
+var doTutorial
 class_name CardController
 #func _process(delta: float) -> void:
 #	if inputAllowed:
@@ -33,17 +34,18 @@ func Load(parent)-> void:
 	Choice = get_node("Choice")
 	Reaction = get_node("Reaction")
 	Voided = get_node("Voided")
+	doTutorial = parent.doTutorial
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("Cards loaded")
-	Play.add_card(Library.getCardByName("Adventurer"))
-	Play.add_card(Library.getRandomByModifier(["void"]))
 	Energy = 3
 	map = parent.map
 	enemyController = parent.enemyController
 	self.updateDisplay()
-	if not testmode:
+	if not testmode and not doTutorial:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getRandomByModifier(["void"]))
 		for _i in range(2):
 			Deck.add_card(Library.getCardByName("Common Loot"))
 			Deck.add_card(Library.getCardByName("Smack"))
@@ -64,14 +66,22 @@ func Load(parent)-> void:
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
 			yield(step,"completed")
-	else:
+	elif testmode:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getRandomByModifier(["void"]))
 		for card in Library.cards:
 			Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
-
-
-	
-
+	elif doTutorial:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getCardByName("Void of Vengeance"))
+		Hand.add_card(Library.getCardByName("Quickstep"))
+		Deck.add_card_at(Library.getCardByName("Meat Cleaver"),0)
+		Deck.add_card_at(Library.getCardByName("Smack"),1)
+		Deck.add_card_at(Library.getCardByName("Smack"),2)
+		Deck.add_card_at(Library.getCardByName("Dash"),3)
+		Deck.add_card_at(Library.getCardByName("Defend"),4)
+		Deck.add_card_at(Library.getCardByName("Defend"),5)
 func draw(x)->bool:
 	var results = {}
 	for i in range(x):

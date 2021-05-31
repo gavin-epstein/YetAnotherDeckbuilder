@@ -192,4 +192,10 @@ trigger(onPlay,do(move,0))
 removetrigger(endofturn,true,1)
 rarity(5);
 
-#light and shadow - energy per shadow card in hand
+title("Light and Shadow");
+cost(0);
+$Energy=1
+text("Gain $Energy energy per shadow hard in your hand");
+trigger(onPlay, do(gainEnergy,((count(Play, wind)))));
+removetrigger(endofturn,true,2);
+rarity(3);

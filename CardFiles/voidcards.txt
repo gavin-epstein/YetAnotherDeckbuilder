@@ -1,7 +1,7 @@
 title(Void of Greed);
 cost(-);
 types(void,loot);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
@@ -15,7 +15,7 @@ image("res://Images/CardArt/VoidOfGreed.png")
 title(Void of Patience);
 cost(-);
 types(void);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));
@@ -28,7 +28,7 @@ image("res://Images/CardArt/VoidOfPatience.png")
 title(Void of Anger);
 cost(-);
 types(void,attack);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(play,if((hastype(argv[0],attack)),(do(consume()))));
 trigger(onRemoveFromPlay,do(purge(self)));
@@ -41,7 +41,7 @@ image("res://Images/CardArt/VoidOfAnger.png")
 title(Void of Death);
 cost(-);
 types(void);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(death,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
@@ -54,7 +54,7 @@ image("res://Images/CardArt/VoidOfDeath.png")
 title(Void of Anxiety);
 cost(-);
 types(void);
-modifiers(void);
+modifiers(void,eternal);
 $Count=4
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(play,do(addVar(self,Count,-1)));
@@ -70,7 +70,7 @@ image("res://Images/CardArt/VoidOfAnxiety.png")
 title(Void of Haste);
 cost(-);
 types(void,movement);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(movePlayer,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
@@ -96,7 +96,7 @@ image("res://Images/CardArt/VoidOfHaste.png")
 title(Void of Confusion);
 cost(-);
 types(void);
-modifiers(void);
+modifiers(void,eternal);
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(reshuffle,do(consume()));
 trigger(onRemoveFromPlay,do(purge(self)));
@@ -106,3 +106,15 @@ text("When you reshuffle, The Void grows. On discard from play, transform");
 rarity(0);
 image("res://Images/CardArt/VoidOfDeath.png")
 
+title(Void of Vengeance);
+cost(-);
+types(void);
+modifiers(void,eternal);
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
+trigger(damageDealt,if((hasStatus(argv[0], "boss")),(do(consume()))));
+trigger(onRemoveFromPlay,do(purge(self)));
+trigger(onRemoveFromPlay,do(voidshift()));
+removetrigger(endofturn,true,8);
+text("When The Void takes damage, The Void grows. On discard from play, transform");
+rarity(0);
+image("res://Images/CardArt/VoidOfAnger.png")

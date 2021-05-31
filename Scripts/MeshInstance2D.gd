@@ -301,10 +301,10 @@ func select(tile,dist,property,terrains, message,canfly=true,hitsstealth=false):
 	#	selectableNodes[0].dehighlight()
 	#	return selectableNodes[0]
 	acceptinput = true
-	$Message/Message/Message.bbcode_text = "[center]"+message+"[/center]"
-	$Message/Message.visible = true
+	get_node("/root/Scene/Message/Message").bbcode_text = "[center]"+message+"[/center]"
+	get_node("/root/Scene/Message").visible = true
 	yield(self,"nodeSelected")
-	$Message/Message.visible = false
+	get_node("/root/Scene/Message").visible = false
 	for node in nodes:
 		node.dehighlight()
 	acceptinput = false

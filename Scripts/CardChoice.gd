@@ -4,6 +4,7 @@ const bannedtypes = ["attack", "movement","starter","loot","void"]
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
+var prerigged =1
 func _ready() -> void:
 	self.visible = false
 	
@@ -37,6 +38,16 @@ func clear():
 	
 
 func generateReward(rarity, count = 3):
+	if get_parent().doTutorial and prerigged>0:
+		self.cards=[]
+		for cardname in ["Ashes", "Stoneskin", "Light Whispers"]:
+			var card = get_parent().Library.getCardByName(cardname)
+			self.add_card(card)
+		
+		prerigged-=1
+		self.visible = true
+		self.updateDisplay()
+		return
 	if rarity is int:
 		var types = []
 		for card in get_parent().Play.cards:

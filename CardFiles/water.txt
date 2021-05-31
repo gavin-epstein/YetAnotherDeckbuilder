@@ -1,0 +1,8 @@
+title("Boat");
+cost(1);
+$Move=6
+trigger(shuffle,do(movePlayer($Move)));
+removetrigger(shuffle,true,3);
+text(The next $RemoveCount times you shuffle your deck, move $Move);
+rarity(6);
+
