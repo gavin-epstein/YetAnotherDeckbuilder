@@ -350,6 +350,16 @@ func execute(code, argv):
 			return args[0].getStrength(args[1])
 		else:
 			return 0
+	elif code[0] =="getTile":
+		var args  = []
+		for arg in code[1]:
+			arg = processArgs(arg, argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg,"completed")
+			args.append(arg)
+		if args[0] !=null:
+			return args[0].get("tile")
+		return false
 	else:
 		var ret = []
 		for arg in code:

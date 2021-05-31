@@ -44,7 +44,9 @@ func updateDisplay(unit, library):
 	if unit.intents.size()>0:
 		var intents = []
 		for intent in unit.intents:
-			if intent in library.intenttooltips:
+			if intent == "Attack":
+				intents.append("deal " + str(unit.getStrength())+ " damage")
+			elif intent in library.intenttooltips:
 				intents.append(library.intenttooltips[intent])
 		var intentstring = "This unit intends to "
 		if intents.size()>1:

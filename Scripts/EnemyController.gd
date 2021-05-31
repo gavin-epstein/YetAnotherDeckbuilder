@@ -37,7 +37,7 @@ func nodeSpawned(node):
 	var unit = $UnitLibrary.getRandomEnemy(maxdifficulty - totaldifficulty,node.terrain);
 	if unit !=null:
 		addUnit(unit,node)
-func addPlayerAndVoid():
+func addPlayerAndVoid(playerTile=null):
 	yield(map, "mapGenerated");
 	var unit  = $UnitLibrary.getUnitByName("Void")
 	var node = map.voidNode
@@ -45,7 +45,9 @@ func addPlayerAndVoid():
 	addUnit(unit,node)
 	unit = $UnitLibrary.getUnitByName("Mora")
 	Player = unit
-	addUnit(unit, map.getRandomEmptyNode(["any"]))
+	if playerTile==null:
+		playerTile=map.getRandomEmptyNode(["any"])
+	addUnit(unit, playerTile)
 	units.erase(Player)
 	Player.setStatus("stunned",0)
 	get_node("/root/Scene/morahealthbar").unit = Player

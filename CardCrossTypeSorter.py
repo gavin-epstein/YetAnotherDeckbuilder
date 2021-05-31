@@ -76,6 +76,7 @@ def main():
                     read_text_file(file_path,trie,alltypes)
 
     alltypes.pop("meme");
+    alltypes.pop("starter");
     for i in range(1):
         pickrandom(trie,alltypes)
 

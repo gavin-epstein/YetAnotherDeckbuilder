@@ -183,11 +183,11 @@ animation("attack","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,6,7),(
 spawnable(water)
 difficulty(3)
 health(7)
-strength(0)
+strength(1)
 damagetypes(moss)
 speed(0)
 range(40)
-$turncount=0
+$turncount=1
 trigger(turn,if( ($turncount=1), (do(Attack(self, Player)))))
 trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
 trigger(turn,if( ($turncount=0), (do(gainStrength(self, 1)))))
@@ -427,7 +427,7 @@ speed(3);
 range(1);
 health(56);
 $turncount=1
-status(boss,true);
+status(boss, true);
 trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
 trigger(turn,if( ($turncount=0), (do(gainStrength( tile, 2)))))
 trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
@@ -462,3 +462,20 @@ trigger(turn,      if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,ti
 trigger(turn,      if( (! do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))),  (do(Summon( (select((2,("any"),empty),1,tile)),"Spare Cog" )))))                                                                                                      
 trigger(onSummon,  do(Summon((select((1,("any"),empty),1,tile)),"Spare Cog")))
 image("res://Images/UnitArt/Automaton.png")
+
+name("Soulsucker")
+image("res://Images/UnitArt/EvilVacuum.png")
+spawnable(any);
+difficulty(8);
+strength(7);
+health(15);
+speed(1);
+range(2);
+trigger(turn, do(MoveAndAttack(self,friendly)))
+trigger(turn,cardDo(moveUnits( (all,(any),exists),50,tile,towards,1)))
+
+name("Phoenix")
+spawnable(none)
+status(friendly,true)
+
+

@@ -210,7 +210,10 @@ func takeDamage(amount,types, attacker):
 			break	
 	if default:
 		$Audio.playsound("defaultAttack")
-	changeHealth(-1*floor(amount))
+	if self == controller.Player:
+		controller.cardController.Action("unheal", [floor(amount)])
+	else:
+		changeHealth(-1*floor(amount))
 	if status.has("lifelink"):
 		for unit in get_parent().units:
 			if unit != null and unit.title == self.title:
@@ -473,7 +476,7 @@ func getIntents():
 					intents.append("Debuff")
 			else:
 				intents.append("Buff")
-		elif hit in ["Attack", "Summon", "Move","addArmor","addBlock"]:
+		elif hit in ["Attack", "Summon", "Move","addArmor","addBlock","moveUnits"]:
 			intents.append(hit)
 		elif hit == "move":
 			intents.append("Move")
@@ -667,9 +670,19 @@ func _on_HoverRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		controller.map.on_MapArea_input_event(event) #pass input to map click
 
-func say(text, time = 2):
-	$SpeechBubble/Text.bbcode_enabled = true
-	$SpeechBubble/Text.bbcode_text = "[center]"+text+"[/center]"
+func say(text:String, time = 2):
+	if text == "":
+		$SpeechBubble.visible = false
+		return
+	var textbox = $SpeechBubble/Text
+	var boxSize = Vector2(733,516);
+	var sc = sqrt(16.0/text.length())
+	boxSize /= sc
+	textbox.bbcode_enabled = true
+	textbox.bbcode_text = "[center]"+text+"[/center]"
+	textbox.rect_scale=  Vector2(sc,sc);
+	textbox.rect_size = boxSize;
 	$SpeechBubble.visible = true
-	yield(get_tree().create_timer(time),"timeout")
-	$SpeechBubble.visible = false
+	if time > 0:
+		yield(get_tree().create_timer(time),"timeout")
+		$SpeechBubble.visible = false

@@ -9,6 +9,7 @@ add boss loot
 Hammers are inconsistent
 sword of light + parasite
 
+unit names can be too long to fit
 #renewal not voiding other cards
 Ashes not voiding a card
 

@@ -135,7 +135,7 @@ $Energy=1
 cost(3)
 trigger(onPlay,do(gainEnergy($Energy)))
 trigger(startofturn,do(gainEnergy($Energy)))
-text("now and at the start of your next $removecount turns gain $Energy energy")
+text("Now and at the start of your next $removecount turns gain $Energy energy")
 rarity(6)
 removetrigger(endofturn,true,4)
 types(ritual, light)
