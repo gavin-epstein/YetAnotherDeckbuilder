@@ -477,5 +477,12 @@ trigger(turn,cardDo(moveUnits( (all,(any),exists),50,tile,towards,1)))
 name("Phoenix")
 spawnable(none)
 status(friendly,true)
-
+strength(0)
+health(10)
+range(1);
+speed(2);
+trigger(onDeath,cardDo(create("Firebird", Hand)))
+trigger(onUpdate,do(setStrength(self, count(Voided,"any"))))
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/firebird.png")
 

@@ -276,6 +276,7 @@ func updateDisplay():
 		return false
 	if healthBar == null:
 		yield(self,"ready")
+	self.Triggered("onUpdate",[])
 	healthBar.get_node("Heart/Number").bbcode_text = "[center]"+str(health)+"[/center]"
 	healthBar.get_node("Block/Number").bbcode_text = "[center]"+str(block)+"[/center]"
 	healthBar.get_node("Armor/Number").bbcode_text = "[center]"+str(armor)+"[/center]"
@@ -676,7 +677,7 @@ func say(text:String, time = 2):
 		return
 	var textbox = $SpeechBubble/Text
 	var boxSize = Vector2(733,516);
-	var sc = sqrt(16.0/text.length())
+	var sc = sqrt(14.0/text.length())
 	boxSize /= sc
 	textbox.bbcode_enabled = true
 	textbox.bbcode_text = "[center]"+text+"[/center]"

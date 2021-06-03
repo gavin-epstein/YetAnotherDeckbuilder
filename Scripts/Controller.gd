@@ -281,3 +281,12 @@ func getStatus(tile, statname) -> int:
 			var val = tile.occupants[0].getStatus(statname)
 			sum += val
 	return sum
+func countTypes(loc, type) ->  int:
+	if loc == "Energy":
+		return cardController.Energy
+	loc = get_node(loc)
+	var count = 0
+	for card in loc.cards:
+		if card.hasType(type):
+			count+=1	
+	return count

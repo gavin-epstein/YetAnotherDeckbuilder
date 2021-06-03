@@ -2,7 +2,7 @@ extends CanvasLayer
 const errortemplate = preload("res://Images/UIArt/ErrorReport.tscn")
 onready var splashscene = load("res://Splash.tscn")
 onready var buttons =[$Back/Resume,$Back/Resign,$Back/SaveQuit,$Settings]
-
+signal unpaused
 func _input(event: InputEvent) -> void:
 	if get_parent().loaded:		
 		if event.is_action_pressed("escape"):
@@ -18,6 +18,7 @@ func show() -> void:
 func hide()->void:
 	$Back.visible = false
 	get_tree().paused = false
+	emit_signal("unpaused")
 
 
 func _ResumeButton(event: InputEvent) -> void:
