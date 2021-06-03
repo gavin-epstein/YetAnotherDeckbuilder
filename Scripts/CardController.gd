@@ -82,6 +82,7 @@ func Load(parent)-> void:
 		Deck.add_card_at(Library.getCardByName("Dash"),3)
 		Deck.add_card_at(Library.getCardByName("Defend"),4)
 		Deck.add_card_at(Library.getCardByName("Defend"),5)
+		Deck.add_card_at(Library.getCardByName("Crossbow"),6)
 func draw(x)->bool:
 	var results = {}
 	for i in range(x):
@@ -148,15 +149,7 @@ func play(card)->bool:
 	
 
 #location must be capitalized	 
-func countTypes(loc, type) -> int:
-	if loc == "Energy":
-		return Energy
-	loc = get_node(loc)
-	var count = 0
-	for card in loc.cards:
-		if card.hasType(type):
-			count+=1	
-	return count
+
 func countNames(loc, name) -> int:
 	loc = get_node(loc)
 	var count = 0

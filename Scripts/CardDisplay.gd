@@ -13,6 +13,7 @@ func display(incard):
 	card = cardTemplate.instance()
 	incard.deepcopy(card)
 	add_child(card)
+	card.mouseon=false
 	card.name="Card"
 	card.moveTo(Vector2(400,128.8),Vector2(.8,.8))
 	var pos = Vector2(1000,150)

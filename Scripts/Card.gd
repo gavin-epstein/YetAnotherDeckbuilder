@@ -16,7 +16,7 @@ var target_position
 var highlighted = false
 var rarity = 0
 var debug
-var mouseon
+var mouseon=false
 var tooltips=[]
 var iconsdone = false
 var targetvis=true
@@ -202,6 +202,7 @@ func generateTooltips():
 	var regex = RegEx.new()
 	regex.compile('(\\s+)|([.,!?:;\"-])+')
 	var words = regex.sub(self.text,"@",true)
+	words = words.replace("The@Void", "TheVoid")
 	for _i in range(3):
 		words = words.replace("@@","@")
 	words = words.split("@")
