@@ -19,11 +19,15 @@ var focusStack=[]
 var lastfocus
 var doTutorial
 class_name CardController
-#func _process(delta: float) -> void:
-#	if inputAllowed:
-#		$Reaction.modulate = Color(0,0,0)
-#	else:
-#		$Reaction.modulate = Color(1,1,1)
+func _process(delta: float) -> void:
+	var r = 0
+	var g = 0
+	var b = 0
+	if inputAllowed:
+		r = 1
+	if focus !=null:
+		b=1
+	$Reaction.modulate = Color(r,g,b)
 func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
@@ -57,11 +61,8 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-	#	Hand.add_card(Library.getCardByName("Ritual of the Earth Mother"))
-	#	for _i in range(10):
-	#		Deck.add_card(Library.getCardByName("Ritual Components"))
-		
-		
+		Deck.add_card(Library.getCardByName("Cirrus"))
+		Hand.add_card(Library.getCardByName("Boat"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -108,7 +109,7 @@ func reshuffle()->bool:
 	if Discard.size()==0:
 		return false
 	Deck.cards +=Discard.cards
-	Deck.cards.shuffle()
+	Action("shuffle",[])
 	Discard.cards = []
 	return true
 func shuffle()->bool:
@@ -221,6 +222,7 @@ func updateDisplay():
 		for unit in enemyController.units:
 			if unit !=null:
 				unit.updateDisplay()
+				unit.Triggered("onCardChange", [])
 func cardreward(rarity, count):
 		Choice.generateReward(rarity, count)
 		yield(Choice,"cardchosen")
@@ -241,7 +243,7 @@ func takeFocus(item) -> bool:
 	
 	if focus == null:
 		focus = item
-		printFocus()
+		#printFocus()
 		return true
 		
 	elif focus == item:
@@ -256,19 +258,19 @@ func releaseFocus(item) -> bool:
 			focus= focusStack.pop_back()
 		else:
 			focus = null
-		printFocus()
+		#printFocus()
 		return true
 	return false
 func forceFocus(item):
-	printFocus()
+	#printFocus()
 	if focus == item:
 		return false
 	focusStack.push_back(focus)
 	focus = item
-	printFocus()
+	#printFocus()
 	return true
 func printFocus():
-	return
+	#return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -297,6 +299,7 @@ func create(card, loc,spawner=null,silent=false):
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
+		added.Triggered("onCreate",[added,loc])
 		triggerAll("onCreate",[added,loc])
 	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
@@ -306,6 +309,7 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
+		added.Triggered("onCreate",[added,loc])
 		triggerAll("onCreate",[added,loc])
 	return added
 	
@@ -353,11 +357,11 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		
 		releaseFocus(self)
-		
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
+		
 
 	
 func movePlayer(dist,terrains = ["any"]):
@@ -396,10 +400,14 @@ func damage(amount, types, targets,distance, tile =null):
 	if enemies == null or enemies.size()== 0:
 		return false
 	for node in enemies:
-		if node == null or node.occupants.size() == 0:
+		var unit
+		if node != null and node.has_method("isUnit"):
+			unit = node		
+		elif node == null or node.occupants.size() == 0:
 			#Enemy has been removed by another effect
 			continue
-		var unit =  node.occupants[0]
+		else:
+			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
 		if lastPlayed !=null:
 			if dmg.size() > 1 and dmg[1] == "kill":

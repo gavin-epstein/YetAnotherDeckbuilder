@@ -13,6 +13,14 @@ func _ready() -> void:
 func updateDisplay():
 	$Count.bbcode_text = "[center]"+str(get_parent().Energy)+"[/center]"
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta: float) -> void:
-#	pass
+
+
+
+func _on_Area_mouse_entered() -> void:
+	$Label.visible = true
+
+
+
+
+func _on_Area_mouse_exited() -> void:
+	$Label.visible = false

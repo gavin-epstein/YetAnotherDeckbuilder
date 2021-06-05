@@ -194,8 +194,9 @@ rarity(5);
 
 title("Light and Shadow");
 cost(0);
+types(light,shadow)
 $Energy=1
 text("Gain $Energy energy per shadow hard in your hand");
-trigger(onPlay, do(gainEnergy,((count(Play, wind)))));
+trigger(onPlay, do(gainEnergy,((count(Hand, shadow)))));
 removetrigger(endofturn,true,2);
 rarity(3);

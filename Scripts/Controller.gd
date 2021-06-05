@@ -284,7 +284,7 @@ func getStatus(tile, statname) -> int:
 func countTypes(loc, type) ->  int:
 	if loc == "Energy":
 		return cardController.Energy
-	loc = get_node(loc)
+	loc = cardController.get_node(loc)
 	var count = 0
 	for card in loc.cards:
 		if card.hasType(type):
