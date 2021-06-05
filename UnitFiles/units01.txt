@@ -391,6 +391,17 @@ trigger(onSummon,do(say(self,(random("I shall defend the swamp!", "The Order of 
 trigger(turn, do(MoveAndAttack(self,friendly)))
 image("res://Images/UnitArt/FrogWarrior.png")
 
+name("Froggy Warrior")
+spawnable(none)
+difficulty(2)
+speed(1)
+range(1)
+health(1)
+strength(7)
+trigger(onSummon,do(addArmor(self,2)))
+trigger(turn, do(MoveAndAttack(self,friendly)))
+image("res://Images/UnitArt/FrogWarrior.png")
+
 name("Queen Orla")
 spawnable(none)
 difficulty(44)
