@@ -150,7 +150,7 @@ func Load2():
 	if res is GDScriptFunctionState:
 		res = yield(res,"completed")
 	enemyController.addPlayerAndVoid(playerNode)
-	enemyController.Summon( frognode,"Frog Warrior")
+	enemyController.Summon( frognode,"Froggy Warrior")
 	enemyController.Summon( frog2node,"Moss Spore")
 	frog2node.occupants[0].setStatus("stunned", 0);
 	emit_signal("mapGenerated")
