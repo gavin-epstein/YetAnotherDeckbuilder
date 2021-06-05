@@ -141,6 +141,7 @@ trigger(onPlay, enemyDo(gainStrength(Player,$Increment)))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn,true,0);
 modifiers(bossReward)
+image("res://Images/CardArt/HeroicFeat.png")
 
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers

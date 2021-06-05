@@ -276,7 +276,7 @@ func updateDisplay():
 		return false
 	if healthBar == null:
 		yield(self,"ready")
-	self.Triggered("onUpdate",[])
+	#self.Triggered("onUpdate",[])
 	healthBar.get_node("Heart/Number").bbcode_text = "[center]"+str(health)+"[/center]"
 	healthBar.get_node("Block/Number").bbcode_text = "[center]"+str(block)+"[/center]"
 	healthBar.get_node("Armor/Number").bbcode_text = "[center]"+str(armor)+"[/center]"

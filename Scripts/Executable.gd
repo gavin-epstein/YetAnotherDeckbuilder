@@ -22,7 +22,7 @@ func Triggered(method, argv):
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
 		controller.cardController.inputAllowed = oldallowed
-		if not controller.test and method!="onUpdate":
+		if not controller.test :
 			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
 	if interrupts.has(method):

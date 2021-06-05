@@ -73,7 +73,7 @@ func _process(delta: float) -> void:
 		if get_node("/root/Scene/CardController/CardDisplay").visible==false:
 			step+=1
 			emit_signal("nextstep")
-	elif step == 15:
+	elif step == 14:
 		var advance = true
 		for card in cardController.Hand.cards:
 			if card.title =="Fly":
@@ -149,7 +149,6 @@ func Load2():
 	var res = doPhysics(2);
 	if res is GDScriptFunctionState:
 		res = yield(res,"completed")
-	step=0
 	enemyController.addPlayerAndVoid(playerNode)
 	enemyController.Summon( frognode,"Frog Warrior")
 	enemyController.Summon( frog2node,"Moss Spore")
@@ -158,6 +157,10 @@ func Load2():
 	
 	
 func tutorial():
+	#step -1
+	message("Press esc to Pause and open the menu, then hit Resume")
+	yield(get_node("/root/Scene/Pause Menu"),"unpaused")
+	step = 0
 	#step 0
 	#cards in hand 1
 	enemyController.Player.say("Hi, I'm Mora",-1)
@@ -228,17 +231,12 @@ func tutorial():
 	yield(self,"nextstep")
 	#14
 	enemyController.Player.say("You can right click any card to get more info",-1)
-	message("Press esc to Pause and open the menu")
-	yield(get_node("/root/Scene/Pause Menu"),"unpaused")
-	#15:
 	#end of tutorial
-	enemyController.Player.say("",-1)
 	cardController.Action("create",["Fly","Hand"])
-	step =15
 	message("Play Fly to end the tutorial")
 	yield(self,"nextstep")
 	enemyController.Win()
-	
+
 func message(message):
 	if message == "":
 		get_node("/root/Scene/Message").visible = false

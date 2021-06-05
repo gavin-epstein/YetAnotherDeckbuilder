@@ -517,7 +517,7 @@ transform = Transform2D( 1, 0, 0, 1, 960, 410 )
 script = ExtResource( 277 )
 
 [node name="Sprite" type="Sprite" parent="Center/MapLayer"]
-position = Vector2( -1.92761, 2.41721 )
+position = Vector2( -2.11157, 2.41721 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 278 )
 
@@ -599,11 +599,42 @@ script = ExtResource( 1 )
 script = ExtResource( 275 )
 hotkey = "Reaction"
 
+[node name="Label" type="ColorRect" parent="CardController/Reaction"]
+visible = false
+margin_left = 1753.0
+margin_top = 911.0
+margin_right = 1874.0
+margin_bottom = 938.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="RichTextLabel" parent="CardController/Reaction/Label"]
+anchor_top = -0.00573278
+anchor_bottom = -0.00573278
+margin_left = -2.0
+margin_top = -4.0
+margin_right = 846.0
+margin_bottom = 236.0
+rect_scale = Vector2( 0.15, 0.15 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Reaction(V)[/center]"
+text = "Reaction(V)"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Reaction"]
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 71
+frame = 18
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -640,11 +671,40 @@ scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 2 )
 hotkey = "Deck"
 
+[node name="Label" type="ColorRect" parent="CardController/Deck"]
+visible = false
+margin_left = 29.0
+margin_top = 683.0
+margin_right = 110.0
+margin_bottom = 709.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="RichTextLabel" parent="CardController/Deck/Label"]
+margin_left = 2.63757
+margin_top = -5.45068
+margin_right = 522.638
+margin_bottom = 189.549
+rect_scale = Vector2( 0.15, 0.15 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Deck(Z)[/center]"
+text = "Deck(Z)"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Deck"]
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 72
+frame = 19
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -677,15 +737,45 @@ z_index = 1
 script = ExtResource( 3 )
 
 [node name="Discard" type="Node2D" parent="CardController"]
+position = Vector2( 0, -16 )
 scale = Vector2( 1.5, 1.5 )
 script = ExtResource( 4 )
 hotkey = "Discard"
+
+[node name="Label" type="ColorRect" parent="CardController/Discard"]
+visible = false
+margin_left = 1080.5
+margin_top = 703.403
+margin_right = 1189.5
+margin_bottom = 729.403
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="RichTextLabel" parent="CardController/Discard/Label"]
+margin_left = 2.30127
+margin_top = -3.76904
+margin_right = 719.301
+margin_bottom = 167.231
+rect_scale = Vector2( 0.15, 0.15 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Discard(X)[/center]"
+text = "Discard(X)"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Discard"]
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 71
+frame = 18
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -745,11 +835,40 @@ __meta__ = {
 script = ExtResource( 137 )
 hotkey = "Voided"
 
+[node name="Label" type="ColorRect" parent="CardController/Voided"]
+visible = false
+margin_left = 1639.38
+margin_top = 880.293
+margin_right = 1748.38
+margin_bottom = 906.293
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="RichTextLabel" parent="CardController/Voided/Label"]
+margin_left = 2.30127
+margin_top = -3.76904
+margin_right = 719.301
+margin_bottom = 167.231
+rect_scale = Vector2( 0.15, 0.15 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Voided(Z)[/center]"
+text = "Voided(Z)"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Voided"]
-position = Vector2( 1690.96, 842.897 )
+position = Vector2( 1691.11, 842.742 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 76
+frame = 57
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -781,7 +900,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 35
+frame = 108
 playing = true
 script = ExtResource( 264 )
 
@@ -796,6 +915,46 @@ custom_colors/default_color = Color( 0.341176, 0.0666667, 0.0313726, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]10[/center]"
 text = "10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="ColorRect" parent="CardController/Energy"]
+visible = false
+margin_left = -506.449
+margin_top = 519.84
+margin_right = -425.449
+margin_bottom = 545.84
+rect_scale = Vector2( 12, 12 )
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message2" type="RichTextLabel" parent="CardController/Energy/Label"]
+margin_left = 6.0
+margin_top = -4.0
+margin_right = 492.0
+margin_bottom = 191.0
+rect_scale = Vector2( 0.15, 0.15 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Energy[/center]"
+text = "Energy"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area" type="ColorRect" parent="CardController/Energy"]
+margin_left = -564.0
+margin_top = -502.0
+margin_right = 541.0
+margin_bottom = 557.0
+color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -816,6 +975,7 @@ __meta__ = {
 }
 
 [node name="CardDisplay" type="Node2D" parent="CardController"]
+visible = false
 z_index = 6
 script = ExtResource( 281 )
 
@@ -1302,10 +1462,16 @@ __meta__ = {
 [connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="Center/MapLayer/Tutorial/MeshInstance2D/MapArea2" to="Center/MapLayer/Tutorial/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area2_gui_input"]
+[connection signal="mouse_exited" from="CardController/Reaction/Area" to="CardController/Reaction" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
+[connection signal="mouse_exited" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
+[connection signal="mouse_exited" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
+[connection signal="mouse_exited" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_mouse_exited"]
+[connection signal="mouse_entered" from="CardController/Energy/Area" to="CardController/Energy" method="_on_Area_mouse_entered"]
+[connection signal="mouse_exited" from="CardController/Energy/Area" to="CardController/Energy" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/EndTurn/EndTurnButton" to="CardController" method="_on_EndTurnButton_input_event"]
 [connection signal="gui_input" from="CardController/CardDisplay/ColorRect" to="CardController/CardDisplay" method="_on_ColorRect_gui_input"]
 [connection signal="gui_input" from="CardController/CardPileDisplay/Panel/Resume" to="CardController/CardPileDisplay" method="_on_Resume_gui_input"]

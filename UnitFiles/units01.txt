@@ -482,7 +482,7 @@ health(10)
 range(1);
 speed(2);
 trigger(onDeath,cardDo(create("Firebird", Hand)))
-trigger(onUpdate,do(setStrength(self, count(Voided,"any"))))
+trigger(onCardChange,do(setStrength(tile, (count(Voided,"any")))))
 trigger(turn, do(MoveAndAttack(self,-friendly)))
 image("res://Images/UnitArt/firebird.png")
 
