@@ -99,3 +99,13 @@ text("Move any ally to any empty space")
 removetrigger(endofturn,true,1);
 types(avian,kinetic)
 rarity(5);
+
+title("Firebird")
+cost(2)
+$Range=1
+trigger(onPlay, do(summon("Phoenix",(any),$Range)));
+trigger(onPlay, do(purge(self)));
+text("Summon a Phoenix that gains strength based on voided cards, and is reborn if it dies")
+removetrigger(endofturn, true, 0);
+types(avian, fire,summon)
+rarity(2)

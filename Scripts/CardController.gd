@@ -17,12 +17,17 @@ var lastPlayed
 var consumed
 var focusStack=[]
 var lastfocus
+var doTutorial
 class_name CardController
 #func _process(delta: float) -> void:
+#	var r = 0
+#	var g = 0
+#	var b = 0
 #	if inputAllowed:
-#		$Reaction.modulate = Color(0,0,0)
-#	else:
-#		$Reaction.modulate = Color(1,1,1)
+#		r = 1
+#	if focus !=null:
+#		b=1
+#	$Reaction.modulate = Color(r,g,b)
 func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
@@ -33,17 +38,18 @@ func Load(parent)-> void:
 	Choice = get_node("Choice")
 	Reaction = get_node("Reaction")
 	Voided = get_node("Voided")
+	doTutorial = parent.doTutorial
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("Cards loaded")
-	Play.add_card(Library.getCardByName("Adventurer"))
-	Play.add_card(Library.getRandomByModifier(["void"]))
 	Energy = 3
 	map = parent.map
 	enemyController = parent.enemyController
 	self.updateDisplay()
-	if not testmode:
+	if not testmode and not doTutorial:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getRandomByModifier(["void"]))
 		for _i in range(2):
 			Deck.add_card(Library.getCardByName("Common Loot"))
 			Deck.add_card(Library.getCardByName("Smack"))
@@ -55,23 +61,28 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-	#	Hand.add_card(Library.getCardByName("Ritual of the Earth Mother"))
-	#	for _i in range(10):
-	#		Deck.add_card(Library.getCardByName("Ritual Components"))
-		
-		
+		#Deck.add_card(Library.getCardByName("Cirrus"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
 			yield(step,"completed")
-	else:
+	elif testmode:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getRandomByModifier(["void"]))
 		for card in Library.cards:
 			Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
-
-
-	
-
+	elif doTutorial:
+		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getCardByName("Void of Vengeance"))
+		Hand.add_card(Library.getCardByName("Quickstep"))
+		Deck.add_card_at(Library.getCardByName("Meat Cleaver"),0)
+		Deck.add_card_at(Library.getCardByName("Smack"),1)
+		Deck.add_card_at(Library.getCardByName("Smack"),2)
+		Deck.add_card_at(Library.getCardByName("Dash"),3)
+		Deck.add_card_at(Library.getCardByName("Defend"),4)
+		Deck.add_card_at(Library.getCardByName("Defend"),5)
+		Deck.add_card_at(Library.getCardByName("Crossbow"),6)
 func draw(x)->bool:
 	var results = {}
 	for i in range(x):
@@ -97,7 +108,7 @@ func reshuffle()->bool:
 	if Discard.size()==0:
 		return false
 	Deck.cards +=Discard.cards
-	Deck.cards.shuffle()
+	Action("shuffle",[])
 	Discard.cards = []
 	return true
 func shuffle()->bool:
@@ -138,15 +149,7 @@ func play(card)->bool:
 	
 
 #location must be capitalized	 
-func countTypes(loc, type) -> int:
-	if loc == "Energy":
-		return Energy
-	loc = get_node(loc)
-	var count = 0
-	for card in loc.cards:
-		if card.hasType(type):
-			count+=1	
-	return count
+
 func countNames(loc, name) -> int:
 	loc = get_node(loc)
 	var count = 0
@@ -218,6 +221,7 @@ func updateDisplay():
 		for unit in enemyController.units:
 			if unit !=null:
 				unit.updateDisplay()
+				unit.Triggered("onCardChange", [])
 func cardreward(rarity, count):
 		Choice.generateReward(rarity, count)
 		yield(Choice,"cardchosen")
@@ -238,7 +242,7 @@ func takeFocus(item) -> bool:
 	
 	if focus == null:
 		focus = item
-		printFocus()
+		#printFocus()
 		return true
 		
 	elif focus == item:
@@ -253,19 +257,19 @@ func releaseFocus(item) -> bool:
 			focus= focusStack.pop_back()
 		else:
 			focus = null
-		printFocus()
+		#printFocus()
 		return true
 	return false
 func forceFocus(item):
-	printFocus()
+	#printFocus()
 	if focus == item:
 		return false
 	focusStack.push_back(focus)
 	focus = item
-	printFocus()
+	#printFocus()
 	return true
 func printFocus():
-	return
+	#return
 	if focus ==lastfocus:
 		return
 	if focus != null:
@@ -294,6 +298,7 @@ func create(card, loc,spawner=null,silent=false):
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
+		added.Triggered("onCreate",[added,loc])
 		triggerAll("onCreate",[added,loc])
 	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
@@ -303,6 +308,7 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
+		added.Triggered("onCreate",[added,loc])
 		triggerAll("onCreate",[added,loc])
 	return added
 	
@@ -350,11 +356,11 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		
 		releaseFocus(self)
-		
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
+		
 
 	
 func movePlayer(dist,terrains = ["any"]):
@@ -393,10 +399,14 @@ func damage(amount, types, targets,distance, tile =null):
 	if enemies == null or enemies.size()== 0:
 		return false
 	for node in enemies:
-		if node == null or node.occupants.size() == 0:
+		var unit
+		if node != null and node.has_method("isUnit"):
+			unit = node		
+		elif node == null or node.occupants.size() == 0:
 			#Enemy has been removed by another effect
 			continue
-		var unit =  node.occupants[0]
+		else:
+			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
 		if lastPlayed !=null:
 			if dmg.size() > 1 and dmg[1] == "kill":

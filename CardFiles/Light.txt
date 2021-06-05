@@ -120,3 +120,4 @@ trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(damage ( (*,$Damage,$X),(light),(all),$X)));
 removetrigger(endofturn,true,2);
 rarity(3);
+image("res://Images/CardArt/Smite.png");

@@ -22,7 +22,7 @@ func Triggered(method, argv):
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
 		controller.cardController.inputAllowed = oldallowed
-		if not controller.test:
+		if not controller.test :
 			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
 	if interrupts.has(method):
@@ -350,6 +350,16 @@ func execute(code, argv):
 			return args[0].getStrength(args[1])
 		else:
 			return 0
+	elif code[0] =="getTile":
+		var args  = []
+		for arg in code[1]:
+			arg = processArgs(arg, argv)
+			if arg is GDScriptFunctionState:
+				arg = yield(arg,"completed")
+			args.append(arg)
+		if args[0] !=null:
+			return args[0].get("tile")
+		return false
 	else:
 		var ret = []
 		for arg in code:

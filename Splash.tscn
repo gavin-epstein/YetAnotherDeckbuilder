@@ -49,6 +49,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="Node2D" parent="."]
+pause_mode = 2
 position = Vector2( -162.829, 358.863 )
 scale = Vector2( 1.25, 1.25 )
 

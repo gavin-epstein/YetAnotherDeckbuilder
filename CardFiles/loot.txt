@@ -6,5 +6,16 @@ removetrigger(play,(hastype(argv[0], loot)),7)
 text("When you play a loot card add a random kitchen knife to your hand")
 rarity(2)
 
+title("Toolbox")
+types(loot,hammer)
+cost(0)
+trigger(onPlay, do(cardreward,("hammer",3)))
+trigger(onPlay, do(cardreward,("hammer",3)))
+trigger(onPlay,do(purge(self)));
+text(Choose 1 of 3 hammers, twice. Purge)
+rarity(2)
+removetrigger(endofturn,true,0)
+
+trigger(onPlay, do(purge,(self),false));
 #card rewards have +1 card. (deal with boss loot)
 #when you play a loot card, draw 1
