@@ -62,7 +62,6 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 		Deck.add_card(Library.getCardByName("Cirrus"))
-		Hand.add_card(Library.getCardByName("Boat"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:

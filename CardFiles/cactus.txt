@@ -17,7 +17,7 @@ text(Gain block equal to your thorns)
 rarity(3)
 removetrigger(endofturn,true,0)
 
-title(Blood of The Nopal)
+title(Blood of the Nopal)
 types(cactus, blood)
 cost(2)
 $Thorns=3
