@@ -91,6 +91,7 @@ trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"-",1,true
 text(Gain $Block X block, then void a random non-eternal card from play);
 rarity(4);
 removetrigger(endofturn, true, 1);
+image("res://Images/CardArt/Ashes.png");
 
 title("Renewal")
 types(fire, light,wind)

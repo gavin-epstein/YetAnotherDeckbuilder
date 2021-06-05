@@ -79,6 +79,7 @@ trigger(onPlay,do(create("Dazed",Deck)))
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(addStatus(stoneskin,$Status)))
 rarity(3);
+image("res://Images/CardArt/Stoneskin.png")
 
 title(Barrage)
 cost(1)

@@ -4,6 +4,7 @@ onready var map = $Center/MapLayer/Map/MeshInstance2D
 onready var cardController = $CardController
 const SAVE_NAME = "user://savefile.json"
 var loaded = false
+var doTutorial=false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,11 +13,15 @@ func _ready() -> void:
 	if file.file_exists(SAVE_NAME):
 		loadFromSave()
 	else:
+		yield($LoadingBar,"startload")
 		loadAll()
 	
 func loadAll():
-	var tutorial = load("res://Images/UIArt/Tutorial/Tutorial.tscn").instance()
-	add_child(tutorial)
+	if doTutorial:
+		enemyController.maxdifficulty = 0
+		map = $Center/MapLayer/Tutorial/MeshInstance2D
+	else:
+		$Center/MapLayer/Tutorial/MeshInstance2D.queue_free()
 	var step = enemyController.Load(self)
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
@@ -35,6 +40,8 @@ func loadAll():
 	$LoadingBar.queue_free()
 	cardController.updateDisplay()
 	loaded= true
+	if doTutorial:
+		$Center/MapLayer/Tutorial/MeshInstance2D.tutorial()
 func save():
 	var save = {
 		"map":map.save(),
@@ -47,6 +54,8 @@ func save():
 	file.store_string(to_json(save))
 	file.close()
 func loadFromSave():
+	$Center/MapLayer/Tutorial/MeshInstance2D.queue_free()
+	$LoadingBar.startloading()
 	var save
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):

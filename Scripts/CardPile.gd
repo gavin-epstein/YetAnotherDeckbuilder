@@ -39,6 +39,7 @@ func updateDisplay():
 
 	
 func display():
+		$Label.visible=false
 	#if get_parent().takeFocus(self):
 		get_node("../CardPileDisplay").display(self)
 		self.ondisplay = true

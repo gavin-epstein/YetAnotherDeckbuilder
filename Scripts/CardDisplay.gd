@@ -13,6 +13,7 @@ func display(incard):
 	card = cardTemplate.instance()
 	incard.deepcopy(card)
 	add_child(card)
+	card.mouseon=false
 	card.name="Card"
 	card.moveTo(Vector2(400,128.8),Vector2(.8,.8))
 	var pos = Vector2(1000,150)
@@ -55,9 +56,8 @@ func undisplay():
 			child.queue_free()
 			remove_child(child)
 	$ColorRect.mouse_filter = Control.MOUSE_FILTER_PASS
-	
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("left_click") or event.is_action_pressed("right_click"):
-		if get_parent().focus == self:
-			undisplay()
 
+
+func _on_ColorRect_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click") or event.is_action_pressed("right_click"):
+		undisplay()
