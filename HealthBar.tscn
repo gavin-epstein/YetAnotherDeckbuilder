@@ -11,6 +11,8 @@
 [ext_resource path="res://Images/StatusIcons/explosive.png" type="Texture" id=9]
 [ext_resource path="res://Scripts/Statuses.gd" type="Script" id=10]
 
+
+
 [node name="Bar" type="Node2D"]
 z_index = 1
 
