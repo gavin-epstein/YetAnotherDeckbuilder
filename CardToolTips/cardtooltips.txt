@@ -1,32 +1,32 @@
 armor: Armor reduces incoming damage by 1 per stack. On taking damage lose 1 armor.
-crush: Crush damage removes 1 extra stack of armor
-slash: Unblocked slash damage applies 1 bleed
-stab: Stab damage removes 1 extra stack of block
-block: Prevents incoming damage. Removed at the start of turn
-move: Move yourself to an empty tile up to a distance of n tiles
-fire: Unblocked fire damage applies 1 burn
-push: Move a unit away from yourself, if its destination is not blocked
-pull: Move a unit towards yourself, if its destination is not blocked
-retain: This card cannot be discarded
-purge: Remove this card from the game
-void: Remove this card until the void transforms
-reaction: On taking damage from a unit, if this is the top card of the reaction pile, trigger its effects
-heal: Restore health. Healing cannot cause your health to exceed your max health
-max health: The upper limit for healing
-eternal: This card cannot be removed from play
-unique: There can only be one copy of this card
-X: When played, takes the rest of your energy and sets X to that value
-dodge: Reaction card that reduces incoming damage by 50-100%
-silent: Does not trigger the effects of any other cards
-transform: This card becomes another card of the same type
-slay: Triggered when this card/unit kills an enemy
-retain: Not discarded by anything that discards your whole hand
-energy: Energy is spent to play cards
-shadow: Shadow damage adds a stack of corruption, damaging the target next time they move
-light: Light damage adds a stack of dazzled, which reduces the target's strength
-piercing: Piercing damage ignores block and armor
-ally: a friendly unit other than Mora
-allies: friendly units other than Mora
+crush: Crush damage removes 1 extra stack of armor.
+slash: Unblocked slash damage applies 1 bleed.
+stab: Stab damage removes 1 extra stack of block.
+block: Prevents incoming damage. Removed at the start of turn.
+move: Move yourself to an empty tile up to a distance of n tiles.
+fire: Unblocked fire damage applies 1 burn.
+push: Move a unit away from yourself, if its destination is not blocked.
+pull: Move a unit towards yourself, if its destination is not blocked.
+retain: This card cannot be discarded.
+purge: Remove this card from the game.
+void: Remove this card until the void transforms.
+reaction: On taking damage from a unit, if this is the top card of the reaction pile, trigger its effects.
+heal: Restore health. Healing cannot cause your health to exceed your max health.
+max health: The upper limit for healing.
+eternal: This card cannot be removed from play.
+unique: There can only be one copy of this card.
+X: When played, takes the rest of your energy and sets X to that value.
+dodge: Reaction card that reduces incoming damage by 50-100%.
+silent: Does not trigger the effects of any other cards.
+transform: This card becomes another card of the same type.
+slay: Triggered when this card/unit kills an enemy.
+retain: Not discarded by anything that discards your whole hand.
+energy: Energy is spent to play cards.
+shadow: Shadow damage adds a stack of corruption, damaging the target next time they move.
+light: Light damage adds a stack of dazzled, which reduces the target's strength.
+piercing: Piercing damage ignores block and armor.
+ally: a friendly unit other than Mora.
+allies: friendly units other than Mora.
 counterattack: On reaction deal damage back to the attacker.
-grows: The Void swallows the tile its tentacles point to, then has a chance to spawn new enemies
-unit: Mora, the void, or any other creature. Does not include terrain features
+grows: The Void swallows the tile its tentacles point to, then has a chance to spawn new enemies.
+unit: Mora, the void, or any other creature. Does not include terrain features.

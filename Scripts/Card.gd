@@ -199,13 +199,7 @@ func isIdentical(other):
 func getTooltips():
 	return tooltips
 func generateTooltips():
-	var regex = RegEx.new()
-	regex.compile('(\\s+)|([.,!?:;\"-])+')
-	var words = regex.sub(self.text,"@",true)
-	words = words.replace("The@Void", "TheVoid")
-	for _i in range(3):
-		words = words.replace("@@","@")
-	words = words.split("@")
+	var words = Utility.parsewords(self.text)
 	for word in words:
 		var tip = controller.Library.getToolTip(word)
 		if tip !=null:

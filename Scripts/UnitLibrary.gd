@@ -1,4 +1,5 @@
 extends Node2D
+class_name UnitLibrary
 var units = {}
 var icons = {}
 var intenticons={}
