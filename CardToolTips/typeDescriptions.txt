@@ -1,0 +1,23 @@
+light:Light cards focus on gaining and spending large amounts of Energy.\nLight damage applies 1 dazzled.
+shadow:Shadow cards focus on playing a lot of different cards every turn. Shadow also has the most 0 cost cards of any type.\nShadow damage applies 2 corrupt.
+water:Water cards focus on enabling you to advance through the deck faster, as well as effects that trigger when the discard gets shuffled back in to the deck.
+fire:Fire cards focus on allowing you to void cards.\nUnblocked fire damage applies 1 burn.
+mechanical:Mechanical cards tend to stay in play for a long time, and tend to have an effect at the start of every turn.
+fungal:Fungal cards focus on permanently scaling themselves, and tend to have a stronger effect each time they are played.
+knife:Knife cards focus on creating and playing various types of knives. Knife attacks tend to deal slash damage or otherwise apply bleed.
+cloud:Cloud cards use discarding as the main mechanic, either allowing you to discard cards or having a beneficial effect when discarded.
+hammer:Hammer cards allow you to permanently upgrade the effects of other cards. Almost all hammer cards purge on play, meaning they can only be used once.
+potion:Potions give you a powerful one time effect.
+cactus:Cactus cards focus on giving you thorns.
+wind:Wind cards focus on drawing cards.
+blood:Blood cards focus on sacrificing your own health for powerful effects.
+avian:Avian cards focus on summoning and empowering a large flock of relatively weak allies.
+starter:Starter cards are the ones you start the game with. They cannot be obtained from card rewards.
+loot:Loot is added to your hand whenever an enemy dies. There are 4 main types of loot: Common, Uncommon, Rare, and Boss. The harder the enemy, the better loot it will drop. Better loot has a higher chance of giving you rarer and more powerful rewards. You can also draft loot type cards that give you additional effects from playing loot or make your card rewards more powerful.
+summon:Summon cards create allies or terrain features on nearby tiles to help you out.
+attack:Attack cards deal damage.
+kinetic:Kinetic cards focus on moving other units around, mostly either pulling them in or pushing them away.
+earth:Earth cards focus on cards that are unplayable and have an effect whenever they are drawn.
+dodge:Dodges are reaction cards that reduce the damage you will take by 50-100%.
+food:Food cards focus on healing and gaining max health.
+ritual:Most ritual cards have a powerful effect that triggers when a sufficient quantity of ritual cards are in play.

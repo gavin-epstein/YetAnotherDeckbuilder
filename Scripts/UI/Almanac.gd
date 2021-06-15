@@ -5,15 +5,18 @@ var library = {}
 var cardLibrary
 var unitLibrary
 func _ready() -> void:
+	$CanvasLayer/LineEdit.caret_blink = true
 	$CanvasLayer/Menu.set_focus_neighbour(MARGIN_TOP,"../LineEdit")
 	cardLibrary = CardLibrary.new()
 	unitLibrary = UnitLibrary.new()
+	cardLibrary.loadIcons()
 	cardLibrary.loadTooltips("res://CardToolTips/cardtooltips.txt")
 	unitLibrary.loadIcons("res://Images/StatusIcons/",unitLibrary.icons)
 	unitLibrary.loadIcons("res://Images/IntentIcons/",unitLibrary.intenticons)
 	unitLibrary.loadtooltips("res://Units/tooltips.txt")
 	unitLibrary.loadintenttooltips("res://Images/IntentIcons/intentTooltips.txt")
 	self.Load(cardLibrary,unitLibrary)
+	
 func Load(incardLibrary, inunitLibrary):
 	cardLibrary = incardLibrary
 	unitLibrary = inunitLibrary
@@ -21,12 +24,14 @@ func Load(incardLibrary, inunitLibrary):
 		var page = pagetemplate.instance()
 		page.createByText(tooltip.capitalize(), "Keyword on Cards\n"+cardLibrary.tooltips[tooltip].strip_edges())
 		library[tooltip.capitalize()] = page
-	for tooltip in unitLibrary.tooltips.values():
+	for tooltip in unitLibrary.tooltips.keys():
 		var page = pagetemplate.instance()
-		var title = tooltip.split(":")[0]
-		var text  = tooltip.split(":")[1]
-		page.createByText(title.capitalize(), "Status Effect\n"+text.strip_edges())
+		var title = unitLibrary.tooltips[tooltip].split(":")[0]
+		var text  = unitLibrary.tooltips[tooltip].split(":")[1]
+		var image =  unitLibrary.icons[tooltip]
+		page.createByText(title.capitalize(), "Status Effect\n"+text.strip_edges(), image)
 		library[title] = page
+	loadTypeDescriptions("res://CardToolTips/typeDescriptions.txt")
 	makehyperlinks()
 func getPageByName(name:String):
 	return library.get(name)
@@ -64,8 +69,26 @@ func makehyperlinks():
 		for word in page.text.split(" "):
 			var procword = word.rstrip(".,;:\"'").to_lower().capitalize()
 			if procword in library.keys() and page.title!=procword:
-				print(procword)
+				#print(procword)
 				out+= '[url='+ procword+'][color=#ffae00]'+word+'[/color][/url]'+ " "
 			else:
 				out+=word+" "
 		page.setText(out)
+func loadTypeDescriptions(fname):
+	var f = File.new()
+	f.open(fname, File.READ)
+	if !f.is_open():
+		print("Failed to open "+ fname)
+		return 0
+	while not f.eof_reached():
+		var line = f.get_line()
+		if line.find(":") != -1:
+			line = line.split(":")
+			var title = line[0].capitalize()
+			var text = line[1]
+			text = text.replace("\\n","\n")
+			var image = cardLibrary.icons.get(title.to_lower())
+			var page = pagetemplate.instance()
+			page.createByText(title.capitalize(), text.strip_edges(), image)
+			library[title] = page
+	f.close()

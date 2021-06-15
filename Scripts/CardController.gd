@@ -46,6 +46,7 @@ func Load(parent)-> void:
 	Energy = 3
 	map = parent.map
 	enemyController = parent.enemyController
+	animationController = parent.animationController
 	self.updateDisplay()
 	if not testmode and not doTutorial:
 		Play.add_card(Library.getCardByName("Adventurer"))
@@ -61,7 +62,7 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Cirrus"))
+		Deck.add_card(Library.getCardByName("Cirrus"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -96,12 +97,18 @@ func draw(x)->bool:
 				enemyController.Player.say("No cards to draw")
 				return i!=0
 			else:
-				Action("reshuffle",[])
+				var res = Action("reshuffle",[])
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 		var card = Deck.getCard(0)
 		move("Deck","Hand",card)
 		if card in Hand.cards:
-			card.Triggered("onDraw",[x])
-			self.triggerAll("cardDrawn",[card])
+			var res = card.Triggered("onDraw",[x])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+			res = self.triggerAll("cardDrawn",[card])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return true
 
 func reshuffle()->bool:
@@ -301,6 +308,28 @@ func create(card, loc,spawner=null,silent=false):
 		added.Triggered("onCreate",[added,loc])
 		triggerAll("onCreate",[added,loc])
 	return added
+func createAt(card, loc, pos, spawner=null,silent=false):
+	loc = get_node(loc)
+	var added: Node2D
+	if card is String:
+		added = Library.getCardByName(card)
+	else:
+		added = cardtemplate.instance();
+		card.deepcopy(added)
+	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		add_child(added)
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
+		added.updateDisplay()
+		added.set_process(false)
+		yield(get_tree().create_timer(.1),"timeout")
+		added.set_process(true)
+	loc.add_card_at(added,pos)
+	added.updateDisplay()
+	if not silent:
+		added.Triggered("onCreate",[added,loc])
+		triggerAll("onCreate",[added,loc])
+	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
 	var added = Library.getRandomByModifier(modifiers)
@@ -356,6 +385,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		
 		releaseFocus(self)
+		
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")

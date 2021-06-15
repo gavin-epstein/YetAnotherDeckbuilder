@@ -33,6 +33,7 @@ func returnCard(target):
 			card.moveTo(pos, Vector2(.2,.2))
 		pos += Vector2(xsep,0)
 func cardClicked(card):
+	
 	if get_parent().inputAllowed:
 		get_parent().Action("play", [card])
 	elif card.highlighted:

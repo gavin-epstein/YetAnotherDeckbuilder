@@ -86,11 +86,11 @@ cost(1)
 types(earth, attack)
 $Damage=4
 $Range=3
-text(purge all unplayable cards in hand, deal $Damage damage range $Range for each card purged)
+text(purge all unplayable cards in hand, deal $Damage crush damage range $Range for each card purged)
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
 trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (purge($Loopcard )))))
-trigger(onPlay, if( ($cardnumber>0),(do(damage($Damage,(earth),(any),$Range)))))
+trigger(onPlay, if( ($cardnumber>0),(do(damage($Damage,(crush),(any),$Range)))))
 trigger(onPlay, if( ($cardnumber>1),(repeat( (do(damage($Damage,(earth),(lastTargets),$Range ))),(+,-1,$cardnumber)))))
 removetrigger(endofturn,true,1);
 rarity(7);
@@ -100,13 +100,14 @@ cost(1)
 types(earth,fire, attack)
 $Damage=7
 $Range=1
-text(void all unplayable cards in hand, deal $Damage damage to all adjacent enemies for each card voided)
+text(void all unplayable cards in hand, deal $Damage fire crush damage to all adjacent enemies for each card voided)
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
 trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (voided($Loopcard, Hand )))))
-trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(earth,fire),(all),$Range ))),$cardnumber))))
+trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(crush,fire),(all),$Range ))),$cardnumber))))
 removetrigger(endofturn,true,1);
 rarity(7);
+image("res://Images/CardArt/PyroclasticFlow.png")
 
 title("Dust Devil");
 cost(-);
@@ -118,3 +119,12 @@ removetrigger(never, true, 0);
 trigger(onDraw, do(draw,($Draw)));
 modifiers(unplayable);
 
+title("Coal Smoke");
+cost(0);
+types(earth,fire,assasin);
+$Repeat=5
+$Status=1
+trigger(onPlay,do(addStatus(stealth,$Status)))
+trigger(onPlay, repeat( (do(createAt("Coal",Deck,0))),$Repeat));
+text("Gain $Status stealth. Add $Repeat Coal cards on top of your deck");
+removetrigger(endofturn, true, 1);

@@ -17,6 +17,7 @@ func Load(parent):
 	#yield(parent,"ready")
 	map = parent.map
 	cardController = parent.cardController
+	animationController = parent.animationController
 	enemyController=self
 	var step = $UnitLibrary.Load()
 	if step is GDScriptFunctionState:
@@ -137,14 +138,20 @@ func enemyTurn():
 		elif unit.health <0:
 			unit.die(null)
 	for unit in units:
-		unit.startOfTurn()
+		var res = unit.startOfTurn()
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	for unit in units:
 		if unit != null and not unit.skipturn and not unit.status.has("stunned"):
-			unit.Triggered("turn",[])
-			yield(get_tree().create_timer(.1), "timeout")
+			var res = unit.Triggered("turn",[])
+			if res is GDScriptFunctionState:
+				yield(res, "completed")
+			yield(get_tree().create_timer(.15), "timeout")
 	for unit in units:
 		if unit != null:
-			unit.endOfTurn()	
+			var res = unit.endOfTurn()	
+			if res is GDScriptFunctionState:
+				yield(res, "completed")
 	countDifficulty()
 	if totaldifficulty < 1 or totaldifficulty < .2* maxdifficulty:
 		cardController.Action("consume",[])

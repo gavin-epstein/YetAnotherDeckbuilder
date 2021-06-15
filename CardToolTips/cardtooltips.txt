@@ -19,7 +19,7 @@ X: When played, takes the rest of your energy and sets X to that value.
 dodge: Reaction card that reduces incoming damage by 50-100%.
 silent: Does not trigger the effects of any other cards.
 transform: This card becomes another card of the same type.
-slay: Triggered when this card/unit kills an enemy.
+slay: Triggered when this card/unit kills a unit.
 retain: Not discarded by anything that discards your whole hand.
 energy: Energy is spent to play cards.
 shadow: Shadow damage adds a stack of corruption, damaging the target next time they move.

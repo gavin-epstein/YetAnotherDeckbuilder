@@ -137,6 +137,8 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	if attacker!=null:
+		controller.animationController.Damage(types, attacker, self)
 	if amount is GDScriptFunctionState:
 		yield(amount, "completed")
 	if self.trap:
