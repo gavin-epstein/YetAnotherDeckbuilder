@@ -2,7 +2,7 @@
 Null units showing up in unit list
     They are successfully being ignored
 
-    
+push/pull intent doesnt work
 make status tick down happen at start of player turn always
 add health bar
 add boss loot
@@ -13,6 +13,8 @@ unit names can be too long to fit
 #renewal not voiding other cards
 Ashes not voiding a card
 
+Hide card reward to look at board
+cards in hand and play should stack ltr (left bottom)
 
 input not allowed nonsense
     Lightspeed+ luminous earth locking out select

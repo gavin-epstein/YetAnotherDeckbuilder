@@ -21,6 +21,7 @@ trigger(onPlay, do(damage, ($Damage,(crush,fungal),(any),$Range),true))
 text("Deal $Damage damage at a range of $Range .\nWhile this is in play, when a card gains damage, this card does too")
 removetrigger(endofturn,true,2);
 modifiers(unique);
+image("res://Images/CardArt/Parasite.png");
 
 title(Infest);
 cost(1);
@@ -82,3 +83,19 @@ trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(addVar(self,Heal,$Inc
 text("Heal $Heal . While in play, when you draw an unplayable card increase this card heal by $Increment");
 rarity(2);
 image("res://Images/CardArt/Mycorhizome.png");
+
+title("Pore Fungus");
+cost(1)
+$Increment=1
+$Strength=5
+$MaxHealth=5
+$Range=1
+trigger(onPlay, if( (not(do(hasProperty((select((all,(any),"name:Pore Fungus"),1,tile)), "name:Pore Fungus")))),(do(setVar(self, dothething,1)))))
+trigger(onPlay, if( ($dothething>0),(do(summon("Pore Fungus",(any),$Range)))))
+trigger(onPlay, if( ($dothething>0),(do(addStatus(maxHealth,$MaxHealth, (do(selectTiles( (all,(any),"name:Pore Fungus"),40,Player))))))));
+trigger(onPlay, if( ($dothething>0),(do(addStatus(strength,$Strength, (do(selectTiles( (all,(any),"name:Pore Fungus"),40,Player))))))));
+trigger(onPlay, if( ($dothething>0),(do(addVar(self, Strength,$Increment)))))
+trigger(onPlay, if( ($dothething>0),(do(addVar(self, MaxHealth,(+,1,$Increment))))))
+text("If there is no Pore Fungus alive, summon one with (+,1,$Strength) strength and (+,1,$MaxHealth) health, then add $Increment "/" (+,1,$Increment) to the stats on this card.")
+removetrigger(endofturn, true, 1)
+rarity(2)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scripts/UI/Almanac.gd" type="Script" id=1]
 [ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Images/UIArt/Tutorial/SearchIcon.png" type="Texture" id=3]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
@@ -10,6 +11,8 @@ script = ExtResource( 1 )
 layer = 4
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchor_top = 0.00150748
+anchor_bottom = 0.00150746
 margin_right = 1920.0
 margin_bottom = 1080.0
 color = Color( 0, 0, 0, 1 )
@@ -39,5 +42,11 @@ placeholder_text = "Search"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SearchIcon" type="Sprite" parent="CanvasLayer"]
+modulate = Color( 0.5, 0.5, 0.5, 1 )
+position = Vector2( 1427.22, 36.4865 )
+scale = Vector2( 0.062623, 0.062623 )
+texture = ExtResource( 3 )
 [connection signal="index_pressed" from="CanvasLayer/Menu" to="." method="_on_Menu_index_pressed"]
 [connection signal="text_changed" from="CanvasLayer/LineEdit" to="." method="_on_LineEdit_text_changed"]

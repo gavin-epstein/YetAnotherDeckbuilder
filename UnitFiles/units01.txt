@@ -42,7 +42,7 @@ speed(3)
 range(1)
 health(10)
 strength(5)
-damagetypes(stab)
+damagetypes(stab,bite)
 trigger(turn,do(MoveAndAttack(self,friendly)))
 trigger(onAttack,do(takeDamage(strength,null)))
 status(thorns,5)
@@ -129,6 +129,7 @@ trigger(onSummon,do(addArmor(self,10)))
 trigger(turn,do(MoveAndAttack(self,friendly)))
 
 name("Smol Wizard")
+damagetypes(storm)
 difficulty(4)
 spawnable(any)
 health(25)
@@ -217,7 +218,7 @@ difficulty(-1)
 health(11)
 strength(1)
 speed(1)
-damagetypes(evil)
+damagetypes(ritual)
 range(2)
 image("res://Images/UnitArt/imp.png")
 status(friendly,true)
@@ -287,6 +288,7 @@ lore("A common desert cactus, will add thorns to any nearby units")
 name("Frost Gremlin");
 difficulty(9);
 spawnable(ice)
+damagetypes(ice)
 health(13);
 strength(6);
 range(3);
@@ -298,6 +300,7 @@ image("res://Images/UnitArt/FrostGremlin.png")
 name("Rock Nautilus")
 difficulty(2);
 spawnable(stone)
+damagetypes(crush)
 health(12);
 strength(4);
 range(1);
@@ -316,6 +319,7 @@ status(trap,true)
 status(expire,7)
 status(lootless,true)
 spawnable(none)
+damagetypes(moss)
 trigger(trap,if( ( hasProperty(argv[0], friendly) ), (do ( Attack(self,argv[0] ) ) )))
 strength(4)
 range(0)
@@ -330,6 +334,7 @@ $Intent=move
 range(1)
 speed(1)
 strength(12)
+damagetypes(bite)
 trigger(turn,do(setVar(self,lastTile,tile)))
 trigger(turn,if(($Intent=move),( do(MoveAndAttack(self,friendly)))))
 trigger(turn,if(($Intent=move),( do(Summon($lastTile,"Toxic Ooze")))))
@@ -337,6 +342,7 @@ image("res://Images/UnitArt/SnailLord.png")
 
 name("Mountain Beast")
 spawnable(stone,ice)
+damagetypes(bite,crush)
 status(stoneskin,true)
 difficulty(14)
 health(22)
@@ -351,6 +357,7 @@ image("res://Images/UnitArt/WalkingMountain.png")
 
 name("Johnny The Grill")
 spawnable(any)
+damagetypes(bite,fire)
 difficulty(8)
 speed(2)
 range(3)
@@ -365,6 +372,7 @@ image("res://Images/UnitArt/GrillSpider.png")
 
 name("Chameleon Knight")
 spawnable(stone,water,grass)
+damagetypes(bite)
 difficulty(12)
 speed(3)
 range(1)
@@ -381,6 +389,7 @@ image("res://Images/UnitArt/CameleonRider.png")
 
 name("Frog Warrior")
 spawnable(stone,water,grass)
+damagetypes(slash)
 difficulty(2)
 speed(1)
 range(1)
@@ -393,6 +402,7 @@ image("res://Images/UnitArt/FrogWarrior.png")
 
 name("Froggy Warrior")
 spawnable(none)
+damagetypes(slash)
 difficulty(2)
 speed(1)
 range(1)
@@ -404,6 +414,7 @@ image("res://Images/UnitArt/FrogWarrior.png")
 
 name("Queen Orla")
 spawnable(none)
+damagetypes(kinetic)
 difficulty(44)
 strength(15);
 range(30);
@@ -421,6 +432,7 @@ image("res://Images/UnitArt/catqueen.png")
 name("Cactus Wren")
 lore("This small bird is light enough that it can perch atop cactus spines without getting pricked")
 spawnable(none)
+damagetypes(avian,stab)
 difficulty(0)
 strength(1)
 health(3)
@@ -431,6 +443,7 @@ trigger(turn,do(MoveAndAttack(self,-friendly)))
 image("res://Images/UnitArt/CactusWren.png")
 
 name("LORD OF THE SWAMP");
+damagetypes(slash,moss)
 spawnable(none)
 difficulty(44);
 strength(14);
@@ -448,6 +461,7 @@ image("res://Images/UnitArt/SwampLord.png")
 
 name("Spare Cog")
 spawnable(none);
+damagetypes(mechanical)
 difficulty(1);
 strength(3);
 speed(1);
@@ -460,6 +474,7 @@ facing(topdown)
 
 name("The Last Automaton")
 spawnable(none);
+damagetypes(mechanical)
 status(boss, true);
 difficulty(44);
 strength(16);
@@ -477,6 +492,7 @@ image("res://Images/UnitArt/Automaton.png")
 name("Soulsucker")
 image("res://Images/UnitArt/EvilVacuum.png")
 spawnable(any);
+damagetypes(kinetic)
 difficulty(8);
 strength(7);
 health(15);
@@ -488,6 +504,7 @@ trigger(turn,cardDo(moveUnits( (all,(any),exists),50,tile,towards,1)))
 name("Phoenix")
 spawnable(none)
 status(friendly,true)
+damagetypes(avian,fire)
 strength(0)
 health(10)
 range(1);
@@ -497,3 +514,26 @@ trigger(onCardChange,do(setStrength(tile, (count(Voided,"any")))))
 trigger(turn, do(MoveAndAttack(self,-friendly)))
 image("res://Images/UnitArt/firebird.png")
 
+name("Shellsworn")
+spawnable(none)
+status(friendly,true)
+status(expire,5)
+damagetypes(bite)
+health(10)
+strength(10)
+speed(1)
+range(1)
+trigger(turn, do(addBlock(self, 10)))
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/TurtleMercenary.png")
+
+name("Pore Fungus")
+spawnable(none)
+status(friendly, true)
+damagetypes(bite)
+health(1)
+strength(1)
+speed(1)
+range(3)
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/PoreFungus.png")

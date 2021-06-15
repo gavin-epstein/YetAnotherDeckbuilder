@@ -51,8 +51,8 @@ trigger(onDiscard,do(move(Discard,Hand,self)));
 trigger(onDiscard,do(setVar(self,Cost,0)))
 trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
 trigger(onDiscard,do(play(self)));
-trigger(onPlay, do(damage, ($Damage,(none),(all),1),false));
-text("Deal $Damage damage to all adjacent units. If this card is discarded, play it");
+trigger(onPlay, do(damage, ($Damage,(storm),(all),1),false));
+text("Deal $Damage storm damage to all adjacent units. If this card is discarded, play it");
 removetrigger(endofturn, true,1);
 image("res://Images/CardArt/Storm.png");
 
@@ -64,11 +64,11 @@ $Block=9
 $Damage=9
 $Range=2
 trigger(onPlay,do(block($Block)))
-trigger(onPlay,do(damage, ($Damage,(wind),(any),$Range)))
+trigger(onPlay,do(damage, ($Damage,(storm),(any),$Range)))
 trigger(onDiscard,do(move(Discard,Hand,self)));
 trigger(onDiscard,do(addVar(self,Cost,-1)));
 trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
-text("Block $Block, Deal $Damage damage, range 2. When discarded, return this to your hand and lower the cost by one until played")
+text("Block $Block, Deal $Damage storm damage, range 2. When discarded, return this to your hand and lower the cost by one until played")
 removetrigger(endofturn,true,1);
 image("res://Images/CardArt/Altostratus.png");
 
@@ -89,8 +89,8 @@ $Damage=4
 $Repeat=3
 $Draw=4
 $Range=2
-trigger(onPlay,do(damage,($Damage,(cloud),($Repeat),$Range)));
-text("Deal $Damage damage to $Repeat random units in range $Range, and discard the top $Draw cards of your deck");
+trigger(onPlay,do(damage,($Damage,(storm),($Repeat),$Range)));
+text("Deal $Damage storm damage to $Repeat random units in range $Range, and discard the top $Draw cards of your deck");
 trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Draw))
 types(cloud,attack)
 rarity(5);
@@ -116,10 +116,10 @@ types(cloud,reaction,attack);
 text("Add this to your reaction pile. On reaction, counterattack $Damage");
 # , draw $Draw , and discard 1")
 trigger(onPlay,do(move(Play,Reaction,self)));
+trigger(onReaction, do(damage($Damage, (storm), (direct, $Attacker)),~)));
+trigger(onReaction, do(draw($Draw)))
 trigger(onReaction,do(move(Reaction,Play,self)));
-trigger(onReaction, do(damage($Damage, (cloud), (direct, $Attacker)),~)));
-#trigger(onReaction, do(draw($Draw)))
-#trigger(onReaction, do(discard,((select(Hand,true,"pick a card to discard (Cirrus)"))),false));
+trigger(onReaction, do(discard,((select(Hand,true,"pick a card to discard (Cirrus)"))),false));
 removetrigger(endofturn, true,1);
 rarity(6);
 
@@ -129,9 +129,9 @@ cost(0)
 $Damage=2
 $Increment=2
 $Range=2
-text("Deal $Damage fire damage range $Range, then void. On discard add a copy with + $Increment Damage to your hand")
+text("Deal $Damage fire storm damage range $Range, then void. On discard add a copy with + $Increment Damage to your hand")
 trigger(onCreate, if ( (argv[0]=self), (do(addVar(self,Damage,$Increment)))))
-trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
+trigger(onPlay, do(damage, ($Damage,(fire,storm),(any),$Range)))
 trigger(onPlay,do(voided(self, Play)))
 rarity(1)
 trigger(onDiscard, do(create(self,Hand)))

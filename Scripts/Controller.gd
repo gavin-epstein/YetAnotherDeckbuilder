@@ -2,6 +2,7 @@ extends Node2D
 var Play
 var enemyController
 var cardController
+var animationController
 var map
 var selectedCard = null
 var test = false
@@ -132,7 +133,7 @@ func getVar(card, varname):
 		return false
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
-	
+	print("Select input allowed " +str( cardController.inputAllowed))
 	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
@@ -195,6 +196,7 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
 	Message.visible = true
 	cardController.updateDisplay()
+	print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false

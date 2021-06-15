@@ -91,7 +91,7 @@ interrupt(addVar,if((argv[0]=self),true))
 removetrigger(death,(hasStatus(argv[0],"boss")),1);
 text("The void gains stealth, and does not grow until the boss is killed. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/VoidOfHaste.png")
+image("res://Images/CardArt/VoidOfSilence.png")
 
 title(Void of Confusion);
 cost(-);
@@ -104,7 +104,7 @@ trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(endofturn,true,8);
 text("When you reshuffle, The Void grows. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/VoidOfDeath.png")
+image("res://Images/CardArt/VoidOfConfusion.png")
 
 title(Void of Vengeance);
 cost(-);
@@ -117,4 +117,4 @@ trigger(onRemoveFromPlay,do(voidshift()));
 removetrigger(endofturn,true,8);
 text("When The Void takes damage, The Void grows. On discard from play, transform");
 rarity(0);
-image("res://Images/CardArt/VoidOfAnger.png")
+image("res://Images/CardArt/VoidOfVengeance.png")

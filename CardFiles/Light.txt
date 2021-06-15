@@ -121,3 +121,14 @@ trigger(onPlay, do(damage ( (*,$Damage,$X),(light),(all),$X)));
 removetrigger(endofturn,true,2);
 rarity(3);
 image("res://Images/CardArt/Smite.png");
+
+title("Bright Banishment")
+types(light, kinetic)
+cost(X)
+$X="X"
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+text(Apply X dazzled to all enemies and push all units X tiles)
+trigger(onPlay, do(addStatus(dazzled,$X,(do(selectTiles( (all,(any),-friendly),40,Player))))))
+trigger(onPlay, do(moveUnits((all,(any),any),0,Player,away,$X)));
+removetrigger(endofturn,true,2)
+rarity(6)
