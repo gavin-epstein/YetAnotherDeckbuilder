@@ -62,8 +62,11 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		Deck.add_card(Library.getCardByName("Preignite"))
-		Deck.add_card(Library.getCardByName("Extinguish"))
+
+		#Coal + way to void it + lightspeed
+		Hand.add_card(Library.getCardByName("Lightspeed"))
+		Deck.add_card(Library.getCardByName("Coal"))
+		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -116,7 +119,9 @@ func reshuffle()->bool:
 	if Discard.size()==0:
 		return false
 	Deck.cards +=Discard.cards
-	Action("shuffle",[])
+	var res = Action("shuffle",[])
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	Discard.cards = []
 	return true
 func shuffle()->bool:
@@ -199,7 +204,9 @@ func discardAll(silent = false):
 			backind-=1
 			
 		else:
-			card.Triggered("onRetain",[card])
+			var res = card.Triggered("onRetain",[card])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 			if card in Hand.cards:
 				ind+=1
 			else:
@@ -211,7 +218,9 @@ func discard(card, silent = false, loc = "Hand"):
 		return false
 	var res =  move(loc, "Discard", card)
 	if not silent and res:
-		card.Triggered("onDiscard", [card])
+		var res2 = card.Triggered("onDiscard", [card])
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res, "completed")
 	return res
 	
 func updateDisplay():
@@ -306,8 +315,12 @@ func create(card, loc,spawner=null,silent=false):
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
-		added.Triggered("onCreate",[added,loc])
-		triggerAll("onCreate",[added,loc])
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
 	return added
 func createAt(card, loc, pos, spawner=null,silent=false):
 	loc = get_node(loc)
@@ -328,8 +341,12 @@ func createAt(card, loc, pos, spawner=null,silent=false):
 	loc.add_card_at(added,pos)
 	added.updateDisplay()
 	if not silent:
-		added.Triggered("onCreate",[added,loc])
-		triggerAll("onCreate",[added,loc])
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
@@ -338,8 +355,12 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
-		added.Triggered("onCreate",[added,loc])
-		triggerAll("onCreate",[added,loc])
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return added
 	
 func gainEnergy(num):
@@ -350,7 +371,9 @@ func gainEnergy(num):
 func voided(card, loc):
 	
 	if move(loc, "Voided", card):
-		card.Triggered("onVoided",[self])
+		var res = card.Triggered("onVoided",[self])
+		if res is GDScriptFunctionState:
+			yield(res,"completed")
 		return true
 	return false
 
@@ -440,10 +463,14 @@ func damage(amount, types, targets,distance, tile =null):
 			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
 		if lastPlayed !=null:
-			if dmg.size() > 1 and dmg[1] == "kill":
-				lastPlayed.Triggered("slay",[unit])
+			if dmg.size() >1 and dmg[1] == "kill":
+				var res = lastPlayed.Triggered("slay",[unit])
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 			if dmg.size()>0:
-				lastPlayed.Triggered("attack",dmg)
+				var res = lastPlayed.Triggered("attack",dmg)
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return true
 func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	var property
@@ -529,7 +556,9 @@ func consume():
 	return true
 func triggerAll(trigger, argv):
 	for card in Play.cards:
-		card.Triggered(trigger,argv)
+		var res = card.Triggered(trigger,argv)
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
 func devoidAll():
 	while $Voided.cards.size()>0:
 		move("Voided", "Discard",$Voided.cards[0])

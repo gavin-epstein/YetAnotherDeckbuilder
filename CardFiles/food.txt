@@ -39,7 +39,7 @@ cost(2);
 $Damage=4
 types(food, attack);
 text("Deal $Damage damage to all adjacent units, heal equal to damage dealt")
-trigger(onPlay,do(damage, ($Damage,(fungal),(all),1)));
+trigger(onPlay,do(damage, ($Damage,(bite),(all),1)));
 trigger(attack,do(heal(argv[0])));
 removetrigger(endofturn,true,2);
 rarity(5)
@@ -72,9 +72,9 @@ title("Nettle Tea")
 types(food)
 $MaxHealth=3
 $Status=3
-trigger(onPlay, (do(gainMaxHealth($MaxHealth))))
-trigger(onPlay, (do(addStatus(sting,$Status))))
-text("Gain $MaxHealth maxHealth. You cannot heal for $Status turns")
+trigger(onPlay, do(gainMaxHealth($MaxHealth)))
+trigger(onPlay, do(addStatus(sting,$Status)))
+text("Gain $MaxHealth max health. You cannot heal for $Status turns")
 cost(0)
 removetrigger(endofturn,true,3)
 rarity(2);
