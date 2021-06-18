@@ -129,6 +129,6 @@ $X="X"
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 text(Apply X dazzled to all enemies and push all units X tiles)
 trigger(onPlay, do(addStatus(dazzled,$X,(do(selectTiles( (all,(any),-friendly),40,Player))))))
-trigger(onPlay, do(moveUnits((all,(any),any),0,Player,away,$X)));
+trigger(onPlay, do(moveUnits((all,(any),-Player),40,Player,away,$X)));
 removetrigger(endofturn,true,2)
 rarity(6)

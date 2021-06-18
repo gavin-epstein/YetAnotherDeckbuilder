@@ -117,6 +117,8 @@ func loadCardFromString(string):
 	#self.updateDisplay()
 	self.generateTooltips()
 func updateDisplay():
+	if get_parent()!=null and get_parent().get("cards")!=null:
+		base_z = get_parent().base_z +2 + get_parent().cards.find(self)
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title+ "[/center]";

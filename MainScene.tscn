@@ -645,7 +645,7 @@ __meta__ = {
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 86
+frame = 66
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -715,7 +715,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 87
+frame = 67
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -786,7 +786,7 @@ __meta__ = {
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 86
+frame = 66
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -879,7 +879,7 @@ __meta__ = {
 position = Vector2( 1691.11, 842.742 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 48
+frame = 65
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -911,7 +911,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 50
+frame = 30
 playing = true
 script = ExtResource( 264 )
 
@@ -1047,7 +1047,7 @@ centered = false
 script = ExtResource( 6 )
 
 [node name="CardPileDisplay" type="Node2D" parent="CardController"]
-z_index = 6
+z_index = 15
 script = ExtResource( 376 )
 
 [node name="Panel" type="Panel" parent="CardController/CardPileDisplay"]
