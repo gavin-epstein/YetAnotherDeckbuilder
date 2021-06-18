@@ -75,7 +75,7 @@ image("res://Images/CardArt/CuttingBoard.png")
 
 title("Cheese Grater");
 cost("1")
-types(knife,attack);
+types(knife,attack,rage);
 $Times=10
 $Damage=1
 $Range=3
@@ -102,6 +102,7 @@ text("While this in play all kitchen knives you create gain $Increment damage")
 trigger(onCreate,if((hasModifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
 removetrigger(endofturn,true,5);
 rarity(2);
+image("res://Images/CardArt/KnifeSharpener.png")
 
 title(Polished Blades);
 cost("2")
@@ -111,3 +112,14 @@ trigger(play, if((hasname(argv[0],knife)),(do(gainEnergy($Energy)))));
 text("When you play a card whose name has 'Knife' gain $Energy energy");
 removetrigger(endofturn,true,5)
 rarity(3)
+
+title(Swift Cleave);
+cost(1)
+types(knife, movement);
+$Move=2
+$Times=2
+text(Move $Move, and add $Times meat cleavers to your hand)
+trigger(onPlay,do(movePlayer($Move)))
+trigger(onPlay, repeat( (do(create("Meat Cleaver",Hand))),$Times))
+removetrigger(endofturn,true,2)
+rarity(4)

@@ -455,6 +455,7 @@ func loadFromSave(save:Dictionary, parent):
 func select(targets, distance, tile):
 	return selectTiles(targets, distance, tile)
 func say(unit, message, time=0):
+	message = str(message)
 	if unit == null:
 		return false
 	var units
@@ -463,13 +464,30 @@ func say(unit, message, time=0):
 	else:
 		units= unit
 	for tile in units:
+		if tile.has_method("hasOccupant"):
+			if tile.occupants.size()==0:
+				continue
+			tile = tile.occupants[0]
 		if time == 0:
 			tile.say(message)
 		else:
 			tile.say(message,time)
-
+func kill(unit,attacker):
+	if unit == null:
+		return false
+	var units
+	if not unit is Array:
+		units = [unit]
+	else:
+		units= unit
+	for unit in units:
+		if unit.has_method("hasOccupant"):
+			if unit.occupants.size()==0:
+				return false
+			unit = unit.occupants[0]
+		unit.die(attacker)
 func testAllUnits():
-	Summon( map.getRandomEmptyNode(["any"]), "The Last Automaton")
+	Summon( map.getRandomEmptyNode(["any"]), "Suspicious Mound")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)

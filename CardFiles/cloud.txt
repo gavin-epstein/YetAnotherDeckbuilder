@@ -95,6 +95,7 @@ trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Dra
 types(cloud,attack)
 rarity(5);
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/Thunderclap.png");
 
 title("Hot Air Balloon");
 cost(0);
@@ -124,7 +125,7 @@ removetrigger(endofturn, true,1);
 rarity(6);
 
 title("Mushroom Cloud")
-types(cloud,fungus,fire,attack)
+types(cloud,fungal,fire,attack)
 cost(0)
 $Damage=2
 $Increment=2

@@ -46,6 +46,8 @@ func Damage(types, attacker, defender):
 		
 		var player = animationtemplate.instance()
 		var disp  = defender.position -attacker.position
+		if disp.x ==0:
+			disp = Vector2(.001,disp.y)
 		var angle
 		if disp.x<0:
 			player.scale =  Vector2(-dist/1000,dist/1000)/1.414

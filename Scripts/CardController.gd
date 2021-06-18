@@ -62,7 +62,8 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		Deck.add_card(Library.getCardByName("Cirrus"))
+		Deck.add_card(Library.getCardByName("Preignite"))
+		Deck.add_card(Library.getCardByName("Extinguish"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -490,6 +491,7 @@ func unheal(amount):
 	enemyController.heal(enemyController.Player,-1*amount)
 	return true
 func summon(unitName, targets, distance,tile="Player") :
+	print("summon Called")
 	var terrains
 	var locs = []
 	if tile is String and tile == "Player":
@@ -568,7 +570,8 @@ func Reaction(amount:float, attacker)-> float:
 	displayReaction(card)
 	return amount
 func voidshift():
-	Action("devoidAll",[])
+	pass
+	#Action("devoidAll",[])
 func cardAt(loc,index):
 	loc = get_node(loc)
 	return loc.getCard(index)	

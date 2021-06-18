@@ -25,12 +25,12 @@ removetrigger(endofturn, true, 13)
 $Block=9
 
 title("Watering Hole")
-types(water, food)
+types(water, food,avian)
 text("When you shuffle, heal $Heal, and all allies gain $MaxHealth max health")
 cost(1)
 removetrigger(endofturn, true, 5)
 rarity(2)
-trigger(shuffle, do heal($Heal))
+trigger(shuffle, do(heal($Heal)))
 trigger(shuffle, do(addStatus(maxHealth,$MaxHealth, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
 $Heal=1
 $MaxHealth=1

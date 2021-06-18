@@ -1,6 +1,7 @@
 extends CanvasLayer
 const errortemplate = preload("res://Images/UIArt/ErrorReport.tscn")
 onready var splashscene = load("res://Splash.tscn")
+onready var almanactemplate = preload("res://Glossary/Almanac.tscn")
 onready var buttons =[$Back/Resume,$Back/Resign,$Back/SaveQuit,$Settings]
 signal unpaused
 func _input(event: InputEvent) -> void:
@@ -40,3 +41,12 @@ func _ResignButton(event: InputEvent) -> void:
 func _on_Settings_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		$Settings.visible=true
+
+
+func _on_Almanac_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		var almanac = almanactemplate.instance()
+		almanac.Load(get_node("/root/Scene"))
+		add_child(almanac)
+		yield(almanac, "Closed")
+		hide()
