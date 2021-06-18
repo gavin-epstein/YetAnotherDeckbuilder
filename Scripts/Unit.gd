@@ -5,7 +5,7 @@ var status = {}
 var title:String
 var strength = 0
 const tilespeed  = 10
-var speed
+var speed =0
 var spawnableterrains = {}
 var healthBarTemplate = preload("res://HealthBar.tscn")
 var healthChangeTemplate = preload("res://Units/healthChange.tscn")
@@ -108,7 +108,7 @@ func hasProperty(prop:String):
 	#Multi property things. e.g. -player&friendly
 	if prop.find("&")!=-1:
 		var props = prop.split("&")
-		print(str(props))
+		#print(str(props))
 		for thing in props:
 			if not self.hasProperty(thing):
 				return false
@@ -151,6 +151,10 @@ func takeDamage(amount,types, attacker):
 		amount = self.vars["$DamageAmount"]
 		if amount == 0:
 			return [0]
+	if "storm" in types:
+		if randf()<=.05:
+			amount*=2
+			changeHealth("CRITICAL")
 	if amount >=20 and amount < armor+health+block:
 		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
 	#put out fire
@@ -528,7 +532,10 @@ func getStrength(amount = 0):
 func isUnit()->bool:
 	return true
 func changeHealth(amount)-> void:
-	health += amount
+	if not amount is String:
+		if status.has("sting"):
+			amount=0
+		health += amount
 	var num = healthChangeTemplate.instance()
 	
 	self.add_child(num)

@@ -83,6 +83,8 @@ image("res://Images/CardArt/VoidOfHaste.png")
 title(Void of Silence);
 cost(-);
 types(void);
+trigger(onRemoveFromPlay,do(devoidAll()));
+trigger(onCreate,if((argv[0]=self),(do(devoidAll()))));
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));;
 trigger(onRemoveFromPlay,do(purge(self)));
 trigger(onRemoveFromPlay,do(voidshift()));

@@ -61,7 +61,7 @@ def pickrandom(trie,alltypes):
         types.append(type3)
     types.sort()
     print(types,trie.get(types))
-        
+
 def main():
     trie = Trie()
     alltypes ={}
@@ -77,6 +77,7 @@ def main():
 
     alltypes.pop("meme");
     alltypes.pop("starter");
+    alltypes.pop("void")
     for i in range(1):
         pickrandom(trie,alltypes)
 

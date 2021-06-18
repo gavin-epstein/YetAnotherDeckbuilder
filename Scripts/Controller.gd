@@ -115,6 +115,10 @@ func setVar(card, varname, amount):
 		card = card[0]
 	if card == null :
 		return false
+	if  card.has_method("hasOccupant"):
+		if card.occupants.size()==0:
+			return false
+		card = card.occupants[0]
 	card.vars["$" + varname] = amount
 	return true
 func addVar(card, varname, amount):
@@ -124,6 +128,10 @@ func addVar(card, varname, amount):
 		card = card[0]
 	if card == null :
 		return false
+	if  card.has_method("hasOccupant"):
+		if card.occupants.size()==0:
+			return false
+		card = card.occupants[0]
 	if card.vars.has("$"  +varname):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount
 		return true
@@ -195,13 +203,16 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	selectedCard = null
 	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
 	Message.visible = true
+	if loc is CardPile:
+		loc.display()
 	cardController.updateDisplay()
 	print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
 	if loc is CardPile:
-		cardController.get_node("CardPileDisplay").undisplay()
+		loc.undisplay()
+	print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 
 func cardClicked(card):
@@ -256,7 +267,7 @@ func selectTiles(targets, distance, tile):
 	return enemies
 	
 func hasProperty(tile, prop, mode="or"):
-	if tile ==null or tile is Array and tile ==[]:
+	if tile ==null or tile is Array and tile.size()==0:
 		return false
 	if not tile is Array:
 		tile = [tile]

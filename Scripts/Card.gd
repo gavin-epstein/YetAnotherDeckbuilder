@@ -230,7 +230,8 @@ func _on_ColorRect_mouse_exited() -> void:
 func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if controller.takeFocus(self):
 		controller.releaseFocus(self)
-		mouseon = true
+		if not get_parent() is CardPile:
+			mouseon = true
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):

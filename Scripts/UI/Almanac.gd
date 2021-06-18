@@ -4,35 +4,45 @@ var terms
 var library = {}
 var cardLibrary
 var unitLibrary
+var stack =[]
+var stackindex = -1
+var cardtooltipicons={}
+signal Closed
 func _ready() -> void:
 	$CanvasLayer/LineEdit.caret_blink = true
 	$CanvasLayer/Menu.set_focus_neighbour(MARGIN_TOP,"../LineEdit")
-	cardLibrary = CardLibrary.new()
-	unitLibrary = UnitLibrary.new()
-	cardLibrary.loadIcons()
-	cardLibrary.loadTooltips("res://CardToolTips/cardtooltips.txt")
-	unitLibrary.loadIcons("res://Images/StatusIcons/",unitLibrary.icons)
-	unitLibrary.loadIcons("res://Images/IntentIcons/",unitLibrary.intenticons)
-	unitLibrary.loadtooltips("res://Units/tooltips.txt")
-	unitLibrary.loadintenttooltips("res://Images/IntentIcons/intentTooltips.txt")
-	self.Load(cardLibrary,unitLibrary)
+#	cardLibrary = CardLibrary.new()
+#	unitLibrary = UnitLibrary.new()
+#	cardLibrary.loadIcons()
+#	cardLibrary.loadTooltips("res://CardToolTips/cardtooltips.txt")
+#	unitLibrary.loadIcons("res://Images/StatusIcons/",unitLibrary.icons)
+#	unitLibrary.loadIcons("res://Images/IntentIcons/",unitLibrary.intenticons)
+#	unitLibrary.loadtooltips("res://Units/tooltips.txt")
+#	unitLibrary.loadintenttooltips("res://Images/IntentIcons/intentTooltips.txt")
+#	self.Load(cardLibrary,unitLibrary)
 	
-func Load(incardLibrary, inunitLibrary):
-	cardLibrary = incardLibrary
-	unitLibrary = inunitLibrary
+func Load(parent):
+	cardLibrary = parent.cardController.Library
+	unitLibrary = parent.enemyController.get_node("UnitLibrary")
+	unitLibrary.loadIcons("res://CardToolTips/Tooltipimages/",cardtooltipicons) 
 	for tooltip in cardLibrary.tooltips.keys():
 		var page = pagetemplate.instance()
-		page.createByText(tooltip.capitalize(), "Keyword on Cards\n"+cardLibrary.tooltips[tooltip].strip_edges())
+		var img = null
+		if tooltip.capitalize() in cardtooltipicons.keys():
+			img = cardtooltipicons[tooltip.capitalize()]
+		page.createByText(tooltip.capitalize(), "Keyword on Cards\n"+cardLibrary.tooltips[tooltip].strip_edges(), img)
 		library[tooltip.capitalize()] = page
+		
 	for tooltip in unitLibrary.tooltips.keys():
 		var page = pagetemplate.instance()
 		var title = unitLibrary.tooltips[tooltip].split(":")[0]
-		var text  = unitLibrary.tooltips[tooltip].split(":")[1]
+		var text = unitLibrary.tooltips[tooltip].split(":")[1]
 		var image =  unitLibrary.icons[tooltip]
 		page.createByText(title.capitalize(), "Status Effect\n"+text.strip_edges(), image)
 		library[title] = page
 	loadTypeDescriptions("res://CardToolTips/typeDescriptions.txt")
 	makehyperlinks()
+	$CanvasLayer/LineEdit.grab_focus()
 func getPageByName(name:String):
 	return library.get(name)
 
@@ -57,12 +67,17 @@ func _on_Menu_index_pressed(index: int) -> void:
 	$CanvasLayer/LineEdit.text = ""
 	displayPage(terms[index])
 
-func displayPage(title):
-	print(title)
+func displayPage(title,allowforward=false):
+	#print(title)
 	if title in library:
 		for child in $CanvasLayer/Pages.get_children():
 			$CanvasLayer/Pages.remove_child(child)
 		$CanvasLayer/Pages.add_child(library[title])
+		if stackindex < stack.size()-1 and not allowforward:
+			stack = stack.slice(0,stackindex)
+		if not allowforward:
+			stack.append(title)
+			stackindex+=1
 func makehyperlinks():
 	for page in library.values():
 		var out = ""
@@ -83,12 +98,34 @@ func loadTypeDescriptions(fname):
 	while not f.eof_reached():
 		var line = f.get_line()
 		if line.find(":") != -1:
-			line = line.split(":")
+			line = Array(line.split(":"))
 			var title = line[0].capitalize()
-			var text = line[1]
+			var text = "Card Type\n"+Utility.join(":", line.slice(1,line.size()-1))
 			text = text.replace("\\n","\n")
 			var image = cardLibrary.icons.get(title.to_lower())
 			var page = pagetemplate.instance()
 			page.createByText(title.capitalize(), text.strip_edges(), image)
 			library[title] = page
 	f.close()
+
+
+func _on_X_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		emit_signal("Closed")
+		self.queue_free()
+
+
+func _on_back_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		print("back", stackindex)
+		if stackindex > 0:
+			displayPage(stack[stackindex-1],true)
+			stackindex-=1
+
+func _on_next_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		print("next", stackindex, stack)
+		if stackindex < stack.size()-1:
+			stackindex+=1
+			displayPage(stack[stackindex],true)
+			

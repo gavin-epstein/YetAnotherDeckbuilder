@@ -47,6 +47,7 @@ func display():
 	#get_parent().releaseFocus(self)
 func undisplay():
 	#get_parent().releaseFocus(self)
+	get_node("../CardPileDisplay").undisplay()
 	self.ondisplay = false
 	self.updateDisplay()
 

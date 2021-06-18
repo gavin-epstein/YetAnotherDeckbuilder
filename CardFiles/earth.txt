@@ -57,7 +57,6 @@ image("res://Images/CardArt/Diamond.png")
 
 title("Obsidian Knife")
 cost(-)
-$Armor=1
 types(earth,knife)
 text("On draw, Add a random kitchen knife to your hand.\nUnplayable")
 trigger(onDraw,do(createByMod,(("kitchenknife"), Hand)));
@@ -65,6 +64,15 @@ modifiers(unplayable)
 removetrigger(never, true, 0);
 rarity(3)
 image("res://Images/CardArt/ObsidianKnife.png")
+
+title("Dodgy Looking Rock")
+cost(-)
+types(earth,dodge)
+text("On draw, Add a random dodge to your Reaction Pile.\nUnplayable")
+trigger(onDraw,do(createByMod,(("Dodge"), Reaction)));
+modifiers(unplayable)
+removetrigger(never, true, 0);
+rarity(4)
 
 title("Stoneskin")
 cost(1)

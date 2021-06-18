@@ -33,6 +33,8 @@ func _input(event: InputEvent) -> void:
 func undisplay():
 	$Panel.visible = false
 	if self.caller!=null:
-		self.caller.undisplay()
+		var temp = caller
+		caller= null
+		temp.undisplay()
 	get_parent().inputAllowed = oldinputallowed
 	

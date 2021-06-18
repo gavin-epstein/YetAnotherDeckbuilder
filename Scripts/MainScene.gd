@@ -81,7 +81,7 @@ func loadFromSave():
 			step = cardController.loadFromSave(save.cardController, self)
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
-			step = animationController.Load()
+			step = animationController.Load(self)
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
 			$LoadingBar.queue_free()

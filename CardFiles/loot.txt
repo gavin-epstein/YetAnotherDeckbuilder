@@ -21,9 +21,11 @@ title("Mercenaries")
 types(loot, summon)
 cost(1)
 $Range=2
+$cardnumber=0
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,loot)))))
-trigger(onPlay, if((cardnumber>0),(do(summon("Shellsworn",(any),$Range)))))
-trigger(onPlay,foreach(Loopcard,(select(Hand, (hasType(self, loot)),"-",all)),(do (purge($Loopcard )))))
+#trigger(onPlay,enemyDo(say(Player,$cardnumber)))
+trigger(onPlay, if(($cardnumber > 0),(do(summon("Shellsworn",(any),$Range)))))
+trigger(onPlay,foreach(Loopcard,(select(Hand, (hastype(self, loot)),"-",all)),(do (purge($Loopcard )))))
 trigger(onPlay, do(addStatus(expire,$cardnumber, (do(selectTiles((all,(any),"name:Shellsworn"),$Range,Player))))));
 trigger(onPlay, do(addVar(self,removecount,$cardnumber)));
 removetrigger(endofturn, true, 5);
@@ -37,6 +39,7 @@ $Energy=2
 trigger(cardreward,do(gainEnergy($Energy)))
 removetrigger(cardreward,true,5)
 rarity(4)
+cost(1)
 
 #card rewards have +1 card. (deal with boss loot)
 #when you play a loot card, draw 1
