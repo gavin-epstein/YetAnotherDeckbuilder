@@ -41,5 +41,5 @@ text("Gain $Energy energy.Retain. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
-types(wind,potion);
+types(light,potion);
 image("res://Images/CardArt/PotionOfLight.png")

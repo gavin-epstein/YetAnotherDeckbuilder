@@ -1,5 +1,6 @@
 extends "res://Scripts/Controller.gd"
-const testmode = false
+const testmode = true
+const testtype = "shadow"
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -64,9 +65,9 @@ func Load(parent)-> void:
 #		#Test Cards
 
 		#Coal + way to void it + lightspeed
-		Hand.add_card(Library.getCardByName("Lightspeed"))
-		Deck.add_card(Library.getCardByName("Coal"))
-		Deck.add_card(Library.getCardByName("Blinding Flash"))
+#		Hand.add_card(Library.getCardByName("Lightspeed"))
+#		Deck.add_card(Library.getCardByName("Coal"))
+#		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -75,7 +76,8 @@ func Load(parent)-> void:
 		Play.add_card(Library.getCardByName("Adventurer"))
 		Play.add_card(Library.getRandomByModifier(["void"]))
 		for card in Library.cards:
-			Deck.add_card(Library.getCardByName(card.title))
+			if card.hasType(testtype):
+				Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
 	elif doTutorial:
 		Play.add_card(Library.getCardByName("Adventurer"))

@@ -394,8 +394,8 @@ func processArgs(arg, argv):
 			return controller.enemyController.windDirection
 		if arg == "null":
 			return null
-		if arg == "strength" and self.get("strength")!=null :
-			return self.get("strength")
+		#if arg == "strength" and self.get("strength")!=null :
+		#	return self.get("strength")
 		if arg == "range" and self.get("attackrange")!=null :
 			return self.get("attackrange")
 		if arg == "speed" and self.get("speed")!=null :

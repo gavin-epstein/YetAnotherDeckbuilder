@@ -18,7 +18,8 @@ const testMethods = ["Attack","addArmor","addBlock",
 					"discardAll","cardreward","purge","create",
 					"createByMod","voided","endofturn","startofturn",
 					"movePlayer","damage","moveUnits","summon",
-					"armor","block","consume","addStatus","say"
+					"armor","block","consume","addStatus","say",
+					"kill"
 					]
 const directedmethods= ["setStatus","addStatus"]
 var hits = []
@@ -281,6 +282,7 @@ func hasProperty(tile, prop, mode="or"):
 					return false
 	return mode == "and"
 func getStatus(tile, statname) -> int:
+	#print(tile, statname)
 	if tile == null:
 		return 0
 	var units
@@ -290,9 +292,12 @@ func getStatus(tile, statname) -> int:
 		units= tile
 	var sum = 0
 	for tile in units:
-		if tile.occupants.size() > 0:
-			var val = tile.occupants[0].getStatus(statname)
+		if tile.has_method("hasOccupant") and  tile.occupants.size() > 0:
+			tile = tile.occupants[0]
+		if tile.has_method("getStatus"):
+			var val = tile.getStatus(statname)
 			sum += val
+	#print("sum: ", sum)
 	return sum
 func countTypes(loc, type) ->  int:
 	if loc == "Energy":
