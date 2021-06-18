@@ -276,7 +276,8 @@ func getTiles(tile,dist:int,property,terrains,canfly=false,hitsstealth=false):
 			var next = q.pop_front()
 			#multitile unit targeting
 			if next.occupants.size()>0:
-				possible.append(next.occupants[0].head.tile)
+				if next.occupants[0]!= null:
+					possible.append(next.occupants[0].head.tile)
 			else:
 				possible.append(next)
 			if next.dist < dist:

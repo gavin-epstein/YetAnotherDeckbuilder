@@ -488,6 +488,7 @@ func kill(unit,attacker):
 		unit.die(attacker)
 func testAllUnits():
 	Summon( map.getRandomEmptyNode(["any"]), "Suspicious Mound")
+	Summon( map.getRandomEmptyNode(["any"]), "Death Worm")
 #	for unitname in $UnitLibrary.units:
 #		if unitname!= "Mora":
 #			Summon( map.getRandomEmptyNode(["any"]), unitname)
