@@ -2,7 +2,7 @@ title("Fly");
 cost(0);
 types(avian,movement);
 trigger(onPlay, do(movePlayer,(40),false));
-text("Move anywhere.\n Void");
+text("Move anywhere.\n Burn");
 trigger(onPlay, do(voided,(self, Play),false));
 removetrigger(endofturn, true, 0);
 rarity(2);
@@ -29,7 +29,7 @@ cost(2);
 image("res://Images/CardArt/BirdMask.png");
 
 title(Flock Together);
-text("Summon a swallow for each avian card in play. void")
+text("Summon a swallow for each avian card in play. Burn")
 rarity(2)
 types(summon, avian)
 cost(1);
@@ -78,7 +78,7 @@ cost(2)
 $Range=3
 trigger(onPlay, do(summon("Cactus Wren",(any),$Range)));
 trigger(onPlay, do(voided,(self, Play)));
-text("Summon a Cactus Wren within range 3. Void");
+text("Summon a Cactus Wren within range 3. Burn");
 removetrigger(endofturn, true, 0);
 types(avian,summon,cactus);
 rarity(2);
@@ -97,7 +97,7 @@ cost(2)
 $Range=1
 trigger(onPlay, do(summon("Phoenix",(any),$Range)));
 trigger(onPlay, do(purge(self)));
-text("Summon a Phoenix that gains strength based on voided cards, and is reborn if it dies")
+text("Summon a Phoenix that gains strength based on burned cards, and is reborn if it dies")
 removetrigger(endofturn, true, 0);
 types(avian, fire,summon)
 rarity(2)

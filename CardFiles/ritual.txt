@@ -32,7 +32,7 @@ modifiers(unique)
 
 title(Pentaract);
 types(ritual, movement);
-text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and void this card. Cannot be upgraded.");
+text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and burn this card. Cannot be upgraded.");
 removetrigger(endofturn, true, 5);
 trigger(onRemoveFromPlay, do(heal(5)))
 trigger(onRemoveFromPlay, do(block(5)))
@@ -75,7 +75,7 @@ types(ritual,potion)
 rarity(1)
 $RitualCount=7
 $Times=3
-text("When you have $RitualCount ritual cards in play, void this and add $Times random potions to your hand")
+text("When you have $RitualCount ritual cards in play, burn this and add $Times random potions to your hand")
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(createByMod((potion),Hand))),$Times))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
@@ -88,7 +88,7 @@ $RitualCount=7
 removetrigger(play, (count(Play, ritual) > (+,1,$RitualCount)), 1);
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(summon("Imp",(any),1)))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
-text("When you have $RitualCount ritual cards in play, void this and summon an Imp");
+text("When you have $RitualCount ritual cards in play, burn this and summon an Imp");
 rarity(1)
 image("res://Images/CardArt/SummoningRitual.png")
 
@@ -147,7 +147,7 @@ types(ritual, fire)
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(devoidAll()))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, put all cards from your void pile into your discard, then void this");
+text("When you have $RitualCount ritual cards in play, put all cards from your burn pile into your discard, then burn this");
 rarity(3);
 cost(1);
 
@@ -159,6 +159,6 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Lumin
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Dust Devil", Deck,self ))),$CreateCount))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and void this card");
+text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
 cost(2);
 rarity(2);
