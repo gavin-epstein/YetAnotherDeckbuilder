@@ -4,7 +4,7 @@ class_name CardLocation
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
-
+var base_z = 0
 var cards = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

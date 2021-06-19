@@ -50,16 +50,7 @@ trigger(onPlay, if( (CreateCount<TotalUses),(do(addVar(self,CreateCount,1)))));
 rarity(1);
 removetrigger(endofturn,true,7);
 types(avian, summon)
-
-##title("Flight Potion");
-##cost(0)
-##text("Become immune to damage for 1 turn. Purge")
-##trigger(onPlay,do(addStatus("immune:any",1)))
-##trigger(onPlay, do(purge(self)));
-##removetrigger(endofturn, true, 0);
-##rarity(2);
-##types(avian, potion);
-##modifiers(potion);
+image("res://Images/CardArt/BirdsOfAFeather.png");
 
 title(Peck);
 cost(0)
@@ -70,8 +61,9 @@ trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
 trigger(onPlay, do(draw($Draw)));
 text("Deal $Damage stab damage, range $Range.\nDraw $Draw");
 removetrigger(endofturn, true, 1);
-types(avian);
+types(avian,wind);
 rarity(9);
+image("res://Images/CardArt/Peck.png");
 
 title("Henhouse")
 cost(1);
@@ -109,3 +101,22 @@ text("Summon a Phoenix that gains strength based on voided cards, and is reborn 
 removetrigger(endofturn, true, 0);
 types(avian, fire,summon)
 rarity(2)
+
+title("Incubator")
+cost(2)
+trigger(startofturn, do(summon("Barn Swallow",(1,(any),any),1)))
+text(At the start of your next $removecount turns, summon a Swallow on a random adjacent tile)
+types(avian,mechanical,summon)
+rarity(4)
+removetrigger(endofturn,true,8)
+
+title("Angry Birds")
+cost(0)
+types(avian,shadow,rage)
+$Status=2
+trigger(onPlay, do(addStatus(rage,$Status, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))))
+text("Give all allies $Status rage")
+removetrigger(endofturn, true,1)
+rarity(7);
+
+

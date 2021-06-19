@@ -20,6 +20,7 @@ removetrigger(endofturn,true,1)
 text("Trigger all start of turn effects except for Adventurer")
 cost(0)
 rarity(6)
+image("res://Images/CardArt/TimeMachine.png")
 
 title("Defense Mechanism")
 types(mechanical)
@@ -30,3 +31,4 @@ trigger(startofturn, do(block($Block)))
 text("At the start of your turn, gain $Block block")
 rarity(7)
 removetrigger(endofturn, true,8);
+image("res://Images/CardArt/DefenseMechanism.png");

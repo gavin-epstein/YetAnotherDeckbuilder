@@ -85,6 +85,7 @@ trigger(onPlay,do(purge(self)));
 text("Decrease the cost of a card in play by 1.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
+image("res://Images/CardArt/shadowhammer.png")
 
 title("Shieldsmith's Hammer");
 cost(1);

@@ -10,7 +10,10 @@ var number
 func _ready() -> void:
 	yield(get_parent(),"animateHealthChange")
 	var text = ""
-	if number > 0:
+	if number is String:
+		text = number
+		label.modulate = Color(1,1,1)
+	elif number > 0:
 		text += "+"
 		label.modulate = Color(0,.66,0)
 	elif number == 0:

@@ -8,6 +8,7 @@ trigger(onPlay,do(addStatus(thorns,$Thorns)))
 text("Heal $Heal . gain $Thorns thorns")
 rarity(7)
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/PricklyPair.png")
 
 title(Barrel Cactus)
 types(cactus)

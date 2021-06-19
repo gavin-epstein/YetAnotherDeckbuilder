@@ -2,6 +2,7 @@ extends Node2D
 var Play
 var enemyController
 var cardController
+var animationController
 var map
 var selectedCard = null
 var test = false
@@ -17,7 +18,8 @@ const testMethods = ["Attack","addArmor","addBlock",
 					"discardAll","cardreward","purge","create",
 					"createByMod","voided","endofturn","startofturn",
 					"movePlayer","damage","moveUnits","summon",
-					"armor","block","consume","addStatus","say"
+					"armor","block","consume","addStatus","say",
+					"kill"
 					]
 const directedmethods= ["setStatus","addStatus"]
 var hits = []
@@ -114,6 +116,10 @@ func setVar(card, varname, amount):
 		card = card[0]
 	if card == null :
 		return false
+	if  card.has_method("hasOccupant"):
+		if card.occupants.size()==0:
+			return false
+		card = card.occupants[0]
 	card.vars["$" + varname] = amount
 	return true
 func addVar(card, varname, amount):
@@ -123,6 +129,10 @@ func addVar(card, varname, amount):
 		card = card[0]
 	if card == null :
 		return false
+	if  card.has_method("hasOccupant"):
+		if card.occupants.size()==0:
+			return false
+		card = card.occupants[0]
 	if card.vars.has("$"  +varname):
 		card.vars["$" + varname] = card.vars["$" + varname]  + amount
 		return true
@@ -132,7 +142,7 @@ func getVar(card, varname):
 		return false
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
-	
+	print("Select input allowed " +str( cardController.inputAllowed))
 	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
@@ -194,12 +204,16 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	selectedCard = null
 	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
 	Message.visible = true
+	if loc is CardPile:
+		loc.display()
 	cardController.updateDisplay()
+	print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
 	if loc is CardPile:
-		cardController.get_node("CardPileDisplay").undisplay()
+		loc.undisplay()
+	print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 
 func cardClicked(card):
@@ -254,7 +268,7 @@ func selectTiles(targets, distance, tile):
 	return enemies
 	
 func hasProperty(tile, prop, mode="or"):
-	if tile ==null or tile is Array and tile ==[]:
+	if tile ==null or tile is Array and tile.size()==0:
 		return false
 	if not tile is Array:
 		tile = [tile]
@@ -268,6 +282,7 @@ func hasProperty(tile, prop, mode="or"):
 					return false
 	return mode == "and"
 func getStatus(tile, statname) -> int:
+	#print(tile, statname)
 	if tile == null:
 		return 0
 	var units
@@ -277,9 +292,12 @@ func getStatus(tile, statname) -> int:
 		units= tile
 	var sum = 0
 	for tile in units:
-		if tile.occupants.size() > 0:
-			var val = tile.occupants[0].getStatus(statname)
+		if tile.has_method("hasOccupant") and  tile.occupants.size() > 0:
+			tile = tile.occupants[0]
+		if tile.has_method("getStatus"):
+			var val = tile.getStatus(statname)
 			sum += val
+	#print("sum: ", sum)
 	return sum
 func countTypes(loc, type) ->  int:
 	if loc == "Energy":

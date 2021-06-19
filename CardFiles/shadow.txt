@@ -200,3 +200,11 @@ text("Gain $Energy energy per shadow hard in your hand");
 trigger(onPlay, do(gainEnergy,((count(Hand, shadow)))));
 removetrigger(endofturn,true,2);
 rarity(3);
+
+title("Dark Coin")
+cost(0);
+types(shadow);
+trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)),Cost,0)))
+removetrigger(endofturn,true,0);
+text("Set the cost of a random card in your hand to 0 until played")
+rarity(6);

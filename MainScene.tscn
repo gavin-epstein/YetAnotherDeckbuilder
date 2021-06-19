@@ -1,4 +1,4 @@
-[gd_scene load_steps=402 format=2]
+[gd_scene load_steps=404 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -384,6 +384,8 @@
 [ext_resource path="res://Images/UIArt/bossIcons/Queen Orla.png" type="Texture" id=382]
 [ext_resource path="res://Scripts/MeshInstanceTutorial.gd" type="Script" id=383]
 [ext_resource path="res://Scripts/LoadingBar.gd" type="Script" id=384]
+[ext_resource path="res://Scripts/UI/AnimationController.gd" type="Script" id=385]
+[ext_resource path="res://Scripts/AnimationLayer.gd" type="Script" id=386]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -563,6 +565,15 @@ script = ExtResource( 273 )
 [node name="UnitLibrary" type="Node2D" parent="Center/MapLayer/EnemyController"]
 script = ExtResource( 272 )
 
+[node name="Animations" type="CanvasLayer" parent="Center"]
+layer = 2
+offset = Vector2( 960, 410 )
+transform = Transform2D( 1, 0, 0, 1, 960, 410 )
+script = ExtResource( 386 )
+
+[node name="AnimationController" type="Node2D" parent="Center/Animations"]
+script = ExtResource( 385 )
+
 [node name="Clouds" parent="." instance=ExtResource( 373 )]
 
 [node name="Message" type="Panel" parent="."]
@@ -634,7 +645,7 @@ __meta__ = {
 position = Vector2( 1818.2, 844.659 )
 scale = Vector2( 0.13101, 0.13101 )
 frames = SubResource( 3 )
-frame = 18
+frame = 66
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -704,7 +715,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 19
+frame = 67
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -775,7 +786,7 @@ __meta__ = {
 position = Vector2( 1132.55, 661.468 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 18
+frame = 66
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -868,7 +879,7 @@ __meta__ = {
 position = Vector2( 1691.11, 842.742 )
 scale = Vector2( 0.2, 0.2 )
 frames = SubResource( 4 )
-frame = 57
+frame = 65
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -900,7 +911,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 108
+frame = 30
 playing = true
 script = ExtResource( 264 )
 
@@ -1036,7 +1047,7 @@ centered = false
 script = ExtResource( 6 )
 
 [node name="CardPileDisplay" type="Node2D" parent="CardController"]
-z_index = 6
+z_index = 15
 script = ExtResource( 376 )
 
 [node name="Panel" type="Panel" parent="CardController/CardPileDisplay"]
@@ -1099,7 +1110,7 @@ visible = false
 margin_left = 750.0
 margin_top = 154.0
 margin_right = 1168.0
-margin_bottom = 624.0
+margin_bottom = 715.0
 mouse_filter = 2
 custom_styles/panel = SubResource( 10 )
 __meta__ = {
@@ -1160,11 +1171,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Almanac" type="Panel" parent="Pause Menu/Back"]
+margin_left = 47.0
+margin_top = 254.0
+margin_right = 380.0
+margin_bottom = 322.0
+mouse_filter = 1
+custom_styles/panel = SubResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Pause Menu/Back/Almanac"]
+margin_left = -4.0
+margin_top = -7.0
+margin_right = 833.0
+margin_bottom = 224.0
+rect_scale = Vector2( 0.4, 0.4 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+bbcode_enabled = true
+bbcode_text = "[center]Glossary[/center]"
+text = "Glossary"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Resign" type="Panel" parent="Pause Menu/Back"]
 margin_left = 47.0
-margin_top = 264.0
+margin_top = 353.0
 margin_right = 380.0
-margin_bottom = 332.0
+margin_bottom = 421.0
 mouse_filter = 1
 custom_styles/panel = SubResource( 11 )
 __meta__ = {
@@ -1189,9 +1227,9 @@ __meta__ = {
 
 [node name="Settings" type="Panel" parent="Pause Menu/Back"]
 margin_left = 47.0
-margin_top = 375.0
+margin_top = 456.0
 margin_right = 380.0
-margin_bottom = 443.0
+margin_bottom = 524.0
 mouse_filter = 1
 custom_styles/panel = SubResource( 11 )
 __meta__ = {
@@ -1313,7 +1351,7 @@ __meta__ = {
 }
 
 [node name="morahealthbar" type="Node2D" parent="."]
-position = Vector2( 41.2652, 111.972 )
+position = Vector2( 41.265, 113 )
 script = ExtResource( 380 )
 
 [node name="Back" type="ColorRect" parent="morahealthbar"]
@@ -1477,6 +1515,7 @@ __meta__ = {
 [connection signal="gui_input" from="CardController/CardPileDisplay/Panel/Resume" to="CardController/CardPileDisplay" method="_on_Resume_gui_input"]
 [connection signal="gui_input" from="Pause Menu/Back/Resume" to="Pause Menu" method="_ResumeButton"]
 [connection signal="gui_input" from="Pause Menu/Back/SaveQuit" to="Pause Menu" method="_SaveQuitButton"]
+[connection signal="gui_input" from="Pause Menu/Back/Almanac" to="Pause Menu" method="_on_Almanac_gui_input"]
 [connection signal="gui_input" from="Pause Menu/Back/Resign" to="Pause Menu" method="_ResignButton"]
 [connection signal="gui_input" from="Pause Menu/Back/Settings" to="Pause Menu" method="_on_Settings_gui_input"]
 [connection signal="gui_input" from="LoadingBar/ColorRect/Panel" to="LoadingBar" method="_on_Panel_gui_input"]

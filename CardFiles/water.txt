@@ -1,0 +1,54 @@
+title("Waterfall")
+cost(1)
+types(water)
+text("Move all cards in your deck into your discard")
+trigger(onPlay, do(repeat( (  (do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))))
+removetrigger(endofturn, true,1)
+rarity(7)
+
+title("Erosion")
+cost(-)
+types(earth, water)
+text("On draw, purge a hard from your hand")
+trigger(onDraw,do(purge((select(Hand,true,"Pick a card to purge")))))
+removetrigger(endofturn, true,0)
+modifiers(unplayable)
+rarity(2)
+
+title("Dam")
+types(water)
+text("Whenever you shuffle your deck, gain $Block block")
+trigger(shuffle, do(block($Block)))
+cost(2)
+rarity(6)
+removetrigger(endofturn, true, 13)
+$Block=9
+
+title("Watering Hole")
+types(water, food,avian)
+text("When you shuffle, heal $Heal, and all allies gain $MaxHealth max health")
+cost(1)
+removetrigger(endofturn, true, 5)
+rarity(2)
+trigger(shuffle, do(heal($Heal)))
+trigger(shuffle, do(addStatus(maxHealth,$MaxHealth, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
+$Heal=1
+$MaxHealth=1
+
+title("Raincloud")
+types(water, cloud)
+cost(0)
+$Repeat=8
+trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Repeat))
+text("Discard the top $Repeat cards of your Deck")
+removetrigger(endofturn,true, 2)
+rarity(5)
+
+title("Boat")
+types(water)
+text("Whenever you shuffle your deck, move $Move")
+trigger(shuffle, do(movePlayer($Move)))
+cost(2)
+rarity(6)
+removetrigger(endofturn, true, 6)
+$Move=6
