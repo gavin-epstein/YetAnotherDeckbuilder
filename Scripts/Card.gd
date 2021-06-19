@@ -117,6 +117,8 @@ func loadCardFromString(string):
 	#self.updateDisplay()
 	self.generateTooltips()
 func updateDisplay():
+	if get_parent()!=null and get_parent().get("cards")!=null:
+		base_z = get_parent().base_z +2 + get_parent().cards.find(self)
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title+ "[/center]";
@@ -199,13 +201,7 @@ func isIdentical(other):
 func getTooltips():
 	return tooltips
 func generateTooltips():
-	var regex = RegEx.new()
-	regex.compile('(\\s+)|([.,!?:;\"-])+')
-	var words = regex.sub(self.text,"@",true)
-	words = words.replace("The@Void", "TheVoid")
-	for _i in range(3):
-		words = words.replace("@@","@")
-	words = words.split("@")
+	var words = Utility.parsewords(self.text)
 	for word in words:
 		var tip = controller.Library.getToolTip(word)
 		if tip !=null:
@@ -236,7 +232,8 @@ func _on_ColorRect_mouse_exited() -> void:
 func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if controller.takeFocus(self):
 		controller.releaseFocus(self)
-		mouseon = true
+		if not get_parent() is CardPile:
+			mouseon = true
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):

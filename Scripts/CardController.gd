@@ -1,5 +1,6 @@
 extends "res://Scripts/Controller.gd"
-const testmode = false
+const testmode = true
+const testtype = "shadow"
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -46,6 +47,7 @@ func Load(parent)-> void:
 	Energy = 3
 	map = parent.map
 	enemyController = parent.enemyController
+	animationController = parent.animationController
 	self.updateDisplay()
 	if not testmode and not doTutorial:
 		Play.add_card(Library.getCardByName("Adventurer"))
@@ -61,7 +63,11 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
-		#Deck.add_card(Library.getCardByName("Cirrus"))
+
+		#Coal + way to void it + lightspeed
+#		Hand.add_card(Library.getCardByName("Lightspeed"))
+#		Deck.add_card(Library.getCardByName("Coal"))
+#		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
@@ -70,7 +76,8 @@ func Load(parent)-> void:
 		Play.add_card(Library.getCardByName("Adventurer"))
 		Play.add_card(Library.getRandomByModifier(["void"]))
 		for card in Library.cards:
-			Deck.add_card(Library.getCardByName(card.title))
+			if card.hasType(testtype):
+				Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
 	elif doTutorial:
 		Play.add_card(Library.getCardByName("Adventurer"))
@@ -96,19 +103,27 @@ func draw(x)->bool:
 				enemyController.Player.say("No cards to draw")
 				return i!=0
 			else:
-				Action("reshuffle",[])
+				var res = Action("reshuffle",[])
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 		var card = Deck.getCard(0)
 		move("Deck","Hand",card)
 		if card in Hand.cards:
-			card.Triggered("onDraw",[x])
-			self.triggerAll("cardDrawn",[card])
+			var res = card.Triggered("onDraw",[x])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+			res = self.triggerAll("cardDrawn",[card])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return true
 
 func reshuffle()->bool:
 	if Discard.size()==0:
 		return false
 	Deck.cards +=Discard.cards
-	Action("shuffle",[])
+	var res = Action("shuffle",[])
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	Discard.cards = []
 	return true
 func shuffle()->bool:
@@ -191,7 +206,9 @@ func discardAll(silent = false):
 			backind-=1
 			
 		else:
-			card.Triggered("onRetain",[card])
+			var res = card.Triggered("onRetain",[card])
+			if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 			if card in Hand.cards:
 				ind+=1
 			else:
@@ -203,7 +220,9 @@ func discard(card, silent = false, loc = "Hand"):
 		return false
 	var res =  move(loc, "Discard", card)
 	if not silent and res:
-		card.Triggered("onDiscard", [card])
+		var res2 = card.Triggered("onDiscard", [card])
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res, "completed")
 	return res
 	
 func updateDisplay():
@@ -298,8 +317,38 @@ func create(card, loc,spawner=null,silent=false):
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
-		added.Triggered("onCreate",[added,loc])
-		triggerAll("onCreate",[added,loc])
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
+	return added
+func createAt(card, loc, pos, spawner=null,silent=false):
+	loc = get_node(loc)
+	var added: Node2D
+	if card is String:
+		added = Library.getCardByName(card)
+	else:
+		added = cardtemplate.instance();
+		card.deepcopy(added)
+	
+	if spawner !=null and spawner.has_method("get_global_transform"):
+		add_child(added)
+		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
+		added.updateDisplay()
+		added.set_process(false)
+		yield(get_tree().create_timer(.1),"timeout")
+		added.set_process(true)
+	loc.add_card_at(added,pos)
+	added.updateDisplay()
+	if not silent:
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
@@ -308,8 +357,12 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
-		added.Triggered("onCreate",[added,loc])
-		triggerAll("onCreate",[added,loc])
+		var res = added.Triggered("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
+		res = triggerAll("onCreate",[added,loc])
+		if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return added
 	
 func gainEnergy(num):
@@ -320,7 +373,9 @@ func gainEnergy(num):
 func voided(card, loc):
 	
 	if move(loc, "Voided", card):
-		card.Triggered("onVoided",[self])
+		var res = card.Triggered("onVoided",[self])
+		if res is GDScriptFunctionState:
+			yield(res,"completed")
 		return true
 	return false
 
@@ -356,6 +411,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		
 		releaseFocus(self)
+		
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
@@ -409,10 +465,14 @@ func damage(amount, types, targets,distance, tile =null):
 			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
 		if lastPlayed !=null:
-			if dmg.size() > 1 and dmg[1] == "kill":
-				lastPlayed.Triggered("slay",[unit])
+			if dmg.size() >1 and dmg[1] == "kill":
+				var res = lastPlayed.Triggered("slay",[unit])
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 			if dmg.size()>0:
-				lastPlayed.Triggered("attack",dmg)
+				var res = lastPlayed.Triggered("attack",dmg)
+				if res is GDScriptFunctionState:
+					res = yield(res, "completed")
 	return true
 func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 	var property
@@ -460,6 +520,7 @@ func unheal(amount):
 	enemyController.heal(enemyController.Player,-1*amount)
 	return true
 func summon(unitName, targets, distance,tile="Player") :
+	print("summon Called")
 	var terrains
 	var locs = []
 	if tile is String and tile == "Player":
@@ -497,7 +558,9 @@ func consume():
 	return true
 func triggerAll(trigger, argv):
 	for card in Play.cards:
-		card.Triggered(trigger,argv)
+		var res = card.Triggered(trigger,argv)
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
 func devoidAll():
 	while $Voided.cards.size()>0:
 		move("Voided", "Discard",$Voided.cards[0])
@@ -538,7 +601,8 @@ func Reaction(amount:float, attacker)-> float:
 	displayReaction(card)
 	return amount
 func voidshift():
-	Action("devoidAll",[])
+	pass
+	#Action("devoidAll",[])
 func cardAt(loc,index):
 	loc = get_node(loc)
 	return loc.getCard(index)	

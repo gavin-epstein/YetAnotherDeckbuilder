@@ -151,3 +151,12 @@ static func type(object):
 		ret =str(typeof(object))
 	return ret
 		
+static func parsewords(text):
+	var regex = RegEx.new()
+	regex.compile('(\\s+)|([.,!?:;\"-])+')
+	var words = regex.sub(text,"@",true)
+	words = words.replace("The@Void", "TheVoid")
+	for _i in range(3):
+		words = words.replace("@@","@")
+	words = words.split("@")
+	return words

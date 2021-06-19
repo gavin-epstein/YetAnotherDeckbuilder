@@ -2,6 +2,7 @@ extends Node2D
 onready var enemyController = $Center/MapLayer/EnemyController
 onready var map = $Center/MapLayer/Map/MeshInstance2D
 onready var cardController = $CardController
+onready var animationController = $Center/Animations/AnimationController
 const SAVE_NAME = "user://savefile.json"
 var loaded = false
 var doTutorial=false
@@ -34,6 +35,9 @@ func loadAll():
 		step = yield(step,"completed")
 	print("Card load 1")
 	step = map.Load2()
+	if step is GDScriptFunctionState:
+		step = yield(step,"completed")
+	step = animationController.Load(self)
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("done")
@@ -75,6 +79,9 @@ func loadFromSave():
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
 			step = cardController.loadFromSave(save.cardController, self)
+			if step is GDScriptFunctionState:
+				yield(step,"completed")
+			step = animationController.Load(self)
 			if step is GDScriptFunctionState:
 				yield(step,"completed")
 			$LoadingBar.queue_free()

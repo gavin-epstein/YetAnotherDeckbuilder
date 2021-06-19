@@ -36,12 +36,13 @@ rarity(4);
 
 title(Feast);
 cost(2);
-$Damage=2
+$Damage=4
 types(food, attack);
 text("Deal $Damage damage to all adjacent units, heal equal to damage dealt")
-trigger(onPlay,do(damage, ($Damage,(fungal),(all),1)));
+trigger(onPlay,do(damage, ($Damage,(bite),(all),1)));
 trigger(attack,do(heal(argv[0])));
 removetrigger(endofturn,true,2);
+rarity(5)
 
 title(Sausage)
 types(food,blood)
@@ -55,7 +56,7 @@ trigger(heal,if( ($dothething>0), (do(gainMaxHealth($MaxHealth)))))
 trigger(heal,if( ($dothething>0), (do(unheal($Blood)))))
 removetrigger(heal, ($dothething>0), 5);
 trigger(heal,do(setVar(self,dothething,0)));
-
+rarity(3)
 
 title("Vending Machine")
 types(food, mechanical)
@@ -65,7 +66,19 @@ trigger(startofturn, do(heal($Heal)));
 removetrigger(endofturn, true, 10);
 rarity(3);
 cost(1);
+image("res://Images/CardArt/VendingMachine.png")
+
+title("Nettle Tea")
+types(food)
+$MaxHealth=3
+$Status=3
+trigger(onPlay, do(gainMaxHealth($MaxHealth)))
+trigger(onPlay, do(addStatus(sting,$Status)))
+text("Gain $MaxHealth max health. You cannot heal for $Status turns")
+cost(0)
+removetrigger(endofturn,true,3)
+rarity(2);
 
 
-#when you heal, gain thorns
+#when you heal, gain thorns/armor
 #Chomp. deal damage, heal equal to unblocked damage dealt

@@ -1,24 +1,24 @@
-bleed:Bleed: At the start of turn, take damage equal to stacks
-hardenedcarapace:Hardened Carapace: When losing armor, gain 2 block per armor lost
-flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to twice burn
-lifelink:Life Link: This unit shares health with all other units of the same name
-friendly:Friendly: You and your allies
-sting:Sting: Unit cannot heal
-immovable:Immovable: Unit cannot move or be moved
-expire:Expire: This unit will die or transform when expire runs out
-fuse:Fuse: This unit will explode when fuse runs out. Gains 1 stack of explosive each turn
-explosive:Explosive: On death, deals damage equal to explosive stacks to all adjacent units
-thorns:Thorns: On recieving damage, deals damage equal to stacks back to the attacker
-armor:Armor:Reduces incoming damage by the armor amount, is decreased by one each hit
-block:Block:Block is removed before health when recieving damage. Excess block is removed at the start of turn
-frost:Frost:Lose strength equal to frost
-stunned:Stunned:Unit skips its turn
-trap:Terrain:Does not block movement, triggers its effect if a unit ends its turn here
-lootless:Emptyhanded:Does not drop loot on death
-stoneskin:Stone Skin:Block is not removed
-dazzled:Dazzled:Strength is reduced by 33 percent
+bleed:Bleed: At the start of turn, take damage equal to stacks.
+hardenedcarapace:Hardened Carapace: When losing armor, gain 2 block per armor lost.
+flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to twice burn.
+lifelink:Life Link: This unit shares health with all other units of the same name.
+friendly:Friendly: You and your allies.
+sting:Sting: Unit cannot heal.
+immovable:Immovable: Unit cannot move or be moved.
+expire:Expire: This unit will die or transform when expire runs out.
+fuse:Fuse: This unit will explode when fuse runs out. Gains 1 stack of explosive each turn.
+explosive:Explosive: On death, deals damage equal to explosive stacks to all adjacent units.
+thorns:Thorns: On recieving damage, deals damage equal to stacks back to the attacker.
+armor:Armor:Reduces incoming damage by the armor amount, is decreased by one each hit.
+block:Block:Block is removed before health when recieving damage. Excess block is removed at the start of turn.
+frost:Frost:Lose strength equal to frost.
+stunned:Stunned:Unit skips its turn.
+trap:Terrain:Does not stop movement to this tile. Triggers its effect if a unit ends its turn here.
+lootless:Emptyhanded:Does not drop loot on death.
+stoneskin:Stone Skin:Block is not removed.
+dazzled:Dazzled:Strength is reduced by 33 percent.
 corruption:Corrupt:The next time this unit moves or is moved it takes damage equal to the stacks of corrupt and clears all corrupt.
 stealth:Stealth:This unit can not be hit by targeted and random attacks and effects.
-rage:Rage:Rage adds 1 strength per stack
-boss:Boss:This unit is a boss
-entangled:Entangled:This unit cannot move or be moved
+rage:Rage:Rage adds 1 strength per stack.
+boss:Boss:This unit is a boss.
+entangled:Entangled:This unit cannot move or be moved.

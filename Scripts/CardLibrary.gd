@@ -1,4 +1,5 @@
 extends CardLocation
+class_name CardLibrary
 var cardtemplate = preload("res://Card.tscn");
 
 var CardRng = RandomNumberGenerator.new()
