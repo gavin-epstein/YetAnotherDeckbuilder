@@ -1,6 +1,6 @@
 bleed:Bleed: At the start of turn, take damage equal to stacks.
 hardenedcarapace:Hardened Carapace: When losing armor, gain 2 block per armor lost.
-flaming:Burn: At the start of turn, take 3 damage. Gain strength equal to twice burn.
+flaming:Flaming: At the start of turn, take 3 damage. Gain strength equal to twice flaming.
 lifelink:Life Link: This unit shares health with all other units of the same name.
 friendly:Friendly: You and your allies.
 sting:Sting: Unit cannot heal.

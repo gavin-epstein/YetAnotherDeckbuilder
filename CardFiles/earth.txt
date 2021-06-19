@@ -108,7 +108,7 @@ cost(1)
 types(earth,fire, attack)
 $Damage=7
 $Range=1
-text(void all unplayable cards in hand, deal $Damage fire crush damage to all adjacent enemies for each card voided)
+text(Burn all unplayable cards in hand, deal $Damage fire crush damage to all adjacent enemies for each card burned)
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
 trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (voided($Loopcard, Hand )))))
