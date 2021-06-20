@@ -101,10 +101,10 @@ title("Hot Air Balloon");
 cost(0);
 $Move=0
 $Increment=1
-trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Hot Air Balloon)")),Hand),false));
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to burn (Hot Air Balloon)")),Hand),false));
 trigger(onPlay,do(addVar (self, Move,1)));
 trigger(onDiscard, do(movePlayer,($Move)));
-text("When played: void a card from your hand and increase this cards movement by $Increment \n When discarded: move $Move")
+text("When played: burn a card from your hand and increase this cards movement by $Increment \n When discarded: move $Move")
 removetrigger(endofturn, true,1);
 rarity(3);
 types(cloud,fire,movement);
@@ -130,7 +130,7 @@ cost(0)
 $Damage=2
 $Increment=2
 $Range=2
-text("Deal $Damage fire storm damage range $Range, then void. On discard add a copy with + $Increment Damage to your hand")
+text("Deal $Damage fire storm damage range $Range, then burn. On discard add a copy with + $Increment Damage to your hand")
 trigger(onCreate, if ( (argv[0]=self), (do(addVar(self,Damage,$Increment)))))
 trigger(onPlay, do(damage, ($Damage,(fire,storm),(any),$Range)))
 trigger(onPlay,do(voided(self, Play)))

@@ -9,7 +9,7 @@ push: Move a unit away from yourself, if its destination is not blocked.
 pull: Move a unit towards yourself, if its destination is not blocked.
 retain: This card cannot be discarded.
 purge: Remove this card from the game.
-void: Remove this card until the void transforms.
+burn: Put this card in the burned pile. When a boss spawns or dies, return all burned cards to your discard.
 reaction: On taking damage from a unit, if this is the top card of the reaction pile, trigger its effects.
 heal: Restore health. Healing cannot cause your health to exceed your max health.
 max health: The upper limit for healing.

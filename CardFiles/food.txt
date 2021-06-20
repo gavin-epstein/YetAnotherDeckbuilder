@@ -3,7 +3,7 @@ cost(1);
 types(food, summon)
 rarity(4);
 removetrigger(endofturn,true,0);
-text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nVoid");
+text("Summon a Carrot on a random empty grass tile. When killed the carrot grants 5 max health.\nBurn");
 trigger(onPlay, do(voided,(self, Play),false));
 trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
 image("res://Images/CardArt/CarrotSeeds.png")
@@ -14,7 +14,7 @@ $Heal=2
 types(food,fire);
 trigger(voided,do(heal($Heal)));
 removetrigger(endofturn,true,3);
-text(When you void a card, heal $Heal);
+text(When you burn a card, heal $Heal);
 rarity(6);
 
 title(Butter);
