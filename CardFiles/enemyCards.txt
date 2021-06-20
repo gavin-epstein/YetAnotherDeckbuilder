@@ -23,9 +23,9 @@ title("Sear")
 types(fire,evil)
 cost(-);
 removetrigger(endofturn,true,4);
-text("At the start of your turn void a card from your hand or lose 3 health")
+text("At the start of your turn burn a card from your hand or lose 3 health")
 trigger(startofturn, do(create("Ouch!",Hand)));
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Sear)")),Hand),false));
+trigger(startofturn, do(voided,((select(Hand,true,"pick a card to burn (Sear)")),Hand),false));
 trigger(startofturn, do(purge((select(Hand,(hasName(self,"Ouch!")),"-",1,true)))));
 trigger(onRemoveFromPlay,do(purge(self)))
 image("res://Images/CardArt/Sear.png")
@@ -37,7 +37,7 @@ cost(-);
 removetrigger(endofturn,true,0)
 trigger(onVoided, do(heal(-3),true))
 trigger(onVoided, do(purge(self)))
-text("When voided: purge this and lose 3 health. Otherwise Purge")
+text("When burned: purge this and lose 3 health. Otherwise Purge")
 image("res://Images/CardArt/Ouch.png")
 rarity(0)
 

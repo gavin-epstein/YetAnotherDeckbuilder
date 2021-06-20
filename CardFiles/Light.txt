@@ -12,10 +12,10 @@ title(Ignite);
 types(fire,light);
 cost(1);
 $Energy=1
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to void (Ignite)")),Hand),false));
+trigger(startofturn, do(voided,((select(Hand,true,"pick a card to burn (Ignite)")),Hand),false));
 trigger(startofturn, do(gainEnergy,($Energy),false));
 removetrigger(endofturn, true,3);
-text("At the start of your next three turns, void a card in your hand and gain $Energy energy");
+text("At the start of your next three turns, burn a card in your hand and gain $Energy energy");
 rarity(4);
 image("res://Images/CardArt/Ignite.png")
 
@@ -47,7 +47,7 @@ $Energy=2
 $Status=1
 trigger(onPlay,do(gainEnergy($Energy)))
 trigger(onPlay,do(addStatus(flaming,$Status)))
-text("Gain $Energy energy, and $Status burn")
+text("Gain $Energy energy, and $Status flaming")
 removetrigger(endofturn, true, 1);
 rarity(3);
 image("res://Images/CardArt/SelfImmolate.png")
