@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-const testmode = true
+const testmode = false
 const testtype = "shadow"
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
