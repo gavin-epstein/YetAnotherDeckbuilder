@@ -1,4 +1,4 @@
-[gd_scene load_steps=404 format=2]
+[gd_scene load_steps=441 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -282,96 +282,96 @@
 [ext_resource path="res://Images/MapArt/Ice.png" type="Texture" id=280]
 [ext_resource path="res://Scripts/CardDisplay.gd" type="Script" id=281]
 [ext_resource path="res://Images/CardArt/CardFrame.png" type="Texture" id=282]
-[ext_resource path="res://Images/CardArt/TheVoid/frame043.png" type="Texture" id=283]
-[ext_resource path="res://Images/CardArt/TheVoid/frame005.png" type="Texture" id=284]
-[ext_resource path="res://Images/CardArt/TheVoid/frame029.png" type="Texture" id=285]
-[ext_resource path="res://Images/CardArt/TheVoid/frame025.png" type="Texture" id=286]
-[ext_resource path="res://Images/CardArt/TheVoid/frame046.png" type="Texture" id=287]
-[ext_resource path="res://Images/CardArt/TheVoid/frame030.png" type="Texture" id=288]
-[ext_resource path="res://Images/CardArt/TheVoid/frame027.png" type="Texture" id=289]
-[ext_resource path="res://Images/CardArt/TheVoid/frame015.png" type="Texture" id=290]
-[ext_resource path="res://Images/CardArt/TheVoid/frame064.png" type="Texture" id=291]
-[ext_resource path="res://Images/CardArt/TheVoid/frame038.png" type="Texture" id=292]
-[ext_resource path="res://Images/CardArt/TheVoid/frame022.png" type="Texture" id=293]
-[ext_resource path="res://Images/CardArt/TheVoid/frame004.png" type="Texture" id=294]
-[ext_resource path="res://Images/CardArt/TheVoid/frame016.png" type="Texture" id=295]
-[ext_resource path="res://Images/CardArt/TheVoid/frame082.png" type="Texture" id=296]
-[ext_resource path="res://Images/CardArt/TheVoid/frame011.png" type="Texture" id=297]
-[ext_resource path="res://Images/CardArt/TheVoid/frame066.png" type="Texture" id=298]
-[ext_resource path="res://Images/CardArt/TheVoid/frame061.png" type="Texture" id=299]
-[ext_resource path="res://Images/CardArt/TheVoid/frame035.png" type="Texture" id=300]
-[ext_resource path="res://Images/CardArt/TheVoid/frame089.png" type="Texture" id=301]
-[ext_resource path="res://Images/CardArt/TheVoid/frame052.png" type="Texture" id=302]
-[ext_resource path="res://Images/CardArt/TheVoid/frame018.png" type="Texture" id=303]
-[ext_resource path="res://Images/CardArt/TheVoid/frame040.png" type="Texture" id=304]
-[ext_resource path="res://Images/CardArt/TheVoid/frame053.png" type="Texture" id=305]
-[ext_resource path="res://Images/CardArt/TheVoid/frame034.png" type="Texture" id=306]
-[ext_resource path="res://Images/CardArt/TheVoid/frame009.png" type="Texture" id=307]
-[ext_resource path="res://Images/CardArt/TheVoid/frame041.png" type="Texture" id=308]
-[ext_resource path="res://Images/CardArt/TheVoid/frame033.png" type="Texture" id=309]
-[ext_resource path="res://Images/CardArt/TheVoid/frame045.png" type="Texture" id=310]
-[ext_resource path="res://Images/CardArt/TheVoid/frame007.png" type="Texture" id=311]
-[ext_resource path="res://Images/CardArt/TheVoid/frame002.png" type="Texture" id=312]
-[ext_resource path="res://Images/CardArt/TheVoid/frame042.png" type="Texture" id=313]
-[ext_resource path="res://Images/CardArt/TheVoid/frame079.png" type="Texture" id=314]
-[ext_resource path="res://Images/CardArt/TheVoid/frame008.png" type="Texture" id=315]
-[ext_resource path="res://Images/CardArt/TheVoid/frame003.png" type="Texture" id=316]
-[ext_resource path="res://Images/CardArt/TheVoid/frame044.png" type="Texture" id=317]
-[ext_resource path="res://Images/CardArt/TheVoid/frame075.png" type="Texture" id=318]
-[ext_resource path="res://Images/CardArt/TheVoid/frame019.png" type="Texture" id=319]
-[ext_resource path="res://Images/CardArt/TheVoid/frame076.png" type="Texture" id=320]
-[ext_resource path="res://Images/CardArt/TheVoid/frame057.png" type="Texture" id=321]
-[ext_resource path="res://Images/CardArt/TheVoid/frame071.png" type="Texture" id=322]
-[ext_resource path="res://Images/CardArt/TheVoid/frame014.png" type="Texture" id=323]
-[ext_resource path="res://Images/CardArt/TheVoid/frame023.png" type="Texture" id=324]
-[ext_resource path="res://Images/CardArt/TheVoid/frame036.png" type="Texture" id=325]
-[ext_resource path="res://Images/CardArt/TheVoid/frame001.png" type="Texture" id=326]
-[ext_resource path="res://Images/CardArt/TheVoid/frame010.png" type="Texture" id=327]
-[ext_resource path="res://Images/CardArt/TheVoid/frame037.png" type="Texture" id=328]
-[ext_resource path="res://Images/CardArt/TheVoid/frame087.png" type="Texture" id=329]
-[ext_resource path="res://Images/CardArt/TheVoid/frame000.png" type="Texture" id=330]
-[ext_resource path="res://Images/CardArt/TheVoid/frame088.png" type="Texture" id=331]
-[ext_resource path="res://Images/CardArt/TheVoid/frame017.png" type="Texture" id=332]
-[ext_resource path="res://Images/CardArt/TheVoid/frame056.png" type="Texture" id=333]
-[ext_resource path="res://Images/CardArt/TheVoid/frame086.png" type="Texture" id=334]
-[ext_resource path="res://Images/CardArt/TheVoid/frame050.png" type="Texture" id=335]
-[ext_resource path="res://Images/CardArt/TheVoid/frame012.png" type="Texture" id=336]
-[ext_resource path="res://Images/CardArt/TheVoid/frame058.png" type="Texture" id=337]
-[ext_resource path="res://Images/CardArt/TheVoid/frame065.png" type="Texture" id=338]
-[ext_resource path="res://Images/CardArt/TheVoid/frame060.png" type="Texture" id=339]
-[ext_resource path="res://Images/CardArt/TheVoid/frame084.png" type="Texture" id=340]
-[ext_resource path="res://Images/CardArt/TheVoid/frame020.png" type="Texture" id=341]
-[ext_resource path="res://Images/CardArt/TheVoid/frame067.png" type="Texture" id=342]
-[ext_resource path="res://Images/CardArt/TheVoid/frame078.png" type="Texture" id=343]
-[ext_resource path="res://Images/CardArt/TheVoid/frame048.png" type="Texture" id=344]
-[ext_resource path="res://Images/CardArt/TheVoid/frame013.png" type="Texture" id=345]
-[ext_resource path="res://Images/CardArt/TheVoid/frame028.png" type="Texture" id=346]
-[ext_resource path="res://Images/CardArt/TheVoid/frame032.png" type="Texture" id=347]
-[ext_resource path="res://Images/CardArt/TheVoid/frame047.png" type="Texture" id=348]
-[ext_resource path="res://Images/CardArt/TheVoid/frame054.png" type="Texture" id=349]
-[ext_resource path="res://Images/CardArt/TheVoid/frame055.png" type="Texture" id=350]
-[ext_resource path="res://Images/CardArt/TheVoid/frame062.png" type="Texture" id=351]
-[ext_resource path="res://Images/CardArt/TheVoid/frame024.png" type="Texture" id=352]
-[ext_resource path="res://Images/CardArt/TheVoid/frame026.png" type="Texture" id=353]
-[ext_resource path="res://Images/CardArt/TheVoid/frame074.png" type="Texture" id=354]
-[ext_resource path="res://Images/CardArt/TheVoid/frame077.png" type="Texture" id=355]
-[ext_resource path="res://Images/CardArt/TheVoid/frame080.png" type="Texture" id=356]
-[ext_resource path="res://Images/CardArt/TheVoid/frame081.png" type="Texture" id=357]
-[ext_resource path="res://Images/CardArt/TheVoid/frame031.png" type="Texture" id=358]
-[ext_resource path="res://Images/CardArt/TheVoid/frame072.png" type="Texture" id=359]
-[ext_resource path="res://Images/CardArt/TheVoid/frame085.png" type="Texture" id=360]
-[ext_resource path="res://Images/CardArt/TheVoid/frame006.png" type="Texture" id=361]
-[ext_resource path="res://Images/CardArt/TheVoid/frame039.png" type="Texture" id=362]
-[ext_resource path="res://Images/CardArt/TheVoid/frame049.png" type="Texture" id=363]
-[ext_resource path="res://Images/CardArt/TheVoid/frame083.png" type="Texture" id=364]
-[ext_resource path="res://Images/CardArt/TheVoid/frame073.png" type="Texture" id=365]
-[ext_resource path="res://Images/CardArt/TheVoid/frame069.png" type="Texture" id=366]
-[ext_resource path="res://Images/CardArt/TheVoid/frame059.png" type="Texture" id=367]
-[ext_resource path="res://Images/CardArt/TheVoid/frame063.png" type="Texture" id=368]
-[ext_resource path="res://Images/CardArt/TheVoid/frame068.png" type="Texture" id=369]
-[ext_resource path="res://Images/CardArt/TheVoid/frame070.png" type="Texture" id=370]
-[ext_resource path="res://Images/CardArt/TheVoid/frame021.png" type="Texture" id=371]
-[ext_resource path="res://Images/CardArt/TheVoid/frame051.png" type="Texture" id=372]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame031.png" type="Texture" id=283]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame032.png" type="Texture" id=284]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame062.png" type="Texture" id=285]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame058.png" type="Texture" id=286]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame004.png" type="Texture" id=287]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame011.png" type="Texture" id=288]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame036.png" type="Texture" id=289]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame037.png" type="Texture" id=290]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame038.png" type="Texture" id=291]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame041.png" type="Texture" id=292]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame043.png" type="Texture" id=293]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame002.png" type="Texture" id=294]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame029.png" type="Texture" id=295]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame010.png" type="Texture" id=296]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame056.png" type="Texture" id=297]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame046.png" type="Texture" id=298]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame044.png" type="Texture" id=299]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame048.png" type="Texture" id=300]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame049.png" type="Texture" id=301]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame051.png" type="Texture" id=302]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame055.png" type="Texture" id=303]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame057.png" type="Texture" id=304]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame020.png" type="Texture" id=305]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame023.png" type="Texture" id=306]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame014.png" type="Texture" id=307]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame006.png" type="Texture" id=308]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame003.png" type="Texture" id=309]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame005.png" type="Texture" id=310]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame054.png" type="Texture" id=311]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame007.png" type="Texture" id=312]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame033.png" type="Texture" id=313]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame042.png" type="Texture" id=314]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame039.png" type="Texture" id=315]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame009.png" type="Texture" id=316]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame019.png" type="Texture" id=317]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame000.png" type="Texture" id=318]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame027.png" type="Texture" id=319]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame028.png" type="Texture" id=320]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame017.png" type="Texture" id=321]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame001.png" type="Texture" id=322]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame059.png" type="Texture" id=323]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame061.png" type="Texture" id=324]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame026.png" type="Texture" id=325]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame021.png" type="Texture" id=326]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame047.png" type="Texture" id=327]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame034.png" type="Texture" id=328]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame016.png" type="Texture" id=329]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame035.png" type="Texture" id=330]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame008.png" type="Texture" id=331]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame012.png" type="Texture" id=332]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame024.png" type="Texture" id=333]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame030.png" type="Texture" id=334]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame040.png" type="Texture" id=335]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame045.png" type="Texture" id=336]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame050.png" type="Texture" id=337]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame053.png" type="Texture" id=338]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame015.png" type="Texture" id=339]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame018.png" type="Texture" id=340]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame013.png" type="Texture" id=341]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame022.png" type="Texture" id=342]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame025.png" type="Texture" id=343]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame052.png" type="Texture" id=344]
+[ext_resource path="res://Images/CardArt/CardBackBurn/frame060.png" type="Texture" id=345]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame027.png" type="Texture" id=346]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame054.png" type="Texture" id=347]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame045.png" type="Texture" id=348]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame018.png" type="Texture" id=349]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame035.png" type="Texture" id=350]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame037.png" type="Texture" id=351]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame039.png" type="Texture" id=352]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame001.png" type="Texture" id=353]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame005.png" type="Texture" id=354]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame026.png" type="Texture" id=355]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame031.png" type="Texture" id=356]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame042.png" type="Texture" id=357]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame055.png" type="Texture" id=358]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame015.png" type="Texture" id=359]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame011.png" type="Texture" id=360]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame057.png" type="Texture" id=361]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame061.png" type="Texture" id=362]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame004.png" type="Texture" id=363]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame019.png" type="Texture" id=364]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame046.png" type="Texture" id=365]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame043.png" type="Texture" id=366]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame014.png" type="Texture" id=367]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame053.png" type="Texture" id=368]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame016.png" type="Texture" id=369]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame048.png" type="Texture" id=370]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame025.png" type="Texture" id=371]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame056.png" type="Texture" id=372]
 [ext_resource path="res://Images/UIArt/Clouds.tscn" type="PackedScene" id=373]
 [ext_resource path="res://Scripts/PauseMenu.gd" type="Script" id=374]
 [ext_resource path="res://Images/UIArt/Settings.tscn" type="PackedScene" id=375]
@@ -386,6 +386,42 @@
 [ext_resource path="res://Scripts/LoadingBar.gd" type="Script" id=384]
 [ext_resource path="res://Scripts/UI/AnimationController.gd" type="Script" id=385]
 [ext_resource path="res://Scripts/AnimationLayer.gd" type="Script" id=386]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame010.png" type="Texture" id=387]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame013.png" type="Texture" id=388]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame038.png" type="Texture" id=389]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame040.png" type="Texture" id=390]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame059.png" type="Texture" id=391]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame060.png" type="Texture" id=392]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame062.png" type="Texture" id=393]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame041.png" type="Texture" id=394]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame049.png" type="Texture" id=395]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame017.png" type="Texture" id=396]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame050.png" type="Texture" id=397]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame022.png" type="Texture" id=398]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame012.png" type="Texture" id=399]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame036.png" type="Texture" id=400]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame021.png" type="Texture" id=401]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame002.png" type="Texture" id=402]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame047.png" type="Texture" id=403]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame051.png" type="Texture" id=404]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame052.png" type="Texture" id=405]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame007.png" type="Texture" id=406]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame030.png" type="Texture" id=407]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame008.png" type="Texture" id=408]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame009.png" type="Texture" id=409]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame044.png" type="Texture" id=410]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame000.png" type="Texture" id=411]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame003.png" type="Texture" id=412]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame032.png" type="Texture" id=413]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame033.png" type="Texture" id=414]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame034.png" type="Texture" id=415]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame058.png" type="Texture" id=416]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame024.png" type="Texture" id=417]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame023.png" type="Texture" id=418]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame028.png" type="Texture" id=419]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame029.png" type="Texture" id=420]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame020.png" type="Texture" id=421]
+[ext_resource path="res://Images/CardArt/CardBackReaction/frame006.png" type="Texture" id=422]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -398,6 +434,14 @@ shader_param/tex5 = ExtResource( 280 )
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 1 )
 
+[sub_resource type="SpriteFrames" id=19]
+animations = [ {
+"frames": [ ExtResource( 411 ), ExtResource( 353 ), ExtResource( 402 ), ExtResource( 412 ), ExtResource( 363 ), ExtResource( 354 ), ExtResource( 422 ), ExtResource( 406 ), ExtResource( 408 ), ExtResource( 409 ), ExtResource( 387 ), ExtResource( 360 ), ExtResource( 399 ), ExtResource( 388 ), ExtResource( 367 ), ExtResource( 359 ), ExtResource( 369 ), ExtResource( 396 ), ExtResource( 349 ), ExtResource( 364 ), ExtResource( 421 ), ExtResource( 401 ), ExtResource( 398 ), ExtResource( 418 ), ExtResource( 417 ), ExtResource( 371 ), ExtResource( 355 ), ExtResource( 346 ), ExtResource( 419 ), ExtResource( 420 ), ExtResource( 407 ), ExtResource( 356 ), ExtResource( 413 ), ExtResource( 414 ), ExtResource( 415 ), ExtResource( 350 ), ExtResource( 400 ), ExtResource( 351 ), ExtResource( 389 ), ExtResource( 352 ), ExtResource( 390 ), ExtResource( 394 ), ExtResource( 357 ), ExtResource( 366 ), ExtResource( 410 ), ExtResource( 348 ), ExtResource( 365 ), ExtResource( 403 ), ExtResource( 370 ), ExtResource( 395 ), ExtResource( 397 ), ExtResource( 404 ), ExtResource( 405 ), ExtResource( 368 ), ExtResource( 347 ), ExtResource( 358 ), ExtResource( 372 ), ExtResource( 361 ), ExtResource( 416 ), ExtResource( 391 ), ExtResource( 392 ), ExtResource( 362 ), ExtResource( 393 ) ],
+"loop": true,
+"name": "default",
+"speed": 15.0
+} ]
+
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
 "frames": [ ExtResource( 120 ), ExtResource( 68 ), ExtResource( 97 ), ExtResource( 32 ), ExtResource( 67 ), ExtResource( 101 ), ExtResource( 37 ), ExtResource( 38 ), ExtResource( 39 ), ExtResource( 20 ), ExtResource( 23 ), ExtResource( 7 ), ExtResource( 40 ), ExtResource( 69 ), ExtResource( 10 ), ExtResource( 41 ), ExtResource( 127 ), ExtResource( 128 ), ExtResource( 92 ), ExtResource( 13 ), ExtResource( 129 ), ExtResource( 130 ), ExtResource( 102 ), ExtResource( 70 ), ExtResource( 25 ), ExtResource( 81 ), ExtResource( 98 ), ExtResource( 99 ), ExtResource( 100 ), ExtResource( 121 ), ExtResource( 82 ), ExtResource( 83 ), ExtResource( 122 ), ExtResource( 113 ), ExtResource( 64 ), ExtResource( 43 ), ExtResource( 18 ), ExtResource( 84 ), ExtResource( 114 ), ExtResource( 19 ), ExtResource( 115 ), ExtResource( 85 ), ExtResource( 11 ), ExtResource( 22 ), ExtResource( 50 ), ExtResource( 86 ), ExtResource( 87 ), ExtResource( 21 ), ExtResource( 59 ), ExtResource( 12 ), ExtResource( 88 ), ExtResource( 104 ), ExtResource( 46 ), ExtResource( 61 ), ExtResource( 105 ), ExtResource( 106 ), ExtResource( 107 ), ExtResource( 108 ), ExtResource( 47 ), ExtResource( 48 ), ExtResource( 89 ), ExtResource( 56 ), ExtResource( 49 ), ExtResource( 110 ), ExtResource( 36 ), ExtResource( 111 ), ExtResource( 90 ), ExtResource( 15 ), ExtResource( 95 ), ExtResource( 96 ), ExtResource( 91 ), ExtResource( 132 ), ExtResource( 30 ), ExtResource( 54 ), ExtResource( 112 ), ExtResource( 42 ), ExtResource( 31 ), ExtResource( 123 ), ExtResource( 124 ), ExtResource( 8 ), ExtResource( 116 ), ExtResource( 117 ), ExtResource( 71 ), ExtResource( 65 ), ExtResource( 72 ), ExtResource( 60 ), ExtResource( 26 ), ExtResource( 118 ), ExtResource( 58 ), ExtResource( 27 ), ExtResource( 28 ), ExtResource( 119 ), ExtResource( 29 ), ExtResource( 14 ), ExtResource( 103 ), ExtResource( 63 ), ExtResource( 109 ), ExtResource( 73 ), ExtResource( 24 ), ExtResource( 62 ), ExtResource( 51 ), ExtResource( 16 ), ExtResource( 74 ), ExtResource( 34 ), ExtResource( 125 ), ExtResource( 75 ), ExtResource( 126 ), ExtResource( 17 ), ExtResource( 33 ), ExtResource( 44 ), ExtResource( 76 ), ExtResource( 45 ), ExtResource( 9 ), ExtResource( 77 ), ExtResource( 78 ), ExtResource( 53 ), ExtResource( 79 ), ExtResource( 131 ), ExtResource( 35 ), ExtResource( 57 ), ExtResource( 55 ), ExtResource( 66 ), ExtResource( 80 ), ExtResource( 93 ), ExtResource( 94 ), ExtResource( 52 ) ],
@@ -406,12 +450,12 @@ animations = [ {
 "speed": 30.0
 } ]
 
-[sub_resource type="SpriteFrames" id=4]
+[sub_resource type="SpriteFrames" id=18]
 animations = [ {
-"frames": [ ExtResource( 330 ), ExtResource( 326 ), ExtResource( 312 ), ExtResource( 316 ), ExtResource( 294 ), ExtResource( 284 ), ExtResource( 361 ), ExtResource( 311 ), ExtResource( 315 ), ExtResource( 307 ), ExtResource( 327 ), ExtResource( 297 ), ExtResource( 336 ), ExtResource( 345 ), ExtResource( 323 ), ExtResource( 290 ), ExtResource( 295 ), ExtResource( 332 ), ExtResource( 303 ), ExtResource( 319 ), ExtResource( 341 ), ExtResource( 371 ), ExtResource( 293 ), ExtResource( 324 ), ExtResource( 352 ), ExtResource( 286 ), ExtResource( 353 ), ExtResource( 289 ), ExtResource( 346 ), ExtResource( 285 ), ExtResource( 288 ), ExtResource( 358 ), ExtResource( 347 ), ExtResource( 309 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 325 ), ExtResource( 328 ), ExtResource( 292 ), ExtResource( 362 ), ExtResource( 304 ), ExtResource( 308 ), ExtResource( 313 ), ExtResource( 283 ), ExtResource( 317 ), ExtResource( 310 ), ExtResource( 287 ), ExtResource( 348 ), ExtResource( 344 ), ExtResource( 363 ), ExtResource( 335 ), ExtResource( 372 ), ExtResource( 302 ), ExtResource( 305 ), ExtResource( 349 ), ExtResource( 350 ), ExtResource( 333 ), ExtResource( 321 ), ExtResource( 337 ), ExtResource( 367 ), ExtResource( 339 ), ExtResource( 299 ), ExtResource( 351 ), ExtResource( 368 ), ExtResource( 291 ), ExtResource( 338 ), ExtResource( 298 ), ExtResource( 342 ), ExtResource( 369 ), ExtResource( 366 ), ExtResource( 370 ), ExtResource( 322 ), ExtResource( 359 ), ExtResource( 365 ), ExtResource( 354 ), ExtResource( 318 ), ExtResource( 320 ), ExtResource( 355 ), ExtResource( 343 ), ExtResource( 314 ), ExtResource( 356 ), ExtResource( 357 ), ExtResource( 296 ), ExtResource( 364 ), ExtResource( 340 ), ExtResource( 360 ), ExtResource( 334 ), ExtResource( 329 ), ExtResource( 331 ), ExtResource( 301 ) ],
+"frames": [ ExtResource( 318 ), ExtResource( 322 ), ExtResource( 294 ), ExtResource( 309 ), ExtResource( 287 ), ExtResource( 310 ), ExtResource( 308 ), ExtResource( 312 ), ExtResource( 331 ), ExtResource( 316 ), ExtResource( 296 ), ExtResource( 288 ), ExtResource( 332 ), ExtResource( 341 ), ExtResource( 307 ), ExtResource( 339 ), ExtResource( 329 ), ExtResource( 321 ), ExtResource( 340 ), ExtResource( 317 ), ExtResource( 305 ), ExtResource( 326 ), ExtResource( 342 ), ExtResource( 306 ), ExtResource( 333 ), ExtResource( 343 ), ExtResource( 325 ), ExtResource( 319 ), ExtResource( 320 ), ExtResource( 295 ), ExtResource( 334 ), ExtResource( 283 ), ExtResource( 284 ), ExtResource( 313 ), ExtResource( 328 ), ExtResource( 330 ), ExtResource( 289 ), ExtResource( 290 ), ExtResource( 291 ), ExtResource( 315 ), ExtResource( 335 ), ExtResource( 292 ), ExtResource( 314 ), ExtResource( 293 ), ExtResource( 299 ), ExtResource( 336 ), ExtResource( 298 ), ExtResource( 327 ), ExtResource( 300 ), ExtResource( 301 ), ExtResource( 337 ), ExtResource( 302 ), ExtResource( 344 ), ExtResource( 338 ), ExtResource( 311 ), ExtResource( 303 ), ExtResource( 297 ), ExtResource( 304 ), ExtResource( 286 ), ExtResource( 323 ), ExtResource( 345 ), ExtResource( 324 ), ExtResource( 285 ) ],
 "loop": true,
 "name": "default",
-"speed": 10.0
+"speed": 15.0
 } ]
 
 [sub_resource type="SpriteFrames" id=5]
@@ -642,16 +686,16 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Reaction"]
-position = Vector2( 1818.2, 844.659 )
-scale = Vector2( 0.13101, 0.13101 )
-frames = SubResource( 3 )
-frame = 66
+position = Vector2( 1815.94, 845.736 )
+scale = Vector2( 0.108861, 0.108861 )
+frames = SubResource( 19 )
+frame = 25
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
-margin_left = 1771.0
+margin_left = 1768.0
 margin_top = 813.0
-margin_right = 2079.0
+margin_right = 2076.0
 margin_bottom = 1076.0
 rect_scale = Vector2( 0.3, 0.3 )
 mouse_filter = 2
@@ -715,7 +759,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 67
+frame = 68
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -755,10 +799,10 @@ hotkey = "Discard"
 
 [node name="Label" type="ColorRect" parent="CardController/Discard"]
 visible = false
-margin_left = 1080.5
-margin_top = 703.403
-margin_right = 1189.5
-margin_bottom = 729.403
+margin_left = 957.834
+margin_top = 698.07
+margin_right = 1066.83
+margin_bottom = 724.07
 mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -783,17 +827,17 @@ __meta__ = {
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Discard"]
-position = Vector2( 1132.55, 661.468 )
+position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 66
+frame = 67
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
-margin_left = 1104.48
-margin_top = 639.001
-margin_right = 1383.48
-margin_bottom = 886.001
+margin_left = 981.814
+margin_top = 633.668
+margin_right = 1260.81
+margin_bottom = 880.668
 rect_scale = Vector2( 0.2, 0.2 )
 mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
@@ -806,17 +850,16 @@ __meta__ = {
 }
 
 [node name="Area" type="ColorRect" parent="CardController/Discard"]
-margin_left = 1102.0
-margin_top = 616.0
-margin_right = 1165.0
-margin_bottom = 705.0
+margin_left = 979.334
+margin_top = 610.667
+margin_right = 1042.33
+margin_bottom = 699.667
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Choice" type="Node2D" parent="CardController"]
-visible = false
 z_index = 3
 script = ExtResource( 134 )
 
@@ -868,26 +911,27 @@ mouse_filter = 2
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
-bbcode_text = "[center]Voided(Z)[/center]"
-text = "Voided(Z)"
+bbcode_text = "[center]Burn(Z)[/center]"
+text = "Burn(Z)"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="CardController/Voided"]
-position = Vector2( 1691.11, 842.742 )
-scale = Vector2( 0.2, 0.2 )
-frames = SubResource( 4 )
-frame = 65
+position = Vector2( 1665.92, 846.224 )
+scale = Vector2( 0.111131, 0.111131 )
+frames = SubResource( 18 )
+frame = 35
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
-margin_left = 1662.82
-margin_top = 826.281
-margin_right = 1941.82
-margin_bottom = 1073.29
-rect_scale = Vector2( 0.2, 0.2 )
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 1608.0
+margin_top = 813.0
+margin_right = 1988.0
+margin_bottom = 1111.0
+rect_scale = Vector2( 0.3, 0.3 )
 custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 0.890196, 0.870588, 0.831373, 1 )
 bbcode_enabled = true
@@ -898,10 +942,10 @@ __meta__ = {
 }
 
 [node name="Area" type="ColorRect" parent="CardController/Voided"]
-margin_left = 1639.0
-margin_top = 803.0
-margin_right = 1748.0
-margin_bottom = 892.0
+margin_left = 1615.0
+margin_top = 811.0
+margin_right = 1724.0
+margin_bottom = 900.0
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -911,7 +955,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 30
+frame = 31
 playing = true
 script = ExtResource( 264 )
 
