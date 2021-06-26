@@ -452,7 +452,8 @@ health(56);
 $turncount=1
 status(boss, true);
 trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
-trigger(turn,if( ($turncount=0), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=1), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=0), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))

@@ -179,13 +179,18 @@ func countModifiers(loc, mod) -> int:
 		if card.hasModifier(mod):
 			count+=1
 	return count
-func move(loc1, loc2, card):
+func move(loc1, loc2, card, pos=null):
 	if card is bool:
 		return card
+	if card == null:
+		return false
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
-		loc2.add_card(card)
+		if pos==null:
+			loc2.add_card(card)
+		else:
+			loc2.add_card_at(card,pos)
 		return true
 	return false
 func setEnergy(num):
@@ -222,7 +227,7 @@ func discard(card, silent = false, loc = "Hand"):
 	if not silent and res:
 		var res2 = card.Triggered("onDiscard", [card])
 		if res2 is GDScriptFunctionState:
-			res2 = yield(res, "completed")
+			res2 = yield(res2, "completed")
 	return res
 	
 func updateDisplay():

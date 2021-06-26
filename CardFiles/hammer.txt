@@ -32,6 +32,7 @@ removetrigger(endofturn, true, 0);
 rarity(5)
 cost(1)
 modifiers(hammer)
+image("res://Images/CardArt/Sledgehammer.png")
 
 title("Wind Hammer");
 cost(1);
@@ -120,6 +121,7 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,EternalEnergy)),"Pick a 
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(bossReward)
+image("res://Images/CardArt/UndyingLight.png")
 
 title("Eternal Breeze")
 cost(0);
@@ -135,7 +137,7 @@ modifiers(bossReward)
 title("Heroic Feat")
 cost(0);
 rarity(0);
-types(hammer)
+types(hammer,rage)
 $Increment=2
 text("Permanently gain $Increment strength")
 trigger(onPlay, enemyDo(gainStrength(Player,$Increment)))
@@ -143,6 +145,18 @@ trigger(onPlay,do(purge(self)));
 removetrigger(endofturn,true,0);
 modifiers(bossReward)
 image("res://Images/CardArt/HeroicFeat.png")
+
+title("Spirit Feast")
+cost(0);
+rarity(0);
+types(hammer,rage)
+$MaxHealth=25
+text("Gain $MaxHealth max health and heal to full")
+trigger(onPlay, do(gainMaxHealth($MaxHealth)))
+trigger(onPlay, do(heal(do(getStatus(Player,maxHealth)))))
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn,true,0);
+modifiers(bossReward)
 
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers

@@ -145,6 +145,13 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
+	if status.has("corruption") and status.corruption is int:
+			if attacker!=null:
+				amount+=int(status.get("corruotion")/3)
+	if "backstab" in types and attacker!=null and attacker.has("status"):
+		var stealth = attacker.status.get("stealth")
+		if stealth !=null and stealth is int:
+			amount*=3
 	if self.interrupts.has("damaged"):
 		self.vars["$DamageAmount"] = amount
 		self.Interrupts("damaged", [amount,types, attacker])
@@ -154,7 +161,7 @@ func takeDamage(amount,types, attacker):
 	if "storm" in types:
 		if randf()<=.05:
 			amount*=2
-			changeHealth("CRITICAL")
+			changeHealth("CRIT")
 	if amount >=20 and amount < armor+health+block:
 		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
 	#put out fire
@@ -163,7 +170,7 @@ func takeDamage(amount,types, attacker):
 	if "ice" in types:
 		addStatus("frost",1)
 	if "shadow" in types:
-		addStatus("corruption",2)
+		addStatus("corruption",1)
 	if "light" in types:
 		addStatus("dazzled",1)
 	#thorns
@@ -335,7 +342,7 @@ func die(attacker):
 		#damage all adjacent enemies
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
 			if node.occupants.size()>0 and node.occupants[0] != self:
-				node.occupants[0].takeDamage(status.explosive,("explosive"),self)
+				node.occupants[0].takeDamage(status.explosive,["explosive"],self)
 	
 	self.visible = false
 	tile.occupants.erase(self)
@@ -533,7 +540,7 @@ func isUnit()->bool:
 	return true
 func changeHealth(amount)-> void:
 	if not amount is String:
-		if status.has("sting"):
+		if status.has("sting") and amount > 0:
 			amount=0
 		health += amount
 	var num = healthChangeTemplate.instance()

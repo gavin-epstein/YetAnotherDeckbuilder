@@ -5,6 +5,7 @@ const bannedtypes = ["attack", "movement","starter","loot","void"]
 # var a: int = 2
 # var b: String = "text"
 var prerigged =1
+var cheston = true
 func _ready() -> void:
 	self.visible = false
 	
@@ -21,11 +22,12 @@ func updateDisplay():
 		card.updateDisplay()
 		pos += Vector2(xsep,0)
 func cardClicked(card):
-	get_parent().move("Choice", "Hand", card)
-	get_parent().Hand.updateDisplay()
-	if card.modifiers.has("unique"):
-		get_parent().Library.removeUnique(card.title);
-	clear()
+	if cheston:
+		get_parent().move("Choice", "Hand", card)
+		get_parent().Hand.updateDisplay()
+		if card.modifiers.has("unique"):
+			get_parent().Library.removeUnique(card.title);
+		clear()
 	
 func clear():
 	visible = false
@@ -96,5 +98,27 @@ func generateReward(rarity, count = 3):
 		self.updateDisplay()
 
 func _on_Area2D_input_event( event: InputEvent) -> void:
-	if event.is_action_pressed("left_click"):
+	if event.is_action_pressed("left_click") and cheston:
 		clear()
+
+
+func _on_Panel2_gui_input(event: InputEvent) -> void:
+	if event.is_action_pressed("left_click"):
+		toggleChest()
+		
+func toggleChest():
+	if cheston:
+		$CardChoiceBack2.visible = false
+		$SkipButton.visible = false
+		for card in cards:
+			print(card.title)
+			card.modulate = Color(0,0,0,0)
+			card.visible = false
+			
+	else:
+		$CardChoiceBack2.visible = true
+		$SkipButton.visible = true
+		for card in cards:
+			card.modulate = Color(1,1,1,1)
+			card.visible =true
+	cheston = !cheston

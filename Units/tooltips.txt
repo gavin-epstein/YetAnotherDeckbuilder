@@ -17,7 +17,7 @@ trap:Terrain:Does not stop movement to this tile. Triggers its effect if a unit 
 lootless:Emptyhanded:Does not drop loot on death.
 stoneskin:Stone Skin:Block is not removed.
 dazzled:Dazzled:Strength is reduced by 33 percent.
-corruption:Corrupt:The next time this unit moves or is moved it takes damage equal to the stacks of corrupt and clears all corrupt.
+corruption:Corrupt:For every 3 stacks of corrupt, this unit takes 1 additional damage from all attacks.
 stealth:Stealth:This unit can not be hit by targeted and random attacks and effects.
 rage:Rage:Rage adds 1 strength per stack.
 boss:Boss:This unit is a boss.

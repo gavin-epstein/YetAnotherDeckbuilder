@@ -25,8 +25,18 @@ func Load(parent):
 	cardLibrary = parent.cardController.Library
 	unitLibrary = parent.enemyController.get_node("UnitLibrary")
 	unitLibrary.loadIcons("res://CardToolTips/Tooltipimages/",cardtooltipicons) 
+	#basics
+	var page = pagetemplate.instance()
+	page.createByImage("Card Basics","res://Glossary/Cards.png")
+	library["Card Basics"] = page
+	page = pagetemplate.instance()
+	page.createByImage("Unit Basics","res://Glossary/Units.png")
+	library["Unit Basics"] = page
+	var homepage = pagetemplate.instance()
+	homepage.createByText("Basics", "Overview:\n    Card Basics\n    Unit Basics");
+	library["Homepage"] = homepage
 	for tooltip in cardLibrary.tooltips.keys():
-		var page = pagetemplate.instance()
+		page = pagetemplate.instance()
 		var img = null
 		if tooltip.capitalize() in cardtooltipicons.keys():
 			img = cardtooltipicons[tooltip.capitalize()]
@@ -34,7 +44,7 @@ func Load(parent):
 		library[tooltip.capitalize()] = page
 		
 	for tooltip in unitLibrary.tooltips.keys():
-		var page = pagetemplate.instance()
+		page = pagetemplate.instance()
 		var title = unitLibrary.tooltips[tooltip].split(":")[0]
 		var text = unitLibrary.tooltips[tooltip].split(":")[1]
 		var image =  unitLibrary.icons[tooltip]
@@ -42,6 +52,7 @@ func Load(parent):
 		library[title] = page
 	loadTypeDescriptions("res://CardToolTips/typeDescriptions.txt")
 	makehyperlinks()
+	displayPage("Homepage")
 	$CanvasLayer/LineEdit.grab_focus()
 func getPageByName(name:String):
 	return library.get(name)

@@ -8,7 +8,7 @@ trigger(onPlay,do(addStatus(thorns,$Thorns)))
 text("Heal $Heal . gain $Thorns thorns")
 rarity(7)
 removetrigger(endofturn,true,1)
-image("res://Images/CardArt/PricklyPair.png")
+image("res://Images/CardArt/PricklyPear.png")
 
 title(Barrel Cactus)
 types(cactus)
@@ -34,4 +34,17 @@ $Thorns=1
 trigger(voided,do(addStatus(thorns,$Thorns)))
 rarity(6)
 removetrigger(endofturn, true, 5)
-text("When you burn a card, gain $Thorns thorns")
+text("When you void a card, gain $Thorns thorns")
+
+title(Thornburst)
+types(cactus,light);
+cost(X)
+$X="X"
+$Block=3
+$Thorns=2
+trigger(onRemoveFromPlay, do(setVar(self,X,X)));
+trigger(onPlay, do(block((*,3,$X))));
+trigger(onPlay, do(addStatus(thorns,(*,$Thorns, $X))));
+text("Gain $Block X block and $Thorns X thorns");
+removetrigger(endofturn, true, 1)
+rarity(5)

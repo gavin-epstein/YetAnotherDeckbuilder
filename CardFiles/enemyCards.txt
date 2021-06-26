@@ -41,4 +41,21 @@ text("When burned: purge this and lose 3 health. Otherwise Purge")
 image("res://Images/CardArt/Ouch.png")
 rarity(0)
 
+title("Curse of Vanishing")
+trigger(onDraw,do(discard(self)));
+text("When drawn, this discards itself")
+types(cloud, evil,earth)
+modifiers(unplayable, curse)
+rarity(0)
+cost("-")
+removetrigger(endofturn,true,0)
+
+title("Frostbite")
+types(reaction,evil)
+trigger(onReaction, do(addStatus(frost,2)));
+trigger(onReaction, do(purge,(self),false));
+cost(-);
+text("On Reaction gain 2 Frost");
+removetrigger(endofturn, true, 0);
+rarity(0)
 

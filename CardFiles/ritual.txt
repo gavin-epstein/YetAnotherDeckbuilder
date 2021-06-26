@@ -53,7 +53,7 @@ $Range=1
 trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 rarity(2)
-text(Deal 10 damage, Range $Range. If this kills a unit add a broken blade to your hand);
+text(Deal $Damage damage, Range $Range. If this kills a unit add a broken blade to your hand);
 image("res://Images/CardArt/RitualDagger.png")
 
 title(Broken Blade)
@@ -162,3 +162,24 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
 cost(2);
 rarity(2);
+
+title("Demon Wings")
+types(ritual,shadow, wind)
+$RitualCount=6
+$CreateCount=4
+trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Fluttering Shadow", Hand,self ))),$CreateCount))));
+trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+text("When you have $RitualCount ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
+cost(1);
+rarity(4);
+
+title("Wrath Rite")
+types(ritual,rage)
+$RitualCount=6
+$Status=4
+trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(rage, $Status)))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+text("When you have $RitualCount ritual cards in play, gain $Status rage and discard this card from play")
+cost(1);
+rarity(7);

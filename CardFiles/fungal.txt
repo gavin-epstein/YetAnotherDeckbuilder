@@ -102,3 +102,19 @@ trigger(onPlay, if( ($dothething>0),(do(addVar(self, MaxHealth,(+,1,$Increment))
 text("If there is no Pore Fungus alive, summon one with (+,1,$Strength) strength and (+,1,$MaxHealth) health, then add + $Increment,  + (+,1,$Increment) to the stats on this card.")
 removetrigger(endofturn, true, 1)
 rarity(2)
+
+title("Death Cap");
+cost(1)
+$Status=0
+$Count=3
+$currentCount=0
+$Increment=1
+trigger(onPlay,do(addStatus(self,stealth,$Status)))
+trigger(onPlay,do(addVar(self,currentCount,1)))
+trigger(onPlay,if(($currentCount=$Count),(do(addVar(self,Status,$Increment)))))
+trigger(onPlay,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
+types(fungal, assassin)
+removetrigger(endofturn,true,2)
+text("Gain $Status stealth. Every $Count times you play this add $Increment stealth to it. (+, $Count, (*,-1,$currentCount)) remaining.");
+rarity(3);
+

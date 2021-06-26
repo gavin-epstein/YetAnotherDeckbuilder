@@ -4,7 +4,7 @@ types(fire, attack)
 $Damage=20
 $Range=2
 text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Burn")
-trigger(onPlay, do(damage($Damage, fire, (splash,(any),exists,((any,(any),any),2,Player)),1)))
+trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),2,Player)),1)))
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 rarity(3);

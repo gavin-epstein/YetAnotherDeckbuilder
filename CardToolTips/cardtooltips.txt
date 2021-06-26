@@ -22,7 +22,7 @@ transform: This card becomes another card of the same type.
 slay: Triggered when this card/unit kills a unit.
 retain: Not discarded by anything that discards your whole hand.
 energy: Energy is spent to play cards.
-shadow: Shadow damage adds a stack of corruption, damaging the target next time they move.
+shadow: Shadow damage adds a stack of corruption, increasing the damage the target takes from subsequent attacks.
 light: Light damage adds a stack of dazzled, which reduces the target's strength.
 piercing: Piercing damage ignores block and armor.
 ally: a friendly unit other than Mora.
@@ -31,3 +31,4 @@ counterattack: On reaction deal damage back to the attacker.
 grows: The Void swallows the tile its tentacles point to, then has a chance to spawn new enemies.
 unit: Mora, the void, or any other creature. Does not include terrain features.
 storm: Storm damage has a 5% chance of being doubled.
+backstab: Backstab damage deals triple damage if you are stealthed.

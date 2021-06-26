@@ -43,3 +43,4 @@ removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 types(light,potion);
 image("res://Images/CardArt/PotionOfLight.png")
+

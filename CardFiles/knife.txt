@@ -102,7 +102,7 @@ text("While this in play all kitchen knives you create gain $Increment damage")
 trigger(onCreate,if((hasModifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
 removetrigger(endofturn,true,5);
 rarity(2);
-image("res://Images/CardArt/KnifeSharpener.png")
+image("res://Images/CardArt/KnifeSharperner.png")
 
 title(Polished Blades);
 cost("2")
