@@ -114,7 +114,7 @@ text("Gain $Armor armor. Burn $Repeat cards from your Deck")
 cost(0)
 trigger(onPlay,do(armor($Armor)))
 trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to void")),Deck))),$Repeat))
-removetrigger(endofturn, true,1)
+removetrigger(endofturn, true,3)
 rarity(10)
 image("res://Images/CardArt/Preignite.png");
 

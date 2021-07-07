@@ -147,7 +147,7 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if status.has("corruption") and status.corruption is int:
 			if attacker!=null:
-				amount+=int(status.get("corruotion")/3)
+				amount+=int(status.get("corruption")/3)
 	if "backstab" in types and attacker!=null and attacker.has("status"):
 		var stealth = attacker.status.get("stealth")
 		if stealth !=null and stealth is int:
@@ -249,7 +249,7 @@ func takeDamage(amount,types, attacker):
 	return [amount]
 func startOfTurn():
 	if status.has("flaming"):
-		takeDamage(4,["fire"],null)
+		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):
 		block = 0;
 	if status.has("fuse"):

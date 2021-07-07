@@ -162,6 +162,7 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
 cost(2);
 rarity(2);
+image("res://Images/CardArt/RitualOfTheEarthMother.png")
 
 title("Demon Wings")
 types(ritual,shadow, wind)

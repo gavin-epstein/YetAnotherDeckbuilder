@@ -158,9 +158,23 @@ trigger(onPlay,do(purge(self)));
 removetrigger(endofturn,true,0);
 modifiers(bossReward)
 
+title("Speed Hammer")
+cost(1)
+rarity(4)
+types(hammer,movement)
+$Move=1
+$Increment=1
+rarity(4);
+trigger(onPlay,do(movePlayer($Move)));
+trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Move)),"Pick a card to upgrade")),Move,$Increment)));
+trigger(onPlay,do(purge(self)));
+text("Move $Move, then permanently add $Increment tiles to a movement card play.\nPurge");
+removetrigger(endofturn, true, 0);
+modifiers(hammer)
+
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers
 #wrecking ball - purge your deck
 #Autohammer - extend turns in play by 2
 #Smithy - when you play a hammer gain 4 block
-#Movement hammer
+

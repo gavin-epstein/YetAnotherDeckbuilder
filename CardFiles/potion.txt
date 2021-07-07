@@ -44,3 +44,28 @@ modifiers(potion,retain);
 types(light,potion);
 image("res://Images/CardArt/PotionOfLight.png")
 
+title(Shadow Phial)
+cost(0);
+rarity(2);
+$Repeat=2
+$Draw=1
+trigger(onPlay,do(draw($Draw)));
+trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick a card to cost 0 (Shadow Phial)",1)),Cost,0)))
+trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick another card to cost 0 (Shadow Phial)",1)),Cost,0)))
+text("Draw $Draw, Set the cost of $Repeat cards in hand to 0 until played .Retain. Purge")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion,retain);
+types(shadow,potion);
+image("res://Images/CardArt/ShadowPhial.png")
+
+title(Invisibility Potion)
+cost(0);
+rarity(4);
+$Status=1
+trigger(onPlay, do(addStatus(stealth, status)))
+text("Gain 1 stealth.Retain. Purge")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion,retain);
+types(assassin,potion);

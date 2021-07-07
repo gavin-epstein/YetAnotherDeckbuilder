@@ -14,7 +14,7 @@ $Heal=2
 types(food,fire);
 trigger(voided,do(heal($Heal)));
 removetrigger(endofturn,true,3);
-text(When you void a card, heal $Heal);
+text(When you burn a card, heal $Heal);
 rarity(6);
 
 title(Butter);

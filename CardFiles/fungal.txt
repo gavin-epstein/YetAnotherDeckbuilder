@@ -34,6 +34,7 @@ trigger(onPlay,do(damage, ($Damage,(fungal),(any),$Range)));
 trigger(slay,do(addVar(self,Damage,$Increment)));
 text("Deal $Damage fungal damage range $Range. Slay: increase this card's damage by $Increment");
 removetrigger(endofturn,true,3);
+image("res://Images/CardArt/Infest.png");
 
 title(Overgrown Machinery)
 cost(2)
@@ -102,6 +103,7 @@ trigger(onPlay, if( ($dothething>0),(do(addVar(self, MaxHealth,(+,1,$Increment))
 text("If there is no Pore Fungus alive, summon one with (+,1,$Strength) strength and (+,1,$MaxHealth) health, then add + $Increment,  + (+,1,$Increment) to the stats on this card.")
 removetrigger(endofturn, true, 1)
 rarity(2)
+image("res://Images/CardArt/PoreFungus.png");
 
 title("Death Cap");
 cost(1)

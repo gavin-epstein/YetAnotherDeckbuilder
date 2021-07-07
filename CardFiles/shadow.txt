@@ -87,7 +87,7 @@ types(shadow,fire)
 removetrigger(endofturn,true,0)
 trigger(onPlay, do(voided((select(Hand,true,"pick a card to void")),Hand)))
 trigger(onPlay, do(purge(self)))
-text("Void a card from your hand.\nPurge")
+text("Burn a card from your hand.\nPurge")
 modifiers(shadow)
 rarity(0)
 image("res://Images/CardArt/burningshadow.png");

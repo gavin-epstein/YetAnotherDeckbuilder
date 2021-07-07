@@ -1,0 +1,11 @@
+title("All out Attack")
+$Blood=7
+$Damage=8
+$Range=3
+cost(2)
+trigger(onPlay,do(unheal($Blood)))
+trigger(onPlay,do(damage, ($Damage,(bite),(all),$Range)));
+trigger(onPlay,do(damage, ((*,2,$Damage),(bite),(all),(+,-1,$Range))));
+text(Lose $Blood health. Deal $Damage damage range $Range, then (*,2, $Damage) damage range (+,-1,$Range))
+removetrigger(endofturn, true,0)
+

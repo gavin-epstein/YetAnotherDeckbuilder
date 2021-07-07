@@ -87,6 +87,7 @@ config/icon="res://icon.png"
 [autoload]
 
 global="*res://Scripts/global.gd"
+BackgroundMusic="*res://Sounds/BackgroundMusic.tscn"
 
 [display]
 

@@ -59,3 +59,15 @@ text("On Reaction gain 2 Frost");
 removetrigger(endofturn, true, 0);
 rarity(0)
 
+title("Potion Purchase")
+types(potion, loot)
+rarity(0)
+modifiers(retain)
+cost(1)
+text("Purge a card from your hand, choose 1 of 3 potions to add to your hand. The potion seller leaves.\n On retain, purge.")
+trigger(onPlay,do(purge((select(Hand,true,"Pick a card to purge")))))
+trigger(onPlay, do(cardreward,("potion",3)))
+trigger(onPlay, enemyDo(kill(do(selectTiles( (1,(any),"name:Potion Seller"),40,Player)))))
+trigger(onPlay, do(purge,(self)));
+trigger(onRetain, do(purge,(self)));
+removetrigger(endofturn, true,0);
