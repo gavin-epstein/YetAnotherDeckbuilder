@@ -71,3 +71,4 @@ trigger(onPlay, enemyDo(kill(do(selectTiles( (1,(any),"name:Potion Seller"),40,P
 trigger(onPlay, do(purge,(self)));
 trigger(onRetain, do(purge,(self)));
 removetrigger(endofturn, true,0);
+

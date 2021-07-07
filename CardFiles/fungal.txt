@@ -36,6 +36,7 @@ text("Deal $Damage fungal damage range $Range. Slay: increase this card's damage
 removetrigger(endofturn,true,3);
 image("res://Images/CardArt/Infest.png");
 
+
 title(Overgrown Machinery)
 cost(2)
 types(fungal,mechanical,attack)

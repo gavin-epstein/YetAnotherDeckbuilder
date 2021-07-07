@@ -128,6 +128,7 @@ func move(unit, node):
 		unit.tile =  node
 		if not unit.trap:
 			node.occupants.append(unit)
+
 func enemyTurn():
 	for unit in units:
 		if unit == null:

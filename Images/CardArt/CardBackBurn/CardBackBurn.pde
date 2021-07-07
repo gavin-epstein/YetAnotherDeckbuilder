@@ -34,13 +34,15 @@ void draw(){
   
   export.image(image1,.16*width,.16*height,image1.width, image1.height);
   export.endDraw();
- // arrow(export);
+
   image(export,0,0,width, height);
   if (t<2*PI){
     //saveFrame(String.format("frame%03d.png",frame));
     export.save(String.format("frame%03d.png",frame));
+
   }else{
     exit();
+
   }
   t+=.1;
   frame++;
@@ -121,6 +123,7 @@ void pattern1(PGraphics image){
        float rad = sqrt(distsq((int)x,(int)y,image.width/2, image.height/2));
        if (rad > image.width/3)
          {
+
        if (value(x,y,rad,image) > .5 ){
          image.pixels[(int)y*image.width+(int)x] = color(0,50,100);
        } else {
@@ -231,3 +234,4 @@ float[] get_line_intersection(float p0_x, float p0_y, float p1_x, float p1_y,
 
     return null; // No collision
 }
+

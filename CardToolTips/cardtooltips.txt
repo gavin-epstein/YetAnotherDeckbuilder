@@ -31,4 +31,4 @@ counterattack: On reaction deal damage back to the attacker.
 grows: The Void swallows the tile its tentacles point to, then has a chance to spawn new enemies.
 unit: Mora, the void, or any other creature. Does not include terrain features.
 storm: Storm damage has a 5% chance of being doubled.
-backstab: Backstab damage deals triple damage if you are stealthed.
+backstab: Backstab damage deals triple damage if you have stealth.

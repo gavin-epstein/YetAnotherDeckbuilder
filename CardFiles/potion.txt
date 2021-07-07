@@ -69,3 +69,4 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 types(assassin,potion);
+

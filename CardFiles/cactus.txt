@@ -34,7 +34,7 @@ $Thorns=1
 trigger(voided,do(addStatus(thorns,$Thorns)))
 rarity(6)
 removetrigger(endofturn, true, 5)
-text("When you void a card, gain $Thorns thorns")
+text("When you burn a card, gain $Thorns thorns")
 
 title(Thornburst)
 types(cactus,light);

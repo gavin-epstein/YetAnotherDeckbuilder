@@ -45,6 +45,7 @@ func Load(parent):
 		
 	for tooltip in unitLibrary.tooltips.keys():
 		page = pagetemplate.instance()
+
 		var title = unitLibrary.tooltips[tooltip].split(":")[0]
 		var text = unitLibrary.tooltips[tooltip].split(":")[1]
 		var image =  unitLibrary.icons[tooltip]
@@ -53,6 +54,7 @@ func Load(parent):
 	loadTypeDescriptions("res://CardToolTips/typeDescriptions.txt")
 	makehyperlinks()
 	displayPage("Homepage")
+
 	$CanvasLayer/LineEdit.grab_focus()
 func getPageByName(name:String):
 	return library.get(name)

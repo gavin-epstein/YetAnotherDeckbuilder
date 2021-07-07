@@ -22,6 +22,7 @@ func createByImage(title, imagename):
 	$ColorRect2.visible = false
 
 
+
 func setText(intext):
 	self.text  =intext
 	$Body.bbcode_text = intext.strip_edges()

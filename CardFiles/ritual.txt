@@ -184,3 +184,4 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have $RitualCount ritual cards in play, gain $Status rage and discard this card from play")
 cost(1);
 rarity(7);
+

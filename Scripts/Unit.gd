@@ -343,6 +343,7 @@ func die(attacker):
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
 			if node.occupants.size()>0 and node.occupants[0] != self:
 				node.occupants[0].takeDamage(status.explosive,["explosive"],self)
+
 	
 	self.visible = false
 	tile.occupants.erase(self)

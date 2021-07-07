@@ -177,4 +177,3 @@ modifiers(hammer)
 #wrecking ball - purge your deck
 #Autohammer - extend turns in play by 2
 #Smithy - when you play a hammer gain 4 block
-

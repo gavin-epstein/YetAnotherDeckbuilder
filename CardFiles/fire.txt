@@ -115,7 +115,7 @@ cost(0)
 trigger(onPlay,do(armor($Armor)))
 trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to void")),Deck))),$Repeat))
 removetrigger(endofturn, true,3)
-rarity(10)
+rarity(9)
 image("res://Images/CardArt/Preignite.png");
 
 title("Bellows")
