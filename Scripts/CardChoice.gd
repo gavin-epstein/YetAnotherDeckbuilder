@@ -8,6 +8,7 @@ var prerigged =1
 var cheston = true
 func _ready() -> void:
 	self.visible = false
+	base_z=100
 	
 func updateDisplay():
 	if cards.size() == 0:

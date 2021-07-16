@@ -190,7 +190,9 @@ func execute(code, argv):
 				var res = self.Triggered("onRemoveFromPlay",argv)
 				if res is GDScriptFunctionState:
 					yield(res, "completed")
-				controller.Action("move",["Play","Discard",self])
+				res = controller.Action("move",["Play","Discard",self])
+				if res is GDScriptFunctionState:
+					yield(res, "completed")
 				vars["$Cost"] = vars["$BaseCost"]
 				vars["$removecount"] = vars["$defaultremovecount"]
 	elif code[0] == "hastype":

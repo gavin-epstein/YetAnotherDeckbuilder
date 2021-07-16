@@ -232,7 +232,9 @@ func tutorial():
 	#14
 	enemyController.Player.say("You can right click any card to get more info",-1)
 	#end of tutorial
-	cardController.Action("create",["Fly","Hand"])
+	var res = cardController.Action("create",["Fly","Hand"])
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	message("Play Fly to end the tutorial")
 	yield(self,"nextstep")
 	enemyController.Win()

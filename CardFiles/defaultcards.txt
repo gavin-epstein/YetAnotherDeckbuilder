@@ -1,6 +1,6 @@
 title(Adventurer);
 types(starter)
-text("At the end of turn, set your energy to $EternalEnergy, discard your hand. At the start of turn draw $EternalDraw\n eternal \nsilent")
+text("At the end of turn, this card sets your energy to $EternalEnergy and discards your hand. At the start of turn this draws $EternalDraw\n eternal \nsilent")
 trigger(endofturn, do(setEnergy,($EternalEnergy),(true,false)));
 trigger(endofturn, do(discardAll,(true),(true,false)));
 trigger(startofturn, do(draw, ($EternalDraw), (true,false)));

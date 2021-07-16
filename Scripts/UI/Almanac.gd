@@ -11,7 +11,8 @@ signal Closed
 func _ready() -> void:
 	$CanvasLayer/LineEdit.caret_blink = true
 	$CanvasLayer/Menu.set_focus_neighbour(MARGIN_TOP,"../LineEdit")
-#	cardLibrary = CardLibrary.new()
+	print("spacecheck ", " "==" ") 
+	#cardLibrary = CardLibrary.new()
 #	unitLibrary = UnitLibrary.new()
 #	cardLibrary.loadIcons()
 #	cardLibrary.loadTooltips("res://CardToolTips/cardtooltips.txt")
@@ -26,14 +27,15 @@ func Load(parent):
 	unitLibrary = parent.enemyController.get_node("UnitLibrary")
 	unitLibrary.loadIcons("res://CardToolTips/Tooltipimages/",cardtooltipicons) 
 	#basics
+	
 	var page = pagetemplate.instance()
 	page.createByImage("Card Basics","res://Glossary/Cards.png")
-	library["Card Basics"] = page
+	library["Card basics"] = page
 	page = pagetemplate.instance()
 	page.createByImage("Unit Basics","res://Glossary/Units.png")
-	library["Unit Basics"] = page
+	library["Unit basics"] = page
 	var homepage = pagetemplate.instance()
-	homepage.createByText("Basics", "Overview:\n    Card Basics\n    Unit Basics");
+	homepage.createByText("Basics", "Overview:\n    Card Basics\n    Unit Basics");
 	library["Homepage"] = homepage
 	for tooltip in cardLibrary.tooltips.keys():
 		page = pagetemplate.instance()
@@ -50,7 +52,7 @@ func Load(parent):
 		var text = unitLibrary.tooltips[tooltip].split(":")[1]
 		var image =  unitLibrary.icons[tooltip]
 		page.createByText(title.capitalize(), "Status Effect\n"+text.strip_edges(), image)
-		library[title] = page
+		library[title.capitalize()] = page
 	loadTypeDescriptions("res://CardToolTips/typeDescriptions.txt")
 	makehyperlinks()
 	displayPage("Homepage")
@@ -65,7 +67,7 @@ func findSearchTerm(string:String):
 		for word in key.split(" "):
 			if word.to_lower().substr(0,string.length()) == string.to_lower():
 				if not key in terms:
-					terms.append(key)
+					terms.append(library[key].title)
 	terms.sort()
 	return terms
 func _on_LineEdit_text_changed(new_text: String) -> void:
@@ -91,8 +93,11 @@ func displayPage(title,allowforward=false):
 		if not allowforward:
 			stack.append(title)
 			stackindex+=1
+	else:
+		print("Page not found     " + title)
 func makehyperlinks():
 	for page in library.values():
+		
 		var out = ""
 		for word in page.text.split(" "):
 			var procword = word.rstrip(".,;:\"'").to_lower().capitalize()
@@ -115,10 +120,10 @@ func loadTypeDescriptions(fname):
 			var title = line[0].capitalize()
 			var text = "Card Type\n"+Utility.join(":", line.slice(1,line.size()-1))
 			text = text.replace("\\n","\n")
-			var image = cardLibrary.icons.get(title.to_lower())
+			var image = cardLibrary.icons.get(title.capitalize())
 			var page = pagetemplate.instance()
 			page.createByText(title.capitalize(), text.strip_edges(), image)
-			library[title] = page
+			library[title.capitalize()] = page
 	f.close()
 
 

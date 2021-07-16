@@ -105,6 +105,11 @@ func loadtooltips(fname):
 			line = line.split(":")
 			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
 	f.close()
+func getToolTipByName(word:String):
+	for key in tooltips.keys():
+		var tip = tooltips[key].split(":")
+		if word.to_lower().strip_edges() == tip[0].to_lower().strip_edges():
+			return tip[1]
 func loadintenttooltips(fname):
 	var f = File.new()
 	f.open(fname, File.READ)

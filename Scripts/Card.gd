@@ -17,7 +17,7 @@ var highlighted = false
 var rarity = 0
 var debug
 var mouseon=false
-var tooltips=[]
+var tooltips=null
 var iconsdone = false
 var targetvis=true
 var base_z = 0
@@ -44,13 +44,14 @@ func _process(delta: float) -> void:
 	#zoom on mouseover
 	if mouseon:
 			if $Resizer.scale.x ==1:
-				z_index = base_z+5
+				self.z_index = base_z+5
 				$AnimationPlayer.play("Grow")
 			yield($AnimationPlayer,"animation_finished")
 	else:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
-		z_index = base_z
+		self.z_index = base_z
+		
 		
 
 
@@ -115,18 +116,32 @@ func loadCardFromString(string):
 			vars[parsed[0]] = parsed[2]
 		
 	#self.updateDisplay()
-	self.generateTooltips()
+	
 func updateDisplay():
+	if tooltips ==null and controller.enemyController!=null:
+		self.generateTooltips()
+	
 	if get_parent()!=null and get_parent().get("cards")!=null:
-		base_z = get_parent().base_z +2 + get_parent().cards.find(self)
+		base_z = get_parent().base_z +1 + get_parent().cards.find(self)
+		
+	if mouseon:
+		z_index = base_z+5
+	else:
+		z_index  = base_z
+	
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
-	titlebox.bbcode_text= "[center]" + title+ "[/center]";
+	titlebox.bbcode_text= "[center]" + title +  "[/center]";
 	var titlescale = min(.5,6.0/title.length())
 	titlebox.rect_scale = Vector2(titlescale,titlescale)
 	titlebox.rect_size = Vector2(583.0/titlescale,211)
 	var displaytext = processText(text)
-	
+	var lines = ceil(displaytext.length() / 23.0)
+	var sc = 1
+	if lines > 5:
+		sc= .7
+	get_node("Resizer/CardFrame/Text").rect_scale=Vector2(.4,.4)*sc
+	get_node("Resizer/CardFrame/Text").rect_size= Vector2(1644, 894)/sc
 	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(vars["$removecount"]) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
@@ -201,11 +216,16 @@ func isIdentical(other):
 func getTooltips():
 	return tooltips
 func generateTooltips():
+	tooltips = []
 	var words = Utility.parsewords(self.text)
 	for word in words:
 		var tip = controller.Library.getToolTip(word)
 		if tip !=null:
 			tooltips.append(word.capitalize()+": "+tip)
+		else:
+			tip = controller.enemyController.get_node("UnitLibrary").getToolTipByName(word)
+			if tip !=null:
+				tooltips.append(word.capitalize()+": "+tip)
 		
 func save() -> Dictionary:
 	return{

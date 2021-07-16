@@ -23,6 +23,7 @@ cost(2)
 rarity(6)
 removetrigger(endofturn, true, 13)
 $Block=9
+image("res://Images/CardArt/Dam.png")
 
 title("Watering Hole")
 types(water, food,avian)
@@ -43,6 +44,7 @@ trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Rep
 text("Discard the top $Repeat cards of your Deck")
 removetrigger(endofturn,true, 2)
 rarity(5)
+image("res://Images/CardArt/Raincloud.png")
 
 title("Boat")
 types(water,movement)
@@ -52,6 +54,7 @@ cost(2)
 rarity(6)
 removetrigger(endofturn, true, 6)
 $Move=6
+image("res://Images/CardArt/Boat.png")
 
 title("Harpoon")
 types(water,attack)
@@ -63,6 +66,7 @@ cost(0);
 $Damage=5
 $Range=3;
 rarity(7);
+image("res://Images/CardArt/Harpoon.png")
 
 title("Abyssal Currents");
 types(water,shadow);

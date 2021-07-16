@@ -19,6 +19,8 @@ var consumed
 var focusStack=[]
 var lastfocus
 var doTutorial
+var trashbin=[]
+var isPlayerTurn=true
 class_name CardController
 #func _process(delta: float) -> void:
 #	var r = 0
@@ -65,7 +67,7 @@ func Load(parent)-> void:
 #		#Test Cards
 
 		#Coal + way to void it + lightspeed
-#		Hand.add_card(Library.getCardByName("Lightspeed"))
+		#Hand.add_card(Library.getCardByName("Light Whispers"))
 #		Deck.add_card(Library.getCardByName("Coal"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
@@ -154,8 +156,10 @@ func play(card)->bool:
 	self.move("Hand","Play", card)
 	updateDisplay()
 	var results = card.Triggered("onPlay",[card])
+	
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
+	
 	setVar(card,"Cost",getVar(card,"BaseCost"))
 	updateDisplay()
 	#releaseFocus(self)
@@ -205,7 +209,9 @@ func discardAll(silent = false):
 	while backind >ind:
 		var card = Hand.cards[ind]
 		if not card.modifiers.has("retain"):
-			Action("discard", [card, silent], silent);
+			var res =Action("discard", [card, silent], silent);
+			if res is GDScriptFunctionState:
+				yield(res, "completed")
 			#Dealing with altostratus
 			
 			backind-=1
@@ -246,18 +252,25 @@ func updateDisplay():
 			if unit !=null:
 				unit.updateDisplay()
 				unit.Triggered("onCardChange", [])
+	if inputAllowed:
+		for thing in trashbin:
+			thing.queue_free()
+		trashbin  = []
 func cardreward(rarity, count):
 		Choice.generateReward(rarity, count)
-		yield(Choice,"cardchosen")
+		var res = yield(Choice,"cardchosen")
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 		return true
 func purge(card):
 	if card == null:
 		return false
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
-		card.queue_free()
+		trashbin.append(card)
 		return true
 	return false
+
 
 func takeFocus(item) -> bool:
 	#printFocus()
@@ -390,6 +403,7 @@ func endofturn():
 		return false
 	enemyController.maxdifficulty+=.8
 	enemyController.Player.endOfTurn()
+	
 	return true
 
 func startofturn():
@@ -397,6 +411,7 @@ func startofturn():
 		enemyController.Lose(null)
 		return false
 	enemyController.Player.startOfTurn()
+	
 	return true
 
 
@@ -410,13 +425,13 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		#Enemies go here
 		takeFocus(self)
-		
+		self.isPlayerTurn = false
 		res = enemyController.enemyTurn()
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		
 		releaseFocus(self)
-		
+		self.isPlayerTurn = true
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
@@ -469,6 +484,8 @@ func damage(amount, types, targets,distance, tile =null):
 		else:
 			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
+		if dmg is GDScriptFunctionState:
+			dmg = yield(dmg, "completed")
 		if lastPlayed !=null:
 			if dmg.size() >1 and dmg[1] == "kill":
 				var res = lastPlayed.Triggered("slay",[unit])
@@ -536,7 +553,7 @@ func summon(unitName, targets, distance,tile="Player") :
 		terrains = targets[1]
 
 	targets = [targets[0],terrains,"empty"]
-	locs = selectTiles(targets,distance,tile)
+	locs = selectTiles(targets,distance,tile, "Pick a place to summon")
 	if locs is GDScriptFunctionState:
 		locs = yield(locs,"completed")
 	if locs == null or locs.size() == 0:
@@ -607,6 +624,7 @@ func Reaction(amount:float, attacker)-> float:
 	return amount
 func voidshift():
 	pass
+	print("Voidshifted")
 	#Action("devoidAll",[])
 func cardAt(loc,index):
 	loc = get_node(loc)

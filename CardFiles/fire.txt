@@ -95,7 +95,7 @@ image("res://Images/CardArt/Ashes.png");
 
 title("Renewal")
 types(fire, light,wind)
-text("Burn your hand, draw a card and gain an energy for each card burned.\nVoid")
+text("Burn all cards in your hand, then draw a card and gain an energy for each card burned.\nBurn")
 rarity(1);
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((do(cardAt(Hand,0),true)),Hand))),$cardnumber))

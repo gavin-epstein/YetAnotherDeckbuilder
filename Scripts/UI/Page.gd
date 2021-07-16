@@ -10,7 +10,7 @@ func createByText(title, text, image=null):
 	if image!=null:
 		$Sprite.texture = image
 	$Title.bbcode_text = title.strip_edges()
-	$Body.bbcode_text = text.strip_edges()
+	self.setText(text)
 	$BigImage.visible = false
 func createByImage(title, imagename):
 	self.title = title

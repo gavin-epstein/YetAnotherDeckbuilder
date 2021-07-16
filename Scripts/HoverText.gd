@@ -100,6 +100,9 @@ func updateDisplay(unit, library):
 			$TextContainer.add_child(text)
 			var content = library.tooltips[stat]
 			lines =  ceil(content.length()/25.0)
+			while lines <2:
+				lines+=1
+				content+="\n"
 			text.bbcode_text = content
 			text.bbcode_enabled = true
 			text.rect_size = Vector2(1800,170*lines)

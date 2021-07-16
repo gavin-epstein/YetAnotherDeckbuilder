@@ -7,6 +7,7 @@ var map
 var selectedCard = null
 var test = false
 var lastTargets= null
+var pausetime = 1
 onready var Message = get_node("/root/Scene/Message")
 signal resumeExecution
 const testMethods = ["Attack","addArmor","addBlock",
@@ -28,6 +29,10 @@ func _ready() -> void:
 	enemyController = get_node("/root/Scene").enemyController
 	cardController = get_node("/root/Scene").cardController
 	map = get_node("/root/Scene").map
+	pausetime = global.animationspeed
+	global.connect("animspeedchanged",self,"on_animation_speed_change")
+func on_animation_speed_change(val):
+	pausetime = val
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
 	var stoppable = silent
@@ -96,6 +101,8 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 					ind+=1
 	if self.has_method("updateDisplay") and not test:
 		self.call("updateDisplay")
+	if not test and not cardController.isPlayerTurn:
+		yield(get_tree().create_timer(.01*pausetime),"timeout")
 	return res
 
 func startTest():
@@ -234,7 +241,7 @@ func cardClicked(card):
 		card.dehighlight()
 	emit_signal("resumeExecution")
 	
-func selectTiles(targets, distance, tile):
+func selectTiles(targets, distance, tile, message = "Pick a target"):
 	#Let them choose on the map, but not play another card
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
@@ -248,7 +255,7 @@ func selectTiles(targets, distance, tile):
 	elif targets[0] == "all":	
 		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,true)
 	elif targets[0]=="any":
-		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
+		var enemy = map.select(tile,distance,targets[2],targets[1],message)
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		if enemy ==null:

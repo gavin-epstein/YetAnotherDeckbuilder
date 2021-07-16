@@ -304,6 +304,7 @@ health(12);
 strength(4);
 range(1);
 speed(2);
+$Intent=Debuff
 status(hardenedcarapace,true)
 trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
 trigger(turn,if( ($Intent=Debuff),(do(addArmor(self,1)))));

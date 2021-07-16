@@ -4,7 +4,8 @@ export var maxHandSize = 10
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
-
+func _ready() -> void:
+	base_z=50
 
 # Called when the node enters the scene tree for the first time.
 
@@ -35,6 +36,8 @@ func returnCard(target):
 func cardClicked(card):
 	
 	if get_parent().inputAllowed:
-		get_parent().Action("play", [card])
+		var res = get_parent().Action("play", [card])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	elif card.highlighted:
 		get_parent().cardClicked(card)

@@ -72,6 +72,7 @@ trigger(onPlay,do(purge(self)));
 text("Gain $Armor armor, then permanently add $Increment armor to an armor card in play.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
+image("res://Images/CardArt/armorershammer.png")
 
 title("Shadow Hammer");
 cost(1)
@@ -104,12 +105,14 @@ modifiers(hammer)
 title("Double-headed Hammer")
 cost(1);
 types(hammer);
+lore(Very impractical)
 rarity(2);
 text("Copy a card in your hand")
 trigger(onPlay, do(create( (select(Hand,true,"Pick a card to copy")),Hand  )))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
+image("res://Images/CardArt/DoubleHeadedHammer.png")
 
 title("Undying Light")
 cost(0);
@@ -133,6 +136,7 @@ trigger(onPlay,do(addVar((select(Play,(hasVariable(self,EternalDraw)),"Pick a ca
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(bossReward)
+image("res://Images/CardArt/EternalBreeze.png")
 
 title("Heroic Feat")
 cost(0);
@@ -157,6 +161,7 @@ trigger(onPlay, do(heal(do(getStatus(Player,maxHealth)))))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn,true,0);
 modifiers(bossReward)
+image("res://Images/CardArt/SpiritFeast.png")
 
 title("Speed Hammer")
 cost(1)

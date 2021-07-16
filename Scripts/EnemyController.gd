@@ -11,10 +11,12 @@ const bossnames = ["Queen Orla", "LORD OF THE SWAMP","The Last Automaton"]
 const bossicons = ["res://Images/UIArt/bossIcons/Queen Orla.png", "res://Images/UIArt/bossIcons/SwampLord.png","res://Images/UIArt/bossIcons/Cog.png"]
 var boss1
 var boss
+
 const unitscale=Vector2(.17,.17)
 # Called when the node enters the scene tree for the first time.
 func Load(parent):
 	#yield(parent,"ready")
+	
 	map = parent.map
 	cardController = parent.cardController
 	animationController = parent.animationController
@@ -25,6 +27,8 @@ func Load(parent):
 	boss = randi()%bossnames.size()
 	boss1 = bossnames[boss]
 	get_node("/root/Scene/voidhealthbar/bossIcon1/image").texture = load(bossicons[boss])
+	
+
 func countDifficulty():
 	totaldifficulty = 0
 	for _i in units.count(null):
@@ -144,7 +148,7 @@ func enemyTurn():
 			var res = unit.Triggered("turn",[])
 			if res is GDScriptFunctionState:
 				yield(res, "completed")
-			yield(get_tree().create_timer(.15), "timeout")
+			yield(get_tree().create_timer(.15 * pausetime), "timeout")
 	for unit in units:
 		if unit != null:
 			var res = unit.endOfTurn()	
@@ -202,7 +206,8 @@ func Attack(attacker, target,types = [],damage = -1):
 	if res is GDScriptFunctionState:
 		res = yield(res, "completed")
 	if res.size() > 1 and res[1] =="kill":
-		attacker.Triggered("slay",[target])
+		if attacker!=null:
+			attacker.Triggered("slay",[target])
 	return true
 func gainMaxHealth(unit,amount):
 	var units
@@ -284,6 +289,8 @@ func heal(unit, amount):
 	for unit in units:
 		amount = min(amount,unit.maxHealth - unit.health )
 		unit.changeHealth(amount)	
+		if unit.health <=0:
+			unit.die(null)
 func countNames(loc, name) -> int:
 	var count = 0
 	for unit in units:
@@ -307,13 +314,19 @@ func MoveAndAttack(unit,target):
 		for _i in range(unit.speed):
 			nextTile = map.getTileInDirection(nextTile,target)
 			if nextTile.occupants.size() ==0:
-				Action("move", [unit, nextTile])
+				var res = Action("move", [unit, nextTile])
+				if res is GDScriptFunctionState:
+					yield(res, "completed")
 			else:
 				if unit.hasVariable("Multistrike"):
 					for _eoorork in range(getVar(unit, "Multistrike")):
-						Action("Attack",[unit, nextTile.occupants[0]])
+						var res = Action("Attack",[unit, nextTile.occupants[0]])
+						if res is GDScriptFunctionState:
+							yield(res, "completed")
 				else:
-					Action("Attack",[unit, nextTile.occupants[0]])
+					var res = Action("Attack",[unit, nextTile.occupants[0]])
+					if res is GDScriptFunctionState:
+						yield(res, "completed")
 				break
 	else:
 		var targets = map.selectAll(nextTile,unit.sight,target,["any"])
@@ -322,23 +335,33 @@ func MoveAndAttack(unit,target):
 			if enemy!=null:
 				if unit.hasVariable("Multistrike"):
 					for _eoorork in range(getVar(unit, "Multistrike")):
-						Action("Attack",[unit, enemy])
+						var  res = Action("Attack",[unit, enemy])
+						if res is GDScriptFunctionState:
+							yield(res, "completed")
 				else:
-					Action("Attack",[unit, enemy])
+					var res = Action("Attack",[unit, enemy])
+					if res is GDScriptFunctionState:
+						yield(res, "completed")
 				break
 			else:
 				curTile = nextTile
 				nextTile = map.pathFindToSet(curTile,targets)
 				if nextTile.occupants.size() ==0:
-					Action("move", [unit, nextTile])
+					var res = Action("move", [unit, nextTile])
 				elif nextTile.occupants[0].head == unit.head:
-					Action("move", [unit, nextTile])
-					Action("move", [nextTile.occupants[0], curTile])
+					var res = Action("move", [unit, nextTile])
+					if res is GDScriptFunctionState:
+						yield(res, "completed")
+					res = Action("move", [nextTile.occupants[0], curTile])
+					if res is GDScriptFunctionState:
+						yield(res, "completed")
 				else:
 					for neigh in curTile.neighs:
 						if neigh.dist !=null and curTile.dist!=0  and curTile.dist !=null and neigh.dist < curTile.dist and neigh.occupants.size() == 0:
 							nextTile = neigh
-							Action("move", [unit, nextTile])
+							var res = Action("move", [unit, nextTile])
+							if res is GDScriptFunctionState:
+								yield(res, "completed")
 							break
 					
 					
@@ -383,11 +406,11 @@ func Lose(enemy):
 		get_node("/root/global").lossImage = image
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
-	yield(get_tree().create_timer(1),"timeout")
+	yield(get_tree().create_timer(.5),"timeout")
 	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():
-	yield(get_tree().create_timer(.2),"timeout")
+	yield(get_tree().create_timer(.2*pausetime),"timeout")
 	var possible = []
 	for other in theVoid.tile.neighs:
 		if other.occupants.size()==0:
