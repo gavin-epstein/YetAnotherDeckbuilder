@@ -144,6 +144,7 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	var armorlost = 0
 	if attacker!=null:
 		controller.animationController.Damage(types, attacker, self)
 	if amount is GDScriptFunctionState:
@@ -155,7 +156,7 @@ func takeDamage(amount,types, attacker):
 	if status.has("corruption") and status.corruption is int:
 			if attacker!=null:
 				amount+=int(status.get("corruption")/3)
-	if "backstab" in types and attacker!=null and attacker.has("status"):
+	if "backstab" in types and attacker!=null and attacker.status.has("stealth"):
 		var stealth = attacker.status.get("stealth")
 		if stealth !=null and stealth is int:
 			amount*=3
@@ -185,6 +186,7 @@ func takeDamage(amount,types, attacker):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
 	if "crush" in types and armor >0:
 		armor-=1
+		armorlost+=1
 	for atype in types:
 		if status.has("immune:"+atype) or status.has("immune:any"):
 			amount = 0
@@ -214,11 +216,15 @@ func takeDamage(amount,types, attacker):
 		if armor > 0 and amount > 0:
 			amount =max(amount -  armor, 0)
 			armor -=1
+			armorlost+=1
 			if status.has("hardenedcarapace"):
-				var res = controller.Action("addBlock", [self, 2])
+				var res = controller.Action("addBlock", [self, 2*armorlost])
 				if res is GDScriptFunctionState:
 					yield(res, "completed")
-		
+			if attacker!=null and attacker.status.has("armorsteal"):
+				var res = controller.Action("addArmor", [attacker, armorlost])
+	if amount < 0:
+		amount = 0	
 	#effects on unblocked damage
 	if amount > 0:
 		if "fire" in types and attacker!=null:
@@ -514,6 +520,9 @@ func loadUnitFromString(string):
 			linkagenames.append(parsed[1])
 		elif parsed[0] == "movementPolicy":
 			movementPolicy = parsed[1][0]
+		elif parsed[0] =="event":
+			vars["eventCount"] = parsed[1][0]
+			vars["lastTurnSpawned"] = 0
 func getIntents():
 	if not triggers.has("turn"):
 		return []

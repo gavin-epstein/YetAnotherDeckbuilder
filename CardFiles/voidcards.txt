@@ -99,7 +99,7 @@ title(Void of Confusion);
 cost(-);
 types(void);
 modifiers(void,eternal);
-trigger(onRemoveFromPlay,do(crea teByMod,((void), Play),true));
+trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));
 trigger(reshuffle,do(consume()));
 trigger(onRemoveFromPlay,do(voidshift()));
 trigger(onRemoveFromPlay,do(purge(self)));

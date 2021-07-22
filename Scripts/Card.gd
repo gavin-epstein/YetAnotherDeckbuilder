@@ -77,7 +77,7 @@ func hasModifier(string) -> bool:
 func loadCardFromString(string):
 	var lines = string.split(";")
 	for line in lines:
-		if line == "" or line == " ":
+		if line.strip_edges() == "" :
 			continue
 		var parsed = Utility.parseCardCode(line)
 		#print(parsed)
@@ -128,7 +128,10 @@ func updateDisplay():
 		z_index = base_z+5
 	else:
 		z_index  = base_z
-	
+	if self.modifiers.has("frozen"):
+		$Resizer/FrozenFrame.visible = true
+	else:
+		$Resizer/FrozenFrame.visible = false
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title +  "[/center]";
@@ -231,7 +234,8 @@ func save() -> Dictionary:
 	return{
 		"title":title,
 		"vars":vars,
-		"visible":visible
+		"visible":visible,
+		"modifiers":modifiers
 	}
 
 func loadFromSave(save:Dictionary):
@@ -239,6 +243,7 @@ func loadFromSave(save:Dictionary):
 	for key in vars:
 		if vars[key] is float:
 			vars[key] = int(vars[key])
+	self.modifiers = save.modifiers
 	self.visible = save.visible
 	self.updateDisplay()
 
@@ -263,24 +268,52 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 		controller.get_node("CardDisplay").display(self)
 		mouseon=false
 func processText(text):
+	
 	var out =""
-	var tokens = Utility.parseCardCode(text)
-	#print(Utility.join("--",tokens))
-	for token in tokens:
+	#TODO custom parser that includes commas except in code
+	var tokens = text.split(" ", false)
+	var codeon = false
+	var code = ""
+	var ind = 0
+	var parenstack=0
+	while ind<tokens.size():
+		var token = tokens[ind]
 		
-		if token is Array:
-			var res = processArgs(token,[])
-			if res is GDScriptFunctionState:
-				print("There should be no player input on card text")
-				yield(res,"completed")
-			out+=str(res)+" "
-		elif token is String and token[0] =="$":
-			var punct = ""
-			if token[-1] in [".",","]:
-				punct = token[-1]
-			var v = token.rstrip(".,")
-			if v in vars:
-				out += str(vars[v]) + punct+" "
+		if not codeon:
+			#check if starts code block
+			if token[0] == "(":
+				codeon=true
+				continue
+			else:
+				#if its a variable
+				if token is String and token[0] =="$":
+					var punct = ""
+					if token[-1] in [".",","]:
+						punct = token[-1]
+					var v = token.rstrip(".,")
+					if v in vars:
+						out += str(vars[v]) + punct+" "
+					
+				else:
+					#its a normmal string or number
+					out += str(token) + " "
+			ind+=1
 		else:
-			out += str(token) + " "
+			#currently in a code block
+			code+=token
+			for letter in token:
+				if letter == "(":
+					parenstack+=1
+				elif letter== ")":
+					parenstack-=1
+			if parenstack == 0:
+				code = Utility.parseCardCode(code)
+				var res = processArgs(code[0],[])
+				if res is GDScriptFunctionState:
+					print("There should be no player input on card text")
+					yield(res,"completed")
+				out+=str(res)+" "
+				code = ""
+				codeon = false
+			ind+=1
 	return out

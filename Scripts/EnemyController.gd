@@ -1,5 +1,5 @@
 extends "res://Scripts/Controller.gd"
-
+var turncount = 1;
 var totaldifficulty = 0;
 var maxdifficulty = 6;
 var units=[]
@@ -485,6 +485,8 @@ func say(unit, message, time=0):
 	else:
 		units= unit
 	for tile in units:
+		if tile ==null:
+			continue
 		if tile.has_method("hasOccupant"):
 			if tile.occupants.size()==0:
 				continue
@@ -493,7 +495,7 @@ func say(unit, message, time=0):
 			tile.say(message)
 		else:
 			tile.say(message,time)
-func kill(unit,attacker):
+func kill(unit,attacker=null):
 	if unit == null:
 		return false
 	var units
@@ -502,6 +504,8 @@ func kill(unit,attacker):
 	else:
 		units= unit
 	for unit in units:
+		if unit ==null:
+			continue
 		if unit.has_method("hasOccupant"):
 			if unit.occupants.size()==0:
 				return false

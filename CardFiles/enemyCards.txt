@@ -43,11 +43,12 @@ rarity(0)
 
 title("Curse of Vanishing")
 trigger(onDraw,do(discard(self)));
-text("When drawn, this discards itself")
+text("When drawn, this discards itself. On play, purge")
+trigger(onPlay, do(purge(self)))
 types(cloud, evil,earth)
-modifiers(unplayable, curse)
+modifiers(curse)
 rarity(0)
-cost("-")
+cost("0")
 removetrigger(endofturn,true,0)
 
 title("Frostbite")
@@ -67,7 +68,8 @@ cost(1)
 text("Purge a card from your hand, choose 1 of 3 potions to add to your hand. The potion seller leaves.\n On retain, purge.")
 trigger(onPlay,do(purge((select(Hand,true,"Pick a card to purge")))))
 trigger(onPlay, do(cardreward,("potion",3)))
-trigger(onPlay, enemyDo(kill(do(selectTiles( (1,(any),"name:Potion Seller"),40,Player)))))
+trigger(onPlay, enemyDo(say( (do(selectTiles( (1,(any),"name:Potion Seller"),40,Player))), "Bye")))
+trigger(onPlay, enemyDo(kill( (do(selectTiles( (1,(any),"name:Potion Seller"),40,Player))), null)))
 trigger(onPlay, do(purge,(self)));
 trigger(onRetain, do(purge,(self)));
 removetrigger(endofturn, true,0);

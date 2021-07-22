@@ -114,8 +114,7 @@ cost(1);
 $Damage=10
 $Draw=1
 types(cloud,reaction,attack);
-text("Add this to your reaction pile. On reaction, counterattack $Damage");
-# , draw $Draw , and discard 1")
+text("Add this to your reaction pile. On reaction, counterattack $Damage, draw $Draw , and discard 1")
 trigger(onPlay,do(move(Play,Reaction,self)));
 trigger(onReaction, do(damage($Damage, (storm), (direct, $Attacker)),~)));
 trigger(onReaction, do(draw($Draw)))

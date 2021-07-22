@@ -5,7 +5,6 @@ var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
 var Discard
-var Hand
 var Library
 var Choice
 var Reaction
@@ -66,8 +65,7 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 
-		#Coal + way to void it + lightspeed
-		#Hand.add_card(Library.getCardByName("Light Whispers"))
+		#Hand.add_card(Library.getCardByName("Flash Freeze"))
 #		Deck.add_card(Library.getCardByName("Coal"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
@@ -153,6 +151,7 @@ func play(card)->bool:
 	#forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
+	print("Input off in play")
 	self.move("Hand","Play", card)
 	updateDisplay()
 	var results = card.Triggered("onPlay",[card])
@@ -164,6 +163,7 @@ func play(card)->bool:
 	updateDisplay()
 	#releaseFocus(self)
 	inputAllowed = true
+	print("Input on in play")
 	return true
 	
 
@@ -191,6 +191,10 @@ func move(loc1, loc2, card, pos=null):
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
+		if loc1 == Hand and card.modifiers.has("frozen"):
+			var res = Action("removeModifier",[card, "frozen"])
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
 		if pos==null:
 			loc2.add_card(card)
 		else:
@@ -208,8 +212,24 @@ func discardAll(silent = false):
 	var backind = Hand.cards.size()
 	while backind >ind:
 		var card = Hand.cards[ind]
-		if not card.modifiers.has("retain"):
-			var res =Action("discard", [card, silent], silent);
+		
+		var res =Action("discard", [card, silent], silent);
+		if res is GDScriptFunctionState:
+				yield(res, "completed")
+			#Dealing with altostratus
+			
+		backind-=1
+			
+	return true
+func endofturndiscard():
+	if Hand.cards.size()==0:
+		return false
+	var ind =0;
+	var backind = Hand.cards.size()
+	while backind >ind:
+		var card = Hand.cards[ind]
+		if not card.modifiers.has("retain") and not card.modifiers.has("frozen"):
+			var res =Action("move", ["Hand","Discard", card]);
 			if res is GDScriptFunctionState:
 				yield(res, "completed")
 			#Dealing with altostratus
@@ -220,12 +240,15 @@ func discardAll(silent = false):
 			var res = card.Triggered("onRetain",[card])
 			if res is GDScriptFunctionState:
 					res = yield(res, "completed")
+			res = triggerAll("retained", card)
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
 			if card in Hand.cards:
 				ind+=1
 			else:
 				backind -=1
 	return true
-	
+
 func discard(card, silent = false, loc = "Hand"):
 	if card == null:
 		return false
@@ -267,6 +290,7 @@ func purge(card):
 		return false
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
+		card.visible = false
 		trashbin.append(card)
 		return true
 	return false
@@ -308,7 +332,8 @@ func forceFocus(item):
 func printFocus():
 	#return
 	if focus ==lastfocus:
-		return
+		#return
+		pass
 	if focus != null:
 		print("Focus is on ", focus.get("name"),": ", focus.get("title")," ", focus.get_parent().get("name"))
 	else:
@@ -418,6 +443,7 @@ func startofturn():
 func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
 		inputAllowed = false
+		print("Input off in endturn")
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -436,6 +462,8 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
+		print("Input on in endturn")
+		
 		
 
 	
@@ -579,10 +607,25 @@ func consume():
 	enemyController.pickConsumed()
 	return true
 func triggerAll(trigger, argv):
-	for card in Play.cards:
-		var res = card.Triggered(trigger,argv)
-		if res is GDScriptFunctionState:
-			res = yield(res, "completed")
+	#look through play, if card is removed from play don't increment index
+	var ind = 0
+	while Play.cards.size() > ind:
+		var card = Play.cards[ind]
+		var res2 = card.Triggered(trigger, argv)
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res2,"completed")
+		
+		if card in Play.cards:
+			ind+=1
+	ind = 0
+	while Hand.cards.size() > ind:
+		var card = Hand.cards[ind]
+		var res2 = card.Triggered("hand:"+str(trigger), argv)
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res2,"completed")
+		
+		if card in Hand.cards:
+			ind+=1
 func devoidAll():
 	while $Voided.cards.size()>0:
 		move("Voided", "Discard",$Voided.cards[0])
@@ -681,3 +724,19 @@ func addhandsize(amount):
 		return false
 	Hand.maxHandSize+=amount
 	return true
+func addModifier(card, mod):
+	if card == null:
+		return false
+	card.modifiers[mod] = true
+	return true
+func removeModifier(card, mod):
+	if card ==null:
+		return false
+	if not mod in card.modifiers:
+		return false
+	card.modifiers.erase(mod)
+	return true
+func triggerCard(trigger, card, argv=[]):
+	if card == null:
+		return false
+	card.Triggered(trigger, argv)

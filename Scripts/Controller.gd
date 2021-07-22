@@ -1,5 +1,6 @@
 extends Node2D
 var Play
+var Hand
 var enemyController
 var cardController
 var animationController
@@ -26,6 +27,7 @@ const directedmethods= ["setStatus","addStatus"]
 var hits = []
 func _ready() -> void:
 	Play = get_node("/root/Scene/CardController/Play")
+	Hand = get_node("/root/Scene/CardController/Hand")
 	enemyController = get_node("/root/Scene").enemyController
 	cardController = get_node("/root/Scene").cardController
 	map = get_node("/root/Scene").map
@@ -46,6 +48,11 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 			if card.Interrupts(method, argv):
 				interrupted = true
 				print(method+str(argv) + " interrupted by " + card.title)
+		for card in Hand.cards:
+			if card.Interrupts("hand:"+str(method), argv):
+				interrupted = true
+				print(method+str(argv) + " interrupted by " + card.title)
+		
 	if not interrupted:
 		
 		if self.has_method(method):
@@ -87,6 +94,15 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 					res2 = yield(res2,"completed")
 				
 				if card in Play.cards:
+					ind+=1
+			ind = 0
+			while Hand.cards.size() > ind:
+				var card = Hand.cards[ind]
+				var res2 = card.Triggered("hand:"+str(method), argv)
+				if res2 is GDScriptFunctionState:
+					res2 = yield(res2,"completed")
+				
+				if card in Hand.cards:
 					ind+=1
 			ind = 0
 			while enemyController.units.size() > ind:
@@ -227,7 +243,7 @@ func cardClicked(card):
 	selectedCard = card
 	#inputAllowed  = true
 	cardController.releaseFocus(card)
-	for card in cardController.Hand.cards:
+	for card in Hand.cards:
 		card.dehighlight()
 	for card in cardController.Play.cards:
 		card.dehighlight()

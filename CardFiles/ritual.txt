@@ -185,3 +185,43 @@ text("When you have $RitualCount ritual cards in play, gain $Status rage and dis
 cost(1);
 rarity(7);
 
+title("Hidden Ceremony")
+types(ritual,assassin)
+$RitualCount=8
+$Status=1
+trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(stealth, $Status)))));
+removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
+text("When you have $RitualCount ritual cards in play, gain $Status stealth and discard this card from play")
+cost(2);
+rarity(4);
+
+title("Sacrifice")
+types(ritual, assassin)
+$Damage=3
+$CreateCount=3
+$Range=1
+trigger(onPlay, do(damage, ($Damage,(backstab,ritual),(any),$Range)))
+trigger(slay, do(repeat( (do(createByMod(("sigil"), Play ))),$CreateCount)))
+removetrigger(endofturn, true, 1)
+rarity(5)
+text("Deal $Damage damage range $Range. Slay: create $CreateCount sigils in play")
+
+title("Sigil")
+types(ritual)
+modifiers(sigil)
+text(On remove from play, purge)
+cost(-)
+rarity(0)
+trigger(onRemoveFromPlay, do(purge(self)));
+removetrigger(endofturn, true, 4)
+#add sigil variations with different effects
+
+title("Blood Sigil")
+$Blood=1
+types(ritual, blood)
+trigger(onPlay, do(unheal($Blood)))
+trigger(onPlay, do(createByMod((sigil), Play)))
+removetrigger(endofturn, true,1)
+text("Lose $Blood health, add a sigil to play.")
+rarity(4);
+cost(1);

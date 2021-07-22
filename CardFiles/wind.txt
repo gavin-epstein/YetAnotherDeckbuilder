@@ -60,3 +60,17 @@ text("Increase your maximum hand size by 2");
 trigger(onPlay, do(addhandsize(2)));
 rarity(1);
 image("res://Images/CardArt/SacredBreath.png")
+
+title("Steady Breathing")
+types(wind);
+cost(0)
+$Draw=1
+$DamageReduction= 2
+text(Add this to your reaction pile. On reaction, reducing incoming damage by $DamageReduction, draw $Draw, and shuffle this back into your reaction pile)
+trigger(onPlay, do(move(Play, Reaction, self)))
+trigger(onReaction, do(draw($Draw)))
+trigger(onReaction,do(move(Reaction,Reaction,self)));
+trigger(onReaction, do(addVar(self, DamageTaken, (*, -1, $DamageReduction))));
+removetrigger(endofturn, true, 0);
+rarity(4);
+

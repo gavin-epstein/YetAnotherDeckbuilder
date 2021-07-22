@@ -9,6 +9,7 @@ trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 rarity(3);
 types(fire,attack);
+image("res://Images/CardArt/Fireball.png")
 
 title(Coal);
 cost("-");

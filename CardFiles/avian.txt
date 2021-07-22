@@ -97,7 +97,7 @@ cost(2)
 $Range=1
 trigger(onPlay, do(summon("Phoenix",(any),$Range)));
 trigger(onPlay, do(purge(self)));
-text("Summon a Phoenix that gains strength based on burned cards, and is reborn if it dies")
+text("Summon a Phoenix that gains strength based on burned cards. When the phoenix dies, add a copy of this card to your hand. Purge")
 removetrigger(endofturn, true, 0);
 types(avian, fire,summon)
 rarity(2)
@@ -119,4 +119,22 @@ text("Give all allies $Status rage")
 removetrigger(endofturn, true,1)
 rarity(7);
 
+title("Blood Bird")
+types(blood, avian, summon)
+cost(0)
+$Range=3
+$Blood=2
+trigger(onPlay, do(unheal($Blood)))
+trigger(onPlay, do(summon("Vulture",(any),$Range)));
+text("Lose $Blood health. Summon a vulture in range 3.");
+removetrigger(endofturn, true, 1);
+rarity(8);
 
+title("Buzzards")
+types(avian, summon, death)
+cost(1)
+removetrigger(endofturn, true, 5);
+$Range=3
+trigger(death, if((random(0,0,1)>0),(do(summon("Vulture",(1),$Range)))))
+rarity(3);
+text("When a unit dies, theres a 1/3 chance to summon a vulture on a random tile in range $Range")

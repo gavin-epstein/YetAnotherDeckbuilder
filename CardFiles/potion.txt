@@ -63,7 +63,7 @@ title(Invisibility Potion)
 cost(0);
 rarity(4);
 $Status=1
-trigger(onPlay, do(addStatus(stealth, status)))
+trigger(onPlay, do(addStatus(stealth, $Status)))
 text("Gain 1 stealth.Retain. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);

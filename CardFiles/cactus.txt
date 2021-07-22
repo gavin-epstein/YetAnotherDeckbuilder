@@ -21,7 +21,7 @@ removetrigger(endofturn,true,0)
 title(Blood of the Nopal)
 types(cactus, blood)
 cost(2)
-$Thorns=3
+$Thorns=4
 trigger(unheal,do(addStatus(thorns,$Thorns)))
 text("When you lose health, gain $Thorns thorns")
 rarity(3)
@@ -48,3 +48,14 @@ trigger(onPlay, do(addStatus(thorns,(*,$Thorns, $X))));
 text("Gain $Block X block and $Thorns X thorns");
 removetrigger(endofturn, true, 1)
 rarity(5)
+
+title(Reactus)
+cost(0)
+types(cactus, reaction)
+$Thorns=2
+text(Add this to your reaction pile. On reaction, gain $Thorns thorns and shuffle this back into your reaction pile)
+trigger(onPlay, do(move(Play, Reaction, self)))
+trigger(onReaction, do(addStatus(thorns,$Thorns)))
+trigger(onReaction,do(move(Reaction,Reaction,self)));
+removetrigger(endofturn, true, 0);
+rarity(7);

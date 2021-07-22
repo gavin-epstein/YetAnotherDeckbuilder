@@ -20,4 +20,5 @@ kinetic:Kinetic cards focus on moving other units around, mostly either pulling 
 earth:Earth cards focus on cards that are unplayable and have an effect whenever they are drawn.
 dodge:Dodges are reaction cards that reduce the damage you will take by 50-100%.
 food:Food cards focus on healing and gaining max health.
-ritual:Most ritual cards have a powerful effect that triggers when a sufficient quantity of ritual cards are in play.
+ritual:Most ritual cards have a powerful effect that triggers when a sufficient number of ritual cards are in play.
+ice:Ice cards focus on keeping cards in hand for multiple turns to play them when their effect is strongest.

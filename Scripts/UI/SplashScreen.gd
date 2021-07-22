@@ -13,9 +13,14 @@ func _on_NewGameButton_gui_input(event: InputEvent) -> void:
 	$Menu/NewGameButton.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click"):
 		if savefound():
-			var dir = Directory.new()
-			dir.remove(SAVE_NAME)
-		get_tree	().change_scene_to(mainscene)
+			$OverwriteSavePopup.check()
+		else:
+			newGame()
+			
+func newGame():
+	var dir = Directory.new()
+	dir.remove(SAVE_NAME)
+	get_tree	().change_scene_to(mainscene)
 
 
 func _on_ContinueButton_gui_input(event: InputEvent) -> void:
@@ -23,6 +28,8 @@ func _on_ContinueButton_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
 		if savefound():
 			get_tree().change_scene_to(mainscene)
+		else:
+			$NoSaveFound.visible=true
 
 func _on_QuitButton_gui_input(event: InputEvent) -> void:
 	$Menu/QuitButton.modulate = Color(.7,.7,.7)

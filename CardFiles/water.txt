@@ -25,7 +25,7 @@ removetrigger(endofturn, true, 13)
 $Block=9
 image("res://Images/CardArt/Dam.png")
 
-title("Watering Hole")
+title("Bird Bath")
 types(water, food,avian)
 text("When you shuffle, heal $Heal, and all allies gain $MaxHealth max health")
 cost(1)
@@ -84,7 +84,7 @@ $Increment=1
 trigger(onPlay,do(damage,($Damage,(stab),($Arrows),40)))
 trigger(onPlay,do(setVar(self,Arrows,0)))
 trigger(shuffle,do(addVar(self,Arrows,$Increment)))
-text("Arrows: $Arrows.\nWhen played, spend all arrows to deal $Damage damage to a random enemy at any range per arrow. \nWhile in play, gain $Increment arrows when you shuffle.")
+text("Arrows: $Arrows. \nWhen played, spend all arrows to deal $Damage damage to a random enemy at any range per arrow. \nWhile in play, gain $Increment arrows when you shuffle.")
 cost(1)
 removetrigger(endofturn,true,4)
 rarity(6)
