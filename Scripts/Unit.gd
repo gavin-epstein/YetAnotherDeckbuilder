@@ -239,6 +239,7 @@ func takeDamage(amount,types, attacker):
 	if default:
 		$Audio.playsound("defaultAttack")
 	if self == controller.Player:
+		
 		var res = controller.cardController.Action("unheal", [floor(amount)])
 		if res is GDScriptFunctionState:
 			yield(res, "completed")

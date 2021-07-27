@@ -55,6 +55,10 @@ func undisplay():
 	self.updateDisplay()
 
 func alphabetize(card1,card2):
+	if card1.highlighted and not card2.highlighted:
+		return true
+	elif not card1.highlighted and  card2.highlighted:
+		return false
 	if card1.title < card2.title:
 		return true
 	return false

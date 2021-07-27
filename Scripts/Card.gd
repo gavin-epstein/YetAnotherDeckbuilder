@@ -63,6 +63,7 @@ func hasType(type)->bool:
 	return false
 	
 func hasName(string, exact=false)->bool:
+	print(title +" has " +string+ " "+str(exact))
 	if exact:
 		return self.title.to_lower() == string.to_lower()
 	return self.title.to_lower().find(string.to_lower())!=-1

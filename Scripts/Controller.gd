@@ -45,11 +45,17 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 	#print(method +" "+ Utility.join(" ", argv))
 	if not stoppable:
 		for card in Play.cards:
-			if card.Interrupts(method, argv):
+			var interres = card.Interrupts(method, argv)
+			if interres is GDScriptFunctionState:
+				interres = yield(interres,"completed")
+			if interres:
 				interrupted = true
 				print(method+str(argv) + " interrupted by " + card.title)
 		for card in Hand.cards:
-			if card.Interrupts("hand:"+str(method), argv):
+			var interres = card.Interrupts("hand"+str(method), argv)
+			if interres is GDScriptFunctionState:
+				interres = yield(interres,"completed")
+			if interres:
 				interrupted = true
 				print(method+str(argv) + " interrupted by " + card.title)
 		

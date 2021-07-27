@@ -65,7 +65,7 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 
-		#Hand.add_card(Library.getCardByName("Flash Freeze"))
+		#Hand.add_card(Library.getCardByName("Sparkplug"))
 #		Deck.add_card(Library.getCardByName("Coal"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
@@ -134,7 +134,7 @@ func shuffle()->bool:
 
 func play(card)->bool:
 	
-	print("Playing " + card.title)
+	#print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false
 	var cost = getVar(card, "Cost")
@@ -151,7 +151,7 @@ func play(card)->bool:
 	#forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
-	print("Input off in play")
+	#print("Input off in play")
 	self.move("Hand","Play", card)
 	updateDisplay()
 	var results = card.Triggered("onPlay",[card])
@@ -163,7 +163,7 @@ func play(card)->bool:
 	updateDisplay()
 	#releaseFocus(self)
 	inputAllowed = true
-	print("Input on in play")
+	#print("Input on in play")
 	return true
 	
 
@@ -240,7 +240,7 @@ func endofturndiscard():
 			var res = card.Triggered("onRetain",[card])
 			if res is GDScriptFunctionState:
 					res = yield(res, "completed")
-			res = triggerAll("retained", card)
+			res = triggerAll("retained",[card])
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
 			if card in Hand.cards:

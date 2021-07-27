@@ -32,6 +32,7 @@ func Interrupts(method, argv) -> bool:
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
 			reslist.append(res)
+		print(reslist)
 		#Take the first result as the value
 		#So do without interrupting should look like
 		#interrupt(method, false)
@@ -39,6 +40,7 @@ func Interrupts(method, argv) -> bool:
 		#print(reslist)
 		for res in reslist:
 			if res is bool:
+				print(self.title + " Interrupt was " + str(res))
 				return res
 	return false
 			

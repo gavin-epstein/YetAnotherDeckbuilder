@@ -1,6 +1,6 @@
 title("Ice Prism");
 $Energy=0
-cost(0)
+cost(1)
 types(ice, light)
 trigger(onRetain, do(addVar(self,Energy, (count("Energy","Energy")))));
 trigger(onRetain, do(setEnergy(0)));
@@ -10,6 +10,7 @@ text(While in hand , at the end of turn all excess energy is stored in this card
 rarity(10)
 modifiers(retain)
 removetrigger(endofturn, true, 1)
+image("res://Images/UnitArt/IcePrism.png")
 
 title("Permafrost");
 types(earth, ice)
@@ -55,6 +56,7 @@ title("Refrigerator")
 cost(1)
 types(ice, mechanical)
 trigger(startofturn, do(addModifier( (select(Hand,true,"pick a card to freeze (Refrigerator)")),frozen)))
+text("At the start of your turn, freeze a card")
 removetrigger(endofturn, true, 7)
 rarity(4)
 

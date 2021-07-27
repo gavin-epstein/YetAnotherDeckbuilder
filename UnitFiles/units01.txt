@@ -637,11 +637,49 @@ spawnable(sand,grass,stone,ice)
 status(armorsteal, true)
 speed(4)
 range(1)
-health(10)
+health(16)
 $Multistrike=5
 strength(1)
 difficulty(8)
 trigger(turn,do(MoveAndAttack(self, friendly)))
 image("res://Images/UnitArt/EvilWeevil.png")
+
+name("Flaming Skull")
+spawnable(sand, stone)
+speed(2)
+range(1)
+health(10)
+strength(2)
+difficulty(2)
+image("res://Images/UnitArt/FlamingSkull.png")
+$Intent=Buff
+trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(self,flaming,3)))));
+trigger(turn,do(setVar(self,Intent,(random(Attack,Buff)))));
+trigger(turn,do(heal(self, 4)));
+
+name("Glowing Skull")
+spawnable(ice, stone)
+speed(1)
+range(3)
+health(13)
+strength(2)
+difficulty(7)
+trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),frost,1)))
+trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),dazzled,1)))
+image("res://Images/UnitArt/GlowingSkull.png")
+
+name("Toxic Skull")
+name("Glowing Skull")
+spawnable(water, grass)
+health(13)
+speed(1)
+range(2)
+strength(2)
+difficulty(4)
+trigger(turn,do(addStatus((select((all,(any),friendly),2,tile)),corruption,2)))
+trigger(turn,do(addStatus((select((all,(any),friendly),2,tile)),sting,1)))
+image("res://Images/UnitArt/ToxicSkull.png")
+
 
 

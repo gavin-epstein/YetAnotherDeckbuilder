@@ -5,6 +5,7 @@ text("Move all cards in your deck into your discard")
 trigger(onPlay, do(repeat( (  (do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))))
 removetrigger(endofturn, true,1)
 rarity(7)
+image("res://Images/CardArt/Waterfall.png")
 
 title("Erosion")
 cost(-)

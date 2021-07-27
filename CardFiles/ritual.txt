@@ -197,6 +197,7 @@ rarity(4);
 
 title("Sacrifice")
 types(ritual, assassin)
+cost(0)
 $Damage=3
 $CreateCount=3
 $Range=1
@@ -206,22 +207,59 @@ removetrigger(endofturn, true, 1)
 rarity(5)
 text("Deal $Damage damage range $Range. Slay: create $CreateCount sigils in play")
 
-title("Sigil")
+title("Doubling Sigil")
 types(ritual)
+modifiers(sigil)
+text(On remove from play, add a random sigil to play and purge)
+cost(-)
+rarity(0)
+trigger(onPlay, do(createByMod((sigil), Play)))
+trigger(onRemoveFromPlay, do(purge(self)));
+removetrigger(endofturn, true, 3)
+image("res://Images/CardArt/DoublingSigil.png")
+
+title("Sigil of Time")
+types(ritual,mechanical)
 modifiers(sigil)
 text(On remove from play, purge)
 cost(-)
 rarity(0)
 trigger(onRemoveFromPlay, do(purge(self)));
-removetrigger(endofturn, true, 4)
-#add sigil variations with different effects
+removetrigger(endofturn, true, 6)
+image("res://Images/CardArt/TimeSigil.png")
 
-title("Blood Sigil")
-$Blood=1
+title("Heart Sigil")
+types(ritual,mechanical)
+modifiers(sigil)
+text(While in play temporarily gain $maxhealth max health. On remove from play, purge)
+cost(-)
+rarity(0)
+$maxhealth=3
+trigger(onCreate, do(gainMaxHealth($maxhealth))))
+trigger(onRemoveFromPlay, do(gainMaxHealth((*,-1,$maxhealth))))
+trigger(onRemoveFromPlay, do(purge(self)));
+removetrigger(endofturn, true, 3)
+image("res://Images/CardArt/HeartSigil.png")
+
+title("Strength Sigil")
+types(ritual,rage)
+modifiers(sigil)
+text(While in play temporarily gain $amount strength.On remove from play, purge)
+cost(-)
+rarity(0)
+$amount=1
+trigger(onCreate, enemyDo(gainStrength(Player,$amount)))
+trigger(onRemoveFromPlay, enemyDo(gainStrength(Player,(*,-1,$amount))))
+trigger(onRemoveFromPlay, do(purge(self)));
+removetrigger(endofturn, true, 3)
+image("res://Images/CardArt/StrengthSigil.png")
+
+title("Written in Blood")
+$Blood=2
 types(ritual, blood)
 trigger(onPlay, do(unheal($Blood)))
 trigger(onPlay, do(createByMod((sigil), Play)))
 removetrigger(endofturn, true,1)
-text("Lose $Blood health, add a sigil to play.")
+text("Lose $Blood health, add a random sigil to play.")
 rarity(4);
 cost(1);

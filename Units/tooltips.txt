@@ -22,3 +22,5 @@ stealth:Stealth:This unit can not be hit by targeted and random attacks and effe
 rage:Rage:Rage adds 1 strength per stack.
 boss:Boss:This unit is a boss.
 entangled:Entangled:This unit cannot move or be moved.
+nourishing:Nourishing:When this unit dies, whatever killed it gains its max health.
+armorsteal:Armor Thief: When this unit reduces another unit's armor, it gains that armor.

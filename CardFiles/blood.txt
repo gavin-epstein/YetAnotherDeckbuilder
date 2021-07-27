@@ -1,6 +1,6 @@
 title("All out Attack")
 $Blood=7
-$Damage=8
+$Damage=6
 $Range=3
 cost(2)
 types(blood)
@@ -23,7 +23,7 @@ removetrigger(endofturn, true, 5)
 title("Flee")
 types(blood, movement)
 $Move=2
-trigger(unheal, do(move($Move)))
+trigger(unheal, do(movePlayer($Move)))
 text("When you lose health, move $Move")
 removetrigger(endofturn, true, 4)
 cost(1);
@@ -32,8 +32,9 @@ rarity(7);
 title("Autovampirism")
 types(blood, food)
 $Heal=2
-interrupt(unheal, if(true, false))
+interrupt(unheal, if(true,false))
 interrupt(unheal, do(heal($Heal)))
+trigger(unheal, enemyDo(say(Player,"Unheal not blocked")))
 text("Whenever you lose health, first heal $Heal")
 cost(2)
 removetrigger(unheal, true, 8)

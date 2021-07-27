@@ -1,0 +1,11 @@
+title(Battleaxe);
+rarity(10)
+types(rage,attack);
+cost(1);
+$Status=2;
+$Damage=6;
+$Range=2;
+trigger(onPlay, do(damage, ($Damage,(crush, slash),(any),$Range)));
+trigger(onPlay,do(addStatus(rage,$Status)));
+text("Deal $Damage slash crush damage range $Range. Gain $Status rage")
+removetrigger(endofturn, true, 1)
