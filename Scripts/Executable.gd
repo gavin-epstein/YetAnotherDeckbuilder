@@ -21,7 +21,7 @@ func Triggered(method, argv):
 				res = yield(res, "completed")
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
-		controller.cardController.inputAllowed = oldallowed
+		controller.cardController.inputAllowed = oldallowed or controller.cardController.inputAllowed
 		if not controller.test :
 			self.updateDisplay();
 func Interrupts(method, argv) -> bool:
@@ -32,6 +32,7 @@ func Interrupts(method, argv) -> bool:
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
 			reslist.append(res)
+		print(reslist)
 		#Take the first result as the value
 		#So do without interrupting should look like
 		#interrupt(method, false)
@@ -39,6 +40,7 @@ func Interrupts(method, argv) -> bool:
 		#print(reslist)
 		for res in reslist:
 			if res is bool:
+				print(self.title + " Interrupt was " + str(res))
 				return res
 	return false
 			
@@ -190,7 +192,9 @@ func execute(code, argv):
 				var res = self.Triggered("onRemoveFromPlay",argv)
 				if res is GDScriptFunctionState:
 					yield(res, "completed")
-				controller.Action("move",["Play","Discard",self])
+				res = controller.Action("move",["Play","Discard",self])
+				if res is GDScriptFunctionState:
+					yield(res, "completed")
 				vars["$Cost"] = vars["$BaseCost"]
 				vars["$removecount"] = vars["$defaultremovecount"]
 	elif code[0] == "hastype":

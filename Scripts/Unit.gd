@@ -4,7 +4,8 @@ var health: int
 var status = {}
 var title:String
 var strength = 0
-const tilespeed  = 10
+const basetilespeed = 11
+onready var tilespeed = basetilespeed/(.001+global.animationspeed)
 var speed =0
 var spawnableterrains = {}
 var healthBarTemplate = preload("res://HealthBar.tscn")
@@ -35,11 +36,17 @@ var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
 
+func _ready() -> void:
+	global.connect("animspeedchanged",self,"on_animation_speed_changed")
+
+func on_animation_speed_changed(animspeed):
+	tilespeed = basetilespeed / (.001+animspeed)
 func onSummon(head, silent= false)->void:
 	self.head = head
 	if head == self:
 		addHealthBar()
-		maxHealth  = health
+		if not silent:
+			maxHealth  = health
 		if status.has("lifelink") and not silent:
 			var sumMaxHealth = self.maxHealth
 			var sumHealth = self.health
@@ -50,7 +57,6 @@ func onSummon(head, silent= false)->void:
 						sumHealth += unit.health
 						break
 			print(sumHealth, "/",sumMaxHealth)
-			self.maxHealth = sumMaxHealth
 			self.health = sumHealth
 			self.updateDisplay()
 			for unit in get_parent().units:
@@ -74,8 +80,9 @@ func onSummon(head, silent= false)->void:
 		_imagescale = 1
 		playAnimation("idle")
 	if self.head == self and not silent:
-		self.Triggered("onSummon",[])
-
+		var res = self.Triggered("onSummon",[])
+		if res is GDScriptFunctionState:
+			res= yield(res,"completed")
 		self.addStatus("stunned",1)
 		if componentnames.size() > 0:
 			components = []
@@ -137,6 +144,7 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	var armorlost = 0
 	if attacker!=null:
 		controller.animationController.Damage(types, attacker, self)
 	if amount is GDScriptFunctionState:
@@ -145,6 +153,13 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
+	if status.has("corruption") and status.corruption is int:
+			if attacker!=null:
+				amount+=int(status.get("corruption")/3)
+	if "backstab" in types and attacker!=null and attacker.status.has("stealth"):
+		var stealth = attacker.status.get("stealth")
+		if stealth !=null and stealth is int:
+			amount*=3
 	if self.interrupts.has("damaged"):
 		self.vars["$DamageAmount"] = amount
 		self.Interrupts("damaged", [amount,types, attacker])
@@ -154,7 +169,7 @@ func takeDamage(amount,types, attacker):
 	if "storm" in types:
 		if randf()<=.05:
 			amount*=2
-			changeHealth("CRITICAL")
+			changeHealth("CRIT")
 	if amount >=20 and amount < armor+health+block:
 		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
 	#put out fire
@@ -163,7 +178,7 @@ func takeDamage(amount,types, attacker):
 	if "ice" in types:
 		addStatus("frost",1)
 	if "shadow" in types:
-		addStatus("corruption",2)
+		addStatus("corruption",1)
 	if "light" in types:
 		addStatus("dazzled",1)
 	#thorns
@@ -171,6 +186,7 @@ func takeDamage(amount,types, attacker):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
 	if "crush" in types and armor >0:
 		armor-=1
+		armorlost+=1
 	for atype in types:
 		if status.has("immune:"+atype) or status.has("immune:any"):
 			amount = 0
@@ -200,9 +216,15 @@ func takeDamage(amount,types, attacker):
 		if armor > 0 and amount > 0:
 			amount =max(amount -  armor, 0)
 			armor -=1
+			armorlost+=1
 			if status.has("hardenedcarapace"):
-				controller.Action("addBlock", [self, 2])
-		
+				var res = controller.Action("addBlock", [self, 2*armorlost])
+				if res is GDScriptFunctionState:
+					yield(res, "completed")
+			if attacker!=null and attacker.status.has("armorsteal"):
+				var res = controller.Action("addArmor", [attacker, armorlost])
+	if amount < 0:
+		amount = 0	
 	#effects on unblocked damage
 	if amount > 0:
 		if "fire" in types and attacker!=null:
@@ -217,7 +239,10 @@ func takeDamage(amount,types, attacker):
 	if default:
 		$Audio.playsound("defaultAttack")
 	if self == controller.Player:
-		controller.cardController.Action("unheal", [floor(amount)])
+		
+		var res = controller.cardController.Action("unheal", [floor(amount)])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	else:
 		changeHealth(-1*floor(amount))
 	if status.has("lifelink"):
@@ -226,9 +251,13 @@ func takeDamage(amount,types, attacker):
 				unit.health = self.health
 				unit.updateDisplay()
 	
-	self.Triggered("damaged",[amount,types,attacker])
+	var res = self.Triggered("damaged",[amount,types,attacker])
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	if health <= 0:
-		get_parent().cardController.triggerAll("death",[self,types,attacker])
+		res = get_parent().cardController.triggerAll("death",[self,types,attacker])
+		if res is GDScriptFunctionState:
+			res= yield(res,"completed")
 		if status.has("lifelink"):
 			for unit in get_parent().units:
 				if unit!=null:
@@ -238,11 +267,13 @@ func takeDamage(amount,types, attacker):
 		return [amount,"kill"]
 	else:
 		updateDisplay()
-	get_parent().map.cardController.triggerAll("damageDealt",[self,amount,types,attacker])
+	res = get_parent().map.cardController.triggerAll("damageDealt",[self,amount,types,attacker])
+	if res is GDScriptFunctionState:
+		res= yield(res,"completed")
 	return [amount]
 func startOfTurn():
 	if status.has("flaming"):
-		takeDamage(4,["fire"],null)
+		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):
 		block = 0;
 	if status.has("fuse"):
@@ -257,11 +288,17 @@ func startOfTurn():
 		skipturn = false
 	if self == controller.Player:
 		statusTickDown()
-	self.Triggered("startofturn",[]);
+	var res = self.Triggered("startofturn",[]);
+	if res is GDScriptFunctionState:
+		res= yield(res,"completed")
 func endOfTurn():
-	self.Triggered("endofturn",[]);
+	var res = self.Triggered("endofturn",[]);
+	if res is GDScriptFunctionState:
+		res= yield(res,"completed")
 	if self.trap and self.tile.occupants.size() != 0:
-		self.Triggered("trap",[tile.occupants[0]])
+		res = self.Triggered("trap",[tile.occupants[0]])
+		if res is GDScriptFunctionState:
+			res= yield(res,"completed")
 	if self != controller.Player:
 		statusTickDown()
 func statusTickDown():
@@ -320,13 +357,21 @@ func die(attacker):
 	if self == controller.theVoid:
 			controller.Win()
 	if status.has("boss"):
-		get_parent().cardController.Action("create",["Boss Loot","Hand"])
+		var res = get_parent().cardController.Action("create",["Boss Loot","Hand"])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	if difficulty > 12:
-		get_parent().cardController.Action("create",["Rare Loot","Hand"])
+		var res =get_parent().cardController.Action("create",["Rare Loot","Hand"])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	elif difficulty > 7:
-		get_parent().cardController.Action("create",["Uncommon Loot","Hand"])
+		var res =get_parent().cardController.Action("create",["Uncommon Loot","Hand"])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	elif not status.has("lootless") and not status.has("friendly"):
-		get_parent().cardController.Action("create",["Common Loot","Hand"])
+		var res =get_parent().cardController.Action("create",["Common Loot","Hand"])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 	if status.has("supplying") and attacker != null:
 		controller.gainStrength(attacker,self.strength)
 	if status.has("nourishing") and attacker != null:
@@ -335,7 +380,8 @@ func die(attacker):
 		#damage all adjacent enemies
 		for node in get_parent().map.selectAll(self.tile,1,"exists",["any"]):
 			if node.occupants.size()>0 and node.occupants[0] != self:
-				node.occupants[0].takeDamage(status.explosive,("explosive"),self)
+				node.occupants[0].takeDamage(status.explosive,["explosive"],self)
+
 	
 	self.visible = false
 	tile.occupants.erase(self)
@@ -343,8 +389,10 @@ func die(attacker):
 		
 		print(self.title + " failed to die well")
 	get_parent().units.erase(self)
-	self.Triggered("onDeath",[attacker])
-	var res = playAnimation("die")
+	var res = self.Triggered("onDeath",[attacker])
+	if res is GDScriptFunctionState:
+		res= yield(res,"completed")
+	res = playAnimation("die")
 	for component in components:
 		if component != null and component!=self:
 			component.playAnimation("die")
@@ -374,13 +422,20 @@ func addStatus(stat, val):
 	if self.head != self:
 		return head.addStatus(stat,val)
 	if stat == "health":
-		controller.Action("heal",[self, val])
-		return true
+		var res = controller.Action("heal",[self, val])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
+		return res
 	elif stat == "maxHealth":
-		controller.Action("gainMaxHealth", [self, val])
+		var res = controller.Action("gainMaxHealth", [self, val])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 		return true
 	elif stat == "strength":
-		return controller.Action("gainStrength",[self, val])
+		var res = controller.Action("gainStrength",[self, val])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
+		return res
 	if val is int and val ==0:
 		return false
 	if not stat in status or val is bool:
@@ -466,12 +521,17 @@ func loadUnitFromString(string):
 			linkagenames.append(parsed[1])
 		elif parsed[0] == "movementPolicy":
 			movementPolicy = parsed[1][0]
+		elif parsed[0] =="event":
+			vars["eventCount"] = parsed[1][0]
+			vars["lastTurnSpawned"] = 0
 func getIntents():
 	if not triggers.has("turn"):
 		return []
 	var oldvars = vars.duplicate(true)
 	controller.startTest()
-	self. Triggered("turn",[])
+	var res = self. Triggered("turn",[])
+	if res is GDScriptFunctionState:
+		res= yield(res,"completed")
 	var hits = controller.endTest()
 	var intents = []
 	for hit in hits:
@@ -533,7 +593,7 @@ func isUnit()->bool:
 	return true
 func changeHealth(amount)-> void:
 	if not amount is String:
-		if status.has("sting"):
+		if status.has("sting") and amount > 0:
 			amount=0
 		health += amount
 	var num = healthChangeTemplate.instance()

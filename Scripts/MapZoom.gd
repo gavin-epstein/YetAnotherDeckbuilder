@@ -40,4 +40,4 @@ func zoom(amount):
 func scroll(amount):
 	var zfsquared  = zoomfactor*zoomfactor
 	targetpos.x = clamp(targetpos.x + amount.x, 960-200*zfsquared, 960+200*zfsquared)
-	targetpos.y = clamp(targetpos.y + amount.y, 410-300*zfsquared, 410+300*zfsquared)
+	targetpos.y = clamp(targetpos.y + amount.y, 410-600*zfsquared, 410+300*zfsquared)

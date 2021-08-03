@@ -1,0 +1,40 @@
+title("All out Attack")
+$Blood=7
+$Damage=6
+$Range=3
+cost(2)
+types(blood)
+trigger(onPlay,do(unheal($Blood)))
+trigger(onPlay,do(damage, ($Damage,(bite),(all),$Range)));
+trigger(onPlay,do(damage, ((*,2,$Damage),(bite),(all),(+,-1,$Range))));
+text("Lose $Blood health. Deal $Damage damage to all units range $Range, then (getDamage((*,2,$Damage))) damage to all units range (+,-1,$Range)")
+removetrigger(endofturn, true,0)
+rarity(8)
+
+title("Berserk")
+types(blood, rage)
+cost(1)
+$Status=2
+trigger(unheal,do(addStatus(rage,$Status)))
+text("When you lose health, gain $Status rage")
+rarity(5)
+removetrigger(endofturn, true, 5)
+
+title("Flee")
+types(blood, movement)
+$Move=2
+trigger(unheal, do(movePlayer($Move)))
+text("When you lose health, move $Move")
+removetrigger(endofturn, true, 4)
+cost(1);
+rarity(7);
+
+title("Autovampirism")
+types(blood, food)
+$Heal=2
+trigger(unheal, if(true,false))
+trigger(unheal, do(heal($Heal)))
+text("Whenever you lose health, heal $Heal afterwards")
+cost(2)
+removetrigger(unheal, true, 8)
+rarity(5)

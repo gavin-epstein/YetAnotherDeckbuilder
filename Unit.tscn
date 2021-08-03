@@ -73,10 +73,10 @@ autoplay = "Bob"
 anims/Bob = SubResource( 1 )
 
 [node name="HoverRect" type="ColorRect" parent="."]
-margin_left = -416.0
-margin_top = -648.0
-margin_right = 425.0
-margin_bottom = 237.0
+margin_left = -500.0
+margin_top = -700.0
+margin_right = 500.0
+margin_bottom = 500.0
 mouse_filter = 1
 color = Color( 1, 1, 1, 0 )
 __meta__ = {
@@ -84,14 +84,13 @@ __meta__ = {
 }
 
 [node name="Resizer" type="Node2D" parent="."]
-scale = Vector2( 1.00851, 0.991486 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Resizer"]
 position = Vector2( 0, -249.721 )
 frames = SubResource( 2 )
 
 [node name="Image" type="Sprite" parent="Resizer"]
-position = Vector2( 0, -249.721 )
+position = Vector2( 0, -254.729 )
 texture = ExtResource( 3 )
 
 [node name="Intent" type="Node2D" parent="."]

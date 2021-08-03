@@ -114,8 +114,7 @@ cost(1);
 $Damage=10
 $Draw=1
 types(cloud,reaction,attack);
-text("Add this to your reaction pile. On reaction, counterattack $Damage");
-# , draw $Draw , and discard 1")
+text("Add this to your reaction pile. On reaction, counterattack $Damage, draw $Draw , and discard 1")
 trigger(onPlay,do(move(Play,Reaction,self)));
 trigger(onReaction, do(damage($Damage, (storm), (direct, $Attacker)),~)));
 trigger(onReaction, do(draw($Draw)))
@@ -137,6 +136,8 @@ trigger(onPlay,do(voided(self, Play)))
 rarity(1)
 trigger(onDiscard, do(create(self,Hand)))
 removetrigger(endofturn, true,0);
+image("res://Images/CardArt/MushroomCloud.png");
+
 
 #Discard a card, gain an armor per type it has
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded

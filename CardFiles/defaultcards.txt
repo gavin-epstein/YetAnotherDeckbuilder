@@ -1,8 +1,8 @@
 title(Adventurer);
 types(starter)
-text("At the end of turn, set your energy to $EternalEnergy, discard your hand. At the start of turn draw $EternalDraw\n eternal \nsilent")
+text("At the end of turn, this card puts your hand into your discard and sets your energy to $EternalEnergy. At the start of turn this draws $EternalDraw\n eternal \nsilent")
+trigger(endofturn, do(endofturndiscard,(),(true,false)));
 trigger(endofturn, do(setEnergy,($EternalEnergy),(true,false)));
-trigger(endofturn, do(discardAll,(true),(true,false)));
 trigger(startofturn, do(draw, ($EternalDraw), (true,false)));
 removetrigger(never, true,0);
 modifiers(eternal,unique);
@@ -77,7 +77,7 @@ cost(1)
 types(starter,attack)
 $Damage=5
 $Range=2
-text("Deal (getDamage($Damage)) crush damage, range of $Range")
+text("Deal $Damage crush damage, range of $Range")
 trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)))
 removetrigger(endofturn,true,1)
 image("res://Images/CardArt/Smack.png")

@@ -1,0 +1,40 @@
+title(Machinations)
+types(assassin, mechanical)
+$Count=6
+$currentCount=0
+trigger(startofturn,do(addVar(self,currentCount,1)))
+trigger(startofturn,if(($currentCount=$Count),(do(addStatus,stealth,1))))
+trigger(startofturn,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
+text("Every $Count turns gain 1 stealth. (+, $Count, (*,-1,$currentCount)) remaining.");
+removetrigger(endofturn,true,24);
+cost(2)
+rarity(2)
+
+title("Stiletto")
+types(attack, assassin)
+$Damage=6
+cost(1)
+$Range=1
+text("Deal $Damage piercing backstab damage at range $Range.")
+removetrigger(endofturn,true,1)
+trigger(onPlay, do(damage, ($Damage,(piercing,backstab),(any),$Range),true))
+rarity(8)
+
+title("Slow Poison")
+types(attack,assassin)
+cost(0)
+$Range=3
+$Damage=10
+text("When this is discarded from play, deal $Damage backstab damage at range $Range.")
+removetrigger(endofturn,true,3)
+trigger(onRemoveFromPlay,do(damage, ($Damage,(backstab),(any),$Range),true))
+rarity(6)
+
+title("Sneak up")
+cost(1);
+types(assassin, movement)
+text("Move to a random empty tile adjacent to any enemy you choose")
+trigger(onPlay, enemyDo(move(Player, (do(selectTiles( (splash,(any),empty,((any,(any),-friendly),40,Player)),1, Player )))),true))
+trigger(onPlay,do(move,0))
+removetrigger(endofturn,true,1)
+rarity(5);

@@ -17,7 +17,7 @@ var highlighted = false
 var rarity = 0
 var debug
 var mouseon=false
-var tooltips=[]
+var tooltips=null
 var iconsdone = false
 var targetvis=true
 var base_z = 0
@@ -44,13 +44,14 @@ func _process(delta: float) -> void:
 	#zoom on mouseover
 	if mouseon:
 			if $Resizer.scale.x ==1:
-				z_index = base_z+5
+				self.z_index = base_z+5
 				$AnimationPlayer.play("Grow")
 			yield($AnimationPlayer,"animation_finished")
 	else:
 		if $Resizer.scale.x ==1.5:
 			$AnimationPlayer.play_backwards("Grow")
-		z_index = base_z
+		self.z_index = base_z
+		
 		
 
 
@@ -62,6 +63,7 @@ func hasType(type)->bool:
 	return false
 	
 func hasName(string, exact=false)->bool:
+	print(title +" has " +string+ " "+str(exact))
 	if exact:
 		return self.title.to_lower() == string.to_lower()
 	return self.title.to_lower().find(string.to_lower())!=-1
@@ -76,7 +78,7 @@ func hasModifier(string) -> bool:
 func loadCardFromString(string):
 	var lines = string.split(";")
 	for line in lines:
-		if line == "" or line == " ":
+		if line.strip_edges() == "" :
 			continue
 		var parsed = Utility.parseCardCode(line)
 		#print(parsed)
@@ -115,18 +117,35 @@ func loadCardFromString(string):
 			vars[parsed[0]] = parsed[2]
 		
 	#self.updateDisplay()
-	self.generateTooltips()
+	
 func updateDisplay():
+	if tooltips ==null and controller.enemyController!=null:
+		self.generateTooltips()
+	
 	if get_parent()!=null and get_parent().get("cards")!=null:
-		base_z = get_parent().base_z +2 + get_parent().cards.find(self)
+		base_z = get_parent().base_z +1 + get_parent().cards.find(self)
+		
+	if mouseon:
+		z_index = base_z+5
+	else:
+		z_index  = base_z
+	if self.modifiers.has("frozen"):
+		$Resizer/FrozenFrame.visible = true
+	else:
+		$Resizer/FrozenFrame.visible = false
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
-	titlebox.bbcode_text= "[center]" + title+ "[/center]";
+	titlebox.bbcode_text= "[center]" + title +  "[/center]";
 	var titlescale = min(.5,6.0/title.length())
 	titlebox.rect_scale = Vector2(titlescale,titlescale)
 	titlebox.rect_size = Vector2(583.0/titlescale,211)
 	var displaytext = processText(text)
-	
+	var lines = ceil(displaytext.length() / 23.0)
+	var sc = 1
+	if lines > 5:
+		sc= .7
+	get_node("Resizer/CardFrame/Text").rect_scale=Vector2(.4,.4)*sc
+	get_node("Resizer/CardFrame/Text").rect_size= Vector2(1644, 894)/sc
 	get_node("Resizer/CardFrame/Text").bbcode_text = "[center]"+displaytext+ "[/center]";
 	get_node("Resizer/CardFrame/Timer").bbcode_text= "[center]" + str(vars["$removecount"]) + "[/center]";
 	get_node("Resizer/CardFrame/arrow").visible =false
@@ -201,17 +220,23 @@ func isIdentical(other):
 func getTooltips():
 	return tooltips
 func generateTooltips():
+	tooltips = []
 	var words = Utility.parsewords(self.text)
 	for word in words:
 		var tip = controller.Library.getToolTip(word)
 		if tip !=null:
 			tooltips.append(word.capitalize()+": "+tip)
+		else:
+			tip = controller.enemyController.get_node("UnitLibrary").getToolTipByName(word)
+			if tip !=null:
+				tooltips.append(word.capitalize()+": "+tip)
 		
 func save() -> Dictionary:
 	return{
 		"title":title,
 		"vars":vars,
-		"visible":visible
+		"visible":visible,
+		"modifiers":modifiers
 	}
 
 func loadFromSave(save:Dictionary):
@@ -219,6 +244,7 @@ func loadFromSave(save:Dictionary):
 	for key in vars:
 		if vars[key] is float:
 			vars[key] = int(vars[key])
+	self.modifiers = save.modifiers
 	self.visible = save.visible
 	self.updateDisplay()
 
@@ -243,24 +269,52 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 		controller.get_node("CardDisplay").display(self)
 		mouseon=false
 func processText(text):
+	
 	var out =""
-	var tokens = Utility.parseCardCode(text)
-	#print(Utility.join("--",tokens))
-	for token in tokens:
+	#TODO custom parser that includes commas except in code
+	var tokens = text.split(" ", false)
+	var codeon = false
+	var code = ""
+	var ind = 0
+	var parenstack=0
+	while ind<tokens.size():
+		var token = tokens[ind]
 		
-		if token is Array:
-			var res = processArgs(token,[])
-			if res is GDScriptFunctionState:
-				print("There should be no player input on card text")
-				yield(res,"completed")
-			out+=str(res)+" "
-		elif token is String and token[0] =="$":
-			var punct = ""
-			if token[-1] in [".",","]:
-				punct = token[-1]
-			var v = token.rstrip(".,")
-			if v in vars:
-				out += str(vars[v]) + punct+" "
+		if not codeon:
+			#check if starts code block
+			if token[0] == "(":
+				codeon=true
+				continue
+			else:
+				#if its a variable
+				if token is String and token[0] =="$":
+					var punct = ""
+					if token[-1] in [".",","]:
+						punct = token[-1]
+					var v = token.rstrip(".,")
+					if v in vars:
+						out += str(vars[v]) + punct+" "
+					
+				else:
+					#its a normmal string or number
+					out += str(token) + " "
+			ind+=1
 		else:
-			out += str(token) + " "
+			#currently in a code block
+			code+=token
+			for letter in token:
+				if letter == "(":
+					parenstack+=1
+				elif letter== ")":
+					parenstack-=1
+			if parenstack == 0:
+				code = Utility.parseCardCode(code)
+				var res = processArgs(code[0],[])
+				if res is GDScriptFunctionState:
+					print("There should be no player input on card text")
+					yield(res,"completed")
+				out+=str(res)+" "
+				code = ""
+				codeon = false
+			ind+=1
 	return out

@@ -6,7 +6,7 @@ export var audio_bus_name := "Master"
 onready var _bus := AudioServer.get_bus_index(audio_bus_name)
 
 
-func _ready() -> void:
+func Load() -> void:
 	value = db2linear(AudioServer.get_bus_volume_db(_bus))
 
 

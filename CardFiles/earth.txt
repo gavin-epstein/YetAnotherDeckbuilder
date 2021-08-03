@@ -92,7 +92,7 @@ image("res://Images/CardArt/Stoneskin.png")
 title(Barrage)
 cost(1)
 types(earth, attack)
-$Damage=4
+$Damage=5
 $Range=3
 text(purge all unplayable cards in hand, deal $Damage crush damage range $Range for each card purged)
 removetrigger(endofturn, true,2)
