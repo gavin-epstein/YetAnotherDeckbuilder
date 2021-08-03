@@ -5,9 +5,12 @@ var ondisplay =false
 const xsep = 150
 const ysep = 220
 
-func _process(delta: float) -> void:
-	if(ondisplay and randf() < .1):
-		updateDisplay()
+func _ready() -> void:
+	self.base_z=106
+
+#func _process(delta: float) -> void:
+#	if(ondisplay and randf() < .1):
+#		updateDisplay()
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(hotkey):
 		if not ondisplay:
@@ -17,12 +20,11 @@ func _input(event: InputEvent) -> void:
 
 func updateDisplay():
 	if not ondisplay:
-		base_z = 0
 		for card in cards:
-			card.moveTo($AnimatedSprite.position - Vector2(100,300), Vector2(.15,.15), false)
+			card.moveTo($AnimatedSprite.position , Vector2(.15,.15), false)
 		get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
 	else:
-		base_z = 15
+		
 		var startx= 30
 		var x = startx
 		var y = 20-get_node("../CardPileDisplay/Panel/VScrollBar").value 
@@ -53,6 +55,10 @@ func undisplay():
 	self.updateDisplay()
 
 func alphabetize(card1,card2):
+	if card1.highlighted and not card2.highlighted:
+		return true
+	elif not card1.highlighted and  card2.highlighted:
+		return false
 	if card1.title < card2.title:
 		return true
 	return false

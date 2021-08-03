@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/Card.gd" type="Script" id=1]
 [ext_resource path="res://Images/CardArt/Placeholder.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Fonts/Mada.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Images/CardArt/CardHighlight.png" type="Texture" id=6]
 [ext_resource path="res://Scripts/TypeIcons.gd" type="Script" id=7]
+[ext_resource path="res://Images/CardArt/FrozenFrame.png" type="Texture" id=8]
 [ext_resource path="res://Images/CardArt/hourglass.png" type="Texture" id=132]
 [ext_resource path="res://Images/CardArt/ReactionArrow.png" type="Texture" id=133]
 [ext_resource path="res://Images/CardArt/Endless.png" type="Texture" id=134]
@@ -91,6 +92,11 @@ texture = ExtResource( 2 )
 light_mask = -2147483647
 position = Vector2( 373.649, 518.946 )
 texture = ExtResource( 3 )
+
+[node name="FrozenFrame" type="Sprite" parent="Resizer"]
+position = Vector2( 369.284, 528.16 )
+scale = Vector2( 1.01, 1.01 )
+texture = ExtResource( 8 )
 
 [node name="CardFrame" type="Node2D" parent="Resizer"]
 position = Vector2( 373.649, 518.946 )

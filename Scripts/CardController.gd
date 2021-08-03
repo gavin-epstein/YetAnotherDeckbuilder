@@ -5,7 +5,6 @@ var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
 var Discard
-var Hand
 var Library
 var Choice
 var Reaction
@@ -19,6 +18,8 @@ var consumed
 var focusStack=[]
 var lastfocus
 var doTutorial
+var trashbin=[]
+var isPlayerTurn=true
 class_name CardController
 #func _process(delta: float) -> void:
 #	var r = 0
@@ -64,8 +65,7 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 
-		#Coal + way to void it + lightspeed
-#		Hand.add_card(Library.getCardByName("Lightspeed"))
+		#Hand.add_card(Library.getCardByName("Sparkplug"))
 #		Deck.add_card(Library.getCardByName("Coal"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
@@ -133,8 +133,9 @@ func shuffle()->bool:
 	return true
 
 func play(card)->bool:
-	
-	print("Playing " + card.title)
+	if card ==null:
+		return false
+	#print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false
 	var cost = getVar(card, "Cost")
@@ -151,15 +152,19 @@ func play(card)->bool:
 	#forceFocus(self)
 	card.mouseon= false
 	inputAllowed = false
+	#print("Input off in play")
 	self.move("Hand","Play", card)
 	updateDisplay()
 	var results = card.Triggered("onPlay",[card])
+	
 	if results is GDScriptFunctionState:
 		results = yield(results,"completed")
+	
 	setVar(card,"Cost",getVar(card,"BaseCost"))
 	updateDisplay()
 	#releaseFocus(self)
 	inputAllowed = true
+	#print("Input on in play")
 	return true
 	
 
@@ -179,13 +184,22 @@ func countModifiers(loc, mod) -> int:
 		if card.hasModifier(mod):
 			count+=1
 	return count
-func move(loc1, loc2, card):
+func move(loc1, loc2, card, pos=null):
 	if card is bool:
 		return card
+	if card == null:
+		return false
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
-		loc2.add_card(card)
+		if loc1 == Hand and card.modifiers.has("frozen"):
+			var res = Action("removeModifier",[card, "frozen"])
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
+		if pos==null:
+			loc2.add_card(card)
+		else:
+			loc2.add_card_at(card,pos)
 		return true
 	return false
 func setEnergy(num):
@@ -199,8 +213,26 @@ func discardAll(silent = false):
 	var backind = Hand.cards.size()
 	while backind >ind:
 		var card = Hand.cards[ind]
-		if not card.modifiers.has("retain"):
-			Action("discard", [card, silent], silent);
+		
+		var res =Action("discard", [card, silent], silent);
+		if res is GDScriptFunctionState:
+				yield(res, "completed")
+			#Dealing with altostratus
+			
+		backind-=1
+			
+	return true
+func endofturndiscard():
+	if Hand.cards.size()==0:
+		return false
+	var ind =0;
+	var backind = Hand.cards.size()
+	while backind >ind:
+		var card = Hand.cards[ind]
+		if not card.modifiers.has("retain") and not card.modifiers.has("frozen"):
+			var res =Action("move", ["Hand","Discard", card]);
+			if res is GDScriptFunctionState:
+				yield(res, "completed")
 			#Dealing with altostratus
 			
 			backind-=1
@@ -209,12 +241,15 @@ func discardAll(silent = false):
 			var res = card.Triggered("onRetain",[card])
 			if res is GDScriptFunctionState:
 					res = yield(res, "completed")
+			res = triggerAll("retained",[card])
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
 			if card in Hand.cards:
 				ind+=1
 			else:
 				backind -=1
 	return true
-	
+
 func discard(card, silent = false, loc = "Hand"):
 	if card == null:
 		return false
@@ -222,7 +257,7 @@ func discard(card, silent = false, loc = "Hand"):
 	if not silent and res:
 		var res2 = card.Triggered("onDiscard", [card])
 		if res2 is GDScriptFunctionState:
-			res2 = yield(res, "completed")
+			res2 = yield(res2, "completed")
 	return res
 	
 func updateDisplay():
@@ -241,18 +276,26 @@ func updateDisplay():
 			if unit !=null:
 				unit.updateDisplay()
 				unit.Triggered("onCardChange", [])
+	if inputAllowed:
+		for thing in trashbin:
+			thing.queue_free()
+		trashbin  = []
 func cardreward(rarity, count):
 		Choice.generateReward(rarity, count)
-		yield(Choice,"cardchosen")
+		var res = yield(Choice,"cardchosen")
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
 		return true
 func purge(card):
 	if card == null:
 		return false
 	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
-		card.queue_free()
+		card.visible = false
+		trashbin.append(card)
 		return true
 	return false
+
 
 func takeFocus(item) -> bool:
 	#printFocus()
@@ -290,7 +333,8 @@ func forceFocus(item):
 func printFocus():
 	#return
 	if focus ==lastfocus:
-		return
+		#return
+		pass
 	if focus != null:
 		print("Focus is on ", focus.get("name"),": ", focus.get("title")," ", focus.get_parent().get("name"))
 	else:
@@ -385,6 +429,7 @@ func endofturn():
 		return false
 	enemyController.maxdifficulty+=.8
 	enemyController.Player.endOfTurn()
+	
 	return true
 
 func startofturn():
@@ -392,12 +437,14 @@ func startofturn():
 		enemyController.Lose(null)
 		return false
 	enemyController.Player.startOfTurn()
+	
 	return true
 
 
 func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
 		inputAllowed = false
+		print("Input off in endturn")
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -405,17 +452,19 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		#Enemies go here
 		takeFocus(self)
-		
+		self.isPlayerTurn = false
 		res = enemyController.enemyTurn()
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		
 		releaseFocus(self)
-		
+		self.isPlayerTurn = true
 		res = Action("startofturn", [], false)
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
+		print("Input on in endturn")
+		
 		
 
 	
@@ -464,6 +513,8 @@ func damage(amount, types, targets,distance, tile =null):
 		else:
 			unit =  node.occupants[0]
 		var dmg = unit.takeDamage(amount,types,enemyController.Player)
+		if dmg is GDScriptFunctionState:
+			dmg = yield(dmg, "completed")
 		if lastPlayed !=null:
 			if dmg.size() >1 and dmg[1] == "kill":
 				var res = lastPlayed.Triggered("slay",[unit])
@@ -531,7 +582,7 @@ func summon(unitName, targets, distance,tile="Player") :
 		terrains = targets[1]
 
 	targets = [targets[0],terrains,"empty"]
-	locs = selectTiles(targets,distance,tile)
+	locs = selectTiles(targets,distance,tile, "Pick a place to summon")
 	if locs is GDScriptFunctionState:
 		locs = yield(locs,"completed")
 	if locs == null or locs.size() == 0:
@@ -557,10 +608,25 @@ func consume():
 	enemyController.pickConsumed()
 	return true
 func triggerAll(trigger, argv):
-	for card in Play.cards:
-		var res = card.Triggered(trigger,argv)
-		if res is GDScriptFunctionState:
-			res = yield(res, "completed")
+	#look through play, if card is removed from play don't increment index
+	var ind = 0
+	while Play.cards.size() > ind:
+		var card = Play.cards[ind]
+		var res2 = card.Triggered(trigger, argv)
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res2,"completed")
+		
+		if card in Play.cards:
+			ind+=1
+	ind = 0
+	while Hand.cards.size() > ind:
+		var card = Hand.cards[ind]
+		var res2 = card.Triggered("hand:"+str(trigger), argv)
+		if res2 is GDScriptFunctionState:
+			res2 = yield(res2,"completed")
+		
+		if card in Hand.cards:
+			ind+=1
 func devoidAll():
 	while $Voided.cards.size()>0:
 		move("Voided", "Discard",$Voided.cards[0])
@@ -602,6 +668,7 @@ func Reaction(amount:float, attacker)-> float:
 	return amount
 func voidshift():
 	pass
+	print("Voidshifted")
 	#Action("devoidAll",[])
 func cardAt(loc,index):
 	loc = get_node(loc)
@@ -658,3 +725,19 @@ func addhandsize(amount):
 		return false
 	Hand.maxHandSize+=amount
 	return true
+func addModifier(card, mod):
+	if card == null:
+		return false
+	card.modifiers[mod] = true
+	return true
+func removeModifier(card, mod):
+	if card ==null:
+		return false
+	if not mod in card.modifiers:
+		return false
+	card.modifiers.erase(mod)
+	return true
+func triggerCard(trigger, card, argv=[]):
+	if card == null:
+		return false
+	card.Triggered(trigger, argv)

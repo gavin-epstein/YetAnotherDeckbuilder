@@ -18,7 +18,6 @@ spawnable(any)
 speed(0)
 range(0)
 health(100)
-status(immovable, true)
 status(lootless, true)
 status(neutral, true)
 
@@ -128,7 +127,7 @@ trigger(onSummon,do(addArmor(self,10)))
 trigger(turn,do(MoveAndAttack(self,friendly)))
 
 name("Smol Wizard")
-damagetypes(storm)
+damagetypes(light, shadow)
 difficulty(4)
 spawnable(any)
 health(25)
@@ -304,6 +303,7 @@ health(12);
 strength(4);
 range(1);
 speed(2);
+$Intent=Debuff
 status(hardenedcarapace,true)
 trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
 trigger(turn,if( ($Intent=Debuff),(do(addArmor(self,1)))));
@@ -452,7 +452,8 @@ health(56);
 $turncount=1
 status(boss, true);
 trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
-trigger(turn,if( ($turncount=0), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=1), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=0), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))
@@ -558,7 +559,6 @@ $Wormhealth=40
 $dothething=0
 health(0)
 status(lootless,true)
-status(trap,true)
 trap
 trigger(turn,if(((do(getStatus(self,strength)))<41),(do(gainStrength(self,5)))))
 trigger(turn,if(((do(getStatus(self,strength)))>40),(do(setVar(self,dothething,1)))))
@@ -566,6 +566,7 @@ trigger(turn,do (setVar(self,lastTile, tile)))
 trigger(turn,if(((do(getStatus($lastTile,health)))>0),(do(setVar(self,dothething,0))))) 
 trigger(turn,if(($dothething>0),(do(move(self,(select((1,(any),empty),40, $lastTile)))))))
 trigger(turn,if(($dothething>0),(do(Summon($lastTile,"Death Worm")))))
+trigger(turn,if(($dothething>0),( do(addStatus(tile,lootless,1)))))
 trigger(turn,if(($dothething>0),(do(setStatus($lastTile,"health",$Wormhealth)))))
 trigger(turn,if(($dothething>0),(do(kill(self,null)))))
 trigger(trap,do (setVar(self,lastTile, tile)))
@@ -578,6 +579,17 @@ trigger(trap,do(addStatus($lastTile,"stunned",2)))
 trigger(trap,do(kill(self,null)))
 image("res://Images/UnitArt/DisturbedEarth.png")
 
+name("Potion Seller")
+spawnable(grass)
+difficulty(-2)
+health(3)
+strength(0)
+status(friendly, true)
+trigger(turn, do(say(self,"Would you like to buy a potion?")))
+trigger(turn,cardDo(create("Potion Purchase",Hand,self)))));
+image("res://Images/UnitArt/PotionSeller.png")
+event(10)
+
 name("Death Worm")
 spawnable(none)
 difficulty(18)
@@ -585,7 +597,7 @@ health(40)
 strength(12)
 range(2)
 speed(0)
-trigger(turn,do(Attack(self,(select((1,(any),friendly),2,tile)))))
+trigger(turn, do(MoveAndAttack(self,friendly)))
 trigger(turn,do (setVar(self,lastTile, tile)))
 trigger(turn,do(move(self,(select((1,(any),empty),40, tile)))))
 trigger(turn,do(Summon($lastTile,"Suspicious Mound")))
@@ -593,3 +605,95 @@ trigger(turn,do(setVar($lastTile, Wormhealth, (do(getStatus(tile,health))))))
 trigger(turn,do(addStatus(tile,lootless,1)))
 trigger(turn,do(kill(self,null)))
 image("res://Images/UnitArt/DeathWorm.png")
+
+name("Seraph")
+spawnable(none)
+difficulty(0)
+strength(20)
+range(40)
+lore(A being to lay seige to the shadows)
+health(40)
+speed(3)
+trigger(turn,do(MoveAndAttack(self, boss)))
+status(friendly, true)
+damagetypes(light)
+image("res://Images/UnitArt/Seraph.png")
+
+name("Vulture")
+spawnable(none)
+lore("When the vulture kills, more vultures arrive on the scene")
+difficulty(0)
+strength(4)
+health(2)
+range(1)
+speed(2)
+status(friendly, true)
+trigger(turn,do(MoveAndAttack(self, -friendly)))
+trigger(slay, do(Summon((select((1,("any"),empty),1,tile)),"Vulture")))
+image("res://Images/UnitArt/Vulture.png")
+
+name("Evil Weevil")
+spawnable(sand,grass,stone,ice)
+status(armorsteal, true)
+speed(4)
+range(1)
+health(16)
+$Multistrike=5
+strength(1)
+difficulty(8)
+trigger(turn,do(MoveAndAttack(self, friendly)))
+image("res://Images/UnitArt/EvilWeevil.png")
+
+name("Flaming Skull")
+spawnable(sand, stone)
+speed(2)
+range(1)
+health(10)
+strength(2)
+difficulty(2)
+image("res://Images/UnitArt/FlamingSkull.png")
+$Intent=Buff
+trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,flaming,3)))));
+trigger(turn,do(setVar(self,Intent,(random(Attack,Buff)))));
+trigger(turn,do(heal(self, 4)));
+
+name("Glowing Skull")
+spawnable(ice, stone)
+speed(1)
+range(3)
+health(13)
+strength(2)
+difficulty(7)
+$turncount=0
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),frost,2)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),3,tile)),dazzled,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/GlowingSkull.png")
+
+name("Toxic Skull")
+spawnable(water, grass)
+health(13)
+speed(1)
+range(2)
+strength(2)
+difficulty(4)
+$turncount=0
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),corruption,3)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),2,tile)),sting,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/ToxicSkull.png")
+
+name("Strange Fruit")
+spawnable(grass)
+health(6)
+difficulty(1)
+strength(0)
+status(thorns,6)
+trigger(turn, do(addStatus(tile, thorns, 1)))
+trigger(turn,do(heal( (do(select( (1,(any),-friendly,40, tile)))),5)))
+image("res://Images/UnitArt/FruitPlant.png")
+
+

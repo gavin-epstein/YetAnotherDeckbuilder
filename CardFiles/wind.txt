@@ -60,3 +60,32 @@ text("Increase your maximum hand size by 2");
 trigger(onPlay, do(addhandsize(2)));
 rarity(1);
 image("res://Images/CardArt/SacredBreath.png")
+
+title("Steady Breathing")
+types(wind, reaction);
+cost(0)
+$Draw=1
+$DamageReduction= 2
+text(Add this to your reaction pile. On reaction, reducing incoming damage by $DamageReduction, draw $Draw, and shuffle this back into your reaction pile)
+trigger(onPlay, do(move(Play, Reaction, self)))
+trigger(onReaction, do(draw($Draw)))
+trigger(onReaction,do(move(Reaction,Reaction,self)));
+trigger(onReaction, do(addVar(self, DamageTaken, (*, -1, $DamageReduction))));
+removetrigger(endofturn, true, 0);
+rarity(4);
+
+title("Boomerang")
+types(wind, attack)
+$Damage=5
+$Range=40
+cost(1)
+$DrawTotal=6
+$Drawn=1
+trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range)));
+trigger(draw,do(addVar(self, Drawn, argv[0])));
+trigger(draw,if(($Drawn > $DrawTotal),(do(move(Play,Deck,self,0)))));
+trigger(draw,if(($Drawn > $DrawTotal),do(setVar(self, Drawn, 1))));
+trigger(draw, do(setVar(self, removecount, (+, -1, (+,(*,-1,Drawn),$DrawTotal)))))
+text("Deal $Damage slash damage at any range. When you draw $removecount more cards, put this on top of your deck")
+removetrigger(draw, false, 6)
+rarity(7);

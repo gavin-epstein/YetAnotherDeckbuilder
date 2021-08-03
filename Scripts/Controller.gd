@@ -1,5 +1,6 @@
 extends Node2D
 var Play
+var Hand
 var enemyController
 var cardController
 var animationController
@@ -7,6 +8,7 @@ var map
 var selectedCard = null
 var test = false
 var lastTargets= null
+var pausetime = 1
 onready var Message = get_node("/root/Scene/Message")
 signal resumeExecution
 const testMethods = ["Attack","addArmor","addBlock",
@@ -25,9 +27,14 @@ const directedmethods= ["setStatus","addStatus"]
 var hits = []
 func _ready() -> void:
 	Play = get_node("/root/Scene/CardController/Play")
+	Hand = get_node("/root/Scene/CardController/Hand")
 	enemyController = get_node("/root/Scene").enemyController
 	cardController = get_node("/root/Scene").cardController
 	map = get_node("/root/Scene").map
+	pausetime = global.animationspeed
+	global.connect("animspeedchanged",self,"on_animation_speed_change")
+func on_animation_speed_change(val):
+	pausetime = val
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
 	var stoppable = silent
@@ -38,9 +45,20 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 	#print(method +" "+ Utility.join(" ", argv))
 	if not stoppable:
 		for card in Play.cards:
-			if card.Interrupts(method, argv):
+			var interres = card.Interrupts(method, argv)
+			if interres is GDScriptFunctionState:
+				interres = yield(interres,"completed")
+			if interres:
 				interrupted = true
 				print(method+str(argv) + " interrupted by " + card.title)
+		for card in Hand.cards:
+			var interres = card.Interrupts("hand"+str(method), argv)
+			if interres is GDScriptFunctionState:
+				interres = yield(interres,"completed")
+			if interres:
+				interrupted = true
+				print(method+str(argv) + " interrupted by " + card.title)
+		
 	if not interrupted:
 		
 		if self.has_method(method):
@@ -84,6 +102,15 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 				if card in Play.cards:
 					ind+=1
 			ind = 0
+			while Hand.cards.size() > ind:
+				var card = Hand.cards[ind]
+				var res2 = card.Triggered("hand:"+str(method), argv)
+				if res2 is GDScriptFunctionState:
+					res2 = yield(res2,"completed")
+				
+				if card in Hand.cards:
+					ind+=1
+			ind = 0
 			while enemyController.units.size() > ind:
 				var unit = enemyController.units[ind]
 				if unit == null:
@@ -96,6 +123,8 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 					ind+=1
 	if self.has_method("updateDisplay") and not test:
 		self.call("updateDisplay")
+	if not test and not cardController.isPlayerTurn:
+		yield(get_tree().create_timer(.01*pausetime),"timeout")
 	return res
 
 func startTest():
@@ -220,7 +249,7 @@ func cardClicked(card):
 	selectedCard = card
 	#inputAllowed  = true
 	cardController.releaseFocus(card)
-	for card in cardController.Hand.cards:
+	for card in Hand.cards:
 		card.dehighlight()
 	for card in cardController.Play.cards:
 		card.dehighlight()
@@ -234,7 +263,7 @@ func cardClicked(card):
 		card.dehighlight()
 	emit_signal("resumeExecution")
 	
-func selectTiles(targets, distance, tile):
+func selectTiles(targets, distance, tile, message = "Pick a target"):
 	#Let them choose on the map, but not play another card
 	if targets[0] is String and targets[0] == "lastTargets":
 		return lastTargets
@@ -248,7 +277,7 @@ func selectTiles(targets, distance, tile):
 	elif targets[0] == "all":	
 		enemies = map.selectAll(tile,distance,targets[2],targets[1],true,true)
 	elif targets[0]=="any":
-		var enemy = map.select(tile,distance,targets[2],targets[1],"Pick a target")
+		var enemy = map.select(tile,distance,targets[2],targets[1],message)
 		if enemy is GDScriptFunctionState:
 			enemy = yield(enemy,"completed")
 		if enemy ==null:

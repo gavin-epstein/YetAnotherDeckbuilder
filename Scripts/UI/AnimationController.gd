@@ -1,15 +1,20 @@
 extends "res://Scripts/Controller.gd"
 var animationtemplate = preload("res://Images/attackanimations/Animations.tscn")
 var longshortgap
+var baseanimspeed = .7
+var animspeed
 
 
 func Load(parent):
+	animspeed = baseanimspeed/(.01 + global.animationspeed)
 	cardController = parent.cardController;
 	enemyController = parent.enemyController;
 	animationController = self;
 	map = parent.map;
 	longshortgap = sqrt(map.minSqDist)*1.5;
-	
+	global.connect("animspeedchanged",self,"on_animation_speed_change")
+func on_animation_speed_change(value):
+	animspeed = baseanimspeed/(.01 + value)
 	
 func Damage(types, attacker, defender):
 	var dist = (attacker.position - defender.position).length();
@@ -58,6 +63,6 @@ func Damage(types, attacker, defender):
 		player.rotation = angle
 		player.position=attacker.position
 		self.add_child(player)
-		player.Play(anim);
+		player.Play(anim,animspeed);
 	
 	

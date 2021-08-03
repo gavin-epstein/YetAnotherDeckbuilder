@@ -3,7 +3,7 @@ crush: Crush damage removes 1 extra stack of armor.
 slash: Unblocked slash damage applies 1 bleed.
 stab: Stab damage removes 1 extra stack of block.
 block: Prevents incoming damage. Removed at the start of turn.
-move: Move yourself to an empty tile up to a distance of n tiles.
+move: Move yourself to an empty tile anywhere up to the given distance away.
 fire: Unblocked fire damage applies 1 burn.
 push: Move a unit away from yourself, if its destination is not blocked.
 pull: Move a unit towards yourself, if its destination is not blocked.
@@ -20,9 +20,9 @@ dodge: Reaction card that reduces incoming damage by 50-100%.
 silent: Does not trigger the effects of any other cards.
 transform: This card becomes another card of the same type.
 slay: Triggered when this card/unit kills a unit.
-retain: Not discarded by anything that discards your whole hand.
+retain: Cards with retain are not discarded at the end of turn. 
 energy: Energy is spent to play cards.
-shadow: Shadow damage adds a stack of corruption, damaging the target next time they move.
+shadow: Shadow damage adds a stack of corruption, increasing the damage the target takes from subsequent attacks.
 light: Light damage adds a stack of dazzled, which reduces the target's strength.
 piercing: Piercing damage ignores block and armor.
 ally: a friendly unit other than Mora.
@@ -31,3 +31,7 @@ counterattack: On reaction deal damage back to the attacker.
 grows: The Void swallows the tile its tentacles point to, then has a chance to spawn new enemies.
 unit: Mora, the void, or any other creature. Does not include terrain features.
 storm: Storm damage has a 5% chance of being doubled.
+backstab: Backstab damage deals triple damage if you have stealth
+freeze: Add frozen to a card. That card is kept in hand until played or discarded other than at end of turn
+frozen: Frozen cards are retained in hand until they are played or moved out of hand by any effect other than end of turn discard. 
+hail: hail damage adds 1 frost, temporarily reducing the targets strength.

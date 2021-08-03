@@ -1,0 +1,62 @@
+title("Ice Prism");
+$Energy=0
+cost(1)
+types(ice, light)
+trigger(onRetain, do(addVar(self,Energy, (count("Energy","Energy")))));
+trigger(onRetain, do(setEnergy(0)));
+trigger(onPlay, do(gainEnergy($Energy)));
+trigger(onPlay, do(setVar(self, Energy, 0)))
+text(While in hand , at the end of turn all excess energy is stored in this card. On play gain $Energy energy. Retain);
+rarity(10)
+modifiers(retain)
+removetrigger(endofturn, true, 1)
+image("res://Images/UnitArt/IcePrism.png")
+
+title("Permafrost");
+types(earth, ice)
+removetrigger(endofturn, true, 11)
+text("When you would retain an unplayable card, trigger its on Draw effect and discard it")
+trigger(retained, if((hasModifier( argv[0], unplayable)), (do(triggerCard(argv[0],"onDraw")))))
+trigger(retained, if((hasModifier( argv[0], unplayable)), (do(discard(argv[0])))))
+cost(1);
+rarity(4);
+
+title("Flash Freeze")
+cost(1);
+types(ice, fire);
+trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
+trigger(onPlay,foreach(Loopcard,(select(Hand, true,"-",all)),(do (addModifier($Loopcard, frozen)))))
+trigger(onPlay,do(voided(self, Play)))
+text(Freeze your hand. Burn.)
+removetrigger(endofturn, true, 0)
+rarity(6);
+
+title("Icicle")
+cost(2)
+$Damage=8
+$Range=3
+trigger(onRetain,if(($Cost>0),(do(addVar(self,Cost,-1)))))
+trigger(onPlay, do(damage, ($Damage,(ice),(any),$Range)));
+text("Deal $Damage hail damage range $Range. On retain, lower the cost of this card by 1 until played. Retain")
+removetrigger(endofturn, true, 1)
+modifiers(retain)
+rarity(10)
+
+title("Slide")
+cost(0)
+$Move=2
+types(ice, kinetic, shadow, movement)
+trigger(onPlay, do(movePlayer($Move)))
+trigger(onRetain, do(moveUnits((all,(any),-Player),1,Player,away,(+, -1, $Move))))
+text("Move $Move. If this card is frozen, when it is retained push all adjacent enemies away (+, -1, $Move) tiles")
+removetrigger(endofturn, true, 1)
+rarity(6);
+
+title("Refrigerator")
+cost(1)
+types(ice, mechanical)
+trigger(startofturn, do(addModifier( (select(Hand,true,"pick a card to freeze (Refrigerator)")),frozen)))
+text("At the start of your turn, freeze a card")
+removetrigger(endofturn, true, 7)
+rarity(4)
+

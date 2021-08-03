@@ -60,7 +60,7 @@ def pickrandom(trie,alltypes):
             type3= random.choice(list(alltypes.keys()))
         types.append(type3)
     types.sort()
-    print(types,trie.get(types))
+    return types,trie.get(types)
 
 def main():
     trie = Trie()
@@ -78,7 +78,11 @@ def main():
     alltypes.pop("meme");
     alltypes.pop("starter");
     alltypes.pop("void")
-    for i in range(1):
-        pickrandom(trie,alltypes)
+    alltypes.pop("evil")
+    while True:
+        types, cards = pickrandom(trie,alltypes)
+        if len(cards) == 0:
+            print(types)
+            break
 
 main()

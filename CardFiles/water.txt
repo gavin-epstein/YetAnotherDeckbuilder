@@ -5,6 +5,7 @@ text("Move all cards in your deck into your discard")
 trigger(onPlay, do(repeat( (  (do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))))
 removetrigger(endofturn, true,1)
 rarity(7)
+image("res://Images/CardArt/Waterfall.png")
 
 title("Erosion")
 cost(-)
@@ -23,8 +24,9 @@ cost(2)
 rarity(6)
 removetrigger(endofturn, true, 13)
 $Block=9
+image("res://Images/CardArt/Dam.png")
 
-title("Watering Hole")
+title("Bird Bath")
 types(water, food,avian)
 text("When you shuffle, heal $Heal, and all allies gain $MaxHealth max health")
 cost(1)
@@ -43,12 +45,48 @@ trigger(onPlay,repeat(  (do(discard((do (cardAt(Deck,0 ) ) ),false,Deck))) ,$Rep
 text("Discard the top $Repeat cards of your Deck")
 removetrigger(endofturn,true, 2)
 rarity(5)
+image("res://Images/CardArt/Raincloud.png")
 
 title("Boat")
-types(water)
+types(water,movement)
 text("Whenever you shuffle your deck, move $Move")
 trigger(shuffle, do(movePlayer($Move)))
 cost(2)
 rarity(6)
 removetrigger(endofturn, true, 6)
 $Move=6
+image("res://Images/CardArt/Boat.png")
+
+title("Harpoon")
+types(water,attack)
+text("Deal $Damage stab damage range $Range. On shuffle, put this from play to the top of your deck.")
+trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range)));
+trigger(shuffle,do(move(Play,Deck,self,0)));
+removetrigger(shuffle, true, 1);
+cost(0);
+$Damage=5
+$Range=3;
+rarity(7);
+image("res://Images/CardArt/Harpoon.png")
+
+title("Abyssal Currents");
+types(water,shadow);
+trigger(play,do(move( Deck, Discard,(do(cardAt(Deck,0 ))))))
+text("When you play a card, move the top card of your deck to your discard. Discard from play after $removecount shuffles");
+rarity(2)
+cost(0)
+removetrigger(shuffle,true,5);
+
+title("Rain Bow");
+types(water, attack);
+$Arrows=1
+$Damage=5
+$Increment=1
+trigger(onPlay,do(damage,($Damage,(stab),($Arrows),40)))
+trigger(onPlay,do(setVar(self,Arrows,0)))
+trigger(shuffle,do(addVar(self,Arrows,$Increment)))
+text("Arrows: $Arrows. \nWhen played, spend all arrows to deal $Damage damage to a random enemy at any range per arrow. \nWhile in play, gain $Increment arrows when you shuffle.")
+cost(1)
+removetrigger(endofturn,true,4)
+rarity(6)
+

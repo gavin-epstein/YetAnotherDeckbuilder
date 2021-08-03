@@ -102,7 +102,7 @@ text("While this in play all kitchen knives you create gain $Increment damage")
 trigger(onCreate,if((hasModifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
 removetrigger(endofturn,true,5);
 rarity(2);
-image("res://Images/CardArt/KnifeSharpener.png")
+image("res://Images/CardArt/KnifeSharperner.png")
 
 title(Polished Blades);
 cost("2")
@@ -123,3 +123,12 @@ trigger(onPlay,do(movePlayer($Move)))
 trigger(onPlay, repeat( (do(create("Meat Cleaver",Hand))),$Times))
 removetrigger(endofturn,true,2)
 rarity(4)
+
+title(Knife Forge);
+cost(1)
+text("When you burn a card, add a random kitchen knife to your hand")
+trigger(voided, do(createByMod,(("kitchenknife"), Hand,self)))
+removetrigger(endofturn, true,6);
+rarity(5)
+types(knife, fire)
+

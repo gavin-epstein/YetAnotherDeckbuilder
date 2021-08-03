@@ -79,6 +79,20 @@ cost(0)
 removetrigger(endofturn,true,3)
 rarity(2);
 
+title("Cloudberries")
+$Heal=5
+cost(1)
+types(food,cloud)
+trigger(onDiscard,do(move(Discard,Hand,self)));
+trigger(onDiscard,do(setVar(self,Cost,0)))
+trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
+trigger(onDiscard,do(play(self)));
+trigger(onPlay,do(heal($Heal)))
+trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard (Cloudberries)")))));
+text("When played, heal $Heal and discard a card. If this card is discarded, play it.");
+rarity(6);
+removetrigger(endofturn,true,1)
+
 
 #when you heal, gain thorns/armor
 #Chomp. deal damage, heal equal to unblocked damage dealt

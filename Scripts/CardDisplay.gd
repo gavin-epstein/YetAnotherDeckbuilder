@@ -1,11 +1,13 @@
 extends Node2D
 var card
+var cards = []
 const cardTemplate = preload("res://Card.tscn")
 const fancyfont =preload("res://Fonts/AlMadiri.tres")
 const plainfont =preload("res://Fonts/Mada.tres")
-
+var base_z=250
 func _ready() -> void:
 	self.visible = false
+	self.base_z=250
 func display(incard):
 	get_parent().releaseFocus(incard)
 	get_parent().takeFocus(self)

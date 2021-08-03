@@ -4,11 +4,12 @@ types(fire, attack)
 $Damage=20
 $Range=2
 text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Burn")
-trigger(onPlay, do(damage($Damage, fire, (splash,(any),exists,((any,(any),any),2,Player)),1)))
+trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),2,Player)),1)))
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 rarity(3);
 types(fire,attack);
+image("res://Images/CardArt/Fireball.png")
 
 title(Coal);
 cost("-");
@@ -30,6 +31,7 @@ text("When you burn a card, add a Coal to your discard pile.");
 rarity(4);
 trigger(voided,do(create,("Coal",Discard)));
 removetrigger(voided,true,4);
+image("res://Images/CardArt/Char.png");
 
 title("Spark");
 $Damage=4
@@ -95,7 +97,7 @@ image("res://Images/CardArt/Ashes.png");
 
 title("Renewal")
 types(fire, light,wind)
-text("Burn your hand, draw a card and gain an energy for each card burned.\nVoid")
+text("Burn all cards in your hand, then draw a card and gain an energy for each card burned.\nBurn")
 rarity(1);
 trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((do(cardAt(Hand,0),true)),Hand))),$cardnumber))
@@ -114,8 +116,8 @@ text("Gain $Armor armor. Burn $Repeat cards from your Deck")
 cost(0)
 trigger(onPlay,do(armor($Armor)))
 trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to void")),Deck))),$Repeat))
-removetrigger(endofturn, true,1)
-rarity(10)
+removetrigger(endofturn, true,3)
+rarity(9)
 image("res://Images/CardArt/Preignite.png");
 
 title("Bellows")
@@ -137,6 +139,7 @@ text("Summon a flame on a random empty tile in range 3 for each card in the void
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn,true,0);
 rarity(2);
+image("res://Images/CardArt/Explode.png");
 
 title("Sparkplug")
 types(fire,wind)
@@ -147,7 +150,7 @@ trigger(onPlay, repeat( (do(create("Spark",Hand))),$Times))
 trigger(play, if( (hasName(argv[0],"Spark",true)) ,(do(draw($Draw)))))
 rarity(5);
 text("When you play a Spark draw $Draw. Add $Times Sparks to your hand");
-removetrigger(play,(hasName(argv[0],"Spark")),4)
+removetrigger(play,(hasName(argv[0],"Spark", true)),4)
 image("res://Images/CardArt/sparkplug.png");
 
 title("Extinguish")
@@ -157,3 +160,18 @@ trigger(onPlay, do(move(Voided,Hand,(select(Voided,true,"Select a card to return
 text(Put a card from the burn pile into your hand)
 removetrigger(endofturn,true,2)
 rarity(10);
+image("res://Images/CardArt/Extinguish.png");
+
+title("Rekindle")
+types(fire)
+cost(1);
+#trigger(onPlay,foreach(Loopcard, (select(Voided, true,"-",all)),(do(setVar($Loopcard, RekindleCost, $X)))));
+#trigger(onPlay,do(setVar,(self, card, (do(select(Voided, (if(($Cost<$RekindleCost),(true)))))))));
+trigger(onPlay,do(setVar,(self, card, (do(selectCards(Voided, (not(hasName(self, Rekindle))), "Pick a card to play"))))))
+trigger(onPlay,do(move(Voided,Hand,$card)))
+trigger(onPlay,do(setVar($card,Cost,0)))
+trigger(onPlay,do(play($card)));
+trigger(onPlay,do(voided(self,Play)));
+text(Play a card other than Rekindle from your burn pile. Burn)
+rarity(5);
+removetrigger(endofturn,true,0)
