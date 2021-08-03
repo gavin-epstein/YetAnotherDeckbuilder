@@ -133,7 +133,8 @@ func shuffle()->bool:
 	return true
 
 func play(card)->bool:
-	
+	if card ==null:
+		return false
 	#print("Playing " + card.title)
 	if card.modifiers.has("unplayable"):
 		return false

@@ -73,9 +73,9 @@ title("Witch's Cauldron")
 cost(1)
 types(ritual,potion)
 rarity(1)
-$RitualCount=7
+$RitualCount=6
 $Times=3
-text("When you have $RitualCount ritual cards in play, burn this and add $Times random potions to your hand")
+text("When you have (+, 1, $RitualCount) ritual cards in play, burn this and add $Times random potions to your hand")
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(createByMod((potion),Hand))),$Times))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
@@ -84,11 +84,11 @@ image("res://Images/CardArt/WitchsCauldron.png")
 title("Ritual Summons")
 cost(1)
 types(ritual, summon)
-$RitualCount=7
+$RitualCount=6
 removetrigger(play, (count(Play, ritual) > (+,1,$RitualCount)), 1);
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(summon("Imp",(any),1)))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))))
-text("When you have $RitualCount ritual cards in play, burn this and summon an Imp");
+text("When you have (+, 1, $RitualCount) ritual cards in play, burn this and summon an Imp");
 rarity(1)
 image("res://Images/CardArt/SummoningRitual.png")
 
@@ -105,7 +105,7 @@ image("res://Images/CardArt/Secrecy.png")
 title("Dark Deeds")
 types(ritual, attack, shadow)
 cost(2)
-$Damage=16
+$Damage=12
 $Range=2
 trigger(onPlay, if( (countNames(Play,"Light Whispers")=1),(do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)),Cost,0)))))
 trigger(onPlay, do(damage($Damage,(ritual),(any),$Range)))
@@ -147,7 +147,7 @@ types(ritual, fire)
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(devoidAll()))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, put all cards from your burn pile into your discard, then burn this");
+text("When you have (+, 1, $RitualCount) ritual cards in play, put all cards from your burn pile into your discard, then burn this");
 rarity(3);
 cost(1);
 
@@ -159,7 +159,7 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Lumin
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Dust Devil", Deck,self ))),$CreateCount))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
+text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
 cost(2);
 rarity(2);
 image("res://Images/CardArt/RitualOfTheEarthMother.png")
@@ -171,17 +171,17 @@ $CreateCount=4
 trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Fluttering Shadow", Hand,self ))),$CreateCount))));
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
+text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
 cost(1);
 rarity(4);
 
 title("Wrath Rite")
 types(ritual,rage)
 $RitualCount=6
-$Status=4
+$Status=3
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(rage, $Status)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
-text("When you have $RitualCount ritual cards in play, gain $Status rage and discard this card from play")
+text("When you have (+, 1, $RitualCount) ritual cards in play, gain $Status rage and discard this card from play")
 cost(1);
 rarity(7);
 
@@ -205,7 +205,7 @@ trigger(onPlay, do(damage, ($Damage,(backstab,ritual),(any),$Range)))
 trigger(slay, do(repeat( (do(createByMod(("sigil"), Play ))),$CreateCount)))
 removetrigger(endofturn, true, 1)
 rarity(5)
-text("Deal $Damage damage range $Range. Slay: create $CreateCount sigils in play")
+text("Deal $Damage backstab damage range $Range. Slay: create $CreateCount sigils in play")
 
 title("Doubling Sigil")
 types(ritual)

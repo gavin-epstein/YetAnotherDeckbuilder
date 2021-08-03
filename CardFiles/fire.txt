@@ -160,13 +160,14 @@ trigger(onPlay, do(move(Voided,Hand,(select(Voided,true,"Select a card to return
 text(Put a card from the burn pile into your hand)
 removetrigger(endofturn,true,2)
 rarity(10);
+image("res://Images/CardArt/Extinguish.png");
 
 title("Rekindle")
 types(fire)
-cost(2);
+cost(1);
 #trigger(onPlay,foreach(Loopcard, (select(Voided, true,"-",all)),(do(setVar($Loopcard, RekindleCost, $X)))));
 #trigger(onPlay,do(setVar,(self, card, (do(select(Voided, (if(($Cost<$RekindleCost),(true)))))))));
-trigger(onPlay,do(setVar,(self, card, (do(select(Voided, (not(hasName(self, Rekindle)))))))))
+trigger(onPlay,do(setVar,(self, card, (do(selectCards(Voided, (not(hasName(self, Rekindle))), "Pick a card to play"))))))
 trigger(onPlay,do(move(Voided,Hand,$card)))
 trigger(onPlay,do(setVar($card,Cost,0)))
 trigger(onPlay,do(play($card)));

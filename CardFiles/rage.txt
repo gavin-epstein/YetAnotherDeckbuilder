@@ -1,9 +1,9 @@
 title(Battleaxe);
 rarity(10)
 types(rage,attack);
-cost(1);
+cost(2);
 $Status=2;
-$Damage=6;
+$Damage=8;
 $Range=2;
 trigger(onPlay, do(damage, ($Damage,(crush, slash),(any),$Range)));
 trigger(onPlay,do(addStatus(rage,$Status)));

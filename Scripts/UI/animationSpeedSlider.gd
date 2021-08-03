@@ -1,6 +1,6 @@
 extends HSlider
 
-func _ready() -> void:
+func Load() -> void:
 	value = (4-global.animationspeed)
 
 func _on_HSlider_value_changed(value: float) -> void:

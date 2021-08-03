@@ -614,7 +614,7 @@ range(40)
 lore(A being to lay seige to the shadows)
 health(40)
 speed(3)
-trigger(turn,do(moveAndAttack(self, boss)))
+trigger(turn,do(MoveAndAttack(self, boss)))
 status(friendly, true)
 damagetypes(light)
 image("res://Images/UnitArt/Seraph.png")
@@ -654,7 +654,7 @@ difficulty(2)
 image("res://Images/UnitArt/FlamingSkull.png")
 $Intent=Buff
 trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
-trigger(turn,if( ($Intent=Buff),(do(addStatus(self,flaming,3)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,flaming,3)))));
 trigger(turn,do(setVar(self,Intent,(random(Attack,Buff)))));
 trigger(turn,do(heal(self, 4)));
 
@@ -665,21 +665,35 @@ range(3)
 health(13)
 strength(2)
 difficulty(7)
-trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),frost,1)))
-trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),dazzled,1)))
+$turncount=0
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),frost,2)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),3,tile)),dazzled,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/GlowingSkull.png")
 
 name("Toxic Skull")
-name("Glowing Skull")
 spawnable(water, grass)
 health(13)
 speed(1)
 range(2)
 strength(2)
 difficulty(4)
-trigger(turn,do(addStatus((select((all,(any),friendly),2,tile)),corruption,2)))
-trigger(turn,do(addStatus((select((all,(any),friendly),2,tile)),sting,1)))
+$turncount=0
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),corruption,3)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),2,tile)),sting,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/ToxicSkull.png")
 
+name("Strange Fruit")
+spawnable(grass)
+health(6)
+difficulty(1)
+strength(0)
+status(thorns,6)
+trigger(turn, do(addStatus(tile, thorns, 1)))
+trigger(turn,do(heal( (do(select( (1,(any),-friendly,40, tile)))),5)))
+image("res://Images/UnitArt/FruitPlant.png")
 
 

@@ -169,7 +169,8 @@ func Summon(tile, unitname):
 	for tile in tiles:
 		var empty = true
 		for other in units:
-			if other.tile== tile:
+			
+			if other!=null and other.tile== tile:
 				empty = false
 		if empty:
 			var unit = $UnitLibrary.getUnitByName(unitname)		
@@ -428,7 +429,13 @@ func pickConsumed():
 	cardController.consumed = consumed
 func spawnMiniBoss():
 	if getVar(theVoid,"BossesSummoned")==0:
-		Summon(selectTiles( [1 ,["any"], "empty"],1, theVoid.tile ), boss1)
+		var tiles=[]
+		for _i in range(1,5):
+			tiles = selectTiles( [1 ,["any"], "empty"],_i, theVoid.tile)
+			if len(tiles)>0 and tiles[0]!=null:
+				break
+		print("Tiles", tiles)
+		Summon(tiles, boss1)
 		return true
 func save()->Dictionary:
 	var saveunits=[]

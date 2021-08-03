@@ -697,7 +697,7 @@ __meta__ = {
 position = Vector2( 1815.94, 845.736 )
 scale = Vector2( 0.108861, 0.108861 )
 frames = SubResource( 3 )
-frame = 62
+frame = 14
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -767,7 +767,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 19
+frame = 50
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -838,7 +838,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 18
+frame = 49
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -958,7 +958,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 6 )
-frame = 9
+frame = 24
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -991,7 +991,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 7 )
-frame = 108
+frame = 13
 playing = true
 script = ExtResource( 264 )
 
@@ -1500,6 +1500,7 @@ __meta__ = {
 [node name="voidhealthbar" type="Node2D" parent="."]
 position = Vector2( 1825.27, 113.061 )
 script = ExtResource( 380 )
+hasbossicon = true
 
 [node name="Back" type="ColorRect" parent="voidhealthbar"]
 margin_right = 60.0

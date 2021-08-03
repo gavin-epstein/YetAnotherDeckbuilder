@@ -32,10 +32,9 @@ rarity(7);
 title("Autovampirism")
 types(blood, food)
 $Heal=2
-interrupt(unheal, if(true,false))
-interrupt(unheal, do(heal($Heal)))
-trigger(unheal, enemyDo(say(Player,"Unheal not blocked")))
-text("Whenever you lose health, first heal $Heal")
+trigger(unheal, if(true,false))
+trigger(unheal, do(heal($Heal)))
+text("Whenever you lose health, heal $Heal afterwards")
 cost(2)
 removetrigger(unheal, true, 8)
 rarity(5)

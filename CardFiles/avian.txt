@@ -13,8 +13,8 @@ types(cloud,avian);
 cost(2);
 $Armor=1
 trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), $Armor)));
-trigger(onDiscard,do(armor,($Armor),false));
-text("On Discard: gain $Armor armor. On Play: give $Armor armor to all allies");
+trigger(onDiscard,do(armor,((+,2,$Armor)),false));
+text("On Discard: gain $Armor armor. On Play: give (+,2,$Armor) armor to all allies");
 rarity(5);
 removetrigger(endofturn,true,3);
 image("res://Images/CardArt/FeatherCloak.png");
@@ -25,7 +25,7 @@ rarity(1);
 modifiers(unique);
 types(ritual,avian,meme);
 removetrigger(never, true,0);
-cost(2);
+cost(1);
 image("res://Images/CardArt/BirdMask.png");
 
 title(Flock Together);
@@ -72,6 +72,7 @@ text("Summon a hen on an adjacent tile");
 removetrigger(endofturn, true, 3);
 types(avian, summon);
 rarity(6);
+image("res://Images/CardArt/Henhouse.png");
 
 title("Cactus Wren")
 cost(2)
@@ -91,6 +92,7 @@ text("Move any ally to any empty space")
 removetrigger(endofturn,true,1);
 types(avian,kinetic)
 rarity(5);
+image("res://Images/CardArt/Liftoff.png");
 
 title("Firebird")
 cost(2)
@@ -101,6 +103,7 @@ text("Summon a Phoenix that gains strength based on burned cards. When the phoen
 removetrigger(endofturn, true, 0);
 types(avian, fire,summon)
 rarity(2)
+image("res://Images/CardArt/Firebird.png");
 
 title("Incubator")
 cost(2)
@@ -109,6 +112,7 @@ text(At the start of your next $removecount turns, summon a Swallow on a random 
 types(avian,mechanical,summon)
 rarity(4)
 removetrigger(endofturn,true,8)
+image("res://Images/CardArt/Incubator.png");
 
 title("Angry Birds")
 cost(0)
@@ -118,6 +122,7 @@ trigger(onPlay, do(addStatus(rage,$Status, (do(selectTiles( (all,(any),"friendly
 text("Give all allies $Status rage")
 removetrigger(endofturn, true,1)
 rarity(7);
+image("res://Images/CardArt/AngryBirds.png");
 
 title("Blood Bird")
 types(blood, avian, summon)
@@ -129,6 +134,7 @@ trigger(onPlay, do(summon("Vulture",(any),$Range)));
 text("Lose $Blood health. Summon a vulture in range 3.");
 removetrigger(endofturn, true, 1);
 rarity(8);
+image("res://Images/CardArt/BloodBird.png");
 
 title("Buzzards")
 types(avian, summon, death)
@@ -138,3 +144,4 @@ $Range=3
 trigger(death, if((random(0,0,1)>0),(do(summon("Vulture",(1),$Range)))))
 rarity(3);
 text("When a unit dies, theres a 1/3 chance to summon a vulture on a random tile in range $Range")
+image("res://Images/CardArt/Buzzard.png");

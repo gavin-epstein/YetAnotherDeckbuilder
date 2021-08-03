@@ -17,6 +17,7 @@ trigger(onPlay,do(block( (do(getStatus(Player,thorns ))))))
 text(Gain block equal to your thorns)
 rarity(3)
 removetrigger(endofturn,true,0)
+image("res://Images/CardArt/BarrelCactus.png")
 
 title(Blood of the Nopal)
 types(cactus, blood)
@@ -35,6 +36,7 @@ trigger(voided,do(addStatus(thorns,$Thorns)))
 rarity(6)
 removetrigger(endofturn, true, 5)
 text("When you burn a card, gain $Thorns thorns")
+image("res://Images/CardArt/FirestickCactus.png")
 
 title(Thornburst)
 types(cactus,light);

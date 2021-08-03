@@ -1,6 +1,7 @@
 extends Node2D
 var unit
 export var totalsize = 600
+export var hasbossicon=false
 var width = 60
 
 
@@ -19,7 +20,7 @@ func updateDisplay():
 		$maxhealthlabel.bbcode_text = "[center]"+str(unit.maxHealth)+"[/center]"
 	$currenthealthlabel.rect_position = Vector2(0,totalsize-healthheight)
 	$currenthealthlabel.bbcode_text = "[center]"+str(unit.health)+"[/center]"
-	if self.get_node("bossIcon1") !=null:
+	if self.hasbossicon:
 		var threshhold = 150
 		var iconheight = int((totalsize*threshhold)/unit.maxHealth)
 		$bossIcon1.position = Vector2(0,totalsize - iconheight)

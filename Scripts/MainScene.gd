@@ -10,6 +10,7 @@ var doTutorial=false
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	randomize()
+	get_node("Pause Menu/Settings").Load()
 	var file = File.new()
 	if file.file_exists(SAVE_NAME):
 		loadFromSave()
