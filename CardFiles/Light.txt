@@ -109,6 +109,7 @@ trigger(gainEnergy,do(movePlayer( $Move)));
 removetrigger(gainEnergy,true,5);
 text("When you gain energy, move $Move")
 rarity(2);
+image("res://Images/CardArt/Lightspeed.png");
 
 title("Smite")
 cost(X)

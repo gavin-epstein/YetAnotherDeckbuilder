@@ -8,6 +8,7 @@ const speed  = 10
 var types = {}
 var text=""
 var image
+var imageloaded = false
 var title
 var modifiers = {}
 var removetype
@@ -22,10 +23,7 @@ var iconsdone = false
 var targetvis=true
 var base_z = 0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	if self.image!=null:
-		$Resizer/CardArt.texture = image
+
 	
 func _process(delta: float) -> void: 
 	#normal movement 
@@ -119,6 +117,9 @@ func loadCardFromString(string):
 	#self.updateDisplay()
 	
 func updateDisplay():
+	if self.image!=null and ! imageloaded :
+		$Resizer/CardArt.texture = image
+		imageloaded = true
 	if tooltips ==null and controller.enemyController!=null:
 		self.generateTooltips()
 	

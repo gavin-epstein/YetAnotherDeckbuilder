@@ -102,6 +102,7 @@ trigger(onPlay, if( ($cardnumber>0),(do(damage($Damage,(crush),(any),$Range)))))
 trigger(onPlay, if( ($cardnumber>1),(repeat( (do(damage($Damage,(earth),(lastTargets),$Range ))),(+,-1,$cardnumber)))))
 removetrigger(endofturn,true,1);
 rarity(7);
+image("res://Images/CardArt/Barrage.png")
 
 title(Pyroclastic Flow)
 cost(1)
@@ -126,6 +127,7 @@ rarity(4);
 removetrigger(never, true, 0);
 trigger(onDraw, do(draw,($Draw)));
 modifiers(unplayable);
+image("res://Images/CardArt/DustDevil.png")
 
 title("Coal Smoke");
 cost(0);
@@ -137,3 +139,4 @@ trigger(onPlay, repeat( (do(createAt("Coal",Deck,0))),$Repeat));
 text("Gain $Status stealth. Add $Repeat Coal cards on top of your deck");
 removetrigger(endofturn, true, 1);
 rarity(2)
+image("res://Images/CardArt/CoalSmoke.png")

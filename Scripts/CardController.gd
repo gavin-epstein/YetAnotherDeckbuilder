@@ -90,6 +90,25 @@ func Load(parent)-> void:
 		Deck.add_card_at(Library.getCardByName("Defend"),4)
 		Deck.add_card_at(Library.getCardByName("Defend"),5)
 		Deck.add_card_at(Library.getCardByName("Crossbow"),6)
+func endGameReport(state:String):
+	print("Submitting")
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.connect("request_completed", self, "_onResponse")
+	var body = {}
+	body['cardchoices'] = Choice.choicereport
+	body['enemies'] = enemyController.allunitsspawned
+	var bodyjson = to_json(body)
+	
+	var error = http_request.request("https://moraandtheendoftheworld.com/winlosereports.php?result="+state, ["Content-type:text/plain"], true, HTTPClient.METHOD_POST, bodyjson)
+	if error != OK:
+		print("An error occurred in the HTTP request.")
+	print(error)
+	get_tree().paused=false
+	yield(http_request,"request_completed")
+func _onResponse(result, response_code, headers, body):
+	print("Response:   ")
+	print(body.get_string_from_utf8())
 func draw(x)->bool:
 	var results = {}
 	for i in range(x):
@@ -211,7 +230,7 @@ func discardAll(silent = false):
 		return false
 	var ind =0;
 	var backind = Hand.cards.size()
-	while backind >ind:
+	while backind >ind and ind > Hand.cards.size():
 		var card = Hand.cards[ind]
 		
 		var res =Action("discard", [card, silent], silent);
@@ -464,7 +483,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		inputAllowed = true
 		print("Input on in endturn")
-		
+	releaseFocus(self)	
 		
 
 	
@@ -538,6 +557,10 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		enemies = yield(enemies,"completed")
 	if not enemies is Array:
 		enemies = [enemies]
+	if tile is Array:
+		if tile.size() ==0:
+			return false
+		tile = tile[0]
 	for enemy in enemies:
 		if direction is String and direction == "any":
 			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
@@ -682,7 +705,8 @@ func save()->Dictionary:
 		"voided":$Voided.save(),
 		"reaction":$Reaction.save(),
 		"energy": self.Energy,
-		"consumed":map.nodes.find(consumed)
+		"consumed":map.nodes.find(consumed),
+		"cardchoicereport":Choice.choicereport
 	}
 func loadFromSave(save:Dictionary,parent):
 	cardController = self
@@ -711,6 +735,7 @@ func loadFromSave(save:Dictionary,parent):
 	Energy = int(save.energy)
 	$Energy.updateDisplay()
 	consumed = map.nodes[int(save.consumed)]
+	Choice.choicereport = save.cardchoicereport
 	print(Hand.cards.size())
 	print("AllDone")
 func displayReaction(card):
@@ -741,3 +766,13 @@ func triggerCard(trigger, card, argv=[]):
 	if card == null:
 		return false
 	card.Triggered(trigger, argv)
+func charge(amount):
+	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
+	battery.vars["$Battery"] = min(battery.vars["$MaxBattery"], battery.vars["$MaxBattery"] + amount )
+	return true
+func deplete(amount):
+	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
+	if battery.vars["$Battery"] < amount:
+		return false
+	battery.vars.Battery = battery.vars.Battery  - amount
+	return true

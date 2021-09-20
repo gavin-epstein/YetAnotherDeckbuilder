@@ -150,6 +150,7 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, put all cards from your burn pile into your discard, then burn this");
 rarity(3);
 cost(1);
+image("res://Images/CardArt/RitualOfUnburning.png")
 
 title("Ritual of the Earth Mother")
 types(ritual,earth)

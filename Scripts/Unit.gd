@@ -272,6 +272,8 @@ func takeDamage(amount,types, attacker):
 		res= yield(res,"completed")
 	return [amount]
 func startOfTurn():
+	if status.has("regen"):
+		controller.heal(self, status.get("regen"))
 	if status.has("flaming"):
 		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):

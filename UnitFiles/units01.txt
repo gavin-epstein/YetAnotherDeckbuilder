@@ -693,7 +693,7 @@ difficulty(1)
 strength(0)
 status(thorns,6)
 trigger(turn, do(addStatus(tile, thorns, 1)))
-trigger(turn,do(heal( (do(select( (1,(any),-friendly,40, tile)))),5)))
+trigger(turn,do(addStatus( (do(select( (1,(any),"-friendly"),40, tile))), regen, 4)))
 image("res://Images/UnitArt/FruitPlant.png")
 
 

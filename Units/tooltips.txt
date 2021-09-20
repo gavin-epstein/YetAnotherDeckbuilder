@@ -24,3 +24,4 @@ boss:Boss:This unit is a boss.
 entangled:Entangled:This unit cannot move or be moved.
 nourishing:Nourishing:When this unit dies, whatever killed it gains its max health.
 armorsteal:Armor Thief: When this unit reduces another unit's armor, it gains that armor.
+regen:Regeneration: At the start of turn this unit heals 1 for each stack of regen.

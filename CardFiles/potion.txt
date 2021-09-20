@@ -61,12 +61,33 @@ image("res://Images/CardArt/ShadowPhial.png")
 
 title(Invisibility Potion)
 cost(0);
-rarity(4);
+rarity(3);
 $Status=1
 trigger(onPlay, do(addStatus(stealth, $Status)))
-text("Gain 1 stealth.Retain. Purge")
+text("Gain 1 stealth. Retain. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 types(assassin,potion);
 
+title("Thorn Flask")
+cost(0)
+rarity(4)
+$Thorns=8
+trigger(onPlay,do(addStatus(thorns,$Thorns)))
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion,retain);
+types(cactus,potion);
+text("Gain $Thorns Thorns. Purge. Retain")
+
+title("Gasoline")
+cost(0)
+types(attack, potion)
+$Damage=9
+$Range=3
+trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),$Range,Player)),1)))
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Purge. Retain")
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(potion,retain);

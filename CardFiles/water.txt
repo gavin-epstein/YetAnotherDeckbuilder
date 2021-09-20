@@ -15,6 +15,7 @@ trigger(onDraw,do(purge((select(Hand,true,"Pick a card to purge")))))
 removetrigger(endofturn, true,0)
 modifiers(unplayable)
 rarity(2)
+image("res://Images/CardArt/Erosion.png")
 
 title("Dam")
 types(water)

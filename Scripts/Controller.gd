@@ -171,14 +171,14 @@ func getVar(card, varname):
 		return false
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
-	print("Select input allowed " +str( cardController.inputAllowed))
+	#print("Select input allowed " +str( cardController.inputAllowed))
 	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
 		if card.processArgs(predicate, []):
 			card.highlight()
 			selectcount+=1
-	print("selectcount: " + str(selectcount))	
+	#print("selectcount: " + str(selectcount))	
 	if random and num is int: #random
 		var possible = []
 		for card in loc.cards:
@@ -236,13 +236,13 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	if loc is CardPile:
 		loc.display()
 	cardController.updateDisplay()
-	print("Select input allowed " +str( cardController.inputAllowed))
+	#print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
 	if loc is CardPile:
 		loc.undisplay()
-	print("Select input allowed post undisplay " +str( cardController.inputAllowed))
+	#print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 
 func cardClicked(card):

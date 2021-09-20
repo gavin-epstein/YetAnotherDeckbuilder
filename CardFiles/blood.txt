@@ -1,6 +1,6 @@
 title("All out Attack")
-$Blood=7
-$Damage=6
+$Blood=5
+$Damage=7
 $Range=3
 cost(2)
 types(blood)
@@ -19,6 +19,7 @@ trigger(unheal,do(addStatus(rage,$Status)))
 text("When you lose health, gain $Status rage")
 rarity(5)
 removetrigger(endofturn, true, 5)
+image("res://Images/CardArt/Berserk.png")
 
 title("Flee")
 types(blood, movement)

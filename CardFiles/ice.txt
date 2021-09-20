@@ -10,7 +10,7 @@ text(While in hand , at the end of turn all excess energy is stored in this card
 rarity(10)
 modifiers(retain)
 removetrigger(endofturn, true, 1)
-image("res://Images/UnitArt/IcePrism.png")
+image("res://Images/CardArt/IcePrism.png")
 
 title("Permafrost");
 types(earth, ice)
@@ -40,6 +40,7 @@ trigger(onPlay, do(damage, ($Damage,(ice),(any),$Range)));
 text("Deal $Damage hail damage range $Range. On retain, lower the cost of this card by 1 until played. Retain")
 removetrigger(endofturn, true, 1)
 modifiers(retain)
+types(ice, attack);
 rarity(10)
 
 title("Slide")
@@ -60,3 +61,15 @@ text("At the start of your turn, freeze a card")
 removetrigger(endofturn, true, 7)
 rarity(4)
 
+title("Hailstorm!")
+cost(1)
+$Damage=2
+$Range=40
+$cardnumber=0
+types(ice,  cloud, attack)
+trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
+trigger(onPlay,repeat((do(discard((do(cardAt(Hand,0),true))))),$cardnumber))
+removetrigger(endofturn, true, 1)
+trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(ice,storm),(all, (any), "-friendly"),$Range ))),$cardnumber))))
+rarity(1)
+text("Discard your hand, deal $Damage ice storm damage to all enemies for each card discarded")

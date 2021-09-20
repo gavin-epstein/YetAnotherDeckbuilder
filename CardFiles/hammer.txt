@@ -32,7 +32,7 @@ removetrigger(endofturn, true, 0);
 rarity(5)
 cost(1)
 modifiers(hammer)
-image("res://Images/CardArt/Sledgehammer.png")
+image("res://Images/CardArt/Slegdehammer.png")
 
 title("Wind Hammer");
 cost(1);
@@ -107,7 +107,7 @@ cost(1);
 types(hammer);
 lore(Very impractical)
 rarity(2);
-text("Copy a card in your hand")
+text("Copy a card in your hand. Purge")
 trigger(onPlay, do(create( (select(Hand,true,"Pick a card to copy")),Hand  )))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);

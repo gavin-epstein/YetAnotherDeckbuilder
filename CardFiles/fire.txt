@@ -4,7 +4,7 @@ types(fire, attack)
 $Damage=20
 $Range=2
 text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Burn")
-trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),2,Player)),1)))
+trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),$Range,Player)),1)))
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 rarity(3);
@@ -103,7 +103,7 @@ trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((do(cardAt(Hand,0),true)),Hand))),$cardnumber))
 trigger(onPlay,do(draw($cardnumber)))
 trigger(onPlay,do(gainEnergy($cardnumber)))
-trigger(onPlay, do(voided(self,Play)))
+trigger(onPlay,do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 cost(0);
 image("res://Images/CardArt/Renewal.png");
