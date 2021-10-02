@@ -230,7 +230,7 @@ func discardAll(silent = false):
 		return false
 	var ind =0;
 	var backind = Hand.cards.size()
-	while backind >ind and ind > Hand.cards.size():
+	while backind >ind and ind < Hand.cards.size():
 		var card = Hand.cards[ind]
 		
 		var res =Action("discard", [card, silent], silent);

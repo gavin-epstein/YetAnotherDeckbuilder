@@ -179,6 +179,7 @@ func deepcopy(other)-> Card:
 			#print(val)
 	
 	other.image = self.image
+	other.imageloaded=false
 	other.controller = self.controller
 	if other.modifiers.has("void"):
 		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,.7)

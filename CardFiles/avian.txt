@@ -59,7 +59,7 @@ $Draw=2
 $Range=1
 trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
 trigger(onPlay, do(draw($Draw)));
-text("Deal $Damage stab damage, range $Range.\nDraw $Draw");
+text("Deal $Damage stab damage, range $Range. \n Draw $Draw");
 removetrigger(endofturn, true, 1);
 types(avian,wind);
 rarity(9);

@@ -41,7 +41,8 @@ text("Deal $Damage hail damage range $Range. On retain, lower the cost of this c
 removetrigger(endofturn, true, 1)
 modifiers(retain)
 types(ice, attack);
-rarity(10)
+rarity(10);
+image("res://Images/CardArt/Icicle.png")
 
 title("Slide")
 cost(0)

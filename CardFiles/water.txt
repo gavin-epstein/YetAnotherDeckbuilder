@@ -91,3 +91,12 @@ cost(1)
 removetrigger(endofturn,true,4)
 rarity(6)
 
+title("Mist");
+types("water, wind")
+$Draw=3
+cost(0)
+text("If your draw pile is empty, draw $Draw");
+removetrigger(endofturn,true,1);
+trigger(onPlay, if((countModifier(Hand,any)=0),(do(draw($Draw)))));
+rarity(8);
+

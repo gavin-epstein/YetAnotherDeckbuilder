@@ -73,6 +73,7 @@ trigger(onReaction,do(move(Reaction,Reaction,self)));
 trigger(onReaction, do(addVar(self, DamageTaken, (*, -1, $DamageReduction))));
 removetrigger(endofturn, true, 0);
 rarity(4);
+image("res://Images/CardArt/steadybreathing.png")
 
 title("Boomerang")
 types(wind, attack)
