@@ -671,12 +671,4 @@ trigger(turn, do(Attack(self, player)))
 trigger(turn,( do(gainStrength(tile,2))))
 image("res://Images/UnitArt/DeathWorm.png")
 
-name("Alcolyte of The Void")
-spawnable(any)
-animation("idle","res://Images/UnitArt/AlcolyteSprite.png",(0,1,2,3,4),(1000,1000),(1,5),10)
-health(10)
-strength(2)
-range(40)
-speed(0)
-
 
