@@ -655,6 +655,33 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="BottomMessage" type="Panel" parent="."]
+margin_left = -11.0
+margin_top = 1051.0
+margin_right = 1948.0
+margin_bottom = 1082.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Message" type="RichTextLabel" parent="BottomMessage"]
+margin_left = 10.0
+margin_top = -8.0
+margin_right = 3638.0
+margin_bottom = 176.0
+rect_scale = Vector2( 0.2, 0.2 )
+mouse_filter = 2
+custom_fonts/normal_font = ExtResource( 133 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+bbcode_enabled = true
+bbcode_text = "Pre-release Version 0.0.11. Press ~ to leave feedback"
+text = "Pre-release Version 0.0.11. Press ~ to leave feedback"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="CardController" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
@@ -697,7 +724,7 @@ __meta__ = {
 position = Vector2( 1815.94, 845.736 )
 scale = Vector2( 0.108861, 0.108861 )
 frames = SubResource( 3 )
-frame = 14
+frame = 60
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -767,7 +794,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 50
+frame = 17
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -838,7 +865,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 49
+frame = 16
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -958,7 +985,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 6 )
-frame = 24
+frame = 7
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -991,7 +1018,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 7 )
-frame = 13
+frame = 106
 playing = true
 script = ExtResource( 264 )
 

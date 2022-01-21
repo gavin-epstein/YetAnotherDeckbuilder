@@ -2,6 +2,7 @@ extends Node2D
 const SAVE_NAME = "user://savefile.json"
 const mainscene = preload("res://MainScene.tscn")
 func _ready() -> void:
+	print(Utility.parseCardCode( "trigger(onPlay, if ( $Card,(do(move(Voided,Hand,$Card)))))"))
 	var screensize = OS.get_screen_size()
 	OS.set_window_size(screensize)
 	global.loadSettings()

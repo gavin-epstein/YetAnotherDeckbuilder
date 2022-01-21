@@ -9,5 +9,6 @@ script = ExtResource( 2 )
 [node name="AnimationPlayer" type="AnimatedSprite" parent="."]
 position = Vector2( 500, 500 )
 frames = ExtResource( 1 )
-animation = "None"
+animation = "Ritual"
+frame = 47
 playing = true

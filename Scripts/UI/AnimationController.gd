@@ -32,7 +32,8 @@ func Damage(types, attacker, defender):
 			"Shadow",
 			"Slash",
 			"Stab",
-			"Storm"
+			"Storm",
+			"Ritual"
 		]:
 			anim = type
 		elif type in [

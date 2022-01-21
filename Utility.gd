@@ -160,3 +160,14 @@ static func parsewords(text):
 		words = words.replace("@@","@")
 	words = words.split("@")
 	return words
+
+static func NestedListToString(code)->String:
+	var out = ""
+	if code is Array:
+		out+="("
+		for i in code:
+			out+= NestedListToString(i) + ", "
+		out = out.rstrip(", ") +")"
+	else:
+		out = str(code)
+	return out

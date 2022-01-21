@@ -238,7 +238,7 @@ func takeDamage(amount,types, attacker):
 			break	
 	if default:
 		$Audio.playsound("defaultAttack")
-	if self == controller.Player:
+	if self == controller.Player and amount  > 0:
 		
 		var res = controller.cardController.Action("unheal", [floor(amount)])
 		if res is GDScriptFunctionState:
@@ -255,15 +255,12 @@ func takeDamage(amount,types, attacker):
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
 	if health <= 0:
-		res = get_parent().cardController.triggerAll("death",[self,types,attacker])
-		if res is GDScriptFunctionState:
-			res= yield(res,"completed")
 		if status.has("lifelink"):
 			for unit in get_parent().units:
 				if unit!=null:
 					if unit.title == self.title and unit != self:
 						unit.die(null)
-		die(attacker)
+		die(attacker, types)
 		return [amount,"kill"]
 	else:
 		updateDisplay()
@@ -272,6 +269,8 @@ func takeDamage(amount,types, attacker):
 		res= yield(res,"completed")
 	return [amount]
 func startOfTurn():
+	if status.has("regen"):
+		controller.heal(self, status.get("regen"))
 	if status.has("flaming"):
 		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):
@@ -279,7 +278,7 @@ func startOfTurn():
 	if status.has("fuse"):
 		addStatus("explosive",1)
 	if status.has("bleed"):
-		changeHealth( -1*status.get("bleed"))
+		takeDamage( status.get("bleed"), ["piercing", "bleed"],null);
 		if self.health <=0:
 			die(null)
 	if status.has("stunned"):
@@ -304,10 +303,10 @@ func endOfTurn():
 func statusTickDown():
 	if status.has("fuse") and status.fuse ==1:
 		setStatus("fuse",0)
-		die("fuse")
+		die(null, ["fuse"])
 	if status.has("expire") and status.expire == 1:
 		setStatus("expire",0)
-		die("expire")
+		die(null, ["expire"])
 	for key in status:
 		if status[key] is int:
 			status[key] = status[key]-1
@@ -346,16 +345,19 @@ func updateDisplay():
 		intents=getIntents()
 		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
-func die(attacker):
+func die(attacker, types = []):
 	print(self.title + " dying")
 	if head !=self:
-		head.die(attacker)
+		head.die(attacker, types)
 	if self == controller.Player:
 			print("Intended loss")
 			controller.Lose(attacker)
 			return
 	if self == controller.theVoid:
 			controller.Win()
+	var res1 = get_parent().cardController.triggerAll("death",[self,types,attacker])
+	if res1 is GDScriptFunctionState:
+		res1= yield(res1,"completed")
 	if status.has("boss"):
 		var res = get_parent().cardController.Action("create",["Boss Loot","Hand"])
 		if res is GDScriptFunctionState:
@@ -555,9 +557,12 @@ func getIntents():
 	
 func deepcopy(other):
 	var properties = self.get_property_list()
+	var node2DProps = Node2D.new().get_property_list()
+	for i in range(len(node2DProps)):
+		node2DProps[i] = node2DProps[i].name
 	for prop in properties:
 		var name = prop.name;
-		if name in ["transform","position","rotation","rotation_degrees","scale"]:
+		if name in node2DProps :
 			continue
 		var val = self.get(name);
 		if val is Array or val is Dictionary:

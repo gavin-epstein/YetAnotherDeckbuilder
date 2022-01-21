@@ -2,7 +2,7 @@ title("Waterfall")
 cost(1)
 types(water)
 text("Move all cards in your deck into your discard")
-trigger(onPlay, do(repeat( (  (do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))))
+trigger(onPlay,repeat(   (do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))
 removetrigger(endofturn, true,1)
 rarity(7)
 image("res://Images/CardArt/Waterfall.png")
@@ -15,6 +15,7 @@ trigger(onDraw,do(purge((select(Hand,true,"Pick a card to purge")))))
 removetrigger(endofturn, true,0)
 modifiers(unplayable)
 rarity(2)
+image("res://Images/CardArt/Erosion.png")
 
 title("Dam")
 types(water)
@@ -36,6 +37,7 @@ trigger(shuffle, do(heal($Heal)))
 trigger(shuffle, do(addStatus(maxHealth,$MaxHealth, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
 $Heal=1
 $MaxHealth=1
+image("res://Images/CardArt/BirdBath.png")
 
 title("Raincloud")
 types(water, cloud)
@@ -76,6 +78,7 @@ text("When you play a card, move the top card of your deck to your discard. Disc
 rarity(2)
 cost(0)
 removetrigger(shuffle,true,5);
+image("res://Images/CardArt/AbyssalCurrents.png")
 
 title("Rain Bow");
 types(water, attack);
@@ -86,7 +89,17 @@ trigger(onPlay,do(damage,($Damage,(stab),($Arrows),40)))
 trigger(onPlay,do(setVar(self,Arrows,0)))
 trigger(shuffle,do(addVar(self,Arrows,$Increment)))
 text("Arrows: $Arrows. \nWhen played, spend all arrows to deal $Damage damage to a random enemy at any range per arrow. \nWhile in play, gain $Increment arrows when you shuffle.")
+image("res://Images/CardArt/Rainbow.png")
 cost(1)
 removetrigger(endofturn,true,4)
 rarity(6)
+
+title("Mist");
+types("water, wind")
+$Draw=3
+cost(0)
+text("If your draw pile is empty, draw $Draw");
+removetrigger(endofturn,true,1);
+trigger(onPlay, if((countModifier(Hand,any)=0),(do(draw($Draw)))));
+rarity(8);
 
