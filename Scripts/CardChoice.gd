@@ -6,6 +6,7 @@ const bannedtypes = ["attack", "movement","starter","loot","void"]
 # var b: String = "text"
 var prerigged =1
 var cheston = true
+var choicereport = []
 func _ready() -> void:
 	self.visible = false
 	base_z=100
@@ -28,6 +29,18 @@ func cardClicked(card):
 		get_parent().Hand.updateDisplay()
 		if card.modifiers.has("unique"):
 			get_parent().Library.removeUnique(card.title);
+		if card.types.has("electric"):
+			var makebattery = true
+			for card in get_parent().Play.cards:
+				if card.title == "Battery":
+					makebattery = false
+					break
+			if makebattery:
+				get_parent().createAt("Battery", "Play", 1)
+		var cardlist = []
+		for card in cards:
+			cardlist.append(card.title)
+		choicereport.append([cardlist,card.title])
 		clear()
 	
 func clear():
@@ -73,7 +86,7 @@ func generateReward(rarity, count = 3):
 		var card =  get_parent().Library.getRandomByModifier([],true)
 		self.add_card(card)
 		
-		print(cards[0])
+
 		while cards.size() < count:
 			card  = get_parent().Library.getRandom(rarity, types)
 			var skip = false
@@ -98,8 +111,13 @@ func generateReward(rarity, count = 3):
 		self.visible = true
 		self.updateDisplay()
 
+#skip button
 func _on_Area2D_input_event( event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and cheston:
+		var cardlist = []
+		for card in cards:
+			cardlist.append(card.title)
+		choicereport.append([cardlist,"SKIP"])
 		clear()
 
 

@@ -7,7 +7,10 @@ signal unpaused
 func _input(event: InputEvent) -> void:
 	if get_parent().loaded:		
 		if event.is_action_pressed("escape"):
-			show()
+			if $Back.visible:
+				hide()
+			else:
+				show()
 		elif event.is_action_pressed("error_report"):
 			var error = errortemplate.instance()
 			add_child(error)

@@ -42,7 +42,9 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 		stoppable = silent[1]
 		silent = silent[0]
 	var res
-	#print(method +" "+ Utility.join(" ", argv))
+	if !test:
+		pass
+		#print(method +" "+ Utility.join(" ", argv))
 	if not stoppable:
 		for card in Play.cards:
 			var interres = card.Interrupts(method, argv)
@@ -138,7 +140,7 @@ func endTest():
 	return enemyController.hits + cardController.hits
 	
 func setVar(card, varname, amount):
-	#print("set " + varname + " to " + str(amount) + " on " + card.title)
+	print("set " + varname + " to " + str(amount) + " on " + card.title)
 	if card is Array:
 		if card.size()==0:
 			return false
@@ -171,14 +173,15 @@ func getVar(card, varname):
 		return false
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
-	print("Select input allowed " +str( cardController.inputAllowed))
+	#print("Select input allowed " +str( cardController.inputAllowed))
+	print("Select " + loc + "  "  + str(predicate))
 	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
 		if card.processArgs(predicate, []):
 			card.highlight()
 			selectcount+=1
-	print("selectcount: " + str(selectcount))	
+	#print("selectcount: " + str(selectcount))	
 	if random and num is int: #random
 		var possible = []
 		for card in loc.cards:
@@ -236,13 +239,13 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	if loc is CardPile:
 		loc.display()
 	cardController.updateDisplay()
-	print("Select input allowed " +str( cardController.inputAllowed))
+	#print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
 	if loc is CardPile:
 		loc.undisplay()
-	print("Select input allowed post undisplay " +str( cardController.inputAllowed))
+	#print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 
 func cardClicked(card):

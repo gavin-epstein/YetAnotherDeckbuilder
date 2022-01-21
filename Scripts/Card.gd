@@ -8,6 +8,7 @@ const speed  = 10
 var types = {}
 var text=""
 var image
+var imageloaded = false
 var title
 var modifiers = {}
 var removetype
@@ -22,10 +23,7 @@ var iconsdone = false
 var targetvis=true
 var base_z = 0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	if self.image!=null:
-		$Resizer/CardArt.texture = image
+
 	
 func _process(delta: float) -> void: 
 	#normal movement 
@@ -63,8 +61,9 @@ func hasType(type)->bool:
 	return false
 	
 func hasName(string, exact=false)->bool:
-	print(title +" has " +string+ " "+str(exact))
+	print("checking if " + title +" contains " +string+ " "+str(exact))
 	if exact:
+		print(self.title.to_lower() == string.to_lower())
 		return self.title.to_lower() == string.to_lower()
 	return self.title.to_lower().find(string.to_lower())!=-1
 	
@@ -81,7 +80,8 @@ func loadCardFromString(string):
 		if line.strip_edges() == "" :
 			continue
 		var parsed = Utility.parseCardCode(line)
-		#print(parsed)
+		if(self.title == "Rekindle"):
+			print(parsed)
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
@@ -119,6 +119,9 @@ func loadCardFromString(string):
 	#self.updateDisplay()
 	
 func updateDisplay():
+	if self.image!=null and ! imageloaded :
+		$Resizer/CardArt.texture = image
+		imageloaded = true
 	if tooltips ==null and controller.enemyController!=null:
 		self.generateTooltips()
 	
@@ -166,9 +169,15 @@ func updateDisplay():
 		$Resizer/TypeIcons.generate()
 func deepcopy(other)-> Card:
 	var properties = self.get_property_list()
+	var node2DProps = Node2D.new().get_property_list()
+	for i in range(len(node2DProps)):
+		node2DProps[i] = node2DProps[i].name
 	for prop in properties:
 		var name = prop.name;
+		if name in node2DProps :
+			continue
 		var val = self.get(name);
+		
 		if val is Array or val is Dictionary:
 			other.set(name,val.duplicate(true))
 		elif val == null or not val is Object:
@@ -178,6 +187,7 @@ func deepcopy(other)-> Card:
 			#print(val)
 	
 	other.image = self.image
+	other.imageloaded=false
 	other.controller = self.controller
 	if other.modifiers.has("void"):
 		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,.7)

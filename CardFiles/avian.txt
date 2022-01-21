@@ -42,9 +42,9 @@ title("Birds of a Feather");
 cost(2);
 $CreateCount=0
 $TotalUses=2
-text("Give all friendly units +1/+1. The first $TotalUses times you play this, also add a Flock Together to your hand");
-trigger(onPlay, do(addStatus(maxHealth,1, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
-trigger(onPlay, do(addStatus(strength,1, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
+text("Give all friendly units +2/+2. The first $TotalUses times you play this, also add a Flock Together to your hand");
+trigger(onPlay, do(addStatus(maxHealth,2, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
+trigger(onPlay, do(addStatus(strength,2, (do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(create("Flock Together",Hand))))));
 trigger(onPlay, if( (CreateCount<TotalUses),(do(addVar(self,CreateCount,1)))));
 rarity(1);
@@ -59,7 +59,7 @@ $Draw=2
 $Range=1
 trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
 trigger(onPlay, do(draw($Draw)));
-text("Deal $Damage stab damage, range $Range.\nDraw $Draw");
+text("Deal $Damage stab damage, range $Range. \n Draw $Draw");
 removetrigger(endofturn, true, 1);
 types(avian,wind);
 rarity(9);

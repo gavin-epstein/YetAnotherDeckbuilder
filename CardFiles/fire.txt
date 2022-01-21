@@ -3,7 +3,7 @@ cost(2);
 types(fire, attack)
 $Damage=20
 $Range=2
-text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Burn")
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range 2. Burn")
 trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),2,Player)),1)))
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
@@ -16,7 +16,7 @@ cost("-");
 types(earth,fire,light);
 $Draw=1
 $Energy=1
-text("Unplayable. When burned draw card and gain an energy")
+text("Unplayable. When burned draw a card and gain an energy")
 trigger(onVoided, do(gainEnergy($Energy)))
 trigger(onVoided, do(draw($Draw)))
 rarity(0);
@@ -103,7 +103,7 @@ trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,any)))))
 trigger(onPlay,repeat((do(voided((do(cardAt(Hand,0),true)),Hand))),$cardnumber))
 trigger(onPlay,do(draw($cardnumber)))
 trigger(onPlay,do(gainEnergy($cardnumber)))
-trigger(onPlay, do(voided(self,Play)))
+trigger(onPlay,do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 cost(0);
 image("res://Images/CardArt/Renewal.png");
@@ -166,12 +166,14 @@ title("Rekindle")
 types(fire)
 cost(1);
 #trigger(onPlay,foreach(Loopcard, (select(Voided, true,"-",all)),(do(setVar($Loopcard, RekindleCost, $X)))));
-#trigger(onPlay,do(setVar,(self, card, (do(select(Voided, (if(($Cost<$RekindleCost),(true)))))))));
-trigger(onPlay,do(setVar,(self, card, (do(selectCards(Voided, (not(hasName(self, Rekindle))), "Pick a card to play"))))))
-trigger(onPlay,do(move(Voided,Hand,$card)))
-trigger(onPlay,do(setVar($card,Cost,0)))
-trigger(onPlay,do(play($card)));
+#trigger(onPlay,do(setVar,(self, Card, (do(select(Voided, (if(($Cost<$RekindleCost),(true)))))))));
+trigger(onPlay,do(setVar,(self, Card, (selectCards(Voided,(! hasmod(self, isRekindle)), "Pick a card to play")))))
+#trigger(onPlay,do(setVar,(self, Card, (selectCards(Voided, (not (hasName(self, "Rekindle")))), "Pick a card to play"))))
+trigger(onPlay, if ( $Card,(do(move(Voided,Hand,$Card)))))
+trigger(onPlay, if ( $Card,(do(setVar($Card,Cost,0)))))
+trigger(onPlay, if ( $Card,(do(play($Card)))));
 trigger(onPlay,do(voided(self,Play)));
 text(Play a card other than Rekindle from your burn pile. Burn)
 rarity(5);
+modifiers(isRekindle)
 removetrigger(endofturn,true,0)

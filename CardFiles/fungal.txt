@@ -67,7 +67,7 @@ $Energy=0
 $Maximum=7
 trigger(onPlay,do(gainEnergy($Energy)))
 trigger(onPlay, if(($Energy<$Maximum),(do(addVar(self, Energy,$Increment)))));
-text("Gain $Energy energy. Increase this card's energy gain by $Increment up to a maximum of $Maximum")
+text("Gain $Energy energy. If this card's energy gain is less than $Maximum, increase it by by $Increment")
 removetrigger(endofturn,true,2);
 types(light,fungal)
 rarity(6)

@@ -63,3 +63,15 @@ trigger(onPlay, do(heal($Heal)));
 text("Pull all units $Move towards you. Heal $Heal");
 rarity(7)
 removetrigger(endofturn, true, 1);
+
+title(Moths to a Flame);
+cost(0);
+$Range=40
+$Move=1
+trigger(onPlay, do(setVar(self, TILE, (do(selectTiles((any,(any),empty),$Range,Player,"Pick a place to summon"))))))
+trigger(onPlay, do(summon("Flame",(lastTargets),$Range)))
+trigger(onPlay, do(moveUnits((all,(any),-friendly),40,$TILE,towards,$Move)));
+removetrigger(endofturn, true, 1)
+text("Summon a flame anywhere and pull all enemies towards it")
+rarity(4)
+types(fire, kinetic, summon)

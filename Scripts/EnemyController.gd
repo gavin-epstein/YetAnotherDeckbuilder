@@ -3,6 +3,7 @@ var turncount = 1;
 var totaldifficulty = 0;
 var maxdifficulty = 6;
 var units=[]
+var allunitsspawned = []
 var Player
 var theVoid
 var windDirection = Vector2(0,1).rotated(rand_range(0,2*PI))
@@ -75,6 +76,7 @@ func addUnit(unit, node,head=null):
 		units.push_front(unit)
 	else:
 		units.append(unit)
+	allunitsspawned.append(unit.title)
 	if unit.componentnames.size()>0:
 		for link in unit.linkagenames:
 			var linkname = link[0]
@@ -120,6 +122,11 @@ func move(unit, node):
 			return false
 		else:
 			node = node[0]
+	if unit is Array:
+		if unit.size() ==0:
+			return false
+		else:
+			unit = unit[0]
 	if unit ==null or node == null:
 		return false
 	if unit.has_method("hasOccupant"):
@@ -405,9 +412,15 @@ func Lose(enemy):
 	if enemy !=null:
 		var image = enemy.get_node("Resizer/Image").texture
 		get_node("/root/global").lossImage = image
+	var res = cardController.endGameReport("Loss")
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
 	yield(get_tree().create_timer(.5),"timeout")
+	var res = cardController.endGameReport("Winn")
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():

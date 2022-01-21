@@ -93,6 +93,7 @@ trigger(play, if((hasModifier(argv[0],kitchenknife)),(do(draw($Draw)))));
 text("When you play a kitchen knife draw $Draw");
 removetrigger(endofturn,true,5)
 rarity(2)
+image("res://Images/CardArt/KnifeDrawer.png")
 
 title(Knife Sharpener);
 cost("2");
@@ -112,6 +113,7 @@ trigger(play, if((hasname(argv[0],knife)),(do(gainEnergy($Energy)))));
 text("When you play a card whose name has 'Knife' gain $Energy energy");
 removetrigger(endofturn,true,5)
 rarity(3)
+image("res://Images/CardArt/PolishedBlades.png")
 
 title(Swift Cleave);
 cost(1)
@@ -123,6 +125,7 @@ trigger(onPlay,do(movePlayer($Move)))
 trigger(onPlay, repeat( (do(create("Meat Cleaver",Hand))),$Times))
 removetrigger(endofturn,true,2)
 rarity(4)
+image("res://Images/CardArt/SwiftCleave.png")
 
 title(Knife Forge);
 cost(1)
@@ -132,3 +135,13 @@ removetrigger(endofturn, true,6);
 rarity(5)
 types(knife, fire)
 
+title("Grill Tongs");
+cost(1);
+text("Move any unit to a random tile next to Mora, then add a Spark and a Steak Knife to your hand");
+types(knife, kinetic, fire);
+removetrigger(endofturn, true, 2)
+trigger(onPlay, do(setVar(self, Unit, (do(selectTiles((any,(any),"-Player"),40,Player,"Pick a unit to move"))))));
+trigger(onPlay, enemyDo(move($Unit,(do(selectTiles((1,(any),"empty"),1,Player,"-"))))));
+trigger(onPlay,do(create("Spark", Hand)));
+trigger(onPlay,do(create("Steak Knife", Hand)));
+rarity(3);

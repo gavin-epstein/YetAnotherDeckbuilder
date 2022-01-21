@@ -16,9 +16,13 @@ func Triggered(method, argv):
 		var oldallowed = controller.cardController.inputAllowed
 		controller.cardController.inputAllowed=false
 		for code in triggers[method]:
+		
 			var res = execute(code, argv)
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
+#			if method == "damaged":
+#				print("Method: " + method+"     "+ "code:  " + Utility.NestedListToString(code))
+#				print("Result: "  +str(res))
 			if res and method!="onPlay" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
 		controller.cardController.inputAllowed = oldallowed or controller.cardController.inputAllowed
@@ -109,10 +113,12 @@ func execute(code, argv):
 				if before.size() > 1:
 					before = execute(before, argv)
 					if before is GDScriptFunctionState:
-						before = yield(before, "competed")
-						before  = before.resume()
+						before = yield(before, "completed")
+						#before  = before.resume()
 				else:
 					before = processArgs(before[0],argv)
+					if before is GDScriptFunctionState:
+						before = yield(before, "completed")
 				if after.size() > 1:
 					after = execute(after, argv)
 					if after is GDScriptFunctionState:
@@ -120,11 +126,16 @@ func execute(code, argv):
 						
 				else:
 					after = processArgs(after[0],argv)
+					if after is GDScriptFunctionState:
+						after = yield(after, "completed")
 				if (Utility.type(before) == Utility.type(after)) and ((compsymb == ">" and before > after) or (compsymb == "<" and before<after) or (compsymb == "=" and before == after)):
+					#print("Compare:", before, compsymb, after, "true")
 					var ex = execute(command, argv)
 					if ex is GDScriptFunctionState:
 						ex = yield(ex, "completed")
 					return ex
+				#else:
+					#print("Compare:", before, compsymb, after, "false")
 			else:
 				#no comparator found
 				var cond = processArgs(condition, argv)

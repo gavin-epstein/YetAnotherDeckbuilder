@@ -27,7 +27,7 @@ void draw(){
   image(export,0,0,width, height);
   if (t<2*PI){
     
-    export.save(String.format("frame%03d.png",frame));
+    //export.save(String.format("frame%03d.png",frame));
   }
   t+=.07;  
   frame++;
