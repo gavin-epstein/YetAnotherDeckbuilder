@@ -133,6 +133,8 @@ func renderMesh()-> void:
 	arr[Mesh.ARRAY_TEX_UV] = Vuvs
 	arr[Mesh.ARRAY_NORMAL] = Vnormals
 	arr[Mesh.ARRAY_INDEX] = Vindices
+	#if len(Vverts) == 0:
+	#	print_debug("VVErts");
 	mesh = ArrayMesh.new()
 		# Create mesh surface from mesh array.
 	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
@@ -401,7 +403,7 @@ func loadFromSave(save:Dictionary, parent):
 		add_child(node)
 		var highlight =  highlightTemplate.instance()
 		node.add_child(highlight)
-		self.add_child(highlight)
+		#self.add_child(highlight)
 		highlight.visible = false
 		highlight.name = "Highlight"
 	sentinels =[]

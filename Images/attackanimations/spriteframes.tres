@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=256 format=2]
+[gd_resource type="SpriteFrames" load_steps=310 format=2]
 
 [ext_resource path="res://Images/attackanimations/Bite/frame019.png" type="Texture" id=1]
 [ext_resource path="res://Images/attackanimations/Bite/frame010.png" type="Texture" id=2]
@@ -255,12 +255,106 @@
 [ext_resource path="res://Images/attackanimations/Stab/frame015.png" type="Texture" id=253]
 [ext_resource path="res://Images/attackanimations/Stab/frame018.png" type="Texture" id=254]
 [ext_resource path="res://Images/attackanimations/Stab/frame019.png" type="Texture" id=255]
+[ext_resource path="res://Images/attackanimations/Ritual/frame500.png" type="Texture" id=256]
+[ext_resource path="res://Images/attackanimations/Ritual/frame440.png" type="Texture" id=257]
+[ext_resource path="res://Images/attackanimations/Ritual/frame310.png" type="Texture" id=258]
+[ext_resource path="res://Images/attackanimations/Ritual/frame280.png" type="Texture" id=259]
+[ext_resource path="res://Images/attackanimations/Ritual/frame040.png" type="Texture" id=260]
+[ext_resource path="res://Images/attackanimations/Ritual/frame090.png" type="Texture" id=261]
+[ext_resource path="res://Images/attackanimations/Ritual/frame180.png" type="Texture" id=262]
+[ext_resource path="res://Images/attackanimations/Ritual/frame010.png" type="Texture" id=263]
+[ext_resource path="res://Images/attackanimations/Ritual/frame030.png" type="Texture" id=264]
+[ext_resource path="res://Images/attackanimations/Ritual/frame290.png" type="Texture" id=265]
+[ext_resource path="res://Images/attackanimations/Ritual/frame330.png" type="Texture" id=266]
+[ext_resource path="res://Images/attackanimations/Ritual/frame380.png" type="Texture" id=267]
+[ext_resource path="res://Images/attackanimations/Ritual/frame450.png" type="Texture" id=268]
+[ext_resource path="res://Images/attackanimations/Ritual/frame300.png" type="Texture" id=269]
+[ext_resource path="res://Images/attackanimations/Ritual/frame320.png" type="Texture" id=270]
+[ext_resource path="res://Images/attackanimations/Ritual/frame250.png" type="Texture" id=271]
+[ext_resource path="res://Images/attackanimations/Ritual/frame480.png" type="Texture" id=272]
+[ext_resource path="res://Images/attackanimations/Ritual/frame430.png" type="Texture" id=273]
+[ext_resource path="res://Images/attackanimations/Ritual/frame060.png" type="Texture" id=274]
+[ext_resource path="res://Images/attackanimations/Ritual/frame020.png" type="Texture" id=275]
+[ext_resource path="res://Images/attackanimations/Ritual/frame260.png" type="Texture" id=276]
+[ext_resource path="res://Images/attackanimations/Ritual/frame160.png" type="Texture" id=277]
+[ext_resource path="res://Images/attackanimations/Ritual/frame530.png" type="Texture" id=278]
+[ext_resource path="res://Images/attackanimations/Ritual/frame520.png" type="Texture" id=279]
+[ext_resource path="res://Images/attackanimations/Ritual/frame080.png" type="Texture" id=280]
+[ext_resource path="res://Images/attackanimations/Ritual/frame130.png" type="Texture" id=281]
+[ext_resource path="res://Images/attackanimations/Ritual/frame140.png" type="Texture" id=282]
+[ext_resource path="res://Images/attackanimations/Ritual/frame420.png" type="Texture" id=283]
+[ext_resource path="res://Images/attackanimations/Ritual/frame340.png" type="Texture" id=284]
+[ext_resource path="res://Images/attackanimations/Ritual/frame350.png" type="Texture" id=285]
+[ext_resource path="res://Images/attackanimations/Ritual/frame370.png" type="Texture" id=286]
+[ext_resource path="res://Images/attackanimations/Ritual/frame210.png" type="Texture" id=287]
+[ext_resource path="res://Images/attackanimations/Ritual/frame460.png" type="Texture" id=288]
+[ext_resource path="res://Images/attackanimations/Ritual/frame100.png" type="Texture" id=289]
+[ext_resource path="res://Images/attackanimations/Ritual/frame110.png" type="Texture" id=290]
+[ext_resource path="res://Images/attackanimations/Ritual/frame220.png" type="Texture" id=291]
+[ext_resource path="res://Images/attackanimations/Ritual/frame470.png" type="Texture" id=292]
+[ext_resource path="res://Images/attackanimations/Ritual/frame490.png" type="Texture" id=293]
+[ext_resource path="res://Images/attackanimations/Ritual/frame150.png" type="Texture" id=294]
+[ext_resource path="res://Images/attackanimations/Ritual/frame050.png" type="Texture" id=295]
+[ext_resource path="res://Images/attackanimations/Ritual/frame170.png" type="Texture" id=296]
+[ext_resource path="res://Images/attackanimations/Ritual/frame510.png" type="Texture" id=297]
+[ext_resource path="res://Images/attackanimations/Ritual/frame000.png" type="Texture" id=298]
+[ext_resource path="res://Images/attackanimations/Ritual/frame070.png" type="Texture" id=299]
+[ext_resource path="res://Images/attackanimations/Ritual/frame200.png" type="Texture" id=300]
+[ext_resource path="res://Images/attackanimations/Ritual/frame360.png" type="Texture" id=301]
+[ext_resource path="res://Images/attackanimations/Ritual/frame390.png" type="Texture" id=302]
+[ext_resource path="res://Images/attackanimations/Ritual/frame410.png" type="Texture" id=303]
+[ext_resource path="res://Images/attackanimations/Ritual/frame400.png" type="Texture" id=304]
+[ext_resource path="res://Images/attackanimations/Ritual/frame120.png" type="Texture" id=305]
+[ext_resource path="res://Images/attackanimations/Ritual/frame190.png" type="Texture" id=306]
+[ext_resource path="res://Images/attackanimations/Ritual/frame230.png" type="Texture" id=307]
+[ext_resource path="res://Images/attackanimations/Ritual/frame240.png" type="Texture" id=308]
+[ext_resource path="res://Images/attackanimations/Ritual/frame270.png" type="Texture" id=309]
 
 [resource]
 animations = [ {
 "frames": [ ExtResource( 128 ), ExtResource( 98 ), ExtResource( 78 ), ExtResource( 92 ), ExtResource( 129 ), ExtResource( 95 ), ExtResource( 70 ), ExtResource( 62 ), ExtResource( 144 ), ExtResource( 145 ), ExtResource( 90 ), ExtResource( 110 ), ExtResource( 84 ), ExtResource( 130 ), ExtResource( 148 ), ExtResource( 149 ), ExtResource( 65 ), ExtResource( 121 ), ExtResource( 139 ), ExtResource( 140 ) ],
 "loop": false,
 "name": "Light",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 298 ), ExtResource( 263 ), ExtResource( 275 ), ExtResource( 264 ), ExtResource( 260 ), ExtResource( 295 ), ExtResource( 274 ), ExtResource( 299 ), ExtResource( 280 ), ExtResource( 261 ), ExtResource( 289 ), ExtResource( 290 ), ExtResource( 305 ), ExtResource( 281 ), ExtResource( 282 ), ExtResource( 294 ), ExtResource( 277 ), ExtResource( 296 ), ExtResource( 262 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 287 ), ExtResource( 291 ), ExtResource( 307 ), ExtResource( 308 ), ExtResource( 271 ), ExtResource( 276 ), ExtResource( 309 ), ExtResource( 259 ), ExtResource( 265 ), ExtResource( 269 ), ExtResource( 258 ), ExtResource( 270 ), ExtResource( 266 ), ExtResource( 284 ), ExtResource( 285 ), ExtResource( 301 ), ExtResource( 286 ), ExtResource( 267 ), ExtResource( 302 ), ExtResource( 304 ), ExtResource( 303 ), ExtResource( 283 ), ExtResource( 273 ), ExtResource( 257 ), ExtResource( 268 ), ExtResource( 288 ), ExtResource( 292 ), ExtResource( 272 ), ExtResource( 293 ), ExtResource( 256 ), ExtResource( 297 ), ExtResource( 279 ), ExtResource( 278 ) ],
+"loop": true,
+"name": "Ritual",
+"speed": 45.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "None",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 131 ), ExtResource( 136 ), ExtResource( 142 ), ExtResource( 105 ), ExtResource( 143 ), ExtResource( 94 ), ExtResource( 83 ), ExtResource( 96 ), ExtResource( 76 ), ExtResource( 85 ), ExtResource( 71 ), ExtResource( 122 ), ExtResource( 116 ), ExtResource( 100 ), ExtResource( 119 ), ExtResource( 73 ), ExtResource( 106 ), ExtResource( 77 ), ExtResource( 108 ), ExtResource( 117 ) ],
+"loop": true,
+"name": "Fire",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 223 ), ExtResource( 224 ), ExtResource( 181 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 180 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 233 ), ExtResource( 207 ), ExtResource( 204 ), ExtResource( 234 ), ExtResource( 194 ), ExtResource( 188 ), ExtResource( 235 ), ExtResource( 183 ) ],
+"loop": false,
+"name": "Storm",
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 135 ), ExtResource( 146 ), ExtResource( 120 ), ExtResource( 154 ), ExtResource( 80 ), ExtResource( 61 ), ExtResource( 75 ), ExtResource( 155 ), ExtResource( 81 ), ExtResource( 82 ), ExtResource( 66 ), ExtResource( 114 ), ExtResource( 59 ), ExtResource( 93 ), ExtResource( 104 ), ExtResource( 91 ), ExtResource( 88 ), ExtResource( 101 ) ],
+"loop": false,
+"name": "Moss",
+"speed": 15.0
+}, {
+"frames": [ ExtResource( 250 ), ExtResource( 252 ), ExtResource( 249 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 237 ), ExtResource( 247 ), ExtResource( 246 ), ExtResource( 245 ), ExtResource( 248 ), ExtResource( 243 ), ExtResource( 244 ), ExtResource( 242 ), ExtResource( 239 ), ExtResource( 241 ), ExtResource( 253 ), ExtResource( 240 ), ExtResource( 238 ), ExtResource( 254 ), ExtResource( 255 ) ],
+"loop": false,
+"name": "Stab",
+"speed": 50.0
+}, {
+"frames": [ ExtResource( 67 ), ExtResource( 63 ), ExtResource( 97 ), ExtResource( 58 ), ExtResource( 153 ), ExtResource( 99 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 127 ), ExtResource( 126 ), ExtResource( 118 ), ExtResource( 74 ), ExtResource( 152 ), ExtResource( 134 ), ExtResource( 141 ), ExtResource( 111 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 147 ), ExtResource( 68 ) ],
+"loop": false,
+"name": "Kinetic",
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 36 ), ExtResource( 32 ), ExtResource( 21 ), ExtResource( 37 ), ExtResource( 35 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 30 ), ExtResource( 23 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 34 ), ExtResource( 27 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 26 ) ],
+"loop": false,
+"name": "Crush",
 "speed": 30.0
 }, {
 "frames": [ ExtResource( 10 ), ExtResource( 13 ), ExtResource( 20 ), ExtResource( 14 ), ExtResource( 16 ), ExtResource( 7 ), ExtResource( 17 ), ExtResource( 9 ), ExtResource( 18 ), ExtResource( 8 ), ExtResource( 2 ), ExtResource( 15 ), ExtResource( 11 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 19 ), ExtResource( 12 ), ExtResource( 1 ) ],
@@ -292,39 +386,4 @@ animations = [ {
 "loop": false,
 "name": "Fungal",
 "speed": 20.0
-}, {
-"frames": [ ExtResource( 223 ), ExtResource( 224 ), ExtResource( 181 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 180 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 233 ), ExtResource( 207 ), ExtResource( 204 ), ExtResource( 234 ), ExtResource( 194 ), ExtResource( 188 ), ExtResource( 235 ), ExtResource( 183 ) ],
-"loop": false,
-"name": "Storm",
-"speed": 20.0
-}, {
-"frames": [ ExtResource( 131 ), ExtResource( 136 ), ExtResource( 142 ), ExtResource( 105 ), ExtResource( 143 ), ExtResource( 94 ), ExtResource( 83 ), ExtResource( 96 ), ExtResource( 76 ), ExtResource( 85 ), ExtResource( 71 ), ExtResource( 122 ), ExtResource( 116 ), ExtResource( 100 ), ExtResource( 119 ), ExtResource( 73 ), ExtResource( 106 ), ExtResource( 77 ), ExtResource( 108 ), ExtResource( 117 ) ],
-"loop": true,
-"name": "Fire",
-"speed": 30.0
-}, {
-"frames": [ ExtResource( 67 ), ExtResource( 63 ), ExtResource( 97 ), ExtResource( 58 ), ExtResource( 153 ), ExtResource( 99 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 127 ), ExtResource( 126 ), ExtResource( 118 ), ExtResource( 74 ), ExtResource( 152 ), ExtResource( 134 ), ExtResource( 141 ), ExtResource( 111 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 147 ), ExtResource( 68 ) ],
-"loop": false,
-"name": "Kinetic",
-"speed": 20.0
-}, {
-"frames": [ ExtResource( 36 ), ExtResource( 32 ), ExtResource( 21 ), ExtResource( 37 ), ExtResource( 35 ), ExtResource( 38 ), ExtResource( 33 ), ExtResource( 30 ), ExtResource( 23 ), ExtResource( 28 ), ExtResource( 25 ), ExtResource( 22 ), ExtResource( 34 ), ExtResource( 27 ), ExtResource( 24 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 26 ) ],
-"loop": false,
-"name": "Crush",
-"speed": 30.0
-}, {
-"frames": [ ExtResource( 135 ), ExtResource( 146 ), ExtResource( 120 ), ExtResource( 154 ), ExtResource( 80 ), ExtResource( 61 ), ExtResource( 75 ), ExtResource( 155 ), ExtResource( 81 ), ExtResource( 82 ), ExtResource( 66 ), ExtResource( 114 ), ExtResource( 59 ), ExtResource( 93 ), ExtResource( 104 ), ExtResource( 91 ), ExtResource( 88 ), ExtResource( 101 ) ],
-"loop": false,
-"name": "Moss",
-"speed": 15.0
-}, {
-"frames": [ ExtResource( 250 ), ExtResource( 252 ), ExtResource( 249 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 237 ), ExtResource( 247 ), ExtResource( 246 ), ExtResource( 245 ), ExtResource( 248 ), ExtResource( 243 ), ExtResource( 244 ), ExtResource( 242 ), ExtResource( 239 ), ExtResource( 241 ), ExtResource( 253 ), ExtResource( 240 ), ExtResource( 238 ), ExtResource( 254 ), ExtResource( 255 ) ],
-"loop": false,
-"name": "Stab",
-"speed": 50.0
-}, {
-"frames": [  ],
-"loop": true,
-"name": "None",
-"speed": 5.0
 } ]

@@ -65,8 +65,10 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 
-		#Hand.add_card(Library.getCardByName("Sparkplug"))
-#		Deck.add_card(Library.getCardByName("Coal"))
+		#Hand.add_card(Library.getCardByName("Berserk"))
+#		Hand.add_card(Library.getCardByName("Bellows"))
+#		Deck.add_card(Library.getCardByName("Rekindle"))
+#		Deck.add_card(Library.getCardByName("Rekindle"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
 		step = Action("draw",[5])
@@ -380,7 +382,7 @@ func create(card, loc,spawner=null,silent=false):
 	loc.add_card(added)
 	added.updateDisplay()
 	if not silent:
-		var res = added.Triggered("onCreate",[added,loc])
+		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
 					res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
@@ -406,7 +408,7 @@ func createAt(card, loc, pos, spawner=null,silent=false):
 	loc.add_card_at(added,pos)
 	added.updateDisplay()
 	if not silent:
-		var res = added.Triggered("onCreate",[added,loc])
+		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
 					res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
@@ -420,7 +422,7 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 		added.moveTo(spawner.get_global_transform().get_origin(),Vector2(.2,.2))
 	loc.add_card(added)
 	if not silent:
-		var res = added.Triggered("onCreate",[added,loc])
+		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
 					res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
@@ -624,7 +626,7 @@ func consume():
 	var theVoid = enemyController.theVoid
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
-			thing.die(theVoid)
+			thing.die(theVoid, ["void"])
 	if enemyController.Player.tile == consumed:
 		enemyController.Player.die(theVoid)
 	map.destroyNodeAndSpawn(consumed)

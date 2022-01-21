@@ -84,7 +84,7 @@ title(Void of Silence);
 cost(-);
 types(void);
 trigger(onRemoveFromPlay,do(devoidAll()));
-trigger(onCreate,if((argv[0]=self),(do(devoidAll()))));
+trigger(created,do(devoidAll()));
 trigger(onRemoveFromPlay,do(createByMod,((void), Play),true));;
 trigger(onRemoveFromPlay,do(voidshift()));
 trigger(onRemoveFromPlay,do(setStatus(stealth,false,(do(selectTiles( (all,(any),boss),40,Player))))))

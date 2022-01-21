@@ -39,3 +39,14 @@ text("Whenever you lose health, heal $Heal afterwards")
 cost(2)
 removetrigger(unheal, true, 8)
 rarity(5)
+
+title("Double Edged Blade")
+types(blood)
+$Blood=2
+$Status=5
+$Range=2
+trigger(onPlay,do(unheal($Blood)))
+cost(1)
+trigger(onPlay, do(addStatus(bleed,$Status, (do(selectTiles( (any,(any),any),$Range,Player))))))
+text("Lose $Blood health. Apply $Status Bleed to any unit range $Range")
+removetrigger(endofturn, true, 1)

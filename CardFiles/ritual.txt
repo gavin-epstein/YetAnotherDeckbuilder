@@ -185,6 +185,7 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, gain $Status rage and discard this card from play")
 cost(1);
 rarity(7);
+image("res://Images/CardArt/WrathRite.png")
 
 title("Hidden Ceremony")
 types(ritual,assassin)
@@ -211,10 +212,10 @@ text("Deal $Damage backstab damage range $Range. Slay: create $CreateCount sigil
 title("Doubling Sigil")
 types(ritual)
 modifiers(sigil)
-text(On remove from play, add a random sigil to play and purge)
+text(When created, add a random sigil to play. On remove from play, purge)
 cost(-)
 rarity(0)
-trigger(onPlay, do(createByMod((sigil), Play)))
+trigger(created,  do(createByMod((sigil), Play)))
 trigger(onRemoveFromPlay, do(purge(self)));
 removetrigger(endofturn, true, 3)
 image("res://Images/CardArt/DoublingSigil.png")
@@ -236,8 +237,8 @@ text(While in play temporarily gain $maxhealth max health. On remove from play, 
 cost(-)
 rarity(0)
 $maxhealth=3
-trigger(onCreate, do(gainMaxHealth($maxhealth))))
-trigger(onRemoveFromPlay, do(gainMaxHealth((*,-1,$maxhealth))))
+trigger(created, do(gainMaxHealth($maxhealth)))
+trigger(onRemoveFromPlay, do(gainMaxHealth((*,"-1",$maxhealth))))
 trigger(onRemoveFromPlay, do(purge(self)));
 removetrigger(endofturn, true, 3)
 image("res://Images/CardArt/HeartSigil.png")
@@ -249,8 +250,8 @@ text(While in play temporarily gain $amount strength.On remove from play, purge)
 cost(-)
 rarity(0)
 $amount=1
-trigger(onCreate, enemyDo(gainStrength(Player,$amount)))
-trigger(onRemoveFromPlay, enemyDo(gainStrength(Player,(*,-1,$amount))))
+trigger(created,enemyDo(gainStrength(Player,$amount)))
+trigger(onRemoveFromPlay, enemyDo(gainStrength(Player,(*,"-1",$amount))))
 trigger(onRemoveFromPlay, do(purge(self)));
 removetrigger(endofturn, true, 3)
 image("res://Images/CardArt/StrengthSigil.png")

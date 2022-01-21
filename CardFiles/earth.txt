@@ -138,5 +138,5 @@ trigger(onPlay,do(addStatus(stealth,$Status)))
 trigger(onPlay, repeat( (do(createAt("Coal",Deck,0))),$Repeat));
 text("Gain $Status stealth. Add $Repeat Coal cards on top of your deck");
 removetrigger(endofturn, true, 1);
-rarity(2)
+rarity(3)
 image("res://Images/CardArt/CoalSmoke.png")

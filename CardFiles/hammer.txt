@@ -53,7 +53,7 @@ types(fungal,hammer)
 $Increment=1
 trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Increment)),"Pick a card to upgrade")),Increment,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Permanently add $Increment to the increase of a non eternal card in play.\nPurge");
+text("Permanently add $Increment to the amount a card in play permantently increases any value.\nPurge");
 removetrigger(endofturn, true, 0);
 cost(1);
 modifiers(hammer)
@@ -153,11 +153,12 @@ image("res://Images/CardArt/HeroicFeat.png")
 title("Spirit Feast")
 cost(0);
 rarity(0);
-types(hammer,rage)
+types(hammer,food)
 $MaxHealth=25
-text("Gain $MaxHealth max health and heal to full")
+$Heal=50
+text("Gain $MaxHealth max health and heal $Heal")
 trigger(onPlay, do(gainMaxHealth($MaxHealth)))
-trigger(onPlay, do(heal(do(getStatus(Player,maxHealth)))))
+trigger(onPlay, do(heal($Heal)));
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn,true,0);
 modifiers(bossReward)

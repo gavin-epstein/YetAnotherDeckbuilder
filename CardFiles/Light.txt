@@ -39,6 +39,7 @@ text("Gain X armor");
 types("light");
 removetrigger(endofturn, true, 4);
 rarity(6);
+image("res://Images/CardArt/ClothedinLight.png")
 
 title("Self Immolate");
 types(fire,light)
@@ -133,6 +134,7 @@ trigger(onPlay, do(addStatus(dazzled,$X,(do(selectTiles( (all,(any),-friendly),4
 trigger(onPlay, do(moveUnits((all,(any),-Player),40,Player,away,$X)));
 removetrigger(endofturn,true,2)
 rarity(6)
+image("res://Images/CardArt/BrightBanishment.png");
 
 title("Divine Intervention")
 cost(10)

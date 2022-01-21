@@ -91,8 +91,13 @@ func loadFromString(string):
 			self.verticaloffset = parsed[1][0]
 func deepcopy(other):
 	var properties = self.get_property_list()
+	var node2DProps = Node2D.new().get_property_list()
+	for i in range(len(node2DProps)):
+		node2DProps[i] = node2DProps[i].name
 	for prop in properties:
 		var name = prop.name;
+		if name in node2DProps :
+			continue
 		var val = self.get(name);
 		if val is Array or val is Dictionary:
 			other.set(name,val.duplicate(true))
