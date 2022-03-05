@@ -50,6 +50,7 @@ trigger(onPlay, do(addStatus(thorns,(*,$Thorns, $X))));
 text("Gain $Block X block and $Thorns X thorns");
 removetrigger(endofturn, true, 1)
 rarity(5)
+image("res://Images/CardArt/Thornburst.png")
 
 title(Reactus)
 cost(0)

@@ -228,6 +228,7 @@ func gainMaxHealth(unit,amount):
 		unit.changeHealth(amount)
 		unit.updateDisplay()
 func gainStrength(unit,amount):
+	print ("gainstrength", units)
 	var units
 	if not unit is Array:
 		units = [unit]
@@ -238,7 +239,8 @@ func gainStrength(unit,amount):
 			if unit.occupants.size()>0:
 				unit = unit.occupants[0]
 			else:
-				continue		
+				continue	
+		print(unit.title)
 		unit.strength+=amount
 		unit.updateDisplay()
 	return true
@@ -405,7 +407,8 @@ func clearAllStatuses(tiles = "Player"):
 	for tile in tiles:
 		for unit in tile.occupants:
 			for stat in unit.status:
-				unit.setStatus(stat, 0)
+				if unit.status[stat]!=true and stat!="gatheringpower":
+					unit.setStatus(stat, 0)
 	
 func Lose(enemy):
 	yield(get_tree().create_timer(.5),"timeout")

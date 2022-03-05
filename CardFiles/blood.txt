@@ -40,7 +40,7 @@ cost(2)
 removetrigger(unheal, true, 8)
 rarity(5)
 
-title("Double Edged Blade")
+title("Double Edged Sword")
 types(blood)
 $Blood=2
 $Status=5

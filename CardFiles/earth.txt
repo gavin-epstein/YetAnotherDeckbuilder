@@ -131,7 +131,7 @@ image("res://Images/CardArt/DustDevil.png")
 
 title("Coal Smoke");
 cost(0);
-types(earth,fire,assasin);
+types(earth,fire,assassin);
 $Repeat=5
 $Status=1
 trigger(onPlay,do(addStatus(stealth,$Status)))
@@ -140,3 +140,13 @@ text("Gain $Status stealth. Add $Repeat Coal cards on top of your deck");
 removetrigger(endofturn, true, 1);
 rarity(3)
 image("res://Images/CardArt/CoalSmoke.png")
+
+title("Plow");
+cost(0)
+types(earth)
+$Draw=1
+trigger(onPlay,do(draw($Draw)));
+trigger(onPlay,do(move(Hand, Deck, ((select(Hand,true,"pick a card to topdeck")),Hand), 0)));
+text("Draw $Draw, then put a card from your hand on top of your deck")
+rarity(10);
+removetrigger(endofturn, true, 1);

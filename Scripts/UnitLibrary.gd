@@ -20,6 +20,7 @@ func Load() -> void:
 	loadtooltips("res://Units/tooltips.txt")
 	loadintenttooltips("res://Images/IntentIcons/intentTooltips.txt")
 	loadLinkagesFromFile("res://UnitFiles/linkages01.txt")
+	
 func getRandomEnemy(difficulty, terrain):
 	if  difficulty  <10 and (rand_range(0,difficulty) < 1):
 		return null
@@ -32,7 +33,37 @@ func getRandomEnemy(difficulty, terrain):
 				possible.append(unit)
 	if possible.size() > 0:
 		var other  = unittemplate.instance()
-		return possible[randi() % possible.size()].deepcopy(other)
+		var enemy = possible[randi() % possible.size()].deepcopy(other)
+		if (not enemy.trap) and enemy.getStatus("neutral")==0:
+			var curdif = enemy.difficulty
+			var maxdif = rand_range(.75,1)*difficulty
+			while curdif < maxdif:
+				var mod = Utility.choice( ["armor", "health", "strength", "rage", "explosive","stoneskin","regen"])
+				if mod == "armor":
+					enemy.armor+=1
+					curdif+=.75
+				if mod == "health":
+					enemy.health+=1
+					curdif += .33
+				if mod == "strength":
+					enemy.strength +=1
+					curdif +=1
+				if mod =="rage":
+					enemy.addStatus("rage", 3)
+					curdif +=.8
+				if mod == "explosive":
+					enemy.addStatus("explosive", 5)
+					curdif += .25
+				if mod == "stoneskin":
+					enemy.addStatus("stoneskin", true)
+					enemy.block+=5
+					curdif += 1.5
+				if mod == "regen":
+					enemy.addStatus("regen", 2)
+					curdif += .66
+						
+			enemy.difficulty = curdif	
+		return enemy
 	else:
 		return null
 func loadIcons(dirname, dictname):
@@ -101,8 +132,8 @@ func loadtooltips(fname):
 		return
 	while not f.eof_reached():
 		var line = f.get_line()
-		if line.find(":") != -1:
-			line = line.split(":")
+		if line.find("|") != -1:
+			line = line.split("|")
 			tooltips[line[0]] = Utility.join(":",Array(line).slice(1, line.size()-1))
 	f.close()
 func getToolTipByName(word:String):

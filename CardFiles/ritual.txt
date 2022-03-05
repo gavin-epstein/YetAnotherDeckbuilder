@@ -175,6 +175,7 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
 cost(1);
 rarity(4);
+image("res://Images/CardArt/DemonWings.png")
 
 title("Wrath Rite")
 types(ritual,rage)

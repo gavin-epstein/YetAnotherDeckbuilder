@@ -29,7 +29,7 @@ __meta__ = {
 }
 
 [node name="MoraLantern" type="Sprite" parent="."]
-position = Vector2( 142.03, 0.831848 )
+position = Vector2( 127.877, -4.82928 )
 texture = ExtResource( 1 )
 centered = false
 

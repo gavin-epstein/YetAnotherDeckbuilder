@@ -12,8 +12,8 @@ title(Feather Cloak);
 types(cloud,avian);
 cost(2);
 $Armor=1
-trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), $Armor)));
-trigger(onDiscard,do(armor,((+,2,$Armor)),false));
+trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), (+,2,$Armor))));
+trigger(onDiscard,do(armor,($Armor),false));
 text("On Discard: gain $Armor armor. On Play: give (+,2,$Armor) armor to all allies");
 rarity(5);
 removetrigger(endofturn,true,3);

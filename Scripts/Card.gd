@@ -81,7 +81,8 @@ func loadCardFromString(string):
 			continue
 		var parsed = Utility.parseCardCode(line)
 		if(self.title == "Rekindle"):
-			print(parsed)
+			pass
+#			print(parsed)
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))

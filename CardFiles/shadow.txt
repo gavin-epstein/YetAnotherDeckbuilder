@@ -165,6 +165,7 @@ trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife)
 text("When you create a shadow, also get a kitchen knife, and vice versa")
 removetrigger(onCreate,(+,(hasModifier(argv[0],kitchenknife)),(hasModifier(argv[0],shadow))),10);
 rarity(2)
+image("res://Images/CardArt/Knivesinthedark.png");
 
 title(Piercing Root);
 types(shadow, fungal,attack);
@@ -212,3 +213,10 @@ text("When you play a card, add 1 corrupt to a random enemy")
 removetrigger(endofturn, true, 3)
 rarity(5)
 image("res://Images/CardArt/SpreadingCorruption.png");
+
+##title("Recall");
+##cost(0);
+##types(shadow);
+##text("Return the last card in play, other than Recall, to your hand");
+##trigger(onPlay,do(move(
+

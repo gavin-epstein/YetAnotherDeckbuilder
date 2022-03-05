@@ -61,6 +61,7 @@ trigger(startofturn, do(addModifier( (select(Hand,true,"pick a card to freeze (R
 text("At the start of your turn, freeze a card")
 removetrigger(endofturn, true, 7)
 rarity(4)
+image("res://Images/CardArt/Refridgerator.png")
 
 title("Hailstorm!")
 cost(1)

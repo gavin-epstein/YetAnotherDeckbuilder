@@ -1,6 +1,7 @@
 extends "res://Scripts/Controller.gd"
 const testmode = false
 const testtype = "shadow"
+const knockbackdamage = 2
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
@@ -65,7 +66,7 @@ func Load(parent)-> void:
 		$Reaction.add_card(Library.getCardByName("Endure"))
 #		#Test Cards
 
-		#Hand.add_card(Library.getCardByName("Berserk"))
+#		Hand.add_card(Library.getCardByName("Gasoline"))
 #		Hand.add_card(Library.getCardByName("Bellows"))
 #		Deck.add_card(Library.getCardByName("Rekindle"))
 #		Deck.add_card(Library.getCardByName("Rekindle"))
@@ -563,6 +564,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		if tile.size() ==0:
 			return false
 		tile = tile[0]
+	if direction is String and direction == "away":
+		enemies.invert(); #hopefully stops traffic jams
 	for enemy in enemies:
 		if direction is String and direction == "any":
 			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
@@ -583,7 +586,10 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 				var nextDest = map.getTileInDirection(dest,dir)
 				if !nextDest.sentinel and nextDest.occupants.size() ==0:
 					dest = nextDest
-				else:
+				else:				
+					enemy.occupants[0].takeDamage(knockbackdamage, "knockback", null)
+					for unit in nextDest.occupants:
+						unit.takeDamage(knockbackdamage, "knockback", null)
 					break
 			if enemy.occupants.size()>0:
 				enemyController.move(enemy.occupants[0],dest)
@@ -626,6 +632,7 @@ func consume():
 	var theVoid = enemyController.theVoid
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
+			thing.tile=null
 			thing.die(theVoid, ["void"])
 	if enemyController.Player.tile == consumed:
 		enemyController.Player.die(theVoid)
@@ -769,12 +776,18 @@ func triggerCard(trigger, card, argv=[]):
 		return false
 	card.Triggered(trigger, argv)
 func charge(amount):
-	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
-	battery.vars["$Battery"] = min(battery.vars["$MaxBattery"], battery.vars["$MaxBattery"] + amount )
-	return true
-func deplete(amount):
-	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
-	if battery.vars["$Battery"] < amount:
+	if $Battery.capacity > $Battery.charge + amount:
+		$Battery.charge = min( $Battery.capacity, $Battery.charge + amount);
+		$Battery.updateDisplay()
+		return true
+	else:
 		return false
-	battery.vars.Battery = battery.vars.Battery  - amount
+func deplete(amount):
+	if $Battery.charge < amount:
+		return false
+	$Battery.charge = $Battery.charge  - amount
+	$Battery.updateDisplay()
 	return true
+func overcharge(amount):
+	$Battery.capacity += amount
+	$Battery.updateDisplay()

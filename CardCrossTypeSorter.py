@@ -12,13 +12,13 @@ class Trie():
     def __init__(self):
         self.branches = {}
         self.cards = []
-    def add(self,card,types):
+    def add(self,card,types, image):
         if len(types) ==0:
-            self.cards.append(card)
+            self.cards.append((card,image))
             return
         if types[0] not in self.branches:
             self.branches[types[0]] = Trie()
-        self.branches[types[0]].add(card,types[1:])
+        self.branches[types[0]].add(card,types[1:], image)
     def get(self,types):
         if len(types) ==0:
             return self.cards
@@ -29,6 +29,7 @@ class Trie():
 
 def read_text_file(file_path,trie,alltypes):
     card=""
+    image = False
     types=[]
     with open(file_path, 'r') as f:
         for line in f:
@@ -40,13 +41,16 @@ def read_text_file(file_path,trie,alltypes):
                         types.append(t.strip().strip('"'))
                         alltypes[t.strip().strip('"')]=True
                     types.sort()
+                elif line.startswith("image"):
+                    image = True
                 elif line.strip()=="":
                     if card !="":
-                      trie.add(card,types)
+                      trie.add(card,types, image)
                     card = ""
+                    image = False
                     types =[]
         if card !="":
-            trie.add(card,types)
+            trie.add(card,types,image)
 def pickrandom(trie,alltypes):
     types =[]
     type1 = random.choice(list(alltypes.keys()))
@@ -79,10 +83,15 @@ def main():
     alltypes.pop("starter");
     alltypes.pop("void")
     alltypes.pop("evil")
+    alltypes.pop("typeless")
     while True:
         types, cards = pickrandom(trie,alltypes)
+        for card in cards:
+            if card[1] == False:
+                print( card[0])
+                return
         if len(cards) == 0:
             print(types)
-            break
+            #break
 
 main()

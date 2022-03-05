@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=310 format=2]
+[gd_resource type="SpriteFrames" load_steps=330 format=2]
 
 [ext_resource path="res://Images/attackanimations/Bite/frame019.png" type="Texture" id=1]
 [ext_resource path="res://Images/attackanimations/Bite/frame010.png" type="Texture" id=2]
@@ -309,6 +309,26 @@
 [ext_resource path="res://Images/attackanimations/Ritual/frame230.png" type="Texture" id=307]
 [ext_resource path="res://Images/attackanimations/Ritual/frame240.png" type="Texture" id=308]
 [ext_resource path="res://Images/attackanimations/Ritual/frame270.png" type="Texture" id=309]
+[ext_resource path="res://Images/attackanimations/Beam/frame005.png" type="Texture" id=310]
+[ext_resource path="res://Images/attackanimations/Beam/frame012.png" type="Texture" id=311]
+[ext_resource path="res://Images/attackanimations/Beam/frame009.png" type="Texture" id=312]
+[ext_resource path="res://Images/attackanimations/Beam/frame003.png" type="Texture" id=313]
+[ext_resource path="res://Images/attackanimations/Beam/frame006.png" type="Texture" id=314]
+[ext_resource path="res://Images/attackanimations/Beam/frame017.png" type="Texture" id=315]
+[ext_resource path="res://Images/attackanimations/Beam/frame007.png" type="Texture" id=316]
+[ext_resource path="res://Images/attackanimations/Beam/frame008.png" type="Texture" id=317]
+[ext_resource path="res://Images/attackanimations/Beam/frame002.png" type="Texture" id=318]
+[ext_resource path="res://Images/attackanimations/Beam/frame015.png" type="Texture" id=319]
+[ext_resource path="res://Images/attackanimations/Beam/frame001.png" type="Texture" id=320]
+[ext_resource path="res://Images/attackanimations/Beam/frame010.png" type="Texture" id=321]
+[ext_resource path="res://Images/attackanimations/Beam/frame011.png" type="Texture" id=322]
+[ext_resource path="res://Images/attackanimations/Beam/frame013.png" type="Texture" id=323]
+[ext_resource path="res://Images/attackanimations/Beam/frame000.png" type="Texture" id=324]
+[ext_resource path="res://Images/attackanimations/Beam/frame019.png" type="Texture" id=325]
+[ext_resource path="res://Images/attackanimations/Beam/frame004.png" type="Texture" id=326]
+[ext_resource path="res://Images/attackanimations/Beam/frame016.png" type="Texture" id=327]
+[ext_resource path="res://Images/attackanimations/Beam/frame014.png" type="Texture" id=328]
+[ext_resource path="res://Images/attackanimations/Beam/frame018.png" type="Texture" id=329]
 
 [resource]
 animations = [ {
@@ -316,6 +336,11 @@ animations = [ {
 "loop": false,
 "name": "Light",
 "speed": 30.0
+}, {
+"frames": [ ExtResource( 223 ), ExtResource( 224 ), ExtResource( 181 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 180 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 233 ), ExtResource( 207 ), ExtResource( 204 ), ExtResource( 234 ), ExtResource( 194 ), ExtResource( 188 ), ExtResource( 235 ), ExtResource( 183 ) ],
+"loop": false,
+"name": "Storm",
+"speed": 20.0
 }, {
 "frames": [ ExtResource( 298 ), ExtResource( 263 ), ExtResource( 275 ), ExtResource( 264 ), ExtResource( 260 ), ExtResource( 295 ), ExtResource( 274 ), ExtResource( 299 ), ExtResource( 280 ), ExtResource( 261 ), ExtResource( 289 ), ExtResource( 290 ), ExtResource( 305 ), ExtResource( 281 ), ExtResource( 282 ), ExtResource( 294 ), ExtResource( 277 ), ExtResource( 296 ), ExtResource( 262 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 287 ), ExtResource( 291 ), ExtResource( 307 ), ExtResource( 308 ), ExtResource( 271 ), ExtResource( 276 ), ExtResource( 309 ), ExtResource( 259 ), ExtResource( 265 ), ExtResource( 269 ), ExtResource( 258 ), ExtResource( 270 ), ExtResource( 266 ), ExtResource( 284 ), ExtResource( 285 ), ExtResource( 301 ), ExtResource( 286 ), ExtResource( 267 ), ExtResource( 302 ), ExtResource( 304 ), ExtResource( 303 ), ExtResource( 283 ), ExtResource( 273 ), ExtResource( 257 ), ExtResource( 268 ), ExtResource( 288 ), ExtResource( 292 ), ExtResource( 272 ), ExtResource( 293 ), ExtResource( 256 ), ExtResource( 297 ), ExtResource( 279 ), ExtResource( 278 ) ],
 "loop": true,
@@ -332,20 +357,20 @@ animations = [ {
 "name": "Fire",
 "speed": 30.0
 }, {
-"frames": [ ExtResource( 223 ), ExtResource( 224 ), ExtResource( 181 ), ExtResource( 225 ), ExtResource( 226 ), ExtResource( 227 ), ExtResource( 228 ), ExtResource( 229 ), ExtResource( 180 ), ExtResource( 230 ), ExtResource( 231 ), ExtResource( 232 ), ExtResource( 233 ), ExtResource( 207 ), ExtResource( 204 ), ExtResource( 234 ), ExtResource( 194 ), ExtResource( 188 ), ExtResource( 235 ), ExtResource( 183 ) ],
+"frames": [ ExtResource( 196 ), ExtResource( 177 ), ExtResource( 203 ), ExtResource( 200 ), ExtResource( 209 ), ExtResource( 187 ), ExtResource( 199 ), ExtResource( 197 ), ExtResource( 201 ), ExtResource( 182 ), ExtResource( 202 ), ExtResource( 213 ), ExtResource( 185 ), ExtResource( 190 ), ExtResource( 198 ), ExtResource( 191 ), ExtResource( 186 ), ExtResource( 193 ), ExtResource( 220 ), ExtResource( 189 ) ],
 "loop": false,
-"name": "Storm",
+"name": "Slash",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 173 ), ExtResource( 156 ), ExtResource( 172 ), ExtResource( 164 ), ExtResource( 174 ), ExtResource( 165 ), ExtResource( 175 ), ExtResource( 157 ), ExtResource( 159 ), ExtResource( 170 ), ExtResource( 161 ), ExtResource( 169 ), ExtResource( 162 ), ExtResource( 163 ), ExtResource( 168 ), ExtResource( 160 ), ExtResource( 171 ), ExtResource( 158 ), ExtResource( 166 ), ExtResource( 167 ) ],
+"loop": false,
+"name": "Piercing",
+"speed": 30.0
+}, {
+"frames": [ ExtResource( 60 ), ExtResource( 115 ), ExtResource( 123 ), ExtResource( 132 ), ExtResource( 86 ), ExtResource( 133 ), ExtResource( 150 ), ExtResource( 64 ), ExtResource( 89 ), ExtResource( 124 ), ExtResource( 125 ), ExtResource( 137 ), ExtResource( 138 ), ExtResource( 112 ), ExtResource( 79 ), ExtResource( 107 ), ExtResource( 151 ), ExtResource( 113 ), ExtResource( 87 ), ExtResource( 109 ) ],
+"loop": false,
+"name": "Fungal",
 "speed": 20.0
-}, {
-"frames": [ ExtResource( 135 ), ExtResource( 146 ), ExtResource( 120 ), ExtResource( 154 ), ExtResource( 80 ), ExtResource( 61 ), ExtResource( 75 ), ExtResource( 155 ), ExtResource( 81 ), ExtResource( 82 ), ExtResource( 66 ), ExtResource( 114 ), ExtResource( 59 ), ExtResource( 93 ), ExtResource( 104 ), ExtResource( 91 ), ExtResource( 88 ), ExtResource( 101 ) ],
-"loop": false,
-"name": "Moss",
-"speed": 15.0
-}, {
-"frames": [ ExtResource( 250 ), ExtResource( 252 ), ExtResource( 249 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 237 ), ExtResource( 247 ), ExtResource( 246 ), ExtResource( 245 ), ExtResource( 248 ), ExtResource( 243 ), ExtResource( 244 ), ExtResource( 242 ), ExtResource( 239 ), ExtResource( 241 ), ExtResource( 253 ), ExtResource( 240 ), ExtResource( 238 ), ExtResource( 254 ), ExtResource( 255 ) ],
-"loop": false,
-"name": "Stab",
-"speed": 50.0
 }, {
 "frames": [ ExtResource( 67 ), ExtResource( 63 ), ExtResource( 97 ), ExtResource( 58 ), ExtResource( 153 ), ExtResource( 99 ), ExtResource( 72 ), ExtResource( 69 ), ExtResource( 127 ), ExtResource( 126 ), ExtResource( 118 ), ExtResource( 74 ), ExtResource( 152 ), ExtResource( 134 ), ExtResource( 141 ), ExtResource( 111 ), ExtResource( 102 ), ExtResource( 103 ), ExtResource( 147 ), ExtResource( 68 ) ],
 "loop": false,
@@ -367,23 +392,23 @@ animations = [ {
 "name": "CrushLong",
 "speed": 30.0
 }, {
+"frames": [ ExtResource( 250 ), ExtResource( 252 ), ExtResource( 249 ), ExtResource( 251 ), ExtResource( 236 ), ExtResource( 237 ), ExtResource( 247 ), ExtResource( 246 ), ExtResource( 245 ), ExtResource( 248 ), ExtResource( 243 ), ExtResource( 244 ), ExtResource( 242 ), ExtResource( 239 ), ExtResource( 241 ), ExtResource( 253 ), ExtResource( 240 ), ExtResource( 238 ), ExtResource( 254 ), ExtResource( 255 ) ],
+"loop": false,
+"name": "Stab",
+"speed": 50.0
+}, {
 "frames": [ ExtResource( 210 ), ExtResource( 178 ), ExtResource( 211 ), ExtResource( 205 ), ExtResource( 221 ), ExtResource( 192 ), ExtResource( 217 ), ExtResource( 219 ), ExtResource( 216 ), ExtResource( 215 ), ExtResource( 184 ), ExtResource( 206 ), ExtResource( 214 ), ExtResource( 195 ), ExtResource( 208 ), ExtResource( 179 ), ExtResource( 222 ), ExtResource( 176 ), ExtResource( 218 ), ExtResource( 212 ) ],
 "loop": false,
 "name": "Shadow",
 "speed": 20.0
 }, {
-"frames": [ ExtResource( 196 ), ExtResource( 177 ), ExtResource( 203 ), ExtResource( 200 ), ExtResource( 209 ), ExtResource( 187 ), ExtResource( 199 ), ExtResource( 197 ), ExtResource( 201 ), ExtResource( 182 ), ExtResource( 202 ), ExtResource( 213 ), ExtResource( 185 ), ExtResource( 190 ), ExtResource( 198 ), ExtResource( 191 ), ExtResource( 186 ), ExtResource( 193 ), ExtResource( 220 ), ExtResource( 189 ) ],
+"frames": [ ExtResource( 135 ), ExtResource( 146 ), ExtResource( 120 ), ExtResource( 154 ), ExtResource( 80 ), ExtResource( 61 ), ExtResource( 75 ), ExtResource( 155 ), ExtResource( 81 ), ExtResource( 82 ), ExtResource( 66 ), ExtResource( 114 ), ExtResource( 59 ), ExtResource( 93 ), ExtResource( 104 ), ExtResource( 91 ), ExtResource( 88 ), ExtResource( 101 ) ],
 "loop": false,
-"name": "Slash",
-"speed": 30.0
+"name": "Moss",
+"speed": 15.0
 }, {
-"frames": [ ExtResource( 173 ), ExtResource( 156 ), ExtResource( 172 ), ExtResource( 164 ), ExtResource( 174 ), ExtResource( 165 ), ExtResource( 175 ), ExtResource( 157 ), ExtResource( 159 ), ExtResource( 170 ), ExtResource( 161 ), ExtResource( 169 ), ExtResource( 162 ), ExtResource( 163 ), ExtResource( 168 ), ExtResource( 160 ), ExtResource( 171 ), ExtResource( 158 ), ExtResource( 166 ), ExtResource( 167 ) ],
-"loop": false,
-"name": "Piercing",
-"speed": 30.0
-}, {
-"frames": [ ExtResource( 60 ), ExtResource( 115 ), ExtResource( 123 ), ExtResource( 132 ), ExtResource( 86 ), ExtResource( 133 ), ExtResource( 150 ), ExtResource( 64 ), ExtResource( 89 ), ExtResource( 124 ), ExtResource( 125 ), ExtResource( 137 ), ExtResource( 138 ), ExtResource( 112 ), ExtResource( 79 ), ExtResource( 107 ), ExtResource( 151 ), ExtResource( 113 ), ExtResource( 87 ), ExtResource( 109 ) ],
-"loop": false,
-"name": "Fungal",
-"speed": 20.0
+"frames": [ ExtResource( 324 ), ExtResource( 320 ), ExtResource( 318 ), ExtResource( 313 ), ExtResource( 326 ), ExtResource( 310 ), ExtResource( 314 ), ExtResource( 316 ), ExtResource( 317 ), ExtResource( 312 ), ExtResource( 321 ), ExtResource( 322 ), ExtResource( 311 ), ExtResource( 323 ), ExtResource( 328 ), ExtResource( 319 ), ExtResource( 327 ), ExtResource( 315 ), ExtResource( 329 ), ExtResource( 325 ) ],
+"loop": true,
+"name": "Beam",
+"speed": 5.0
 } ]

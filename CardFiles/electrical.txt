@@ -1,27 +1,24 @@
-title("Battery")
-cost(0)
-$Battery=0
-$MaxBattery=4
-trigger(charge, do(setVar, self, Cost, $Battery))
-trigger(deplete, do(setVar, self, Cost, $Battery))
-types(electric)
-modifiers(eternal)
-rarity(0)
-text($Battery / $MaxBattery);
-removetrigger(never, never, never)
-
 title("Power Pack")
 $Deplete=1
 $Charge=2
-$Block=9
+$Block=12
 cost(1)
 trigger(onPlay, do(setVar(self, dothething, 0)))
 trigger(onPlay, if( (do(deplete($Deplete))), (do(setVar(self, dothething,1)))))
-trigger(onPlay, if( ($dothething>0)),(do(block($Block))))
-trigger(onPlay, if( ($dothething<1)),(do(charge($Charge))))
+trigger(onPlay, if( ($dothething>0),(do(block($Block)))))
+trigger(onPlay, if( ($dothething<1),(do(charge($Charge)))))
 text("If you have less than $Deplete battery, charge $Charge, otherwise deplete $Deplete and block $Block")
 rarity(7)
 removetrigger(endofturn, true, 1)
 types(electric)
 
-
+title("Overcharge")
+$Charge=2
+trigger(onPlay(do(overcharge($Charge))))
+trigger(onPlay(do(charge($Charge))))
+trigger(onRemoveFromPlay(do(overcharge((*,-1,$Charge)))))
+text("Charge $Charge.\n While in play gain $Charge max battery")
+removetrigger(endofturn, true, 4)
+types(electric)
+rarity(10);
+cost(0);

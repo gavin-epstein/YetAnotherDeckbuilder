@@ -19,6 +19,7 @@ text("Deal $Damage piercing backstab damage at range $Range.")
 removetrigger(endofturn,true,1)
 trigger(onPlay, do(damage, ($Damage,(piercing,backstab),(any),$Range),true))
 rarity(8)
+image("res://Images/CardArt/Stiletto.png")
 
 title("Slow Poison")
 types(attack,assassin)
@@ -29,6 +30,7 @@ text("When this is discarded from play, deal $Damage backstab damage at range $R
 removetrigger(endofturn,true,3)
 trigger(onRemoveFromPlay,do(damage, ($Damage,(backstab),(any),$Range),true))
 rarity(6)
+image("res://Images/CardArt/SlowPoison.png")
 
 title("Sneak up")
 cost(1);

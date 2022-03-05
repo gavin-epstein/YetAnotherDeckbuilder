@@ -140,7 +140,7 @@ func endTest():
 	return enemyController.hits + cardController.hits
 	
 func setVar(card, varname, amount):
-	print("set " + varname + " to " + str(amount) + " on " + card.title)
+#	print("set " + varname + " to " + str(amount) + " on " + card.title)
 	if card is Array:
 		if card.size()==0:
 			return false

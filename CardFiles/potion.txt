@@ -69,6 +69,7 @@ trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
 types(assassin,potion);
+image("res://Images/CardArt/InvisibilityPotion.png")
 
 title("Thorn Flask")
 cost(0)
@@ -85,9 +86,9 @@ title("Gasoline")
 cost(0)
 types(attack, potion)
 $Damage=9
-$Range=3
-trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),$Range,Player)),1)))
-text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range $Range. Purge. Retain")
+trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),3,Player)),1)))
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range 3. Purge. Retain")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,retain);
+image("res://Images/CardArt/Gasoline.png")

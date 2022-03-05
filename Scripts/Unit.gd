@@ -25,13 +25,14 @@ var _imagescale
 var lore
 var debug
 var mouseon
-var head
+var head = self
 var components=[]
 var componentnames=[]
 var links=[]
 var linkagenames = []
 var intents=[]
 var skipturn
+var dead = false
 var movementPolicy="Spring"
 signal animateHealthChange
 const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
@@ -346,6 +347,7 @@ func updateDisplay():
 		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker, types = []):
+	self.dead = true
 	print(self.title + " dying")
 	if head !=self:
 		head.die(attacker, types)
@@ -386,7 +388,8 @@ func die(attacker, types = []):
 
 	
 	self.visible = false
-	tile.occupants.erase(self)
+	if tile!=null:
+		tile.occupants.erase(self)
 	if get_parent().units.find(self)==-1:
 		
 		print(self.title + " failed to die well")
@@ -470,6 +473,7 @@ func getStatus(stat)->int:
 	
 func loadUnitFromString(string):
 	$Resizer/AnimatedSprite.visible = false
+	var newframes = false
 	var lines = string.split(";")
 	for line in lines:
 		if line == "" or line == " ":
@@ -510,6 +514,9 @@ func loadUnitFromString(string):
 		elif parsed[0] == "trap":
 			trap = true
 		elif parsed[0] == "animation":
+			if !newframes:
+				$Resizer/AnimatedSprite.frames = SpriteFrames.new()
+				newframes = true
 			callv("loadAnimation", parsed[1])
 			$Resizer/Image.visible = false
 			$Resizer/AnimatedSprite.visible = true
@@ -526,7 +533,14 @@ func loadUnitFromString(string):
 		elif parsed[0] =="event":
 			vars["eventCount"] = parsed[1][0]
 			vars["lastTurnSpawned"] = 0
+	if title == "Void Alcolyte":
+		pass
+		#print(triggers)
 func getIntents():
+	if self.dead:
+		return []
+	if self.status.has("stunned"):
+		return ["Stunned"]
 	if not triggers.has("turn"):
 		return []
 	var oldvars = vars.duplicate(true)

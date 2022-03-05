@@ -1,4 +1,4 @@
-[gd_scene load_steps=443 format=2]
+[gd_scene load_steps=444 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -423,6 +423,7 @@
 [ext_resource path="res://Images/CardArt/CardBackReaction/frame020.png" type="Texture" id=421]
 [ext_resource path="res://Images/CardArt/CardBackReaction/frame006.png" type="Texture" id=422]
 [ext_resource path="res://Images/UIArt/Eye.png" type="Texture" id=423]
+[ext_resource path="res://Images/UIArt/Battery.tscn" type="PackedScene" id=424]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 269 )
@@ -724,7 +725,7 @@ __meta__ = {
 position = Vector2( 1815.94, 845.736 )
 scale = Vector2( 0.108861, 0.108861 )
 frames = SubResource( 3 )
-frame = 60
+frame = 31
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Reaction"]
@@ -794,7 +795,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 17
+frame = 86
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -865,7 +866,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 4 )
-frame = 16
+frame = 85
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -985,7 +986,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 6 )
-frame = 7
+frame = 41
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -1018,7 +1019,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 7 )
-frame = 106
+frame = 49
 playing = true
 script = ExtResource( 264 )
 
@@ -1076,6 +1077,12 @@ color = Color( 1, 1, 1, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Battery" parent="CardController" instance=ExtResource( 424 )]
+visible = false
+position = Vector2( 1610.85, 973.309 )
+rotation = 1.5708
+scale = Vector2( 0.25, 0.25 )
 
 [node name="EndTurn" type="Sprite" parent="CardController"]
 position = Vector2( 1468.75, 835.998 )

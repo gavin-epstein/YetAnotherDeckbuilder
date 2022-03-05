@@ -30,13 +30,7 @@ func cardClicked(card):
 		if card.modifiers.has("unique"):
 			get_parent().Library.removeUnique(card.title);
 		if card.types.has("electric"):
-			var makebattery = true
-			for card in get_parent().Play.cards:
-				if card.title == "Battery":
-					makebattery = false
-					break
-			if makebattery:
-				get_parent().createAt("Battery", "Play", 1)
+			get_node("../Battery").visible = true
 		var cardlist = []
 		for card in cards:
 			cardlist.append(card.title)

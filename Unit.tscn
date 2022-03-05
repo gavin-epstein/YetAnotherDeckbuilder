@@ -30,12 +30,12 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.05, 0.95 ), Vector2( 1, 1 ) ]
 }
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
 "frames": [  ],
 "loop": true,
 "name": "default",
-"speed": 20.0
+"speed": 5.0
 } ]
 
 [sub_resource type="StyleBoxFlat" id=3]
@@ -87,7 +87,7 @@ __meta__ = {
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Resizer"]
 position = Vector2( 0, -249.721 )
-frames = SubResource( 2 )
+frames = SubResource( 5 )
 
 [node name="Image" type="Sprite" parent="Resizer"]
 position = Vector2( 0, -254.729 )
