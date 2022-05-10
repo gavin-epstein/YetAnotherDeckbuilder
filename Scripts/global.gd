@@ -44,3 +44,19 @@ func loadSettings():
 				animationspeed = save.animation_speed
 				emit_signal("animspeedchanged", animationspeed)
 
+func endGameReport(state:String, bodyjson:String):
+	yield(get_tree().create_timer(1),"timeout")
+	print("Submitting")
+	var http_request = HTTPRequest.new()
+	add_child(http_request)
+	http_request.connect("request_completed", self, "_onResponse")
+	
+	var error = http_request.request("https://moraandtheendoftheworld.com/winlosereports.php?result="+state, ["Content-type:text/plain"], true, HTTPClient.METHOD_POST, bodyjson)
+	if error != OK:
+		print("An error occurred in the HTTP request.")
+	print(error)
+	#get_tree().paused=false
+	yield(http_request,"request_completed")
+func _onResponse(result, response_code, headers, body):
+	print("Response:   ")
+	print(body.get_string_from_utf8())

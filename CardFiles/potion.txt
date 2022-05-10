@@ -2,17 +2,17 @@ title("Bottled Breeze");
 cost(0)
 rarity(2);
 trigger(onPlay,do(draw(10)));
-text("Draw until your hand is full.Retain. Purge")
+text("Draw until your hand is full.Frozen. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 types(wind,potion);
 image("res://Images/CardArt/BottledBreeze.png")
 
 title("Katachronophlogiston");
 types(fire,potion);
-text("Purge your hand. Retain.\nPurge");
-modifiers(potion,retain);
+text("Purge your hand. Frozen.\nPurge");
+modifiers(potion,frozen);
 trigger(onPlay, repeat((do(purge((select(Hand,true,"-",1,true))))),10));
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
@@ -25,10 +25,10 @@ cost(0);
 $Heal=20
 trigger(onPlay,do(heal($Heal)))
 trigger(onPlay, do(purge(self)));
-text("Heal $Heal . Retain.\n Purge.");
+text("Heal $Heal . Frozen.\n Purge.");
 types(food, potion);
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 rarity(3);
 image("res://Images/CardArt/Soup.png")
 
@@ -37,10 +37,10 @@ cost(0);
 rarity(2);
 $Energy=4
 trigger(onPlay,do(gainEnergy($Energy)));
-text("Gain $Energy energy.Retain. Purge")
+text("Gain $Energy energy.Frozen. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 types(light,potion);
 image("res://Images/CardArt/PotionOfLight.png")
 
@@ -55,7 +55,7 @@ trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick another card 
 text("Draw $Draw, Set the cost of $Repeat cards in hand to 0 until played .Retain. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 types(shadow,potion);
 image("res://Images/CardArt/ShadowPhial.png")
 
@@ -64,10 +64,10 @@ cost(0);
 rarity(3);
 $Status=1
 trigger(onPlay, do(addStatus(stealth, $Status)))
-text("Gain 1 stealth. Retain. Purge")
+text("Gain 1 stealth. Frozen. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 types(assassin,potion);
 image("res://Images/CardArt/InvisibilityPotion.png")
 
@@ -78,17 +78,18 @@ $Thorns=8
 trigger(onPlay,do(addStatus(thorns,$Thorns)))
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 types(cactus,potion);
-text("Gain $Thorns Thorns. Purge. Retain")
+text("Gain $Thorns Thorns. Purge. Frozen")
+image("res://Images/CardArt/Thornflask.png")
 
 title("Gasoline")
 cost(0)
 types(attack, potion)
 $Damage=9
 trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),3,Player)),1)))
-text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range 3. Purge. Retain")
+text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range 3. Purge. Frozen")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
-modifiers(potion,retain);
+modifiers(potion,frozen);
 image("res://Images/CardArt/Gasoline.png")

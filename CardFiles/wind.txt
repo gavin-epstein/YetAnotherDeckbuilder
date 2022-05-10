@@ -55,7 +55,7 @@ title("Sacred Breath");
 types(wind);
 modifiers(eternal,unique);
 removetrigger(never, true,0);
-cost(2);
+cost(1);
 text("Increase your maximum hand size by 2");
 trigger(onPlay, do(addhandsize(2)));
 rarity(1);
@@ -66,12 +66,10 @@ types(wind, reaction);
 cost(0)
 $Draw=1
 $DamageReduction= 2
-text(Add this to your reaction pile. On reaction, reducing incoming damage by $DamageReduction, draw $Draw, and shuffle this back into your reaction pile)
-trigger(onPlay, do(move(Play, Reaction, self)))
+text(The next time you are attacked, reducing incoming damage by $DamageReduction and draw $Draw);
 trigger(onReaction, do(draw($Draw)))
-trigger(onReaction,do(move(Reaction,Reaction,self)));
 trigger(onReaction, do(addVar(self, DamageTaken, (*, -1, $DamageReduction))));
-removetrigger(endofturn, true, 0);
+removetrigger(onReaction, true, 1);
 rarity(4);
 image("res://Images/CardArt/steadybreathing.png")
 
@@ -79,14 +77,17 @@ title("Boomerang")
 types(wind, attack)
 $Damage=5
 $Range=40
-cost(1)
+cost(0)
 $DrawTotal=6
 $Drawn=1
 trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range)));
 trigger(draw,do(addVar(self, Drawn, argv[0])));
-trigger(draw,if(($Drawn > $DrawTotal),(do(move(Play,Deck,self,0)))));
-trigger(draw,if(($Drawn > $DrawTotal),do(setVar(self, Drawn, 1))));
+trigger(draw,if(($Drawn > $DrawTotal),(do(move(Play,Hand,self,0)))));
+trigger(draw,if(($Drawn > $DrawTotal),(do(setVar(self, Drawn, 1)))));
 trigger(draw, do(setVar(self, removecount, (+, -1, (+,(*,-1,Drawn),$DrawTotal)))))
-text("Deal $Damage slash damage at any range. When you draw $removecount more cards, put this on top of your deck")
+text("Deal $Damage slash damage at any range. When you draw $removecount more cards, put this in your hand")
 removetrigger(draw, false, 6)
+image("res://Images/CardArt/Boomerang.png")
 rarity(7);
+
+#unceasing top

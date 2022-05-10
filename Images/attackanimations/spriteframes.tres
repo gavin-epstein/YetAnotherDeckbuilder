@@ -342,15 +342,15 @@ animations = [ {
 "name": "Storm",
 "speed": 20.0
 }, {
-"frames": [ ExtResource( 298 ), ExtResource( 263 ), ExtResource( 275 ), ExtResource( 264 ), ExtResource( 260 ), ExtResource( 295 ), ExtResource( 274 ), ExtResource( 299 ), ExtResource( 280 ), ExtResource( 261 ), ExtResource( 289 ), ExtResource( 290 ), ExtResource( 305 ), ExtResource( 281 ), ExtResource( 282 ), ExtResource( 294 ), ExtResource( 277 ), ExtResource( 296 ), ExtResource( 262 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 287 ), ExtResource( 291 ), ExtResource( 307 ), ExtResource( 308 ), ExtResource( 271 ), ExtResource( 276 ), ExtResource( 309 ), ExtResource( 259 ), ExtResource( 265 ), ExtResource( 269 ), ExtResource( 258 ), ExtResource( 270 ), ExtResource( 266 ), ExtResource( 284 ), ExtResource( 285 ), ExtResource( 301 ), ExtResource( 286 ), ExtResource( 267 ), ExtResource( 302 ), ExtResource( 304 ), ExtResource( 303 ), ExtResource( 283 ), ExtResource( 273 ), ExtResource( 257 ), ExtResource( 268 ), ExtResource( 288 ), ExtResource( 292 ), ExtResource( 272 ), ExtResource( 293 ), ExtResource( 256 ), ExtResource( 297 ), ExtResource( 279 ), ExtResource( 278 ) ],
-"loop": true,
-"name": "Ritual",
-"speed": 45.0
-}, {
 "frames": [  ],
 "loop": true,
 "name": "None",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 298 ), ExtResource( 263 ), ExtResource( 275 ), ExtResource( 264 ), ExtResource( 260 ), ExtResource( 295 ), ExtResource( 274 ), ExtResource( 299 ), ExtResource( 280 ), ExtResource( 261 ), ExtResource( 289 ), ExtResource( 290 ), ExtResource( 305 ), ExtResource( 281 ), ExtResource( 282 ), ExtResource( 294 ), ExtResource( 277 ), ExtResource( 296 ), ExtResource( 262 ), ExtResource( 306 ), ExtResource( 300 ), ExtResource( 287 ), ExtResource( 291 ), ExtResource( 307 ), ExtResource( 308 ), ExtResource( 271 ), ExtResource( 276 ), ExtResource( 309 ), ExtResource( 259 ), ExtResource( 265 ), ExtResource( 269 ), ExtResource( 258 ), ExtResource( 270 ), ExtResource( 266 ), ExtResource( 284 ), ExtResource( 285 ), ExtResource( 301 ), ExtResource( 286 ), ExtResource( 267 ), ExtResource( 302 ), ExtResource( 304 ), ExtResource( 303 ), ExtResource( 283 ), ExtResource( 273 ), ExtResource( 257 ), ExtResource( 268 ), ExtResource( 288 ), ExtResource( 292 ), ExtResource( 272 ), ExtResource( 293 ), ExtResource( 256 ), ExtResource( 297 ), ExtResource( 279 ), ExtResource( 278 ) ],
+"loop": true,
+"name": "Ritual",
+"speed": 45.0
 }, {
 "frames": [ ExtResource( 131 ), ExtResource( 136 ), ExtResource( 142 ), ExtResource( 105 ), ExtResource( 143 ), ExtResource( 94 ), ExtResource( 83 ), ExtResource( 96 ), ExtResource( 76 ), ExtResource( 85 ), ExtResource( 71 ), ExtResource( 122 ), ExtResource( 116 ), ExtResource( 100 ), ExtResource( 119 ), ExtResource( 73 ), ExtResource( 106 ), ExtResource( 77 ), ExtResource( 108 ), ExtResource( 117 ) ],
 "loop": true,
@@ -410,5 +410,5 @@ animations = [ {
 "frames": [ ExtResource( 324 ), ExtResource( 320 ), ExtResource( 318 ), ExtResource( 313 ), ExtResource( 326 ), ExtResource( 310 ), ExtResource( 314 ), ExtResource( 316 ), ExtResource( 317 ), ExtResource( 312 ), ExtResource( 321 ), ExtResource( 322 ), ExtResource( 311 ), ExtResource( 323 ), ExtResource( 328 ), ExtResource( 319 ), ExtResource( 327 ), ExtResource( 315 ), ExtResource( 329 ), ExtResource( 325 ) ],
 "loop": true,
 "name": "Beam",
-"speed": 5.0
+"speed": 30.0
 } ]

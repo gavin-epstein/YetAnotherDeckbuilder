@@ -183,6 +183,8 @@ func Summon(tile, unitname):
 			var unit = $UnitLibrary.getUnitByName(unitname)		
 			addUnit(unit, tile)
 func Attack(attacker, target,types = [],damage = -1):
+	if types is String: #failsafe
+		types= [types]
 	if attacker!=null:
 		attacker = attacker.head
 	if target  == null:
@@ -297,6 +299,8 @@ func heal(unit, amount):
 	else:
 		units= unit
 	for unit in units:
+		if !unit.has_method("isUnit") and unit.occupants.size() > 0:
+			unit = unit.occupants[0]
 		amount = min(amount,unit.maxHealth - unit.health )
 		unit.changeHealth(amount)	
 		if unit.health <=0:
@@ -411,19 +415,19 @@ func clearAllStatuses(tiles = "Player"):
 					unit.setStatus(stat, 0)
 	
 func Lose(enemy):
-	yield(get_tree().create_timer(.5),"timeout")
+	yield(get_tree().create_timer(.1),"timeout")
 	if enemy !=null:
 		var image = enemy.get_node("Resizer/Image").texture
 		get_node("/root/global").lossImage = image
 	var res = cardController.endGameReport("Loss")
-	if res is GDScriptFunctionState:
-		yield(res, "completed")
+	#if res is GDScriptFunctionState:
+	#	yield(res, "completed")
 	get_tree().change_scene("res://Images/UIArt/LoseScreen.tscn")
 func Win():
-	yield(get_tree().create_timer(.5),"timeout")
+	yield(get_tree().create_timer(.1),"timeout")
 	var res = cardController.endGameReport("Winn")
-	if res is GDScriptFunctionState:
-		yield(res, "completed")
+#	if res is GDScriptFunctionState:
+#		yield(res, "completed")
 	get_tree().change_scene("res://Images/UIArt/WinScreen.tscn")
 
 func pickConsumed():

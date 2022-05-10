@@ -58,6 +58,7 @@ static func addtoDict(results:Dictionary, key, val):
 	
 	results[key].append(val)
 	return results
+#adds dict2 entries to dict2
 static func extendDict(dict1:Dictionary, dict2:Dictionary):
 	for key in dict2.keys():
 		if dict2[key] is Array:

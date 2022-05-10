@@ -37,6 +37,7 @@ func on_animation_speed_change(val):
 	pausetime = val
 func Action(method:String, argv:Array,silent = false) -> bool:
 	var interrupted = false
+	#stoppable is really "unstoppable"
 	var stoppable = silent
 	if silent is Array:
 		stoppable = silent[1]
@@ -171,10 +172,12 @@ func addVar(card, varname, amount):
 func getVar(card, varname):
 	if card == null:
 		return false
+	if varname=="title":
+		return card.title
 	return card.vars["$"+varname];
 func selectCards(loc, predicate,message,num = 1,random=false):
 	#print("Select input allowed " +str( cardController.inputAllowed))
-	print("Select " + loc + "  "  + str(predicate))
+	#print("Select " + loc + "  "  + str(predicate))
 	loc = cardController.get_node(loc)
 	var selectcount = 0
 	for card in loc.cards:
@@ -202,6 +205,7 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 				possible.append(card)
 		if possible.size()>0:
 			cardClicked(possible[0])
+		#print(possible)
 		return possible
 	#otherwise select 1.
 	#if only 1 is available return it
@@ -257,8 +261,6 @@ func cardClicked(card):
 	for card in cardController.Play.cards:
 		card.dehighlight()
 	for card in cardController.Deck.cards:
-		card.dehighlight()
-	for card in cardController.Reaction.cards:
 		card.dehighlight()
 	for card in cardController.Voided.cards:
 		card.dehighlight()
@@ -334,6 +336,10 @@ func getStatus(tile, statname) -> int:
 func countTypes(loc, type) ->  int:
 	if loc == "Energy":
 		return cardController.Energy
+	elif loc == "Battery":
+		return cardController.get_node("Battery").charge
+	elif loc == "MaxBattery":
+		return cardController.get_node("Battery").capacity
 	loc = cardController.get_node(loc)
 	var count = 0
 	for card in loc.cards:

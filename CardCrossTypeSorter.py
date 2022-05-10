@@ -31,10 +31,14 @@ def read_text_file(file_path,trie,alltypes):
     card=""
     image = False
     types=[]
+    totalcards=0
+    totalimages=0
     with open(file_path, 'r') as f:
         for line in f:
                 if line.startswith("title") or line.startswith("name"):
-                   card = line.split("(")[1].split(")")[0]
+                    card = line.split("(")[1].split(")")[0]
+                   # print(card.strip('"'), end = "|")
+                    totalcards+=1
                 elif line.startswith("types"):
                     intypes = line.split("(")[1].split(")")[0].split(",")
                     for t in intypes:
@@ -43,6 +47,7 @@ def read_text_file(file_path,trie,alltypes):
                     types.sort()
                 elif line.startswith("image"):
                     image = True
+                    totalimages+=1
                 elif line.strip()=="":
                     if card !="":
                       trie.add(card,types, image)
@@ -51,6 +56,7 @@ def read_text_file(file_path,trie,alltypes):
                     types =[]
         if card !="":
             trie.add(card,types,image)
+    return totalcards,totalimages
 def pickrandom(trie,alltypes):
     types =[]
     type1 = random.choice(list(alltypes.keys()))
@@ -69,6 +75,8 @@ def pickrandom(trie,alltypes):
 def main():
     trie = Trie()
     alltypes ={}
+    totalcards= 0
+    totalimages= 0
 # iterate through all file
     os.chdir(path)
     for file in os.listdir():
@@ -77,21 +85,25 @@ def main():
                     file_path =  file
 
                     # call read text file function
-                    read_text_file(file_path,trie,alltypes)
-
+                    cards, images = read_text_file(file_path,trie,alltypes)
+                    totalcards+=cards
+                    totalimages+=images
     alltypes.pop("meme");
     alltypes.pop("starter");
     alltypes.pop("void")
     alltypes.pop("evil")
     alltypes.pop("typeless")
-    while True:
+    printedimage = False
+    printedcombo = False
+    while not (printedimage and printedcombo):
         types, cards = pickrandom(trie,alltypes)
         for card in cards:
-            if card[1] == False:
+            if card[1] == False and not printedimage:
                 print( card[0])
-                return
-        if len(cards) == 0:
+                printedimage = True
+        if len(cards) == 0 and not printedcombo:
             print(types)
-            #break
+            printedcombo = True
+    print("%d/%d cards have images (%.2f%%)" % (totalimages, totalcards, 100.0 * totalimages/totalcards))
 
 main()

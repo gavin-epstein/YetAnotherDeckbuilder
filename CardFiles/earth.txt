@@ -68,11 +68,14 @@ image("res://Images/CardArt/ObsidianKnife.png")
 title("Dodgy Looking Rock")
 cost(-)
 types(earth,dodge)
-text("On draw, Add a random dodge to your Reaction Pile.\nUnplayable")
-trigger(onDraw,do(createByMod,(("Dodge"), Reaction)));
+$Status=15
+text("On draw, gain $Status dodge .\nUnplayable")
+trigger(onDraw,do(addStatus(dodge,$Status)));
 modifiers(unplayable)
 removetrigger(never, true, 0);
 rarity(4)
+lore("It's really ugly")
+image("res://Images/CardArt/DodgyLookingRock.png")
 
 title("Stoneskin")
 cost(1)
@@ -99,7 +102,7 @@ removetrigger(endofturn, true,2)
 trigger(onPlay,do(setVar(self,cardnumber,(countModifier(Hand,unplayable)))))
 trigger(onPlay,foreach(Loopcard,(select(Hand, (hasModifier(self, unplayable)),"-",all)),(do (purge($Loopcard )))))
 trigger(onPlay, if( ($cardnumber>0),(do(damage($Damage,(crush),(any),$Range)))))
-trigger(onPlay, if( ($cardnumber>1),(repeat( (do(damage($Damage,(earth),(lastTargets),$Range ))),(+,-1,$cardnumber)))))
+trigger(onPlay, if( ($cardnumber>1),(repeat( (do(damage($Damage,(crush),(lastTargets),$Range ))),(+,-1,$cardnumber)))))
 removetrigger(endofturn,true,1);
 rarity(7);
 image("res://Images/CardArt/Barrage.png")
@@ -146,7 +149,7 @@ cost(0)
 types(earth)
 $Draw=1
 trigger(onPlay,do(draw($Draw)));
-trigger(onPlay,do(move(Hand, Deck, ((select(Hand,true,"pick a card to topdeck")),Hand), 0)));
+trigger(onPlay,do(move(Hand, Deck,(select(Hand,true,"pick a card to topdeck")), 0)));
 text("Draw $Draw, then put a card from your hand on top of your deck")
 rarity(10);
 removetrigger(endofturn, true, 1);

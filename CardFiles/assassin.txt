@@ -9,6 +9,7 @@ text("Every $Count turns gain 1 stealth. (+, $Count, (*,-1,$currentCount)) remai
 removetrigger(endofturn,true,24);
 cost(2)
 rarity(2)
+image("res://Images/CardArt/Machinations.png")
 
 title("Stiletto")
 types(attack, assassin)
@@ -40,3 +41,4 @@ trigger(onPlay, enemyDo(move(Player, (do(selectTiles( (splash,(any),empty,((any,
 trigger(onPlay,do(move,0))
 removetrigger(endofturn,true,1)
 rarity(5);
+image("res://Images/CardArt/SneakUp.png")

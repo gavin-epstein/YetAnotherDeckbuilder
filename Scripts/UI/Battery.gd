@@ -14,9 +14,10 @@ func _ready() -> void:
 	
 func updateDisplay():
 	for child in get_children():
-		child.queue_free();
+		if child.name != "ColorRect2":
+			child.queue_free();
 	var charged = 0
-	for i in range(capacity):
+	for i in range(max(0,min(capacity,10))):
 		var img
 		if charged < self.charge:
 			img = BatteryFull
@@ -29,5 +30,9 @@ func updateDisplay():
 		add_child(sprite)
 		move_child(sprite, 0)
 		sprite.position = Vector2(0, -135*i)
-		
+	if capacity >=10:
+		$ColorRect2/RichTextLabel.bbcode_text = "[center]" +str(charge) + "/" + str(capacity)+"[/center]";
+		$ColorRect2.visible = true
+	else:
+		$ColorRect2.visible = false
 			

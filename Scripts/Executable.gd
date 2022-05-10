@@ -167,8 +167,10 @@ func execute(code, argv):
 		return false
 	elif code[0] == "repeat":
 		var times = processArgs(code[1][1],argv)
+		
 		if times is GDScriptFunctionState:
 			times = yield(times, "complete")
+		print("repeating " + str(times) + " times")
 		for _i in range(times):
 			var ex = execute(code[1][0], argv)
 			if ex is GDScriptFunctionState:
@@ -257,7 +259,7 @@ func execute(code, argv):
 			arg = yield(arg, "completed")
 		
 		args.append(arg)
-		if self.has_method("isCard") or code[0]=="selectCards":
+		if (self.has_method("isCard") and code[0]=="select") or code[0]=="selectCards":
 			arg = code[1][1]
 		else:
 			arg = processArgs(code[1][1],argv)
@@ -273,7 +275,7 @@ func execute(code, argv):
 				args.append(arg)
 				
 		var ret
-		if self.has_method("isCard") or code[0]=="selectCards":
+		if (self.has_method("isCard") and code[0] == "select") or code[0]=="selectCards":
 			ret = controller.callv("selectCards", args)
 		else:
 			ret = controller.callv("selectTiles", args)
@@ -282,13 +284,15 @@ func execute(code, argv):
 		return ret
 	elif code[0] == "foreach":
 		var list = processArgs(code[1][1],argv)
+		
 		if list is GDScriptFunctionState:
 			yield(list,"completed")
+		print("Foreachlist: " , list)
 		var res = foreach(code[1][0],list,code[1][2],argv)
 		if res is GDScriptFunctionState:
 			res = yield(res,"completed")
 		return res
-	elif code[0] == "*":
+	elif code[0] == "*": #no short circuit
 		var arg1 = processArgs(code[1], argv)
 		if arg1 is GDScriptFunctionState:
 			arg1 = yield(arg1, "completed")
@@ -302,12 +306,11 @@ func execute(code, argv):
 			return arg1 and arg2
 		if arg1 is int and arg2 is int:
 			return arg1*arg2
-		return 0
-	elif code[0] == "+":
+		return 1
+	elif code[0] == "+":#no short circuit
 		var arg1 = processArgs(code[1], argv)
 		if arg1 is GDScriptFunctionState:
 			arg1 = yield(arg1, "completed")
-			
 		var arg2 = processArgs(code[2], argv)
 		if arg2 is GDScriptFunctionState:
 			arg2 = yield(arg2, "completed")
@@ -317,6 +320,21 @@ func execute(code, argv):
 			return arg1 or arg2
 		if arg1 is int and arg2 is int:
 			return arg1+arg2
+		
+		return 0
+	elif code[0] == "-":
+		var arg1 = processArgs(code[1], argv)
+		if arg1 is GDScriptFunctionState:
+			arg1 = yield(arg1, "completed")
+			
+		var arg2 = processArgs(code[2], argv)
+		if arg2 is GDScriptFunctionState:
+			arg2 = yield(arg2, "completed")
+		
+		if arg1 == null or arg2 == null:
+			return 0
+		if arg1 is int and arg2 is int:
+			return arg1-arg2
 		
 		return 0
 	elif code[0] == "!" or code[0] == "not":
@@ -390,6 +408,9 @@ func processArgs(arg, argv):
 			return argv[int(arg[5])]
 		if arg == "self":
 			return self
+		if arg == "getBattery":
+			print("getBattery")
+			return controller.cardController.getBattery()
 		if arg =="true":
 			return true
 		if arg =="false":
@@ -431,12 +452,14 @@ func hasVariable(string) ->bool:
 	return false
 
 func foreach(varname,list,action,argv):
+	print("Foreachlist", list)
 	if list == null:
 		return false
 	if not list is Array:
 		list = [list]
 	var reslist = []
 	for item in list:
+		print("list item ", item.title)
 		vars["$"+varname] = item
 		var res = execute(action,argv)
 		if res is GDScriptFunctionState:

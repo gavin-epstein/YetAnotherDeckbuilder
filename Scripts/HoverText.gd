@@ -89,6 +89,7 @@ func updateDisplay(unit, library):
 	
 	for stat in status:
 		if stat in library.icons and stat in library.tooltips:
+			var value = status[stat];
 			var sprite = Sprite.new()
 			$TextContainer.add_child(sprite)
 			sprite.texture = library.icons[stat]
@@ -99,6 +100,7 @@ func updateDisplay(unit, library):
 			text.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			$TextContainer.add_child(text)
 			var content = library.tooltips[stat]
+			content = content.replace("[number]" , value)
 			lines =  ceil(content.length()/25.0)
 			while lines <2:
 				lines+=1

@@ -10,5 +10,5 @@ script = ExtResource( 2 )
 position = Vector2( 500, 500 )
 frames = ExtResource( 1 )
 animation = "Beam"
-frame = 15
+frame = 10
 playing = true

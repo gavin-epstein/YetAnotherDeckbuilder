@@ -53,12 +53,10 @@ rarity(5)
 image("res://Images/CardArt/Thornburst.png")
 
 title(Reactus)
-cost(0)
-types(cactus, reaction)
-$Thorns=2
-text(Add this to your reaction pile. On reaction, gain $Thorns thorns and shuffle this back into your reaction pile)
-trigger(onPlay, do(move(Play, Reaction, self)))
+cost(1)
+types(cactus)
+$Thorns=1
+text(When you are attacked, first gain $Thorns thorns)
 trigger(onReaction, do(addStatus(thorns,$Thorns)))
-trigger(onReaction,do(move(Reaction,Reaction,self)));
-removetrigger(endofturn, true, 0);
+removetrigger(endofturn, true, 5);
 rarity(7);

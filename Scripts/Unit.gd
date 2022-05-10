@@ -154,6 +154,11 @@ func takeDamage(amount,types, attacker):
 		return [0]
 	if self.health <=0:
 		return [0]
+	if status.has("dodge") and attacker!=null:
+		if (randf()*100  < status["dodge"]):
+			setStatus("dodgebroken", true)
+			say("Dodged!");
+			return [0]
 	if status.has("corruption") and status.corruption is int:
 			if attacker!=null:
 				amount+=int(status.get("corruption")/3)
@@ -202,7 +207,7 @@ func takeDamage(amount,types, attacker):
 			
 	if self == controller.Player and attacker != null:
 		amount = controller.cardController.Reaction(amount,attacker)
-		if amount is GDScriptFunctionState:
+		while amount is GDScriptFunctionState:
 			amount = yield(amount,"completed")	
 	if "stab" in types and block > 0:
 		amount+=1
@@ -291,6 +296,9 @@ func startOfTurn():
 	var res = self.Triggered("startofturn",[]);
 	if res is GDScriptFunctionState:
 		res= yield(res,"completed")
+	if status.has("dodgebroken"):
+		addStatus("dodge",-99)
+		setStatus("dodgebroken", false)
 func endOfTurn():
 	var res = self.Triggered("endofturn",[]);
 	if res is GDScriptFunctionState:
@@ -313,7 +321,8 @@ func statusTickDown():
 			status[key] = status[key]-1
 			if status[key] <= 0:
 				status.erase(key)
-		
+	
+
 func updateDisplay():
 	if tile == null:
 		return false
@@ -347,6 +356,9 @@ func updateDisplay():
 		$Intent.updateDisplay(intents, get_parent().get_node("UnitLibrary").intenticons)
 	$HoverText.updateDisplay(self,get_parent().get_node("UnitLibrary"))
 func die(attacker, types = []):
+	if self.dead:
+		print("duplicate death on" + self.title)
+		return
 	self.dead = true
 	print(self.title + " dying")
 	if head !=self:
@@ -443,11 +455,17 @@ func addStatus(stat, val):
 		return res
 	if val is int and val ==0:
 		return false
-	if not stat in status or val is bool:
+	if not stat in status:
+		if val is int and val >0:
+			status[stat] = val
+	elif val is bool:
+		if stat == "dodgebroken":
+			print("Dodgebroken")
 		status[stat] = val
 	elif val is int and status[stat] is int:
 		status[stat] = status[stat] + val
-		if status[stat] ==0:
+		#print(stat +" on " + title + "updated to" + str(val);
+		if status[stat] <=0:
 			status.erase(stat)
 func setStatus(stat, val):
 	if self.head != self:
@@ -456,6 +474,8 @@ func setStatus(stat, val):
 		status.erase(stat)
 	else:
 		status[stat] = val
+		#if stat == "dodgebroken":
+		#	print("Dodgebroken")
 func getStatus(stat)->int:
 	if self.head != self:
 		return head.getStatus(stat)

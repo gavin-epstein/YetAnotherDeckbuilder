@@ -1,10 +1,10 @@
 title("Toxic Spores")
-types(reaction,evil)
-trigger(onReaction, do(heal(1)));
-trigger(onReaction, do(addStatus(bleed,1)));
-trigger(onReaction, do(purge,(self),false));
-cost(-);
-text("Heal 1, gain 1 bleed");
+types(evil)
+trigger(onPlay, do(heal(1)));
+trigger(onPlay, do(addStatus(bleed,1)));
+trigger(onPlay, do(purge,(self),false));
+cost(0);
+text("Heal 1, gain 1 bleed, Purge");
 removetrigger(endofturn, true, 0);
 rarity(0)
 image("res://Images/CardArt/toxicspores.png")
@@ -23,10 +23,11 @@ title("Sear")
 types(fire,evil)
 cost(-);
 removetrigger(endofturn,true,4);
-text("At the start of your turn burn a card from your hand or lose 3 health")
-trigger(startofturn, do(create("Ouch!",Hand)));
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to burn (Sear)")),Hand),false));
-trigger(startofturn, do(purge((select(Hand,(hasName(self,"Ouch!")),"-",1,true)))));
+text("At the end of your turn burn a card from your hand or lose 3 health")
+interrupt(endofturn, if((1=0),(false)));
+interrupt(endofturn, do(create("Ouch!",Hand)));
+interrupt(endofturn, do(voided,((select(Hand,true,"pick a card to burn (Sear)")),Hand),false));
+interrupt(endofturn, do(purge((select(Hand,(hasName(self,"Ouch!")),"-",1,true)))));
 trigger(onRemoveFromPlay,do(purge(self)))
 image("res://Images/CardArt/Sear.png")
 rarity(0)
@@ -53,10 +54,10 @@ removetrigger(endofturn,true,0)
 
 title("Frostbite")
 types(reaction,evil)
-trigger(onReaction, do(addStatus(frost,2)));
-trigger(onReaction, do(purge,(self),false));
-cost(-);
-text("On Reaction gain 2 Frost");
+trigger(onDraw, do(addStatus(frost,2)));
+trigger(onPlay, do(purge,(self),false));
+cost(1);
+text("When drawn gain 2 Frost. When played, purge");
 removetrigger(endofturn, true, 0);
 rarity(0)
 
@@ -73,4 +74,5 @@ trigger(onPlay, enemyDo(kill( (do(selectTiles( (1,(any),"name:Potion Seller"),40
 trigger(onPlay, do(purge,(self)));
 trigger(onRetain, do(purge,(self)));
 removetrigger(endofturn, true,0);
+image("res://Images/CardArt/PotionPurchase.png")
 

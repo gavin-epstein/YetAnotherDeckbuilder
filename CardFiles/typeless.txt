@@ -2,8 +2,8 @@ title("Dexterity")
 cost(1)
 $Block=1
 $BaseBlock=2
-trigger(block, (if((argv[1]>(+,-1,(+,$Block,$BaseBlock))),(do(block($Block))))))
+trigger(block, if((argv[0]>(+,-1,(+,$Block,$BaseBlock))),(do(block($Block)))))
 removetrigger(endofturn, true, 6)
-text("When you gain at least (+,-1,(+,$Block,$BaseBlock) block from a card, gain $Block extra");
+text("When you gain at least (+,$Block,$BaseBlock) block from a card, gain $Block extra");
 types(typeless)
 rarity(6);

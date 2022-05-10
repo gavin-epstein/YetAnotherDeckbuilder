@@ -85,7 +85,7 @@ cost(0)
 $Draw=1
 types(shadow,fire)
 removetrigger(endofturn,true,0)
-trigger(onPlay, do(voided((select(Hand,true,"pick a card to void")),Hand)))
+trigger(onPlay, do(voided((select(Hand,true,"pick a card to burn")),Hand)))
 trigger(onPlay, do(purge(self)))
 text("Burn a card from your hand.\nPurge")
 modifiers(shadow)
@@ -111,10 +111,22 @@ types(shadow, movement)
 removetrigger(endofturn,true,0)
 trigger(onPlay, do(movePlayer($Move)))
 trigger(onPlay, do(purge(self)))
-text("Move 1.\nPurge")
+text("Move $Move .\nPurge")
 modifiers(shadow)
 rarity(0)
 image("res://Images/CardArt/rapidshadow.png");
+
+title(Evasive Shadow);
+cost(0);
+$Status=10
+types(shadow, dodge)
+removetrigger(endofturn,true,0)
+trigger(onPlay,do(addStatus(dodge,$Status)));
+trigger(onPlay,do(purge(self)));
+text("Gain $Status dodge.\nPurge");
+modifiers(shadow)
+rarity(0)
+image("res://Images/CardArt/evasiveshadow.png");
 
 title(After Image);
 cost(1)
@@ -124,6 +136,7 @@ text("When you play a card, gain $Block block")
 trigger(play,do(block($Block)))
 removetrigger(endofturn,true,3)
 rarity(2)
+image("res://Images/CardArt/Afterimage.png");
 
 title(Midnight Breeze);
 types(wind,shadow)
@@ -194,6 +207,7 @@ text("Gain $Energy energy per shadow hard in your hand");
 trigger(onPlay, do(gainEnergy,((count(Hand, shadow)))));
 removetrigger(endofturn,true,2);
 rarity(3);
+image("res://Images/CardArt/lightandshadow.png");
 
 title("Dark Coin")
 cost(0);

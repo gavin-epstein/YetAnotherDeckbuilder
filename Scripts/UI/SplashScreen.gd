@@ -5,8 +5,11 @@ func _ready() -> void:
 	print(Utility.parseCardCode( "trigger(onPlay, if ( $Card,(do(move(Voided,Hand,$Card)))))"))
 	var screensize = OS.get_screen_size()
 	OS.set_window_size(screensize)
+	#load all global things
 	global.loadSettings()
 	$Settings.Load()
+	onieromancy.Load()
+
 
 func savefound()-> bool:
 	var file = File.new()

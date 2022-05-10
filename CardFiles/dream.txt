@@ -1,0 +1,16 @@
+title("Vivid Dream");
+cost(0);
+text("Add a randomly generated temporary card to your hand")
+trigger(onPlay,do(dream(Hand)));
+removetrigger(endofturn, true,1);
+types(dream);
+rarity(7);
+
+title("Intransience");
+cost(0)
+rarity(2);
+types(dream, ice)
+trigger(onPlay, do(removeModifier( (select(Hand, (hasModifier (self,temporary)), "Pick a card to remove temporary")), temporary)))
+text("Remove temporary from a card in your hand. Permafrost")
+modifiers(permafrost);
+removetrigger(endofturn, true,1);

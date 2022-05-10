@@ -1,4 +1,4 @@
-title(Adventurer);
+title(Unlikely Hero);
 types(starter)
 text("At the end of turn, this card puts your hand into your discard and sets your energy to $EternalEnergy. At the start of turn this draws $EternalDraw \n eternal \nsilent")
 trigger(endofturn, do(endofturndiscard,(),(true,false)));
@@ -6,6 +6,7 @@ trigger(endofturn, do(setEnergy,($EternalEnergy),(true,false)));
 trigger(startofturn, do(draw, ($EternalDraw), (true,false)));
 removetrigger(never, true,0);
 modifiers(eternal,unique);
+lore("Why me?");
 $EternalEnergy=3;
 $EternalDraw=5;
 rarity(0);
@@ -18,7 +19,7 @@ image("res://Images/CardArt/Treasure.png");
 rarity(0);
 cost(1);
 text("Choose 1 of 3 cards to add to your hand \n purge");
-trigger(onPlay, do(cardreward,(100,3),false));
+trigger(onPlay, do(cardreward,( 100,3),false));
 trigger(onPlay, do(purge,(self),false));
 removetrigger(endofturn, true, 0)
 
@@ -106,21 +107,21 @@ removetrigger(endofturn,true,1)
 image("res://Images/CardArt/Lunge.png")
 rarity(0)
 
-title("Endure")
-types(starter, reaction)
-trigger(onReaction, do(heal(2)));
-trigger(onReaction,do(move(Reaction,Reaction,self)));
-cost(-);
-text("On Reaction: Heal 2, shuffle this back into your reaction pile");
-removetrigger(endofturn, true, 0);
-rarity(0)
-image("res://Images/CardArt/Endure.png") 
+#title("Endure")
+#types(starter, reaction)
+#trigger(onReaction, do(heal(2)));
+#trigger(onReaction,do(move(Reaction,Reaction,self)));
+#cost(-);
+#text("On Reaction: Heal 2, shuffle this back into your reaction pile");
+#removetrigger(endofturn, true, 0);
+#rarity(0)
+#image("res://Images/CardArt/Endure.png") 
 
-title("Scratch")
-types(starter, reaction)
-trigger(onReaction,do(move(Reaction,Reaction,self)));
-text("On reaction shuffle this back into your reaction pile");
-removetrigger(endofturn, true, 0);
-cost(-);
-rarity(0)
-image("res://Images/CardArt/Scratch.png")
+#title("Scratch")
+#types(starter, reaction)
+#trigger(onReaction,do(move(Reaction,Reaction,self)));
+#text("On reaction shuffle this back into your reaction pile");
+#removetrigger(endofturn, true, 0);
+#cost(-);
+#rarity(0)
+#image("res://Images/CardArt/Scratch.png")

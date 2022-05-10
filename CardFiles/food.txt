@@ -16,6 +16,7 @@ trigger(voided,do(heal($Heal)));
 removetrigger(endofturn,true,3);
 text(When you burn a card, heal $Heal);
 rarity(6);
+image("res://Images/CardArt/FireEater.png")
 
 title(Butter);
 cost(1);
@@ -33,10 +34,11 @@ types(food,movement);
 removetrigger(movePlayer,true,5);
 trigger(movePlayer,do(heal(argv[0])));
 rarity(4);
+image("res://Images/CardArt/FastFood.png")
 
 title(Feast);
 cost(2);
-$Damage=4
+$Damage=8
 types(food, attack);
 text("Deal $Damage damage to all adjacent units, heal equal to damage dealt")
 trigger(onPlay,do(damage, ($Damage,(bite),(all),1)));
@@ -47,7 +49,7 @@ rarity(5)
 title(Sausage)
 types(food,blood)
 cost(1);
-$Blood=5
+$Blood=3
 $dothething=0
 $MaxHealth=1
 text("When you would heal but are at full health, gain $MaxHealth max health, then lose $Blood health")
@@ -57,6 +59,7 @@ trigger(heal,if( ($dothething>0), (do(unheal($Blood)))))
 removetrigger(heal, ($dothething>0), 5);
 trigger(heal,do(setVar(self,dothething,0)));
 rarity(3)
+image("res://Images/CardArt/Sausage.png")
 
 title("Vending Machine")
 types(food, mechanical)
@@ -75,6 +78,7 @@ $Status=3
 trigger(onPlay, do(gainMaxHealth($MaxHealth)))
 trigger(onPlay, do(addStatus(sting,$Status)))
 text("Gain $MaxHealth max health. You cannot heal for $Status turns")
+lore("This would be more relaxing if I wasn't busy saving the multiverse");
 cost(0)
 removetrigger(endofturn,true,3)
 rarity(2);
@@ -92,7 +96,21 @@ trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard (Cloudberr
 text("When played, heal $Heal and discard a card. If this card is discarded, play it.");
 rarity(6);
 removetrigger(endofturn,true,1)
+image("res://Images/CardArt/CloudBerries.png");
+
+title("Shiitake Smash")
+$MaxHealth=1
+$Range=2
+cost(3)
+types(food, attack, fungal)
+trigger(onPlay, do(gainMaxHealth($MaxHealth)))
+trigger(onPlay, do(setVar(self, Damage, (do(getStatus(Player, "maxHealth"))))))
+trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)));
+text("Gain $MaxHealth max health. Deal crush damage equal to your current max health range $Range.")
+removetrigger(endofturn,true,1)
+
 
 
 #when you heal, gain thorns/armor
 #Chomp. deal damage, heal equal to unblocked damage dealt
+#Play knife -> heal

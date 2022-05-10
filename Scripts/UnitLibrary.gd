@@ -34,11 +34,14 @@ func getRandomEnemy(difficulty, terrain):
 	if possible.size() > 0:
 		var other  = unittemplate.instance()
 		var enemy = possible[randi() % possible.size()].deepcopy(other)
-		if (not enemy.trap) and enemy.getStatus("neutral")==0:
+		if (not enemy.trap) and enemy.getStatus("neutral")==0 and  enemy.getStatus("friendly") == 0:
 			var curdif = enemy.difficulty
-			var maxdif = rand_range(.75,1)*difficulty
+			
+			var maxdif = rand_range(0,1)*difficulty
+		#	if randf() < .2: #chill on the upgraded enemies a bit
+		#		maxdif = 0
 			while curdif < maxdif:
-				var mod = Utility.choice( ["armor", "health", "strength", "rage", "explosive","stoneskin","regen"])
+				var mod = Utility.choice( ["armor", "health", "strength", "rage","stoneskin","regen"])
 				if mod == "armor":
 					enemy.armor+=1
 					curdif+=.75
@@ -51,13 +54,16 @@ func getRandomEnemy(difficulty, terrain):
 				if mod =="rage":
 					enemy.addStatus("rage", 3)
 					curdif +=.8
-				if mod == "explosive":
-					enemy.addStatus("explosive", 5)
-					curdif += .25
+				#Im sick of suprise explosive deaths
+				#if mod == "explosive": 
+				#	enemy.addStatus("explosive", 5)
+				#	curdif += .25
 				if mod == "stoneskin":
-					enemy.addStatus("stoneskin", true)
+					if (randi() < .3):
+						enemy.addStatus("stoneskin", true)
+						curdif +=1
 					enemy.block+=5
-					curdif += 1.5
+					curdif += .25
 				if mod == "regen":
 					enemy.addStatus("regen", 2)
 					curdif += .66
