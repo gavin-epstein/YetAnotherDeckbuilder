@@ -10,3 +10,5 @@ trigger(onPlay,do(addStatus(rage,$Status)));
 text("Deal $Damage slash crush damage range $Range. Gain $Status rage")
 removetrigger(endofturn, true, 1)
 image("res://Images/CardArt/Battleaxe.png")
+
+#rampage, move, attack, slay: rage and return to hand

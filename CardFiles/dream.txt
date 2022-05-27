@@ -14,3 +14,4 @@ trigger(onPlay, do(removeModifier( (select(Hand, (hasModifier (self,temporary)),
 text("Remove temporary from a card in your hand. Permafrost")
 modifiers(permafrost);
 removetrigger(endofturn, true,1);
+image("res://Images/CardArt/Intransience.png")

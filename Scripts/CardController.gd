@@ -63,9 +63,9 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 
 #		#Test Cards#
-#		Hand.add_card(Library.getCardByName("Vivid Dream"))
-#		Play.add_card(Library.getCardByName("Sausage"))
-#		Hand.add_card(Library.getCardByName("Cloudberries"))
+#		Hand.add_card(Library.getCardByName("Evasive Shadow"))
+#		Hand.add_card(Library.getCardByName("Preserve"))
+#		Hand.add_card(Library.getCardByName("Ice Fortress"))
 #		Hand.add_card(Library.getCardByName("Diamond"))
 #		Hand.add_card(Library.getCardByName("Permafrost"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
