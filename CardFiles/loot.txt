@@ -5,6 +5,7 @@ trigger(play, if((hastype(argv[0], loot)),(do(createByMod,(("kitchenknife"), Han
 removetrigger(play,(hastype(argv[0], loot)),7)
 text("When you play a loot card add a random kitchen knife to your hand")
 rarity(2)
+image("res://Images/CardArt/GoldenBlades.png")
 
 title("Toolbox")
 types(loot,hammer)
@@ -16,8 +17,9 @@ text(Choose 1 of 3 hammers, twice. Purge)
 rarity(2)
 removetrigger(endofturn,true,0)
 trigger(onPlay, do(purge,(self),false));
+image("res://Images/CardArt/Toolbox.png")
 
-title("Mercenaries")
+title("Mercenary")
 types(loot, summon)
 cost(1)
 $Range=2
@@ -26,11 +28,12 @@ trigger(onPlay,do(setVar(self,cardnumber,(count(Hand,loot)))))
 #trigger(onPlay,enemyDo(say(Player,$cardnumber)))
 trigger(onPlay, if(($cardnumber > 0),(do(summon("Shellsworn",(any),$Range)))))
 trigger(onPlay,foreach(Loopcard,(select(Hand, (hastype(self, loot)),"-",all)),(do (purge($Loopcard )))))
-trigger(onPlay, do(addStatus(expire,$cardnumber, (do(selectTiles((all,(any),"name:Shellsworn"),$Range,Player))))));
+trigger(onPlay, do(addStatus(expire,(*,5,$cardnumber), (do(selectTiles((all,(any),"name:Shellsworn"),$Range,Player))))));
 trigger(onPlay, do(addVar(self,removecount,$cardnumber)));
 removetrigger(endofturn, true, 5);
 rarity(3)
 text("Purge all loot type cards in your hand. If you purge at least 1, summon a mercenary")
+image("res://Images/CardArt/Mercenaries.png")
 
 title("Golden Glow")
 types(loot, light)
@@ -40,6 +43,27 @@ trigger(cardreward,do(gainEnergy($Energy)))
 removetrigger(cardreward,true,5)
 rarity(4)
 cost(1)
+image("res://Images/CardArt/GoldenGlow.png")
 
-#card rewards have +1 card. (deal with boss loot)
+title("Kintsugi Crown")
+types(loot)
+modifiers(unique,eternal);
+cost(0);
+$rewards=0
+interrupt(cardreward,do(cardreward(argv[0], (+,1,argv[1])),(false,true)));
+removetrigger(never, true, 0)
+lore("A busted crown which has since been repaired");
+rarity(2)
+text("Card rewards contain 1 extra card choice")
+
+title("Black Market")
+types(blood, loot);
+cost(0)
+rarity(4);
+$Blood=1
+text("Lose $Blood health. Choose 1 of 3 cards to add to your hand.");
+trigger(onPlay,do(unheal($Blood)))
+trigger(onPlay, do(cardreward,( 15,3),false));
+removetrigger(endofturn, true, 1);
+
 #when you play a loot card, draw 1

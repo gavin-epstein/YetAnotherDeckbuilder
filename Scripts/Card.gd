@@ -11,6 +11,7 @@ var image
 var imageloaded = false
 var title
 var modifiers = {}
+var deleted = false
 var removetype
 var target_scale
 var target_position
@@ -61,13 +62,15 @@ func hasType(type)->bool:
 	return false
 	
 func hasName(string, exact=false)->bool:
-	print("checking if " + title +" contains " +string+ " "+str(exact))
+	#print("checking if " + title +" contains " +string+ " "+str(exact))
 	if exact:
 		print(self.title.to_lower() == string.to_lower())
 		return self.title.to_lower() == string.to_lower()
 	return self.title.to_lower().find(string.to_lower())!=-1
 	
 func hasModifier(string) -> bool:
+	if not string is String:
+		return false
 	if string == "any":
 		return true
 	if modifiers.has(string):
@@ -80,8 +83,9 @@ func loadCardFromString(string):
 		if line.strip_edges() == "" :
 			continue
 		var parsed = Utility.parseCardCode(line)
-		if(self.title == "Rekindle"):
-			print(parsed)
+#		if(self.title == "Rekindle"):
+
+#			print(parsed)
 		if parsed[0] =="trigger":
 			var trigger = parsed[1]
 			Utility.addtoDict(triggers,trigger[0],  trigger.slice(1,trigger.size()-1))
@@ -115,7 +119,8 @@ func loadCardFromString(string):
 			self.rarity = int(parsed[1][0])
 		elif parsed[0][0] =="$":
 			vars[parsed[0]] = parsed[2]
-		
+	if hasModifier("permafrost"):
+		modifiers.frozen = true
 	#self.updateDisplay()
 	
 func updateDisplay():
@@ -136,6 +141,12 @@ func updateDisplay():
 		$Resizer/FrozenFrame.visible = true
 	else:
 		$Resizer/FrozenFrame.visible = false
+	if self.modifiers.has("temporary"):
+		$Resizer/TemporaryFrame.visible = true
+		$Resizer/FrameSprite.visible = false
+	else:
+		$Resizer/TemporaryFrame.visible = false
+		$Resizer/FrameSprite.visible = true
 	get_node("Resizer/CardFrame/Cost").bbcode_text= "[center]" + str(vars["$Cost"]) + "[/center]";
 	var titlebox = get_node("Resizer/CardFrame/Title")
 	titlebox.bbcode_text= "[center]" + title +  "[/center]";
@@ -246,7 +257,12 @@ func save() -> Dictionary:
 		"title":title,
 		"vars":vars,
 		"visible":visible,
-		"modifiers":modifiers
+		"modifiers":modifiers,
+		"triggers":triggers,
+		"interrupts":interrupts,
+		"types":types,
+		"removetype":removetype,
+		"text":text
 	}
 
 func loadFromSave(save:Dictionary):
@@ -256,7 +272,14 @@ func loadFromSave(save:Dictionary):
 			vars[key] = int(vars[key])
 	self.modifiers = save.modifiers
 	self.visible = save.visible
+	self.triggers = save.triggers
+	self.interrupts = save.interrupts
+	self.types = save.types
+	self.removetype = save.removetype
+	self.text = save.text
 	self.updateDisplay()
+		
+	
 
 
 
@@ -273,7 +296,7 @@ func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):
-			print("click on " + self.title)
+	#		print("click on " + self.title)
 			get_parent().cardClicked(self)
 	if event.is_action_pressed("right_click"):
 		controller.get_node("CardDisplay").display(self)
@@ -319,10 +342,12 @@ func processText(text):
 					parenstack-=1
 			if parenstack == 0:
 				code = Utility.parseCardCode(code)
+				controller.test = true
 				var res = processArgs(code[0],[])
 				if res is GDScriptFunctionState:
 					print("There should be no player input on card text")
 					yield(res,"completed")
+				controller.test = false
 				out+=str(res)+" "
 				code = ""
 				codeon = false

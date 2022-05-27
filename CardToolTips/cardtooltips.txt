@@ -5,11 +5,11 @@ stab: Stab damage removes 1 extra stack of block.
 block: Prevents incoming damage. Removed at the start of turn.
 move: Move yourself to an empty tile anywhere up to the given distance away.
 fire: Unblocked fire damage applies 1 burn.
-push: Move a unit away from yourself, if its destination is not blocked.
-pull: Move a unit towards yourself, if its destination is not blocked.
+push: Move a unit away from yourself. If its destination is blocked both units in the collision take 2 knockback damage.
+pull: Move a unit towards yourself. If its destination is blocked both units in the collision take 2 knockback damage.
 retain: This card cannot be discarded.
 purge: Remove this card from the game.
-burn: Put this card in the burned pile. When a boss spawns or dies, return all burned cards to your discard.
+burn: Put this card in the burned pile.
 reaction: On taking damage from a unit, if this is the top card of the reaction pile, trigger its effects.
 heal: Restore health. Healing cannot cause your health to exceed your max health.
 max health: The upper limit for healing.
@@ -34,4 +34,7 @@ storm: Storm damage has a 5% chance of being doubled.
 backstab: Backstab damage deals triple damage if you have stealth
 freeze: Add frozen to a card. That card is kept in hand until played or discarded other than at end of turn
 frozen: Frozen cards are retained in hand until they are played or moved out of hand by any effect other than end of turn discard. 
+permafrost: This card is always frozen.
 hail: hail damage adds 1 frost, temporarily reducing the targets strength.
+charge: gain battery
+deplete: spend battery in order to play this card or to get the full effect.

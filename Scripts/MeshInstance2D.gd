@@ -288,9 +288,10 @@ func getTiles(tile,dist:int,property,terrains,canfly=false,hitsstealth=false):
 						neigh.dist = next.dist+1
 						q.append(neigh)
 	for node in possible:
-		if node.hasTerrain(terrains) and node.hasOccupant(property,hitsstealth) and not (node.sentinel and node.occupants.size() == 0):
-			node.highlight()
-			selectableNodes.append(node)
+		if node !=null:
+			if node.hasTerrain(terrains) and node.hasOccupant(property,hitsstealth) and not (node.sentinel and node.occupants.size() == 0):
+				node.highlight()
+				selectableNodes.append(node)
 	if selectableNodes.size() ==0:
 		return null
 		#assert(false, "Implement this case")

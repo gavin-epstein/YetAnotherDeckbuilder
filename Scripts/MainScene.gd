@@ -4,6 +4,7 @@ onready var map = $Center/MapLayer/Map/MeshInstance2D
 onready var cardController = $CardController
 onready var animationController = $Center/Animations/AnimationController
 const SAVE_NAME = "user://savefile.json"
+#const SAVE_NAME = "res://Saves/savefile.json"
 var loaded = false
 var doTutorial=false
 

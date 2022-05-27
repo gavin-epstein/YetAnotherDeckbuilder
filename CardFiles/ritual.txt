@@ -18,7 +18,7 @@ $Draw=1
 removetrigger(endofturn, true, 2);
 trigger(onPlay, do(draw,($Draw),false));
 trigger(onPlay, if((countName(Play,"Ritual Components")< 2),(do( create,(self,Discard),false))));
-text("Draw $Draw.\n If there are no other Ritual Components in play, add a copy of this card to the discard");
+text("Draw $Draw .\n If there are no other Ritual Components in play, add a copy of this card to the discard");
 
 title(Ritual of Creation);
 types(ritual, loot);
@@ -175,6 +175,7 @@ removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
 cost(1);
 rarity(4);
+image("res://Images/CardArt/DemonWings.png")
 
 title("Wrath Rite")
 types(ritual,rage)
@@ -190,17 +191,19 @@ image("res://Images/CardArt/WrathRite.png")
 title("Hidden Ceremony")
 types(ritual,assassin)
 $RitualCount=8
-$Status=1
+$Status=2
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(stealth, $Status)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have $RitualCount ritual cards in play, gain $Status stealth and discard this card from play")
+lore("When the Alcolytes opened the Void Rift, it must have been well hidden to go so unopposed");
 cost(2);
 rarity(4);
+image("res://Images/CardArt/HiddenCeremony.png")
 
 title("Sacrifice")
 types(ritual, assassin)
 cost(0)
-$Damage=3
+$Damage=4
 $CreateCount=3
 $Range=1
 trigger(onPlay, do(damage, ($Damage,(backstab,ritual),(any),$Range)))
@@ -208,6 +211,7 @@ trigger(slay, do(repeat( (do(createByMod(("sigil"), Play ))),$CreateCount)))
 removetrigger(endofturn, true, 1)
 rarity(5)
 text("Deal $Damage backstab damage range $Range. Slay: create $CreateCount sigils in play")
+image("res://Images/CardArt/Sacrifice.png")
 
 title("Doubling Sigil")
 types(ritual)
@@ -257,11 +261,12 @@ removetrigger(endofturn, true, 3)
 image("res://Images/CardArt/StrengthSigil.png")
 
 title("Written in Blood")
-$Blood=2
+$Blood=1
 types(ritual, blood)
 trigger(onPlay, do(unheal($Blood)))
 trigger(onPlay, do(createByMod((sigil), Play)))
 removetrigger(endofturn, true,1)
 text("Lose $Blood health, add a random sigil to play.")
 rarity(4);
-cost(1);
+image("res://Images/CardArt/WrittenInBlood.png")
+cost(0);

@@ -75,3 +75,9 @@ removetrigger(endofturn, true, 1)
 text("Summon a flame anywhere and pull all enemies towards it")
 rarity(4)
 types(fire, kinetic, summon)
+
+
+#charge - move 3, deal 8 range 1, push 2
+#unique - immune to knockback, knockback deals 2 extra damage (possibly 2 cards)
+#summon a boulder(or a force wave or bowling ball or something) and push it 10 times/ until it dies
+

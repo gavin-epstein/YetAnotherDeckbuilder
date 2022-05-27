@@ -25,7 +25,7 @@ image("res://Images/CardArt/WindPower.png");
 
 title(Floating Turbine);
 types(mechanical,cloud);
-cost(2);
+cost(1);
 trigger(startofturn, do(create,("Wind Power",Hand),false));
 removetrigger(endofturn,true,6);
 text("At the start of your turn, add a Wind Power to your hand");
@@ -36,10 +36,12 @@ title(Obscuring Mist);
 cost(0);
 types(dodge,cloud)
 rarity(4)
-trigger(onPlay,do(createByMod,(("Dodge"), Reaction)));
-trigger(onPlay,do(discard,((select(Hand,true,"-",1,true)))));
-text("Add a random dodge to your reaction pile, discard a random card")
-removetrigger(endofturn,true,2);
+$Status=10
+trigger(onPlay,do(setVar(self,chosencard,(select(Hand,true,"pick a card to discard ")))));
+trigger(onPlay,do(addStatus(dodge,(*,$Status,(do(countTypesOnCard($chosencard)))))))
+trigger(onPlay,do(discard,($chosencard)));
+text("Discard a card from your hand, gain $Status dodge per type it has.")
+removetrigger(endofturn,true,1);
 image("res://Images/CardArt/obscuringmist.png");
 
 title("Storm");
@@ -109,19 +111,19 @@ removetrigger(endofturn, true,1);
 rarity(3);
 types(cloud,fire,movement);
 
-title("Cirrus")
-cost(1);
-$Damage=10
-$Draw=1
-types(cloud,reaction,attack);
-text("Add this to your reaction pile. On reaction, counterattack $Damage, draw $Draw , and discard 1")
-trigger(onPlay,do(move(Play,Reaction,self)));
-trigger(onReaction, do(damage($Damage, (storm), (direct, $Attacker)),~)));
-trigger(onReaction, do(draw($Draw)))
-trigger(onReaction,do(move(Reaction,Play,self)));
-trigger(onReaction, do(discard,((select(Hand,true,"pick a card to discard (Cirrus)"))),false));
-removetrigger(endofturn, true,1);
-rarity(6);
+#title("Cirrus")
+#cost(1);
+#$Damage=10
+#$Draw=1
+#types(cloud,reaction,attack);
+#text("Add this to your reaction pile. On reaction, counterattack $Damage, draw $Draw , and discard 1")
+#trigger(onPlay,do(move(Play,Reaction,self)));
+#trigger(onReaction, do(damage($Damage, (storm), (direct, $Attacker)),~)));
+#trigger(onReaction, do(draw($Draw)))
+#trigger(onReaction,do(move(Reaction,Play,self)));
+#trigger(onReaction, do(discard,((select(Hand,true,"pick a card to discard (Cirrus)"))),false));
+#removetrigger(endofturn, true,1);
+#rarity(6);
 
 title("Mushroom Cloud")
 types(cloud,fungal,fire,attack)
@@ -139,6 +141,5 @@ removetrigger(endofturn, true,0);
 image("res://Images/CardArt/MushroomCloud.png");
 
 
-#Discard a card, gain an armor per type it has
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded
 #Dust: earth cloud, wind?:  on discard draw 2 unplayable

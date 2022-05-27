@@ -134,6 +134,7 @@ trigger(voided, do(createByMod,(("kitchenknife"), Hand,self)))
 removetrigger(endofturn, true,6);
 rarity(5)
 types(knife, fire)
+image("res://Images/CardArt/KnifeForge.png")
 
 title("Grill Tongs");
 cost(1);
@@ -145,3 +146,27 @@ trigger(onPlay, enemyDo(move($Unit,(do(selectTiles((1,(any),"empty"),1,Player,"-
 trigger(onPlay,do(create("Spark", Hand)));
 trigger(onPlay,do(create("Steak Knife", Hand)));
 rarity(3);
+
+title("Bladespore");
+cost(1);
+$Times=0
+$Increment=1
+types(knife, fungal)
+text("Add $Times random kitchen knives to your hand. Increase the number of knives by $Increment. When you play $removecount kitchen knives, return this to your hand.")
+removetrigger(play, (hasModifier(argv[0],"kitchenknife")), 3)
+trigger(onPlay, repeat( (do(createByMod((kitchenknife),Hand))),$Times))
+trigger(onPlay, do(addVar(self, Times, $Increment)));
+rarity(2);
+image("res://Images/CardArt/BladeSpore.png")
+
+title("Asmora's Blender");
+cost(1);
+$Status=1
+trigger(startofturn,enemyDo(addStatus((selectTiles((all,(any),"-friendly"),30,Player)),bleed,$Status)));
+text("At the start of your turn, add $Status bleed to all enemies");
+removetrigger(endofturn, false, never)
+rarity(2);
+modifiers(unique, eternal)
+types(knife, mechanical);
+
+

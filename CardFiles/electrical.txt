@@ -1,0 +1,63 @@
+title("Power Pack")
+$Deplete=1
+$Charge=2
+$Block=12
+cost(1)
+trigger(onPlay, do(setVar(self, dothething, 0)))
+trigger(onPlay, if( (do(deplete($Deplete))), (do(setVar(self, dothething,1)))))
+trigger(onPlay, if( ($dothething>0),(do(block($Block)))))
+trigger(onPlay, if( ($dothething<1),(do(charge($Charge)))))
+text("If you have less than $Deplete battery, charge $Charge, otherwise deplete $Deplete and block $Block")
+rarity(7)
+removetrigger(endofturn, true, 1)
+types(electric)
+
+title("Overcharge");
+$Charge=2;
+trigger(onPlay,do(overcharge($Charge)))
+trigger(onPlay,do(charge($Charge)))
+trigger(onRemoveFromPlay,do(overcharge((*,-1,$Charge))))
+text("Charge $Charge .\n While in play gain $Charge max battery")
+removetrigger(endofturn, true, 3)
+types(electric)
+rarity(10);
+cost(0);
+
+title("Laser Barrage");
+$Damage=7
+$Range=20
+$CurrentBattery=0
+trigger(onPlay, do(setVar(self,CurrentBattery, (count("Battery","Battery")))));
+trigger(onPlay, do(deplete($CurrentBattery)));
+trigger(onPlay, if( ($CurrentBattery>0),(do(damage($Damage,(beam),(any),$Range)))))
+trigger(onPlay, if( ($CurrentBattery>1),(repeat( (do(damage($Damage,(beam),(lastTargets),$Range ))),(+,-1,$CurrentBattery)))))
+cost(1);
+types(electric, attack);
+rarity(5);
+removetrigger(endofturn, true, 1);
+text(Deplete all, deal $Damage damage at any range for each battery depleted);
+
+title("Repower");
+cost(0)
+$Energy=0
+trigger(onPlay, do(charge( (-, (count("MaxBattery","MaxBattery")),(count("Battery","Battery"))))))
+trigger(onPlay, do(setEnergy,($Energy)));
+removetrigger(endofturn,true,1);
+rarity(7);
+types(electric);
+text("Fill your battery. Set your energy to $Energy");
+
+title("Nanoarmor")
+cost(1)
+removetrigger(endofturn, true, 5)
+$Armor=2
+$EternalDeplete=1
+trigger(onReaction, if( (do(deplete($EternalDeplete))), (do(armor($Armor)))));
+types(electric)
+text("When you are attacked, first deplete $Eternal deplete to gain $Armor armor. \n This card's deplete cost cannot be lowered");
+rarity(3);
+
+#At start of turn deplete 1 to gain 1 energy.
+
+#at start of turn charge 1
+

@@ -1,13 +1,13 @@
 extends "res://Scripts/Controller.gd"
 const testmode = false
 const testtype = "shadow"
+const knockbackdamage = 2
 var cardtemplate = preload("res://Card.tscn");
 var triggers = {}
 var Deck
 var Discard
 var Library
 var Choice
-var Reaction
 var Voided
 var Energy
 var inputdelay = 0
@@ -20,6 +20,7 @@ var lastfocus
 var doTutorial
 var trashbin=[]
 var isPlayerTurn=true
+var reportsubmitted=false
 class_name CardController
 #func _process(delta: float) -> void:
 #	var r = 0
@@ -29,7 +30,6 @@ class_name CardController
 #		r = 1
 #	if focus !=null:
 #		b=1
-#	$Reaction.modulate = Color(r,g,b)
 func Load(parent)-> void: 
 	cardController = self
 	Deck = get_node("Deck")
@@ -38,7 +38,6 @@ func Load(parent)-> void:
 	Play = get_node("Play")
 	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
-	Reaction = get_node("Reaction")
 	Voided = get_node("Voided")
 	doTutorial = parent.doTutorial
 	var step = Library.Load()
@@ -51,38 +50,38 @@ func Load(parent)-> void:
 	animationController = parent.animationController
 	self.updateDisplay()
 	if not testmode and not doTutorial:
-		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getCardByName("Unlikely Hero"))
 		Play.add_card(Library.getRandomByModifier(["void"]))
 		for _i in range(2):
 			Deck.add_card(Library.getCardByName("Common Loot"))
 			Deck.add_card(Library.getCardByName("Smack"))
-			$Reaction.add_card(Library.getCardByName("Scratch"))
+			
 		for _i in range(3):
 			Deck.add_card(Library.getCardByName("Defend"))
 		Deck.add_card(Library.getCardByName("Crossbow"))
 		Deck.add_card(Library.getCardByName("Dash"))
 		Deck.add_card(Library.getCardByName("Lunge"))
-		$Reaction.add_card(Library.getCardByName("Endure"))
-#		#Test Cards
 
-		#Hand.add_card(Library.getCardByName("Berserk"))
-#		Hand.add_card(Library.getCardByName("Bellows"))
-#		Deck.add_card(Library.getCardByName("Rekindle"))
-#		Deck.add_card(Library.getCardByName("Rekindle"))
+#		#Test Cards#
+#		Hand.add_card(Library.getCardByName("Evasive Shadow"))
+#		Hand.add_card(Library.getCardByName("Preserve"))
+#		Hand.add_card(Library.getCardByName("Ice Fortress"))
+#		Hand.add_card(Library.getCardByName("Diamond"))
+#		Hand.add_card(Library.getCardByName("Permafrost"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
 		shuffle()
 		step = Action("draw",[5])
 		if step is GDScriptFunctionState:
 			yield(step,"completed")
 	elif testmode:
-		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getCardByName("Unlikely Hero"))
 		Play.add_card(Library.getRandomByModifier(["void"]))
 		for card in Library.cards:
 			if card.hasType(testtype):
 				Deck.add_card(Library.getCardByName(card.title))
 		enemyController.testAllUnits()
 	elif doTutorial:
-		Play.add_card(Library.getCardByName("Adventurer"))
+		Play.add_card(Library.getCardByName("Unlikely Hero"))
 		Play.add_card(Library.getCardByName("Void of Vengeance"))
 		Hand.add_card(Library.getCardByName("Quickstep"))
 		Deck.add_card_at(Library.getCardByName("Meat Cleaver"),0)
@@ -93,24 +92,14 @@ func Load(parent)-> void:
 		Deck.add_card_at(Library.getCardByName("Defend"),5)
 		Deck.add_card_at(Library.getCardByName("Crossbow"),6)
 func endGameReport(state:String):
-	print("Submitting")
-	var http_request = HTTPRequest.new()
-	add_child(http_request)
-	http_request.connect("request_completed", self, "_onResponse")
-	var body = {}
-	body['cardchoices'] = Choice.choicereport
-	body['enemies'] = enemyController.allunitsspawned
-	var bodyjson = to_json(body)
+	if not reportsubmitted:
+		reportsubmitted = true
+		var body = {}
+		body['cardchoices'] = Choice.choicereport
+		body['enemies'] = enemyController.allunitsspawned
+		var bodyjson = to_json(body)
+		global.endGameReport(state, bodyjson)
 	
-	var error = http_request.request("https://moraandtheendoftheworld.com/winlosereports.php?result="+state, ["Content-type:text/plain"], true, HTTPClient.METHOD_POST, bodyjson)
-	if error != OK:
-		print("An error occurred in the HTTP request.")
-	print(error)
-	get_tree().paused=false
-	yield(http_request,"request_completed")
-func _onResponse(result, response_code, headers, body):
-	print("Response:   ")
-	print(body.get_string_from_utf8())
 func draw(x)->bool:
 	var results = {}
 	for i in range(x):
@@ -213,10 +202,16 @@ func move(loc1, loc2, card, pos=null):
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
 	if loc1.remove_card(card):
-		if loc1 == Hand and card.modifiers.has("frozen"):
+		if loc1 == Hand and card.modifiers.has("frozen") and not card.modifiers.has("permafrost"):
 			var res = Action("removeModifier",[card, "frozen"])
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
+		if card.hasModifier("temporary") and (loc1 in [Hand, Play]) and (not loc2 in [Hand, Play]):
+			loc2.add_card(card)
+			var res = Action("purge",[card])
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
+			return false
 		if pos==null:
 			loc2.add_card(card)
 		else:
@@ -288,7 +283,6 @@ func updateDisplay():
 	Deck.updateDisplay()
 	$Voided.updateDisplay()
 	$Energy.updateDisplay()
-	$Reaction.updateDisplay()
 	get_node("/root/Scene/morahealthbar").updateDisplay()
 	get_node("/root/Scene/voidhealthbar").updateDisplay()
 	if enemyController!=null and enemyController.Player != null:
@@ -310,9 +304,10 @@ func cardreward(rarity, count):
 func purge(card):
 	if card == null:
 		return false
-	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Reaction.remove_card(card) or $Voided.remove_card(card):
+	if Hand.remove_card(card) or Deck.remove_card(card) or Play.remove_card(card) or Discard.remove_card(card) or $Voided.remove_card(card):
 		releaseFocus(card)
 		card.visible = false
+		card.moveTo(Vector2(2000,2000), Vector2(.01,.01))
 		trashbin.append(card)
 		return true
 	return false
@@ -465,7 +460,7 @@ func startofturn():
 func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
 		inputAllowed = false
-		print("Input off in endturn")
+		#print("Input off in endturn")
 		releaseFocus(self)
 		inputdelay = 0
 		var res = Action("endofturn",[],false)
@@ -484,7 +479,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
 		inputAllowed = true
-		print("Input on in endturn")
+	#	print("Input on in endturn")
 	releaseFocus(self)	
 		
 
@@ -563,6 +558,8 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 		if tile.size() ==0:
 			return false
 		tile = tile[0]
+	if direction is String and direction == "away":
+		enemies.invert(); #hopefully stops traffic jams
 	for enemy in enemies:
 		if direction is String and direction == "any":
 			var dest = selectTiles(["any",["any"],"empty"], movedist, enemy )
@@ -583,7 +580,12 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 				var nextDest = map.getTileInDirection(dest,dir)
 				if !nextDest.sentinel and nextDest.occupants.size() ==0:
 					dest = nextDest
-				else:
+				else:		
+					if enemy.occupants.size()==0:
+						continue		#might already be dead
+					enemy.occupants[0].takeDamage(knockbackdamage, "knockback", null)
+					for unit in nextDest.occupants:
+						unit.takeDamage(knockbackdamage, "knockback", null)
 					break
 			if enemy.occupants.size()>0:
 				enemyController.move(enemy.occupants[0],dest)
@@ -626,6 +628,7 @@ func consume():
 	var theVoid = enemyController.theVoid
 	for thing in enemyController.units:
 		if thing !=null and thing.tile == consumed:
+			thing.tile=null
 			thing.die(theVoid, ["void"])
 	if enemyController.Player.tile == consumed:
 		enemyController.Player.die(theVoid)
@@ -656,6 +659,7 @@ func devoidAll():
 	while $Voided.cards.size()>0:
 		move("Voided", "Discard",$Voided.cards[0])
 func addStatus(stat, amount, tiles ="Player"):
+	#print("stat", amount)
 	if tiles is String and tiles == "Player":
 		tiles = [enemyController.Player.tile]
 	if tiles == null:
@@ -680,16 +684,13 @@ func clearAllStatus(tiles = "Player"):
 func Reaction(amount:float, attacker)-> float:
 	if amount < 1:
 		return 0
-	if $Reaction.cards.size() == 0:
-		return amount
-	var card = $Reaction.getCard(0)
-	setVar(card,"DamageTaken", amount)
-	setVar(card,"Attacker", attacker)
-	var results = card.Triggered("onReaction",[card])
-	if results is GDScriptFunctionState:
-		results = yield(results,"completed")
-	amount = getVar(card, "DamageTaken")
-	displayReaction(card)
+	for card in Play.cards:
+		setVar(card,"DamageTaken", amount)
+		setVar(card,"Attacker", attacker)
+		var results = card.Triggered("onReaction",[card])
+		if results is GDScriptFunctionState:
+			results = yield(results,"completed")
+		amount = getVar(card, "DamageTaken")
 	return amount
 func voidshift():
 	pass
@@ -705,7 +706,6 @@ func save()->Dictionary:
 		"discard": Discard.save(),
 		"play": Play.save(),
 		"voided":$Voided.save(),
-		"reaction":$Reaction.save(),
 		"energy": self.Energy,
 		"consumed":map.nodes.find(consumed),
 		"cardchoicereport":Choice.choicereport
@@ -718,7 +718,6 @@ func loadFromSave(save:Dictionary,parent):
 	Play = get_node("Play")
 	Library = get_node("CardLibrary")
 	Choice = get_node("Choice")
-	Reaction = get_node("Reaction")
 	Voided = get_node("Voided")
 	var step = Library.Load()
 	if step is GDScriptFunctionState:
@@ -732,7 +731,6 @@ func loadFromSave(save:Dictionary,parent):
 	Discard.loadFromSave(save.discard)
 	Play.loadFromSave(save.play)
 	Voided.loadFromSave(save.voided)
-	Reaction.loadFromSave(save.reaction)
 	print("Energy:" + str(save.energy) + " "+  str(int(save.energy)))
 	Energy = int(save.energy)
 	$Energy.updateDisplay()
@@ -740,13 +738,6 @@ func loadFromSave(save:Dictionary,parent):
 	Choice.choicereport = save.cardchoicereport
 	print(Hand.cards.size())
 	print("AllDone")
-func displayReaction(card):
-	var displaycard = cardtemplate.instance()
-	card.deepcopy(displaycard)
-	add_child(displaycard)
-	displaycard.moveTo(get_node("Reaction/AnimatedSprite").position- Vector2(100,200), Vector2(.2,.2 ))
-	yield(get_tree().create_timer(1),"timeout")
-	displaycard.queue_free()
 func addhandsize(amount):
 	if not amount is int:
 		return false
@@ -769,12 +760,31 @@ func triggerCard(trigger, card, argv=[]):
 		return false
 	card.Triggered(trigger, argv)
 func charge(amount):
-	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
-	battery.vars["$Battery"] = min(battery.vars["$MaxBattery"], battery.vars["$MaxBattery"] + amount )
+
+	$Battery.charge = min( $Battery.capacity, $Battery.charge + amount);
+	$Battery.updateDisplay()
 	return true
 func deplete(amount):
-	var battery = selectCards("Play", ["hasName",["self","Battery","true" ]], "-",1,1)
-	if battery.vars["$Battery"] < amount:
+	if $Battery.charge < amount:
 		return false
-	battery.vars.Battery = battery.vars.Battery  - amount
+	$Battery.charge = $Battery.charge  - amount
+	$Battery.updateDisplay()
 	return true
+func overcharge(amount):
+	$Battery.capacity += amount
+	if $Battery.charge > $Battery.capacity:
+		$Battery.charge = $Battery.capacity
+	$Battery.updateDisplay()
+func countTypesOnCard(card):
+	if card == null:
+		return 0
+	print(card.title, card.types.size())
+	return card.types.size()
+func dream(loc, temporary=true):
+	loc = get_node(loc)
+	var card = Library.cardtemplate.instance()
+	card.controller = self
+	onieromancy.generateCard(card, temporary);
+	loc.add_card(card)
+	card.updateDisplay();
+	

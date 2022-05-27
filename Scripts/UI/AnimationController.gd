@@ -12,7 +12,16 @@ func Load(parent):
 	animationController = self;
 	map = parent.map;
 	longshortgap = sqrt(map.minSqDist)*1.5;
-	global.connect("animspeedchanged",self,"on_animation_speed_change")
+	var list = global.get_signal_connection_list("animspeedchanged")
+	var connected = false
+	for dict in list:
+		print(dict)
+		print("\n")
+		if dict.target ==self:
+			connected = true
+			break
+	if !connected:
+		global.connect("animspeedchanged",self,"on_animation_speed_change")
 func on_animation_speed_change(value):
 	animspeed = baseanimspeed/(.01 + value)
 	
@@ -33,7 +42,8 @@ func Damage(types, attacker, defender):
 			"Slash",
 			"Stab",
 			"Storm",
-			"Ritual"
+			"Ritual",
+			"Beam"
 		]:
 			anim = type
 		elif type in [

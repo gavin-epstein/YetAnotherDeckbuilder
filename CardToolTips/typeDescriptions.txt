@@ -21,4 +21,5 @@ earth:Earth cards focus on cards that are unplayable and have an effect whenever
 dodge:Dodges are reaction cards that reduce the damage you will take by 50-100%.
 food:Food cards focus on healing and gaining max health.
 ritual:Most ritual cards have a powerful effect that triggers when a sufficient number of ritual cards are in play.
-ice:Ice cards focus on keeping cards in hand for multiple turns to play them when their effect is strongest.
+ice:Ice cards focus on keeping cards in hand for multiple turns to play them when their effect is strongest. Ice cards tend to deal hail damage, which lowers the strength of enemies it hits.
+electric:Electric cards introduce another resource, Battery, which can be charged and depleted by cards and is not removed nor refilled at the end of turn.

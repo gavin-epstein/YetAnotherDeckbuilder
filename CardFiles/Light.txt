@@ -3,7 +3,7 @@ rarity(15)
 types(light)
 cost(1)
 $Energy=3
-trigger(onPlay,do(gainEnergy(2)))
+trigger(onPlay,do(gainEnergy($Energy)))
 text("Gain $Energy Energy")
 removetrigger(endofturn,true,1)
 image("res://Images/CardArt/Illuminate.png");
@@ -54,14 +54,12 @@ rarity(3);
 image("res://Images/CardArt/SelfImmolate.png")
 
 title("Glowing Blood");
-$Energy=3
+$Energy=1
 cost(0)
-trigger(onPlay,do(move(Play,Reaction,self)));
-trigger(onReaction,do(move(Reaction,Play,self)));
-trigger(startofturn,do(gainEnergy($Energy)));
-removetrigger(endofturn,true,1);
-text("Add this to your reaction pile.\n On reaction, at the start of your next turn gain $Energy Energy");
-types(light,reaction);
+trigger(unheal,do(gainEnergy($Energy)));
+removetrigger(endofturn,true,5);
+text("when you lose health, gain $Energy energy");
+types(light, blood);
 rarity(7);
 image("res://Images/CardArt/GlowingBlood.png")
 
@@ -144,8 +142,23 @@ trigger(onPlay, do(summon("Seraph",(any),$Range)));
 trigger(onPlay, do(voided(self, Play)))
 interrupt(hand:addVar, if( (argv[0] = self), (if( (argv[1] = Cost), true))))
 interrupt(hand:setVar, if( (argv[0] = self), (if( (argv[1] = Cost), true))))
+interrupt(addVar, if( (argv[0] = self), (if( (argv[1] = Cost), true))))
+interrupt(setVar, if( (argv[0] = self), (if( (argv[1] = Cost), true))))
 text("Summon an angel anywhere. Burn. This card's cost cannot be reduced");
 removetrigger(endofturn, true, 0);
 rarity(2);
 modifiers(unique);
 image("res://Images/CardArt/DivineIntervention.png");
+
+title("Exalted Expansion")
+cost(2);
+types(light)
+$Energy=2
+modifiers(unique, eternal)
+interrupt(play, if((1=0),false))
+interrupt(play, if( ((do(getVar(argv[0], Cost)))="X"),(do (gainEnergy($Energy)))));
+text("When you play an X cost card, first gain $Energy energy")
+removetrigger(never, true, 0)
+rarity(2);
+
+

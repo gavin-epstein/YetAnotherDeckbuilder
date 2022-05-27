@@ -1,6 +1,6 @@
 extends CardLocation
 signal cardchosen
-const bannedtypes = ["attack", "movement","starter","loot","void"]
+const bannedtypes = ["attack", "movement","starter","loot","void","typeless","enchantment"]
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"
@@ -14,8 +14,9 @@ func _ready() -> void:
 func updateDisplay():
 	if cards.size() == 0:
 		return
-	var pos = Vector2(-300,60) + $CardChoiceBack2.position
-	var xsep = 200
+	
+	var xsep = 150 + (150 / cards.size());
+	var pos = Vector2(-.5 * cards.size()*xsep,60) + $CardChoiceBack2.position
 	for card in cards:
 		card.visible = true
 		card.z_index = 0
@@ -30,13 +31,7 @@ func cardClicked(card):
 		if card.modifiers.has("unique"):
 			get_parent().Library.removeUnique(card.title);
 		if card.types.has("electric"):
-			var makebattery = true
-			for card in get_parent().Play.cards:
-				if card.title == "Battery":
-					makebattery = false
-					break
-			if makebattery:
-				get_parent().createAt("Battery", "Play", 1)
+			get_node("../Battery").visible = true
 		var cardlist = []
 		for card in cards:
 			cardlist.append(card.title)
@@ -56,7 +51,7 @@ func clear():
 func generateReward(rarity, count = 3):
 	if get_parent().doTutorial and prerigged>0:
 		self.cards=[]
-		for cardname in ["Ashes", "Stoneskin", "Light Whispers"]:
+		for cardname in ["Firewall", "Stoneskin", "Light Whispers"]:
 			var card = get_parent().Library.getCardByName(cardname)
 			self.add_card(card)
 		

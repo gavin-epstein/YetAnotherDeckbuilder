@@ -52,7 +52,14 @@ func loadFromSave(save:Dictionary):
 	self.cards = []
 	for savecard in save.cards:
 		var card = get_parent().Library.getCardByName(savecard.title)
-		card.loadFromSave(savecard)
+		if card== null: #onieromancy
+			card =get_parent().Library.cardtemplate.instance()
+			card.title = savecard.title
+			card.controller = get_parent().cardController
+			card.loadFromSave(savecard)
+			onieromancy.generateImage(card)
+		else:
+			card.loadFromSave(savecard)
 		add_child(card)
 		cards.append(card)
 	updateDisplay()

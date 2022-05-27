@@ -6,17 +6,17 @@ trigger(onRetain, do(addVar(self,Energy, (count("Energy","Energy")))));
 trigger(onRetain, do(setEnergy(0)));
 trigger(onPlay, do(gainEnergy($Energy)));
 trigger(onPlay, do(setVar(self, Energy, 0)))
-text(While in hand , at the end of turn all excess energy is stored in this card. On play gain $Energy energy. Retain);
+text(While in hand , at the end of turn all excess energy is stored in this card. On play gain $Energy energy. Permafrost);
 rarity(10)
-modifiers(retain)
+modifiers(permafrost)
 removetrigger(endofturn, true, 1)
 image("res://Images/CardArt/IcePrism.png")
 
-title("Permafrost");
+title("Moraine");
 types(earth, ice)
 removetrigger(endofturn, true, 11)
 text("When you would retain an unplayable card, trigger its on Draw effect and discard it")
-trigger(retained, if((hasModifier( argv[0], unplayable)), (do(triggerCard(argv[0],"onDraw")))))
+trigger(retained, if((hasModifier( argv[0], unplayable)), (do(triggerCard("onDraw",argv[0])))))
 trigger(retained, if((hasModifier( argv[0], unplayable)), (do(discard(argv[0])))))
 cost(1);
 rarity(4);
@@ -30,6 +30,7 @@ trigger(onPlay,do(voided(self, Play)))
 text(Freeze your hand. Burn.)
 removetrigger(endofturn, true, 0)
 rarity(6);
+image("res://Images/CardArt/FlashFreeze.png")
 
 title("Icicle")
 cost(2)
@@ -37,9 +38,9 @@ $Damage=8
 $Range=3
 trigger(onRetain,if(($Cost>0),(do(addVar(self,Cost,-1)))))
 trigger(onPlay, do(damage, ($Damage,(ice),(any),$Range)));
-text("Deal $Damage hail damage range $Range. On retain, lower the cost of this card by 1 until played. Retain")
+text("Deal $Damage hail damage range $Range. On retain, lower the cost of this card by 1 until played. Permafrost")
 removetrigger(endofturn, true, 1)
-modifiers(retain)
+modifiers(permafrost)
 types(ice, attack);
 rarity(10);
 image("res://Images/CardArt/Icicle.png")
@@ -61,6 +62,7 @@ trigger(startofturn, do(addModifier( (select(Hand,true,"pick a card to freeze (R
 text("At the start of your turn, freeze a card")
 removetrigger(endofturn, true, 7)
 rarity(4)
+image("res://Images/CardArt/Refridgerator.png")
 
 title("Hailstorm!")
 cost(1)
@@ -74,3 +76,53 @@ removetrigger(endofturn, true, 1)
 trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(ice,storm),(all, (any), "-friendly"),$Range ))),$cardnumber))))
 rarity(1)
 text("Discard your hand, deal $Damage ice storm damage to all enemies for each card discarded")
+
+title("Preserve")
+cost(0)
+types(ice);
+trigger(onPlay,do(addModifier( (select(Hand,true,"pick a card to freeze")),frozen)));
+modifiers(permafrost)
+rarity(10);
+removetrigger(endofturn, true, 1)
+text("Freeze a card in your hand. Permafrost");
+
+title("The Frozen Goddess");
+types(ice);
+modifiers(eternal,unique);
+removetrigger(never, true,0);
+cost(1);
+text("Increase your maximum hand size by 2");
+trigger(onPlay, do(addhandsize(2)));
+rarity(1);
+image("res://Images/CardArt/TheFrozenGoddess.png")
+
+title("Ice Fortress");
+types(ice);
+$Block=2
+trigger(endofturn, do (block((* ,$Block ,(do(countModifiers(Hand, frozen)))))))
+rarity(4)
+text("At the end of your turn, gain $Block block per frozen card in hand. (* ,$Block ,(do(countModifiers(Hand, frozen))))");
+removetrigger(endofturn, true, 6)
+cost(1);
+
+title("Dagger of Returning");
+types(ice, shadow, attack);
+$Range=1
+$Damage=8
+$Status=1
+cost(0);
+trigger(onPlay,do(damage, ($Damage,(piercing),(any),$Range)));
+trigger(onPlay,do(addStatus(frost,$Status)));
+trigger(onPlay,do(move,(Play, Hand, self)));
+rarity(3);
+modifiers(unique);
+text("Deal $Damage piercing damage range $Range. Gain $Status Frost and return this to your hand")
+removetrigger(endofturn, true,0);
+
+
+
+
+
+
+#frozen , convert a tile to ice
+#play apply frost to all enemies on ice

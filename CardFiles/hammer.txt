@@ -78,7 +78,7 @@ title("Shadow Hammer");
 cost(1)
 types(hammer,shadow);
 $Increment=1
-rarity(2)
+rarity(4)
 $Card=null
 trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost>0),true)),"Pick a card to upgrade")))))
 trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
@@ -177,6 +177,20 @@ trigger(onPlay,do(purge(self)));
 text("Move $Move, then permanently add $Increment tiles to a movement card play.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
+image("res://Images/CardArt/SpeedHammer.png")
+
+title("Icepick")
+cost(1);
+types(hammer, ice);
+rarity(4);
+trigger(onPlay,do(setVar(self, Card, (select(Hand,true,"Pick a card to gain permafrost")))))
+trigger(onPlay,do(addModifier( $Card,permafrost)));
+trigger(onPlay,do(addModifier( $Card,frozen)));
+text("Add permafrost to a card in your hand. Purge")
+trigger(onPlay,do(purge(self)));
+removetrigger(endofturn, true, 0);
+modifiers(hammer);
+image("res://Images/CardArt/Icepick.png")
 
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers

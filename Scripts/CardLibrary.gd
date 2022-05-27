@@ -101,6 +101,8 @@ func getRandom(maxRarity:int = 100, types = []):
 		
 	var select = []
 	for card in cards:
+		if card.deleted: #skip removed unique cards
+			continue
 		for type in types:
 			if card.hasType(type) and card.rarity <= maxRarity:
 				for _i in range(card.rarity):
@@ -114,8 +116,10 @@ func getRandomByModifier(mods,raritysensitive = false):
 		mods= ["any"]
 	var select = []
 	for card in cards:
+		if  card.deleted:  #skip removed unique cards
+			continue
 		for mod in mods:
-			if card.hasModifier(mod):
+			if card.hasModifier(mod) :
 				if (!raritysensitive):
 					select.append(card)
 				else:
@@ -128,8 +132,7 @@ func getRandomByModifier(mods,raritysensitive = false):
 func removeUnique(title):
 	for card in cards:
 		if card.title == title:
-			card.rarity = 0;
-			card.modifiers = {};
+			card.deleted = true
 func loadTooltips(fname):
 	var f = File.new()
 	f.open(fname, File.READ)
@@ -144,3 +147,6 @@ func loadTooltips(fname):
 	f.close()
 func getToolTip(word):
 	return tooltips.get(word.to_lower())
+func resetDeletedCards():
+	for card in cards:
+		card.deleted = false

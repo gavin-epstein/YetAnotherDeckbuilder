@@ -3,7 +3,7 @@ cost(2);
 types(fire, attack)
 $Damage=20
 $Range=2
-text("Deal $Damage fire damage to all enemies on or adjacent to the targeted tile. Range 2. Burn")
+text("Deal $Damage fire damage to all units on or adjacent to the targeted tile. Range 2. Burn")
 trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any),2,Player)),1)))
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
@@ -37,7 +37,7 @@ title("Spark");
 $Damage=4
 $Range=2
 types(fire,attack)
-text("Deal $Damage fire damage, range $Range. Void")
+text("Deal $Damage fire damage, range $Range. Burn")
 trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
 trigger(onPlay,do(voided(self, Play)))
 removetrigger(endofturn, true,0)
@@ -47,14 +47,15 @@ image("res://Images/CardArt/Spark.png");
 
 title("Foxfire");
 $Damage=4
-$Increment=12
+$Increment=4
 $Range=1
 types(fire, attack,fungal)
 cost(2)
 trigger(onVoided,do(addVar(self,Damage,$Increment)))
+trigger(onVoided,do(move(Voided, Hand, self)))
 trigger(onPlay, do(damage, ($Damage,(fire),(any),$Range)))
 removetrigger(endofturn, true,1)
-text("Deal $Damage fire damage, range $Range. When burned, increase this card's damage by $Increment")
+text("Deal $Damage fire damage, range $Range. When burned, increase this card's damage by $Increment and return it to your hand")
 rarity(1)
 image("res://Images/CardArt/Foxfire.png");
 
@@ -78,7 +79,7 @@ $Range=3;
 trigger(onPlay, do(damage((count("Energy","Energy")),(fire),(any),$Range)));
 trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Blinding Flash)")),Hand),false));
 text("Deal damage equal to your energy, range $Range, then burn a card in your hand");
-types(fire);
+types(fire, light);
 removetrigger(endofturn, true, 1);
 rarity(5)
 image("res://Images/CardArt/BlindingFlash.png");
@@ -89,10 +90,11 @@ cost(X);
 $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
-trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"-",1,true)),Play)))
-text(Gain $Block X block, then burn a random non-eternal card from play);
+trigger(onPlay,repeat( (do(move(Voided, Deck,(select(Voided,true,"-")),0))),$X))
+trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"Pick a card to burn")),Play)))
+text(Gain $Block X block, topdeck X random cards from your burn pile. Burn a card from Play);
 rarity(4);
-removetrigger(endofturn, true, 1);
+removetrigger(endofturn, true, 3);
 image("res://Images/CardArt/Ashes.png");
 
 title("Renewal")
@@ -115,7 +117,7 @@ $Armor=2
 text("Gain $Armor armor. Burn $Repeat cards from your Deck")
 cost(0)
 trigger(onPlay,do(armor($Armor)))
-trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to void")),Deck))),$Repeat))
+trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to burn")),Deck))),$Repeat))
 removetrigger(endofturn, true,3)
 rarity(9)
 image("res://Images/CardArt/Preignite.png");
@@ -135,7 +137,7 @@ title("Explode")
 types(fire,summon);
 cost(1);
 trigger(onPlay, repeat((do(summon("Flame",(1),3))) , ( count(Voided,any)) )); 
-text("Summon a flame on a random empty tile in range 3 for each card in the void pile. Burn");
+text("Summon a flame on a random empty tile in range 3 for each card in the burn pile. Burn");
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn,true,0);
 rarity(2);
@@ -177,3 +179,7 @@ text(Play a card other than Rekindle from your burn pile. Burn)
 rarity(5);
 modifiers(isRekindle)
 removetrigger(endofturn,true,0)
+
+#when you burn a card, 3 block and 1 flaming
+
+#afterburner - start of turn exhume random

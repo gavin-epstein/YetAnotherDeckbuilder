@@ -29,6 +29,7 @@ text("When you lose health, move $Move")
 removetrigger(endofturn, true, 4)
 cost(1);
 rarity(7);
+image("res://Images/CardArt/Flee.png")
 
 title("Autovampirism")
 types(blood, food)
@@ -38,9 +39,9 @@ trigger(unheal, do(heal($Heal)))
 text("Whenever you lose health, heal $Heal afterwards")
 cost(2)
 removetrigger(unheal, true, 8)
-rarity(5)
+rarity(7)
 
-title("Double Edged Blade")
+title("Double Edged Sword")
 types(blood)
 $Blood=2
 $Status=5
@@ -50,3 +51,20 @@ cost(1)
 trigger(onPlay, do(addStatus(bleed,$Status, (do(selectTiles( (any,(any),any),$Range,Player))))))
 text("Lose $Blood health. Apply $Status Bleed to any unit range $Range")
 removetrigger(endofturn, true, 1)
+rarity(5)
+
+title("Bleeding Tooth Fungus")
+types(blood,fungus,attack);
+$Repeat=1
+$Blood=1
+$Increment=1
+text("Lose $Blood health $Repeat times. All enemies lose $Blood health  $Repeat times. Increase the number of times this card repeats by $Increment.")
+cost(1)
+trigger(onPlay,repeat(  (do(unheal($Blood))),$Repeat));
+#trigger(onPlay,repeat(  (enemyDo(say( (do(selectTiles((all,(any),"-friendly"),40,Player))), "aaaaaaah" ))),$Repeat));
+trigger(onPlay,repeat(  (enemyDo(heal( (do(selectTiles((all,(any),"-friendly"),40,Player))), -1 ))),$Repeat));
+trigger(onPlay, do(addVar(self, Repeat, $Increment)))
+removetrigger(endofturn, true, 2)
+rarity(3)
+
+#end of turn, if at exactly 1 health, heal 20

@@ -119,4 +119,5 @@ types(fungal, assassin)
 removetrigger(endofturn,true,2)
 text("Gain $Status stealth. Every $Count times you play this add $Increment stealth to it. (+, $Count, (*,-1,$currentCount)) remaining.");
 rarity(1);
+image("res://Images/CardArt/DeathCap.png");
 
