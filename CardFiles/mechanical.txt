@@ -24,8 +24,9 @@ cost(0)
 rarity(6)
 image("res://Images/CardArt/TimeMachine.png")
 
+#rename and/or re-art? clockwork shield
 title("Defense Mechanism")
-types(mechanical)
+types(mechanical, shield)
 cost(2)
 rarity(5)
 $Block=4

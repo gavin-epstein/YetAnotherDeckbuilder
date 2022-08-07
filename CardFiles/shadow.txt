@@ -234,3 +234,4 @@ image("res://Images/CardArt/SpreadingCorruption.png");
 ##text("Return the last card in play, other than Recall, to your hand");
 ##trigger(onPlay,do(move(
 
+#reduce the cost of 5? cards to 0 and lose 1 energy per turn

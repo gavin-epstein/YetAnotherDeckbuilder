@@ -172,3 +172,17 @@ static func NestedListToString(code)->String:
 	else:
 		out = str(code)
 	return out
+
+static func turnOff(o:Node):
+	o.set_process(false)
+	o.set_process_input(false)
+	o.set_physics_process(false)
+	
+	
+static func turnOn(o:Node):
+	o.set_process(true)
+	o.set_process_input(false)
+	o.set_physics_process(false)
+#comparator object, comparator
+
+	

@@ -52,6 +52,7 @@ func loadallcards(fname) -> int:
 			var card = cardtemplate.instance()
 			card.controller = get_parent()
 			card.loadCardFromString(cardcode)
+			Utility.turnOff(card)
 			self.cards.append(card)
 			count+=1
 			cardcode = ""

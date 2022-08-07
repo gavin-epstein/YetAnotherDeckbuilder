@@ -1,12 +1,12 @@
 title("Gust");
 cost(1)
 $Damage=6
-$Move=1
+$MoveOther=1
 $Range=2
 $Draw=2
-text(Deal $Damage wind damage,range $Range and push $Move tile. Draw $Draw);
+text(Deal $Damage wind damage,range $Range and push $MoveOther tile. Draw $Draw);
 trigger(onPlay, do(damage, ($Damage,(wind),(any),$Range),false));
-trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 trigger(onPlay, do(draw($Draw)));
 removetrigger(endofturn,true,1);
 rarity(6);
@@ -16,23 +16,23 @@ image("res://Images/CardArt/Gust.png");
 title("Lure");
 cost(1)
 $Block=6
-$Move=1
-text("Now and at the start of next turn, gain $Block block and pull a unit towards you");
+$MoveOther=1
+text("Now and at the start of next turn, gain $Block block and pull a unit $MoveOther towards you");
 trigger(onPlay, do(block($Block)));
-trigger(onPlay, do(moveUnits((any),40,Player,towards,$Move)));
+trigger(onPlay, do(moveUnits((any),40,Player,towards,$MoveOther)));
 trigger(startofturn, do(block($Block)));
-trigger(startofturn, do(moveUnits((any),40,Player,towards,$Move)));
+trigger(startofturn, do(moveUnits((any),40,Player,towards,$MoveOther)));
 removetrigger(startofturn,true,1);
 rarity(5);
-types(kinetic);
+types(kinetic, shield);
 image("res://Images/CardArt/lure.png");
 
 title(Kinetic Blast);
 $Damage=1
-$Move=1
-text(Deal $Damage damage to all units and push them $Move tile);
+$MoveOther=1
+text(Deal $Damage damage to all units and push them $MoveOther tile);
 trigger(onPlay, do(damage, ($Damage,(kinetic),(all),50),false));
-trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$Move)));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 removetrigger(endofturn, true, 1);
 types(attack, kinetic);
 rarity(3)
@@ -42,11 +42,11 @@ image("res://Images/CardArt/KineticBlast.png");
 title(Earthquake);
 cost(1);
 $Damage=7;
-$Move=1
+$MoveOther=1
 rarity(4);
 trigger(onPlay, do(damage, ($Damage,(earth),(all,(stone),-friendly),50),false));
-trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$Move)));
-text("Deal $Damage damage to enemy units on stone tiles and pull them $Move towards you");
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,towards,$MoveOther)));
+text("Deal $Damage damage to enemy units on stone tiles and pull them $MoveOther towards you");
 types(kinetic, attack);
 removetrigger(endofturn,true,1);
 image("res://Images/CardArt/Earthquake.png");
@@ -55,29 +55,41 @@ image("res://Images/CardArt/Earthquake.png");
 title(Ingest);
 cost(0);
 $Heal=2
-$Move=1
+$MoveOther=1
 types(shadow, food, kinetic)
 lore("I'm not joking")
-trigger(onPlay, do(moveUnits((all,(any),-Player),40,Player,towards,$Move)));
+trigger(onPlay, do(moveUnits((all,(any),-Player),40,Player,towards,$MoveOther)));
 trigger(onPlay, do(heal($Heal)));
-text("Pull all units $Move towards you. Heal $Heal");
+text("Pull all units $MoveOther towards you. Heal $Heal");
 rarity(7)
 removetrigger(endofturn, true, 1);
 
 title(Moths to a Flame);
 cost(0);
 $Range=40
-$Move=1
+$MoveOther=1
 trigger(onPlay, do(setVar(self, TILE, (do(selectTiles((any,(any),empty),$Range,Player,"Pick a place to summon"))))))
 trigger(onPlay, do(summon("Flame",(lastTargets),$Range)))
-trigger(onPlay, do(moveUnits((all,(any),-friendly),40,$TILE,towards,$Move)));
+trigger(onPlay, do(moveUnits((all,(any),-friendly),40,$TILE,towards,$MoveOther)));
 removetrigger(endofturn, true, 1)
 text("Summon a flame anywhere and pull all enemies towards it")
 rarity(4)
 types(fire, kinetic, summon)
+image("res://Images/CardArt/MothsToAFlame.png")
 
+title(Trample);
+cost(2)
+$Move=3
+$MoveOther=2
+$Range=1
+trigger(onPlay, do(move($Move)))
+trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range),false));
+trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
+removetrigger(endofturn, true, 1)
+text("Move $Move, deal $Damage crush damage range $Range, and push the attacked unit $MoveOther")
+rarity(7)
+types(kinetic, attack, movement)
 
-#charge - move 3, deal 8 range 1, push 2
 #unique - immune to knockback, knockback deals 2 extra damage (possibly 2 cards)
 #summon a boulder(or a force wave or bowling ball or something) and push it 10 times/ until it dies
-
+#hammer, increment moveother

@@ -18,10 +18,8 @@ corner_radius_bottom_left = 20
 script = ExtResource( 3 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 1.27319
-margin_top = -1.17285
-margin_right = 1921.27
-margin_bottom = 1078.82
+margin_right = 1920.0
+margin_bottom = 1079.99
 mouse_filter = 2
 color = Color( 0.0392157, 0.0392157, 0.0392157, 1 )
 __meta__ = {

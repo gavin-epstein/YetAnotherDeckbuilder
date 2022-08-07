@@ -64,15 +64,13 @@ rarity(0)
 title("Potion Purchase")
 types(potion, loot)
 rarity(0)
-modifiers(retain)
+modifiers(temporary)
 cost(1)
-text("Purge a card from your hand, choose 1 of 3 potions to add to your hand. The potion seller leaves.\n On retain, purge.")
+text("Purge a card from your hand, choose 1 of 3 potions to add to your hand. The potion seller leaves.\n")
 trigger(onPlay,do(purge((select(Hand,true,"Pick a card to purge")))))
 trigger(onPlay, do(cardreward,("potion",3)))
 trigger(onPlay, enemyDo(say( (do(selectTiles( (1,(any),"name:Potion Seller"),40,Player))), "Bye")))
 trigger(onPlay, enemyDo(kill( (do(selectTiles( (1,(any),"name:Potion Seller"),40,Player))), null)))
-trigger(onPlay, do(purge,(self)));
-trigger(onRetain, do(purge,(self)));
-removetrigger(endofturn, true,0);
+removetrigger(endofturn, true,1);
 image("res://Images/CardArt/PotionPurchase.png")
 

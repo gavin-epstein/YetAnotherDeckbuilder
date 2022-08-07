@@ -8,35 +8,6 @@ removetrigger(movePlayer,true,5);
 text("When you move, gain $Status dodge");
 image("res://Images/CardArt/DancingMaster.png")
 
-##title(Perfect Dodge)
-##types(reaction,dodge)
-##trigger(onReaction, do(setVar(self,DamageTaken,0)))
-##text("Reaction: Take no Damage. Purge")
-##trigger(onReaction, do(purge,(self),false))
-##cost(-)
-##removetrigger(endofturn, true, 0)
-##modifiers(Dodge)
-##image("res://Images/CardArt/PerfectDodge.png")
-##
-##title(Skillful Dodge)
-##types(reaction,dodge)
-##trigger(onReaction, do(setVar(self,DamageTaken,(*,$DamageTaken, .75))))
-##text("Reaction: Take 75% less Damage. Purge")
-##trigger(onReaction, do(purge,(self),false))
-##cost(-)
-##removetrigger(endofturn, true, 0)
-##modifiers(Dodge)
-##image("res://Images/CardArt/SkillfulDodge.png")
-##
-##title(Clumsy Dodge)
-##types(reaction,dodge)
-##trigger(onReaction, do(setVar(self,DamageTaken,(*,$DamageTaken, .5))))
-##text("Reaction: Take 50% less Damage. Purge")
-##trigger(onReaction, do(purge,(self),false))
-##cost(-)
-##removetrigger(endofturn, true, 0)
-##modifiers(Dodge)
-##image("res://Images/CardArt/ClumsyDodge.png")
-##
+
 ###when you dodge heal 2
-##
+## when dodge push, move

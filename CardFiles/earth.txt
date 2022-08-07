@@ -1,6 +1,6 @@
 title("Stone");
 cost(-);
-types(earth);
+types(earth, shield);
 $Block=2
 text("On draw gain $Block block. \nUnplayable");
 rarity(0);
@@ -21,7 +21,7 @@ image("res://Images/CardArt/BountifulSoil.png")
 
 title(Stonewall);
 cost(0);
-types(earth);
+types(earth, shield);
 $Block=12
 text("Gain $Block block. Add 2 stones to your hand. Insert into your deck when you draw any card containing 'Stone'");
 trigger(onPlay, do(block($Block)))
@@ -34,7 +34,7 @@ image("res://Images/CardArt/Stonewall.png")
 title(Mine);
 cost(2);
 $Block=2
-types(earth,mechanical)
+types(earth,mechanical, shield)
 text("When you draw an unplayable card, gain $Block block. Add a random unplayable card to each of your deck, hand, and discard")
 removetrigger(endofturn,true,10);
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(block($Block)))));
@@ -47,7 +47,7 @@ image("res://Images/CardArt/Mine.png")
 title(Diamond);
 cost(-)
 $Armor=1
-types(earth)
+types(earth, steel)
 text("On draw, gain $Armor armor.\nUnplayable")
 trigger(onDraw, do(armor,($Armor), false));
 modifiers(unplayable)
@@ -79,13 +79,14 @@ image("res://Images/CardArt/DodgyLookingRock.png")
 
 title("Stoneskin")
 cost(1)
-types(earth)
+types(earth, steel, shield)
 $Block=5
 $Armor=1
 $Status=1
-text("Gain $Block block, $Armor armor and keep your block at the start of next turn. Add a dazed to your deck")
+text("Gain $Block block and keep your block at the start of next turn. While in play maintain $Armor armor. Add a dazed to your deck")
 trigger(onPlay,do(block($Block)))
-trigger(onPlay,do(armor($Armor)))
+trigger(onPlay,do(maintain(self, "armor",$Armor)))
+trigger(onRemoveFromPlay,do(unmaintain(self, "armor",$Armor)))
 trigger(onPlay,do(create("Dazed",Deck)))    
 removetrigger(endofturn, true,2)
 trigger(onPlay,do(addStatus(stoneskin,$Status)))

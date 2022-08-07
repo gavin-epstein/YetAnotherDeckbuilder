@@ -29,7 +29,9 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel"):
 		self.undisplay()
 	
-
+func multidisplay(members):
+	pass
+	
 func undisplay():
 	$Panel.visible = false
 	if self.caller!=null:

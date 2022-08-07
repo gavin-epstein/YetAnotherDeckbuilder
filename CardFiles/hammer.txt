@@ -62,14 +62,14 @@ image("res://Images/CardArt/fungalhammer.png")
 
 title("Armorer's Hammer");
 cost(1);
-types(hammer);
+types(hammer,steel);
 $Armor=1
 $Increment=1
 rarity(1);
 trigger(onPlay,do(armor($Armor)));
 trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Armor)),"Pick a card to upgrade")),Armor,$Increment)))
 trigger(onPlay,do(purge(self)));
-text("Gain $Armor armor, then permanently add $Increment armor to an armor card in play.\nPurge");
+text("Gain $Armor armor, then permanently add $Increment armor to an steel card in play.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 image("res://Images/CardArt/armorershammer.png")
@@ -91,7 +91,7 @@ image("res://Images/CardArt/shadowhammer.png")
 
 title("Shieldsmith's Hammer");
 cost(1);
-types(hammer);
+types(hammer, shield);
 $Block=2
 $Increment=3
 rarity(3);
@@ -195,5 +195,6 @@ image("res://Images/CardArt/Icepick.png")
 #Multihammer - the next 3 hammers you play add a copy to your hand
 #hammer machine - make lots of hammers
 #wrecking ball - purge your deck
-#Autohammer - extend turns in play by 2
+#mechahammer - extend turns in play by 2
 #Smithy - when you play a hammer gain 4 block
+#mjolnir - slay to upgrade a card?

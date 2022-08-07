@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scripts/Card.gd" type="Script" id=1]
 [ext_resource path="res://Images/CardArt/Placeholder.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Scripts/TypeIcons.gd" type="Script" id=7]
 [ext_resource path="res://Images/CardArt/FrozenFrame.png" type="Texture" id=8]
 [ext_resource path="res://Images/CardArt/TemporaryFrame.png" type="Texture" id=9]
+[ext_resource path="res://Images/CardArt/Tapicon.png" type="Texture" id=10]
 [ext_resource path="res://Images/CardArt/hourglass.png" type="Texture" id=132]
 [ext_resource path="res://Images/CardArt/ReactionArrow.png" type="Texture" id=133]
 [ext_resource path="res://Images/CardArt/Endless.png" type="Texture" id=134]
@@ -85,8 +86,8 @@ scale = Vector2( 1.04252, 1.02655 )
 texture = ExtResource( 6 )
 
 [node name="CardArt" type="Sprite" parent="Resizer"]
-position = Vector2( 369.166, 319.764 )
-scale = Vector2( 0.5, 0.5 )
+position = Vector2( 374.471, 326.477 )
+scale = Vector2( 0.486574, 0.486574 )
 texture = ExtResource( 2 )
 
 [node name="FrameSprite" type="Sprite" parent="Resizer"]
@@ -214,6 +215,11 @@ texture = ExtResource( 133 )
 position = Vector2( 219.347, 436.758 )
 scale = Vector2( 0.467327, 0.400566 )
 texture = ExtResource( 134 )
+
+[node name="Tapicon" type="Sprite" parent="Resizer/CardFrame"]
+position = Vector2( 136.433, 398.191 )
+scale = Vector2( 0.324361, 0.324361 )
+texture = ExtResource( 10 )
 
 [node name="hourglass" type="Sprite" parent="Resizer/CardFrame"]
 position = Vector2( 136.886, 421.012 )

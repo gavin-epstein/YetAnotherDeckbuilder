@@ -60,7 +60,7 @@ image("res://Images/CardArt/Storm.png");
 
 title("Altostratus");
 cost(3)
-types(cloud,attack)
+types(cloud,attack, shield)
 rarity(5)
 $Block=9
 $Damage=9
@@ -140,6 +140,24 @@ trigger(onDiscard, do(create(self,Hand)))
 removetrigger(endofturn, true,0);
 image("res://Images/CardArt/MushroomCloud.png");
 
+title("Smoke");
+types(cloud, fire)
+cost(1)
+$Draw=1
+$Block=1
+$Energy=1
+trigger(onDiscard,do(move(Discard,Hand,self)));
+trigger(onDiscard,do(setVar(self,Cost,0)))
+trigger(onPlay,do(setVar(self,Cost,$BaseCost)));
+trigger(onDiscard,do(play(self)));
+trigger(onVoided,do(move(Discard,Hand,self)));
+trigger(onVoided,do(setVar(self,Cost,0)))
+trigger(onVoided,do(play(self)));
+trigger(onPlay, do(draw($Draw)));
+trigger(onPlay, do(gainEnergy($Energy)));
+trigger(onPlay, do(block($Block)));
+removetrigger(endofturn, true, 1);
+text("Draw $Draw, gain $Energy energy. If discarded or burned, play this")
 
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded
 #Dust: earth cloud, wind?:  on discard draw 2 unplayable

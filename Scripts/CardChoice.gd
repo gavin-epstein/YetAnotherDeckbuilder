@@ -1,6 +1,6 @@
 extends CardLocation
 signal cardchosen
-const bannedtypes = ["attack", "movement","starter","loot","void","typeless","enchantment"]
+const bannedtypes = ["attack", "movement","starter","loot","void","typeless","enchantment","shield"]
 # Declare member variables here. Examples:
 # var a: int = 2
 # var b: String = "text"

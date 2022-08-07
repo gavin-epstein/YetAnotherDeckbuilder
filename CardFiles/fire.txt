@@ -8,7 +8,6 @@ trigger(onPlay, do(damage($Damage, (fire), (splash,(any),exists,((any,(any),any)
 trigger(onPlay, do(voided(self,Play)))
 removetrigger(endofturn, true, 0);
 rarity(3);
-types(fire,attack);
 image("res://Images/CardArt/Fireball.png")
 
 title(Coal);
@@ -63,7 +62,7 @@ title("Firewall")
 $Block=18
 $Status=7
 cost(1)
-types(fire)
+types(fire, shield)
 rarity(3)
 trigger(onPlay, do(block($Block)))
 trigger(onPlay, do(addStatus("immune:fire",$Status)))
@@ -77,22 +76,21 @@ types(fire,light,attack)
 cost(0);
 $Range=3;
 trigger(onPlay, do(damage((count("Energy","Energy")),(fire),(any),$Range)));
-trigger(onPlay, do(voided,((select(Hand,true,"pick a card to void (Blinding Flash)")),Hand),false));
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to burn (Blinding Flash)")),Hand),false));
 text("Deal damage equal to your energy, range $Range, then burn a card in your hand");
-types(fire, light);
 removetrigger(endofturn, true, 1);
 rarity(5)
 image("res://Images/CardArt/BlindingFlash.png");
 
 title("Ashes");
-types(fire)
+types(fire, shield)
 cost(X);
 $Block=4
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
-trigger(onPlay,repeat( (do(move(Voided, Deck,(select(Voided,true,"-")),0))),$X))
+trigger(onPlay,repeat( (do(move(Voided, Deck,(select(Voided,true,"-",1,true)),0))),$X))
 trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"Pick a card to burn")),Play)))
-text(Gain $Block X block, topdeck X random cards from your burn pile. Burn a card from Play);
+text(Gain $Block X block.\n Topdeck X random cards from your burn pile. Burn a card from Play);
 rarity(4);
 removetrigger(endofturn, true, 3);
 image("res://Images/CardArt/Ashes.png");
@@ -111,13 +109,14 @@ cost(0);
 image("res://Images/CardArt/Renewal.png");
 
 title("Preignite")
-types(fire, shadow)
+types(fire, steel)
 $Repeat=2
 $Armor=2
-text("Gain $Armor armor. Burn $Repeat cards from your Deck")
+text("Burn $Repeat cards from your Deck. While in play maintain $Armor armor")
 cost(0)
-trigger(onPlay,do(armor($Armor)))
+trigger(onPlay,do(maintain(self, "armor", $Armor)))
 trigger(onPlay, repeat( (do(voided((select(Deck,true,"Pick a card to burn")),Deck))),$Repeat))
+trigger(onRemoveFromPlay,do(unmaintain(self, "armor",$Armor))))
 removetrigger(endofturn, true,3)
 rarity(9)
 image("res://Images/CardArt/Preignite.png");
@@ -179,6 +178,21 @@ text(Play a card other than Rekindle from your burn pile. Burn)
 rarity(5);
 modifiers(isRekindle)
 removetrigger(endofturn,true,0)
+image("res://Images/CardArt/rekindle.png")
+
+title(Wyldfire)
+types(fire)
+cost(0);
+$Draw=1
+text("Draw $Draw. Burn a card other than Wyldfire. Add a copy of this card to your discard pile. When burned draw $Draw");
+lore(It multiplies and devours like a plague of rats)
+trigger(onPlay, do(draw($Draw)));
+#trigger(onPlay, do(voided( (do(select(Hand, (not (hasName(self, "Wyldfire"))), "Pick a card to burn")))), Hand)));
+trigger(onPlay, do(voided,((select(Hand,(not,hasName(self, "Wyldfire")),"pick a card to burn")),Hand),false));
+trigger(onPlay, do( create(self,Discard)));
+trigger(onVoided, do(draw($Draw)))
+removetrigger(endofturn, true, 0);
+rarity(7);
 
 #when you burn a card, 3 block and 1 flaming
 

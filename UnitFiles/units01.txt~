@@ -1,0 +1,696 @@
+name("Monolith")
+difficulty(0)
+spawnable(stone,grass,sand,ice)
+image("res://Images/UnitArt/Monolith.png")
+spawnable(any)
+speed(0)
+range(0)
+health(200)
+status(immovable, true)
+status(lootless, true)
+status(neutral, true)
+
+name("Rock")
+difficulty(0)
+spawnable(stone,grass,water)
+image("res://Images/UnitArt/Stone.png")
+spawnable(any)
+speed(0)
+range(0)
+health(100)
+status(lootless, true)
+status(neutral, true)
+
+name("Tree Stump")
+difficulty(0)
+spawnable(grass,water)
+image("res://Images/UnitArt/TreeStump.png")
+speed(0)
+range(0)
+health(40)
+status(immovable,true)
+status("vulnerable:fire",true)
+status(lootless, true)
+status(neutral, true)
+
+name("Tumbleweed")
+difficulty(0)
+spawnable(sand)
+image("res://Images/UnitArt/Tumbleweed.png")
+speed(3)
+range(1)
+health(10)
+strength(5)
+damagetypes(stab,bite)
+trigger(turn,do(MoveAndAttack(self,friendly)))
+status(thorns,5)
+status("vulnerable:fire",true)
+
+name("Mora")
+difficulty(0)
+health(20)
+image("res://Images/UnitArt/Character.png")
+status(friendly,true)
+status(Player,true)
+
+name("Void")
+difficulty(0)
+health(200)
+speed(0)
+range(0)
+$BossesSummoned=0
+$BossBreakpoint=150
+damagetypes(beam)
+trigger(onSummon,do(addArmor(self,10)))
+trigger(consume, do(gainMaxHealth(self,1)))
+trigger(voidshift, do(clearAllStatuses(tile)))
+trigger(damaged, if( ($BossesSummoned<1) ,(if (((do(getStatus(tile,health)))<$BossBreakpoint),(do(spawnMiniBoss()))))))
+trigger(turn, do(setVar(self, power,  (do(getStatus(tile, gatheringpower))))))
+#trigger(turn, do(say(self, $power, 1)))
+trigger(spawnMiniBoss,do(setStatus(tile,stealth,true)))
+trigger(spawnMiniBoss,cardDo(purge( (selectCards(Play,(hasModifier(self,void)),"-",1,true)))))
+trigger(spawnMiniBoss,cardDo(create("Void of Silence","Play")))
+trigger(spawnMiniBoss,do(addVar(self,BossesSummoned,1)))
+trigger(turn, if(($power=0), ( do(Attack(self,Player)))))
+image("res://Images/UnitArt/void.png")
+status(immovable, true)
+status(boss,true)
+status(gatheringpower,25)
+strength(1)
+lore("The void at the center of the world. Its hunger is unending")
+
+name("Carrot")
+difficulty(-1)
+spawnable(grass)
+status(nourishing,true)
+speed(0)
+range(0)
+health(5)
+image("res://Images/UnitArt/Carrot.png")
+status(friendly,true)
+
+name("Moss Crab")
+difficulty(3)
+spawnable(water)
+trigger(turn,if((countName(Play,"Moss Crab")>1),(do(MoveAndAttack(self,friendly)))))
+trigger(turn,if((countName(Play,"Moss Crab")<2),(do(Summon((select((1,("any"),empty),1,tile)),"Moss Crab")))))
+health(15)
+speed(1)
+range(1)
+damagetypes(moss)
+lore(Despite looking like crabs these creatures are more closely related to lichens. They are known to travel in pairs.)
+status(lifelink,true)
+strength(5)
+image("res://Images/UnitArt/MossCrab.png")
+
+
+name("Boom Bloom")
+difficulty(1)
+lore(Native to the sulfur rich slopes of the Pelathic Mountains, these flowers produce a gunpowder-like substance in their petals)
+spawnable(none)
+status(explosive,5)
+status(fuse,3)
+speed(0)
+range(0)
+health(5)
+image("res://Images/UnitArt/boombloom.png")
+lore(This plant uses the sulfur rich soil of its native biome to synthesize explosive compounds.) 
+status(lootless, true)
+
+name("Anomalocaris")
+difficulty(7)
+health(1)
+strength(10)
+speed(1)
+range(2)
+spawnable(any)
+$Multistrike = 1
+damagetypes(slash)
+lore("Earth's first apex predator is back... and you're the prey") 
+status(hardenedcarapace,true)
+image("res://Images/UnitArt/anomalocaris.png")
+trigger(onSummon,do(addArmor(self,10)))
+trigger(turn,do(MoveAndAttack(self,friendly)))
+
+name("Smol Wizard")
+damagetypes(light, shadow)
+difficulty(4)
+spawnable(any)
+health(25)
+image("res://Images/UnitArt/SmallWizard.png")
+speed(2)
+range(40)
+strength(1)
+$power=0
+$lastTile=tile
+$Intent=boom
+trigger(turn,do(setVar(self,lastTile,tile)))
+trigger(turn,do(move(self,(select((1,(any),empty),speed, tile)))))
+trigger(turn,if(($Intent=boom),( do(Summon($lastTile,"Boom Bloom"))  )))
+trigger(turn,if(($Intent=boom),( do(addStatus($lastTile,explosive,$power))   )))
+trigger(turn,if(($Intent=buff),( do(gainStrength((select((all,(any),"-friendly"),1,tile)),1)))))
+trigger(turn,if(($Intent=buff),( do(gainStrength(tile,1)))))
+trigger(turn,if(($Intent=attack),( do(Attack(self,Player)))))
+trigger(turn,if((random(1,0,0,0,0,0,0,0)>0),(do(say(self,"جЖ٧o آЭعё Gшش.")))))
+trigger(turn,do(setVar(self,Intent,(random(boom,buff,attack)))))
+trigger(turn,do(addVar(self,power,1)))
+
+name("Barn Swallow")
+difficulty(0)
+health(1)
+strength(1)
+speed(2)
+range(1)
+damagetypes(avian,stab)
+image("res://Images/UnitArt/Swallow.png")
+status(friendly,true)
+trigger(turn,do(MoveAndAttack(self,"-friendly")))
+facing(topdown)
+
+name("Mother Hen")
+difficulty(0)
+health(5)
+strength(0)
+speed(2)
+range(0)
+$Block=4
+$Multistrike=0
+damagetypes(avian,stab)
+lore("She's very protective of nearby friendly units")
+image("res://Images/UnitArt/Chicken.png")
+status(friendly,true)
+trigger(turn,do(MoveAndAttack(self,"friendly")))
+trigger(turn,do(addBlock( (do(select((all,(any),"friendly"),1,tile))), $Block)))
+
+name("Moss Spore")
+animation("idle","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,3,0,1,2,1),(1000,1000),(3,3),4)
+animation("attack","res://Images/UnitArt/MossSporeSpriteSheet.png",(0,3,4,6,7),(1000,1000),(3,3),1)
+spawnable(water)
+difficulty(3)
+health(7)
+strength(1)
+damagetypes(moss)
+speed(0)
+range(40)
+$turncount=1
+trigger(turn,if( ($turncount=1), (do(Attack(self, Player)))))
+trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
+trigger(turn,if( ($turncount=0), (do(gainStrength(self, 1)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
+
+name("Toxic Moss")
+difficulty(1);
+spawnable(water,grass)
+health(4)
+status(lifelink,true)
+status(lootless, true)
+speed(0)
+range(0)
+strength(0)
+$turncount=0
+$Block=3
+trigger(turn,if( ($turncount=0), (do(addBlock( (do(select((all,(any),"name:Moss"),1,tile))), $Block)))))
+trigger(turn,if( ($turncount=1), (cardDo(create("Toxic Spores",Deck,self)))))
+trigger(turn,if( ($turncount=2), (do(Summon((select((1,("any"),empty),1,tile)),(random("Toxic Moss","Moss Spore")))))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=3), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/ToxicMoss.png")
+
+name("Imp")
+difficulty(-1)
+health(11)
+strength(1)
+speed(1)
+damagetypes(ritual)
+range(2)
+image("res://Images/UnitArt/imp.png")
+status(friendly,true)
+status(immune:fire,true)
+trigger(turn,do(MoveAndAttack(self,"-friendly")))
+trigger(turn,do(gainStrength(self,1)))
+
+name("Flame")
+difficulty(0)
+health(0)
+strength(3)
+speed(0)
+range(0)
+damagetypes(fire)
+trap
+status(expire,3)
+status(lootless, true)
+trigger(trap,do(Attack(self,argv[0]),true))
+image("res://Images/UnitArt/Flame.png")
+
+name("Scythe Egg");
+difficulty(1);
+spawnable(sand)
+health(10);
+strength(0);
+status(thorns,4);
+status(expire,8);
+speed(0);
+range(0)
+$Intent=thorns
+trigger(turn,if( ($Intent=thorns), (do(addStatus( ( select( (all,(any),-friendly),1,tile) ) ,thorns,2))) ))
+trigger(turn,if( ($Intent=armor),  (do(addArmor ( ( select( (all,(any),-friendly),1,tile) ), 1       ))) ))
+trigger(turn,do(setVar(self,Intent,(random(thorns,armor)))))
+trigger(onDeath,if( ( argv[0]=expire  ), (do (Summon(tile,"Scythe Larva")))));
+image("res://Images/UnitArt/ScytheEgg.png");
+
+name("Scythe Larva");
+difficulty(12);
+spawnable(sand)
+health(17);
+strength(4);
+range(1);
+speed(2);
+$Multistrike=3
+$Intent=Multiattack;
+damagetypes(slash)
+trigger(turn,if( ($Intent=Multiattack),  (do(MoveAndAttack(self,friendly))) ));
+trigger(turn,if( ($Intent=Sting),  (do(MoveAndAttack(self,friendly))) ));
+trigger(turn,if( ($Intent=Sting),  (do(addStatus( (do(select(lastTargets,0,0))), sting, 3 )))));
+trigger(turn,if( ($Intent=Defend), (do(addBlock(self,8)))));
+trigger(turn,do(setVar(self,Intent,(random(Sting,Multiattack,Defend)))))
+trigger(turn,if( ($Intent=Multiattack),  (do(setVar (self,Multistrike,3))))) ;
+trigger(turn,if( ($Intent=Sting),  (do(setVar (self,Multistrike,1)))  ));
+image("res://Images/UnitArt/ScytheLarva.png");
+
+name("Prickly Pear")
+spawnable(sand)
+trap
+speed(0)
+range(0)
+status(trap,true)
+trigger(trap,do(addStatus(tile,thorns,1)))
+difficulty(0)
+image("res://Images/UnitArt/PricklyPear.png")
+lore("A common desert cactus, will add thorns to any nearby units")
+
+name("Frost Gremlin");
+difficulty(9);
+spawnable(ice)
+damagetypes(ice)
+health(13);
+strength(6);
+range(3);
+speed(1);
+trigger(turn,do(MoveAndAttack(self,friendly)))
+trigger(turn,do(addStatus((select((all,(any),friendly),3,tile)),frost,2)))
+image("res://Images/UnitArt/FrostGremlin.png")
+
+name("Rock Nautilus")
+difficulty(2);
+spawnable(stone)
+damagetypes(crush)
+health(12);
+strength(4);
+range(1);
+speed(2);
+$Intent=Debuff
+status(hardenedcarapace,true)
+trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
+trigger(turn,if( ($Intent=Debuff),(do(addArmor(self,1)))));
+trigger(turn,if( ($Intent=Debuff),(cardDo(create("Dazed",Deck,self)))));
+trigger(turn,do(setVar(self,Intent,(random(Attack,Debuff)))))
+image("res://Images/UnitArt/RockNautilus.png")
+
+name("Toxic Ooze")
+difficulty(0)
+trap
+status(trap,true)
+status(expire,7)
+status(lootless,true)
+spawnable(none)
+damagetypes(moss)
+trigger(trap,if( ( hasProperty(argv[0], friendly) ), (do ( Attack(self,argv[0] ) ) )))
+strength(4)
+range(0)
+speed(0)
+image("res://Images/UnitArt/Ooze.png")
+
+name("Royal Snail")
+spawnable(grass, water)
+difficulty(4)
+health(37)
+$Intent=move
+range(1)
+speed(1)
+strength(12)
+damagetypes(bite)
+trigger(turn,do(setVar(self,lastTile,tile)))
+trigger(turn,if(($Intent=move),( do(MoveAndAttack(self,friendly)))))
+trigger(turn,if(($Intent=move),( do(Summon($lastTile,"Toxic Ooze")))))
+image("res://Images/UnitArt/SnailLord.png")
+
+name("Mountainback")
+spawnable(stone,ice)
+damagetypes(bite,crush)
+status(stoneskin,true)
+difficulty(14)
+health(22)
+range(1)
+speed(3)
+$Block=6
+trigger(damaged,do(setStrength(tile,(do(getStatus(tile,"block") ) ))))
+trigger(blockchanged,do(setStrength(tile,(do(getStatus(tile,"block") ) ))))
+trigger(turn, do(MoveAndAttack(self,friendly)))
+trigger(turn, do(addBlock(self, 6)))
+image("res://Images/UnitArt/WalkingMountain.png")
+
+name("Johnny The Grill")
+spawnable(any)
+damagetypes(bite,fire)
+difficulty(10)
+speed(2)
+range(3)
+health(15)
+strength(4)
+$turncount=0
+trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self, friendly)))))
+trigger(turn,if( ($turncount=0), (cardDo(create("Sear",Play,self)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/GrillSpider.png")
+
+name("Chameleon Knight")
+spawnable(stone,water,grass)
+damagetypes(bite)
+difficulty(12)
+speed(3)
+range(1)
+health(23)
+strength(11)
+status(stealth,1)
+$turncount=0
+trigger(turn,if(($turncount=1),(do(addStatus(tile,stealth,1)))))
+trigger(turn, do(MoveAndAttack(self,friendly)))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+trigger(onDeath,do(Summon(tile,"Frog Warrior")))
+image("res://Images/UnitArt/CameleonRider.png")
+
+name("Frog Warrior")
+spawnable(stone,water,grass)
+damagetypes(slash)
+difficulty(2)
+speed(2)
+range(1)
+health(1)
+strength(7)
+trigger(onSummon,do(addArmor(self,2)))
+trigger(onSummon,do(say(self,(random("I shall defend the swamp!", "The Order of the Lily Pad stands strong","My honor is unparalleled" )))))
+trigger(turn, do(MoveAndAttack(self,friendly)))
+image("res://Images/UnitArt/FrogWarrior.png")
+
+name("Froggy Warrior")
+spawnable(none)
+damagetypes(slash)
+difficulty(2)
+speed(1)
+range(1)
+health(1)
+strength(7)
+trigger(onSummon,do(addArmor(self,2)))
+trigger(turn, do(MoveAndAttack(self,friendly)))
+image("res://Images/UnitArt/FrogWarrior.png")
+
+name("Queen Orla")
+spawnable(none)
+damagetypes(kinetic)
+difficulty(44)
+strength(15);
+range(30);
+health(63);
+speed(1);
+status(boss,true);
+$Intent=attack
+trigger(turn,if( ($Intent=root),  (cardDo(moveUnits( (all,(any),friendly),50,tile,away,1)))))
+trigger(turn,if( ($Intent=root), (do(addStatus( ( select( (all,(any),friendly),50,tile) ) ,entangled,2)))))
+trigger(turn,if( ($Intent=attack),  (do(MoveAndAttack(self,friendly)))))
+trigger(turn,do(setVar(self,Intent,(random(root,attack)))))
+trigger(turn,if( (do(hasProperty(Player,entangled))) ,(do(setVar(self,Intent,attack)))))
+image("res://Images/UnitArt/catqueen.png")
+
+name("Cactus Wren")
+lore("This small bird is light enough that it can perch atop cactus spines without getting pricked")
+spawnable(none)
+damagetypes(avian,stab)
+difficulty(0)
+strength(1)
+health(3)
+speed(2)
+status(friendly,true)
+trigger(turn,do(addStatus((selectTiles( (all,(any),"friendly&-thorns"),1,tile)),thorns,5)))
+trigger(turn,do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/CactusWren.png")
+
+name("LORD OF THE SWAMP");
+damagetypes(slash,moss)
+spawnable(none)
+difficulty(44);
+strength(14);
+speed(3);
+range(1);
+health(56);
+$turncount=1
+status(boss, true);
+trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
+trigger(turn,if( ($turncount=1), (do(gainStrength( tile, 2)))))
+trigger(turn,if( ($turncount=0), (do(MoveAndAttack(self,friendly)))))
+trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/SwampLord.png")
+
+name("Spare Cog")
+spawnable(none);
+damagetypes(mechanical)
+difficulty(1);
+strength(3);
+speed(1);
+range(2);
+health(10);
+status(lootless,true);
+trigger(turn, do(MoveAndAttack(self,friendly)))
+image("res://Images/UnitArt/LooseCog.png")
+facing(topdown)
+
+name("The Last Automaton")
+spawnable(none);
+damagetypes(mechanical)
+status(boss, true);
+difficulty(44);
+strength(16);
+speed(0);
+range(6);
+health(70);
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(setVar(self,DamageAmount, 0)))))
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), ( do(say(self, (random("HAHA MISSED ME", "COGS, DEFEND ME", "YOU CANNOT REACH ME", "MY MINIONS WILL PROTECT ME")))))))
+interrupt(damaged, if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(Attack( argv[2],(select((1,(any),"name:Spare Cog"),1,tile)),argv[1],argv[0])))))
+trigger(turn,      if( (do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))), (do(Attack(self, Player)))))
+trigger(turn,      if( (! do(hasProperty((select((all,(any),"name:Spare Cog"),1,tile)), "name:Spare Cog"))),  (do(Summon( (select((2,("any"),empty),1,tile)),"Spare Cog" )))))                                                                                                      
+trigger(onSummon,  do(Summon((select((1,("any"),empty),1,tile)),"Spare Cog")))
+image("res://Images/UnitArt/Automaton.png")
+
+name("Soulsucker")
+image("res://Images/UnitArt/EvilVacuum.png")
+spawnable(any);
+status(immune:knockback,true)
+damagetypes(kinetic)
+difficulty(8);
+strength(7);
+health(15);
+speed(1);
+range(2);
+trigger(turn, do(MoveAndAttack(self,friendly)))
+trigger(turn,cardDo(moveUnits( (all,(any),exists),50,tile,towards,1)))
+
+name("Phoenix")
+spawnable(none)
+status(friendly,true)
+damagetypes(avian,fire)
+strength(0)
+health(10)
+range(1);
+speed(2);
+trigger(onDeath,cardDo(create("Firebird", Hand)))
+trigger(onCardChange,do(setStrength(tile, (count(Voided,"any")))))
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/firebird.png")
+
+name("Shellsworn")
+spawnable(none)
+status(friendly,true)
+status(expire,5)
+damagetypes(bite)
+health(10)
+strength(10)
+speed(1)
+range(1)
+trigger(turn, do(addBlock(self, 10)))
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/TurtleMercenary.png")
+
+name("Pore Fungus")
+spawnable(none)
+status(friendly, true)
+damagetypes(bite)
+health(1)
+strength(1)
+speed(1)
+range(3)
+trigger(turn, do(MoveAndAttack(self,-friendly)))
+image("res://Images/UnitArt/PoreFungus.png")
+
+name("Crossbull")
+spawnable(grass,sand,stone,ice)
+damagetypes(stab)
+speed(1)
+range(40)
+health(13)
+strength(7)
+difficulty(5)
+trigger(turn,do(move(self,(select((1,(any),empty),speed, tile)))))
+trigger(turn,do(Attack(self,Player)))
+trigger(turn,if((random(1,0,0,0,0,0,0,0)>0),(do(say(self,"Mooo")))))
+image("res://Images/UnitArt/Crossbull.png")
+
+name("Potion Seller")
+spawnable(grass)
+difficulty(-2)
+health(3)
+strength(0)
+status(friendly, true)
+trigger(turn, do(say(self,"Would you like to buy a potion?")))
+trigger(turn,cardDo(create("Potion Purchase",Hand,self)))));
+image("res://Images/UnitArt/PotionSeller.png")
+event(10)
+
+name("Seraph")
+spawnable(none)
+difficulty(0)
+strength(20)
+range(40)
+lore(A being to lay seige to the shadows)
+health(100)
+speed(3)
+trigger(turn,do(MoveAndAttack(self, boss)))
+status(friendly, true)
+damagetypes(light)
+image("res://Images/UnitArt/Seraph.png")
+
+name("Vulture")
+spawnable(none)
+lore("When the vulture kills, more vultures arrive on the scene")
+difficulty(0)
+strength(4)
+health(2)
+range(1)
+speed(2)
+status(friendly, true)
+trigger(turn,do(MoveAndAttack(self, -friendly)))
+trigger(slay, do(Summon((select((1,("any"),empty),1,tile)),"Vulture")))
+image("res://Images/UnitArt/Vulture.png")
+
+name("Evil Weevil")
+spawnable(sand,grass,stone,ice)
+status(armorsteal, true)
+speed(4)
+range(1)
+health(16)
+$Multistrike=5
+strength(1)
+difficulty(8)
+trigger(turn,do(MoveAndAttack(self, friendly)))
+image("res://Images/UnitArt/EvilWeevil.png")
+
+name("Flaming Skull")
+spawnable(sand, stone)
+speed(2)
+range(1)
+health(10)
+strength(2)
+difficulty(2)
+image("res://Images/UnitArt/FlamingSkull.png")
+$Intent=Buff
+trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,flaming,3)))));
+trigger(turn,do(setVar(self,Intent,(random(Attack,Buff)))));
+trigger(turn,do(heal(self, 4)));
+
+name("Glowing Skull")
+spawnable(ice, stone)
+speed(2)
+range(2)
+health(13)
+strength(2)
+difficulty(7)
+$turncount=0
+$Multistrike=0
+trigger(turn,do(MoveAndAttack(self,friendly)))
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),frost,2)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),3,tile)),dazzled,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/GlowingSkull.png")
+
+name("Toxic Skull")
+spawnable(water, grass)
+health(13)
+speed(2)
+range(2)
+strength(2)
+difficulty(4)
+$turncount=0
+$Multistrike=0
+trigger(turn,do(MoveAndAttack(self,friendly)))
+trigger(turn,if(($turncount=0),(do(addStatus((select((all,(any),friendly),2,tile)),corruption,3)))))
+trigger(turn,if(($turncount=1),(do(addStatus((select((all,(any),friendly),2,tile)),sting,2)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/ToxicSkull.png")
+
+name("Strange Plant")
+spawnable(grass)
+health(6)
+difficulty(1)
+strength(0)
+status(thorns,6)
+trigger(turn, do(addStatus(tile, thorns, 1)))
+trigger(turn,do(addStatus( (do(select( (1,(any),"-friendly"),40, tile))), regen, 3)))
+image("res://Images/UnitArt/FruitPlant.png")
+
+name("Death Worm")
+spawnable(sand, stone)
+damagetypes(bite, crush)
+difficulty(18)
+health(40)
+strength(10)
+range(2)
+speed(30)
+trigger(turn, do(trigger(onPlay, do(move(self, (do(selectTiles((1, (grass,stone,sand),any) ,2, Player ))))))))
+trigger(turn, do(Attack(self, player)))
+trigger(turn,( do(gainStrength(tile,2))))
+image("res://Images/UnitArt/DeathWorm.png")
+
+<<<<<<< HEAD
+name("Void Alcolyte")
+spawnable(any)
+damagetypes(beam)
+difficulty(5)
+health(7)
+strength(1)
+range(40)
+speed(1)
+$turncount=0
+trigger(turn,if(($turncount=0),(do(gainStrength((select((all,(any),"name:Void"),40,tile)),1)))))
+trigger(turn,if(($turncount=1),(do(MoveAndAttack(self, friendly)))))
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
+animation("idle","res://Images/UnitArt/AlcolyteSprite.png",(0,1,2,3,4),(1000,1000),(5,1),10)
+=======
+>>>>>>> ea0fc8b620ed276395443b41c5e5854f6bc2a44d
+

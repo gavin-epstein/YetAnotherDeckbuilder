@@ -11,7 +11,7 @@ removetrigger(endofturn,true,1)
 image("res://Images/CardArt/PricklyPear.png")
 
 title(Barrel Cactus)
-types(cactus)
+types(cactus, shield)
 cost(1)
 trigger(onPlay,do(block( (do(getStatus(Player,thorns ))))))
 text(Gain block equal to your thorns)
@@ -42,8 +42,8 @@ title(Thornburst)
 types(cactus,light);
 cost(X)
 $X="X"
-$Block=3
-$Thorns=2
+$Block=4
+$Thorns=1
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,3,$X))));
 trigger(onPlay, do(addStatus(thorns,(*,$Thorns, $X))));

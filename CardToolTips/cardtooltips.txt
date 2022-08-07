@@ -38,3 +38,4 @@ permafrost: This card is always frozen.
 hail: hail damage adds 1 frost, temporarily reducing the targets strength.
 charge: gain battery
 deplete: spend battery in order to play this card or to get the full effect.
+maintain: E.g. maintain 2 armor means gain 2 armor, while maintain is in effect armor cannot be reduced below 2, and when maintain ends lose 2 armor.

@@ -1,6 +1,8 @@
 extends Node
 var markov={}
 var images=[]
+const TriggerOptions = ["burn","attack", "burnself", "permafrost","block","thorns", "freeze", "blood","heal", "gainEnergy", "draw", "sigil", "armor","discard","discardall"]
+
 func Load():
 	var f = File.new()
 	f.open("res://Dreams/model.txt", File.READ)
@@ -42,8 +44,9 @@ func generateCard(card:Card, temporary= true):
 	var modifiers={}
 	if temporary:
 		modifiers["temporary"]=true
-	for i in range(min(r(), 3)):
-		var list = generateTrigger()
+	var opts = Utility.choosex(TriggerOptions, max(1,min(r(), 3)))
+	for opt in opts:
+		var list = generateTrigger(opt)
 		text = text+list[0]
 		triggers = triggers+list[1]
 		Utility.extendDict(vars, list[2])
@@ -72,7 +75,11 @@ func generateTitle():
 		var val  = _getNextMarkov(key)
 		key = key.substr(1) + val
 		title +=val
-	title = title.split("|")[1]
+	title = title.split("|")
+	if len(title) ==1:
+		title = title[0]
+	else:
+		title = title[1]
 	if len(title) > 18:
 		title = title.substr(0, 18)
 	return title
@@ -91,14 +98,13 @@ func _getNextMarkov(key):
 	
 		
 	
-func generateTrigger():
+func generateTrigger(opt):
 	var text = []
 	var triggers = []
 	var vars = {}
 	var types ={}
 	var modifiers = {}
-	var options = ["burn","attack", "burnself", "permafrost","block","thorns", "freeze", "blood", "gainEnergy", "draw", "sigil"]
-	var opt = Utility.choice(options)
+	
 	
 	if opt =="burn":
 		vars["Times"] = r()
@@ -141,6 +147,11 @@ func generateTrigger():
 		triggers.append('trigger(onPlay,do(unheal($Blood)))')
 		text.append("Lose $Bleed health")
 		types["blood"]= true
+	elif opt == "heal":
+		vars["Heal"] = r()
+		triggers.append('trigger(onPlay,do(heal($Heal)))')
+		text.append("heal $Heal")
+		types["food"]=true
 	elif opt == "gainEnergy":
 		vars["Energy"] = r()
 		triggers.append('trigger(onPlay, do(gainEnergy($Energy)));')
@@ -155,6 +166,20 @@ func generateTrigger():
 		triggers.append('trigger(onPlay, do(createByMod((sigil), Play)))')
 		text.append("Add a random sigil to play")
 		types["ritual"] = true
+	elif opt =="armor":
+		vars["Armor"] = r()
+		triggers.append('trigger(onPlay,do(maintain(self, "armor",$Armor)))')
+		triggers.append('trigger(onRemoveFromPlay,do(unmaintain(self, "armor",$Armor)))')
+		text.append('While in play, maintain $Armor Armor')
+		types["steel"] = true
+	elif opt == "discard":
+		triggers.append('trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard"))),false))');
+		text.append('Discard a card')
+		types["cloud"] =true
+	elif opt == "discardall":
+		triggers.append('trigger(onPlay, do(discardAll(false)));');
+		text.append('Discard your hand')
+		types["cloud"] =true
 	return [text, triggers, vars, types, modifiers];
 static func getLoc():
 	var list = ["","Hand","Play","Deck", "Discard", "Voided"]
@@ -182,7 +207,7 @@ func generateImage(card):
 		r=hash(str(r).substr(0,16))
 	card.image = ImageTexture.new()
 	card.image.create_from_image(im);
-	card.imageloaded = false
+	card.imageloaded = true
 
 #random integer in [1, +inf)
 #p(1)= .3

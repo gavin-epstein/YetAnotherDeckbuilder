@@ -95,7 +95,7 @@ removetrigger(endofturn,true,4)
 rarity(6)
 
 title("Mist");
-types("water, wind")
+types(water, wind)
 $Draw=3
 cost(0)
 text("If your draw pile is empty, draw $Draw");
@@ -104,3 +104,7 @@ trigger(onPlay, if((countModifier(Hand,any)=0),(do(draw($Draw)))));
 rarity(8);
 image("res://Images/CardArt/Mist.png")
 
+#Deluge: shuffle all cards into deck
+#bouy: block, buoyant
+#inflatable hammer: add buoyant to a card
+#when you shuffle, topdeck a card

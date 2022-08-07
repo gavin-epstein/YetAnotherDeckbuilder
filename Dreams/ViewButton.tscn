@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Images/UIArt/Eye.png" type="Texture" id=1]
+
+[sub_resource type="StyleBoxFlat" id=4]
+bg_color = Color( 0.396, 0.396, 0.45, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Panel" type="Panel"]
+self_modulate = Color( 0.64, 0.64, 0.64, 1 )
+margin_left = 176.0
+margin_top = 476.0
+margin_right = 339.0
+margin_bottom = 572.0
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="."]
+margin_left = -6.0
+margin_top = -8.0
+margin_right = 154.0
+margin_bottom = 88.0
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="Panel2"]
+modulate = Color( 1, 0.682353, 0, 1 )
+position = Vector2( 78.3187, 47.0569 )
+scale = Vector2( 0.150903, 0.150903 )
+texture = ExtResource( 1 )

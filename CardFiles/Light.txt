@@ -12,10 +12,10 @@ title(Ignite);
 types(fire,light);
 cost(1);
 $Energy=1
-trigger(startofturn, do(voided,((select(Hand,true,"pick a card to burn (Ignite)")),Hand),false));
-trigger(startofturn, do(gainEnergy,($Energy),false));
-removetrigger(endofturn, true,3);
-text("At the start of your next three turns, burn a card in your hand and gain $Energy energy");
+trigger(onTap, do(voided,((select(Hand,true,"pick a card to burn (Ignite)")),Hand),false));
+trigger(onTap, do(gainEnergy,($Energy),false));
+removetrigger(onTap, true,4);
+text("Tap: burn a card in your hand and gain $Energy energy");
 rarity(4);
 image("res://Images/CardArt/Ignite.png")
 
@@ -33,11 +33,14 @@ image("res://Images/CardArt/LuminousEarth.png")
 title("Clothed in Light");
 cost("X");
 $X="X"
+$Armor=1
+trigger(onPlay,do(maintain(self, "armor",(*,$Armor,$X))))
+trigger(onPlay,do(setVar(self, removecount, $X)))
+trigger(onRemoveFromPlay,do(unmaintain(self, "armor",(*,$Armor,$X))))
 trigger(onRemoveFromPlay, do(setVar(self,X,X)));
-trigger(onPlay, do(armor($X)))
-text("Gain X armor");
-types("light");
-removetrigger(endofturn, true, 4);
+text("While in play maintain $Armor times $X armor");
+types("light","steel");
+removetrigger(endofturn, true, X);
 rarity(6);
 image("res://Images/CardArt/ClothedinLight.png")
 

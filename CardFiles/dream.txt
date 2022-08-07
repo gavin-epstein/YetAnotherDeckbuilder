@@ -15,3 +15,11 @@ text("Remove temporary from a card in your hand. Permafrost")
 modifiers(permafrost);
 removetrigger(endofturn, true,1);
 image("res://Images/CardArt/Intransience.png")
+
+title("Mind Factory");
+cost(1);
+types(dream, mechanical);
+text("At the start of your turn, add a randomly generated temporary card to your hand")
+trigger(startofturn,do(dream(Hand)));
+removetrigger(endofturn,true, 6);
+rarity(3);

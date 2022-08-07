@@ -12,6 +12,7 @@ class Trie():
     def __init__(self):
         self.branches = {}
         self.cards = []
+        self.noimages=[]
     def add(self,card,types, image):
         if len(types) ==0:
             self.cards.append((card,image))
@@ -19,18 +20,37 @@ class Trie():
         if types[0] not in self.branches:
             self.branches[types[0]] = Trie()
         self.branches[types[0]].add(card,types[1:], image)
+        if not image and card not in self.noimages:
+            self.noimages.append(card)
     def get(self,types):
         if len(types) ==0:
             return self.cards
         if types[0] not in self.branches:
             return []
         return self.branches[types[0]].get(types[1:])
-
-
+    def printNoImages(self):
+        for i in noimages:
+            print(i, end=", ")
+        print("\n")
+    def size(self):
+        total = len(self.cards)
+        for branch in self.branches.values():
+            total+=branch.size()
+        return total
+    def toString(self, tab):
+        ret = ""
+        ret += ",".join(map(lambda x: str(x[0]).strip().strip('"') , self.cards))
+        ret += "\n"
+        for key in self.branches.keys():
+            ret += tab + key+": "
+            ret += self.branches[key].toString(tab+"    ")
+           # ret += "\n" + tab
+        return ret
 def read_text_file(file_path,trie,alltypes):
     card=""
     image = False
     types=[]
+
     totalcards=0
     totalimages=0
     with open(file_path, 'r') as f:
@@ -42,8 +62,12 @@ def read_text_file(file_path,trie,alltypes):
                 elif line.startswith("types"):
                     intypes = line.split("(")[1].split(")")[0].split(",")
                     for t in intypes:
-                        types.append(t.strip().strip('"'))
-                        alltypes[t.strip().strip('"')]=True
+                        t=t.strip().strip('"')
+                        types.append(t)
+                        if t in alltypes.keys():
+                            alltypes[t]+=1
+                        else:
+                            alltypes[t]=1
                     types.sort()
                 elif line.startswith("image"):
                     image = True
@@ -51,11 +75,14 @@ def read_text_file(file_path,trie,alltypes):
                 elif line.strip()=="":
                     if card !="":
                       trie.add(card,types, image)
+                    
                     card = ""
                     image = False
                     types =[]
         if card !="":
+            
             trie.add(card,types,image)
+
     return totalcards,totalimages
 def pickrandom(trie,alltypes):
     types =[]
@@ -88,22 +115,28 @@ def main():
                     cards, images = read_text_file(file_path,trie,alltypes)
                     totalcards+=cards
                     totalimages+=images
+    trie.printNoImages()
     alltypes.pop("meme");
     alltypes.pop("starter");
     alltypes.pop("void")
     alltypes.pop("evil")
-    alltypes.pop("typeless")
-    printedimage = False
+    alltypes["tap"]=True
+    printedimage = True
     printedcombo = False
     while not (printedimage and printedcombo):
         types, cards = pickrandom(trie,alltypes)
-        for card in cards:
-            if card[1] == False and not printedimage:
-                print( card[0])
-                printedimage = True
         if len(cards) == 0 and not printedcombo:
             print(types)
             printedcombo = True
+    print(random.choice(trie.noimages))
     print("%d/%d cards have images (%.2f%%)" % (totalimages, totalcards, 100.0 * totalimages/totalcards))
-
+    sorttypes = []
+    for key in alltypes.keys():
+        sorttypes.append((key, alltypes[key]))
+    sorttypes = sorted(sorttypes, key = lambda x: x[1])
+    for i in range(3):
+        print (sorttypes[i])
+   
+noimages=[]
 main()
+

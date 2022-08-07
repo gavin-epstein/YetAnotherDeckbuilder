@@ -65,7 +65,7 @@ image("res://Images/CardArt/Dash.png")
 
 title("Defend")
 cost(1);
-types(starter)
+types(starter, shield)
 $Block=4
 text(Block $Block)
 trigger(onPlay, do(block($Block)))

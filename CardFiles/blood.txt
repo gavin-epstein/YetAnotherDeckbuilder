@@ -3,7 +3,7 @@ $Blood=5
 $Damage=7
 $Range=3
 cost(2)
-types(blood)
+types(blood,attack)
 trigger(onPlay,do(unheal($Blood)))
 trigger(onPlay,do(damage, ($Damage,(bite),(all),$Range)));
 trigger(onPlay,do(damage, ((*,2,$Damage),(bite),(all),(+,-1,$Range))));
@@ -54,7 +54,7 @@ removetrigger(endofturn, true, 1)
 rarity(5)
 
 title("Bleeding Tooth Fungus")
-types(blood,fungus,attack);
+types(blood,fungal,attack);
 $Repeat=1
 $Blood=1
 $Increment=1

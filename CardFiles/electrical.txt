@@ -10,7 +10,8 @@ trigger(onPlay, if( ($dothething<1),(do(charge($Charge)))))
 text("If you have less than $Deplete battery, charge $Charge, otherwise deplete $Deplete and block $Block")
 rarity(7)
 removetrigger(endofturn, true, 1)
-types(electric)
+types(electric, shield)
+image("res://Images/CardArt/powerpack.png");
 
 title("Overcharge");
 $Charge=2;
@@ -36,6 +37,7 @@ types(electric, attack);
 rarity(5);
 removetrigger(endofturn, true, 1);
 text(Deplete all, deal $Damage damage at any range for each battery depleted);
+image("res://Images/CardArt/LaserBarrage.png");
 
 title("Repower");
 cost(0)
@@ -53,11 +55,32 @@ removetrigger(endofturn, true, 5)
 $Armor=2
 $EternalDeplete=1
 trigger(onReaction, if( (do(deplete($EternalDeplete))), (do(armor($Armor)))));
-types(electric)
-text("When you are attacked, first deplete $Eternal deplete to gain $Armor armor. \n This card's deplete cost cannot be lowered");
+types(electric,steel)
+text("When you are attacked, first deplete $EternalDeplete to gain $Armor armor. \n This card's deplete cost cannot be lowered");
 rarity(3);
+image("res://Images/CardArt/Nanoarmor.png");
+#rework to tap, start of turn, or other trigger, and change gain to maintain
 
-#At start of turn deplete 1 to gain 1 energy.
+title("Flashlight")
+cost(0)
+removetrigger(onTap, true, 5)
+$Energy=1
+$Deplete=1
+trigger(onTap, if( (do(deplete($Deplete))),(do(gainEnergy($Energy)))));
+text("Tap: deplete $Deplete in order to gain $Energy energy");
+rarity(8);
+types(electric, light)
+image("res://Images/CardArt/Flashlight.png");
 
-#at start of turn charge 1
+title("Generator")
+cost(1)
+$Charge=1
+removetrigger(endofturn, true, 8);
+trigger(startofturn, do(charge($Charge)));
+rarity(6);
+text("At the start of your turn, charge $Charge");
+types(electric, mechanical)
+
+#hologram (create temp copy of card assigned to it)
+#magnetism discharge 3, put a card from anywhere into hand
 

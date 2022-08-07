@@ -11,6 +11,7 @@ var uvCoords: Vector2
 var meshIndex
 var destination:Vector2
 var dist
+var tile = self
 onready var map = get_parent()
 var highlighted = false
 # -1 unclaimed. 0 wall

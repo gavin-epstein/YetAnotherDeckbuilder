@@ -1,11 +1,11 @@
-title("Dexterity")
+title("Aegis")
 cost(1)
-$Block=1
-$BaseBlock=2
+$Block=2
+$BaseBlock=1
 trigger(block, if((argv[0]>(+,-1,(+,$Block,$BaseBlock))),(do(block($Block)))))
 removetrigger(endofturn, true, 6)
 text("When you gain at least (+,$Block,$BaseBlock) block from a card, gain $Block extra");
-types(typeless)
+types(shield)
 rarity(6);
 
 

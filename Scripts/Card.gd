@@ -28,7 +28,8 @@ var base_z = 0
 	
 func _process(delta: float) -> void: 
 	#normal movement 
-
+	if self.visible==false:
+		return
 	if target_position != null:
 		self.position = self.position.linear_interpolate(target_position, min(1,speed*delta))
 		if (position-target_position).length_squared() < 9:
@@ -112,7 +113,7 @@ func loadCardFromString(string):
 			self.text =  Utility.join(" ",parsed[1]).replace("\\n","\n")
 			self.text = self.text.replace(" $Damage "," (getDamage($Damage)) ")
 		elif parsed[0] == "image":
-			self.image = load(parsed[1][0])
+			self.image = parsed[1][0]
 		elif parsed[0] == "title":
 			self.title = Utility.join(" ",parsed[1])
 		elif parsed[0] == "rarity":
@@ -125,7 +126,10 @@ func loadCardFromString(string):
 	
 func updateDisplay():
 	if self.image!=null and ! imageloaded :
-		$Resizer/CardArt.texture = image
+		if image is String:
+			$Resizer/CardArt.texture = load(image)
+		elif image is ImageTexture:
+			$Resizer/CardArt.texture = image
 		imageloaded = true
 	if tooltips ==null and controller.enemyController!=null:
 		self.generateTooltips()
@@ -165,12 +169,15 @@ func updateDisplay():
 	get_node("Resizer/CardFrame/arrow").visible =false
 	get_node("Resizer/CardFrame/hourglass").visible = false
 	get_node("Resizer/CardFrame/Endless").visible = false
+	get_node("Resizer/CardFrame/Tapicon").visible = false
 	if removetype == "never":
 		vars["$removecount"] = -1
 		get_node("Resizer/CardFrame/Endless").visible = true
 		get_node("Resizer/CardFrame/Timer").visible = false
 	elif removetype == "endofturn":
 		get_node("Resizer/CardFrame/hourglass").visible = true
+	elif removetype =="tap":
+		get_node("Resizer/CardFrame/Tapicon").visible = true
 	else:	
 		get_node("Resizer/CardFrame/arrow").visible =true
 	if $Resizer.scale.x > 1.1:
@@ -218,6 +225,7 @@ func moveTo(pos:Vector2, size = null, vis = true):
 		self.target_scale = size
 		self.target_position = pos
 	targetvis = vis
+	set_process(vis)
 	
 func highlight():
 	self.highlighted = true

@@ -32,11 +32,12 @@ modifiers(unique)
 
 title(Pentaract);
 types(ritual, movement);
-text("In 5 turns, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and burn this card. Cannot be upgraded.");
+text("When this leaves play, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and burn this card. Cannot be upgraded.");
 removetrigger(endofturn, true, 5);
 trigger(onRemoveFromPlay, do(heal(5)))
 trigger(onRemoveFromPlay, do(block(5)))
 trigger(onRemoveFromPlay, do(armor(5)))
+#change to vigor^
 trigger(onRemoveFromPlay, do(damage(5,(ritual),(1),40)))
 trigger(onRemoveFromPlay, do(movePlayer(5)))
 trigger(onRemoveFromPlay, do(voided(self, Play)))
@@ -237,7 +238,7 @@ image("res://Images/CardArt/TimeSigil.png")
 title("Heart Sigil")
 types(ritual,mechanical)
 modifiers(sigil)
-text(While in play temporarily gain $maxhealth max health. On remove from play, purge)
+text(While in play maintain $maxhealth max health. On remove from play, purge)
 cost(-)
 rarity(0)
 $maxhealth=3
@@ -250,7 +251,7 @@ image("res://Images/CardArt/HeartSigil.png")
 title("Strength Sigil")
 types(ritual,rage)
 modifiers(sigil)
-text(While in play temporarily gain $amount strength.On remove from play, purge)
+text(While in play maintain $amount strength. On remove from play, purge)
 cost(-)
 rarity(0)
 $amount=1
@@ -270,3 +271,6 @@ text("Lose $Blood health, add a random sigil to play.")
 rarity(4);
 image("res://Images/CardArt/WrittenInBlood.png")
 cost(0);
+
+#triskadekaphobia
+#if you have exactly 13 cards in play something nice happens (13 dmg aoe)

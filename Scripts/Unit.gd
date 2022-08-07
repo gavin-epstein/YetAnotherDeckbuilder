@@ -34,12 +34,13 @@ var intents=[]
 var skipturn
 var dead = false
 var movementPolicy="Spring"
+var occupants = [] #is this gonna fuck shit up?? idk
 signal animateHealthChange
 const buffintents = ["gainMaxHealth","gainStrength","addStatus","setStatus","addStatus:friendly","addStatus:-friendly","setStatus:friendly","setStatus:-friendly"]
 
 func _ready() -> void:
 	global.connect("animspeedchanged",self,"on_animation_speed_changed")
-
+	occupants.append(self)
 func on_animation_speed_changed(animspeed):
 	tilespeed = basetilespeed / (.001+animspeed)
 func onSummon(head, silent= false)->void:
@@ -158,6 +159,8 @@ func takeDamage(amount,types, attacker):
 		if (randf()*100  < status["dodge"]):
 			setStatus("dodgebroken", true)
 			say("Dodged!");
+			if self == controller.Player:
+				controller.cardController.triggerAll("dodged", [amount, types, attacker])
 			return [0]
 	if status.has("corruption") and status.corruption is int:
 			if attacker!=null:
@@ -178,9 +181,9 @@ func takeDamage(amount,types, attacker):
 			changeHealth("CRIT")
 	if amount >=20 and amount < armor+health+block:
 		say(Utility.choice(["Owww!","Ouch!", "Oof!"]))
-	#put out fire
-	if ("water" in types or "ice" in types) and status.has("flaming"):
-		addStatus("flaming",-1)
+	#put out fire -- this is too niche and also dumb
+	#if ("water" in types or "ice" in types) and status.has("flaming"):
+	#	addStatus("flaming",-1)
 	if "ice" in types:
 		addStatus("frost",1)
 	if "shadow" in types:
@@ -191,7 +194,6 @@ func takeDamage(amount,types, attacker):
 	if (status.has("thorns") and status.thorns is int and attacker !=null):
 		attacker.takeDamage(status.thorns, ["thorns"],null)
 	if "crush" in types and armor >0:
-		armor-=1
 		armorlost+=1
 	for atype in types:
 		if status.has("immune:"+atype) or status.has("immune:any"):
@@ -215,14 +217,16 @@ func takeDamage(amount,types, attacker):
 	if amount > 0 and not "piercing" in types:
 		if block >amount:
 			block -=floor(amount)
+			block  =  max(block, controller.cardController.getMaintain("block", self))
 			amount = 0
 		elif block > 0:
 			amount -= block
-			block = 0
+			block = controller.cardController.getMaintain("block", self)
 		if armor > 0 and amount > 0:
 			amount =max(amount -  armor, 0)
-			armor -=1
 			armorlost+=1
+			
+			armor = max(armor - armorlost, controller.cardController.getMaintain("armor", self))
 			if status.has("hardenedcarapace"):
 				var res = controller.Action("addBlock", [self, 2*armorlost])
 				if res is GDScriptFunctionState:
@@ -280,7 +284,8 @@ func startOfTurn():
 	if status.has("flaming"):
 		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):
-		block = 0;
+		#reset block
+		block = controller.cardController.getMaintain("block", self);
 	if status.has("fuse"):
 		addStatus("explosive",1)
 	if status.has("bleed"):
@@ -318,9 +323,10 @@ func statusTickDown():
 		die(null, ["expire"])
 	for key in status:
 		if status[key] is int:
-			status[key] = status[key]-1
+			status[key] = max(status[key]-1 , controller.cardController.getMaintain(key, self))
 			if status[key] <= 0:
 				status.erase(key)
+	
 	
 
 func updateDisplay():
@@ -343,6 +349,7 @@ func updateDisplay():
 		healthBar.get_node("Armor").visible = true
 	else:
 		healthBar.get_node("Armor").visible = false
+		
 	if  getStrength() != 0:
 		healthBar.get_node("Attack").visible = true
 	else:
@@ -436,9 +443,21 @@ func _eraseSelf():
 	queue_free()
 
 func addStatus(stat, val):
+	if val <=0:
+		print("removing "+ str(val)+" " + stat)
+		#maintain
+		if getStatus(stat) + val <  controller.cardController.getMaintain(stat, self):
+			return false
 	if self.head != self:
 		return head.addStatus(stat,val)
-	if stat == "health":
+	if stat == "armor":
+		print("adding " + str(val) + " armor to " + self.title )
+		var res = controller.Action("addArmor",[self, val])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
+		print(self.title + " has " + str(armor) + " armor")
+		return res
+	elif stat == "health":
 		var res = controller.Action("heal",[self, val])
 		if res is GDScriptFunctionState:
 			yield(res, "completed")
@@ -459,8 +478,6 @@ func addStatus(stat, val):
 		if val is int and val >0:
 			status[stat] = val
 	elif val is bool:
-		if stat == "dodgebroken":
-			print("Dodgebroken")
 		status[stat] = val
 	elif val is int and status[stat] is int:
 		status[stat] = status[stat] + val
@@ -469,7 +486,9 @@ func addStatus(stat, val):
 			status.erase(stat)
 func setStatus(stat, val):
 	if self.head != self:
-		return head.addStatus(stat,val)
+		return head.setStatus(stat,val)
+	if val is int:
+		val  = max(val, controller.cardController.getMaintain(stat, self))
 	if val is int and val ==0 or val is bool and val == false:
 		status.erase(stat)
 	else:

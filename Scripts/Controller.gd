@@ -74,7 +74,7 @@ func Action(method:String, argv:Array,silent = false) -> bool:
 					var friendly= false;
 					for tile in tiles:
 						if tile is Node2D and tile.has_method("hasOccupant") and tile.occupants.size()>0:
-							if tile.occupants[0].hasProperty("friendly"):
+							if tile.occupants[0]!=null and tile.occupants[0].hasProperty("friendly"):
 								friendly =true
 							else:
 								enemy=true

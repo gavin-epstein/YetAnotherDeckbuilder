@@ -90,4 +90,24 @@ removetrigger(draw, false, 6)
 image("res://Images/CardArt/Boomerang.png")
 rarity(7);
 
+title("Dimensional Key")
+types("wind, cloud, light,shadow, fire, food, blood")
+$Draw=1
+$Heal=1
+$Energy=1
+$Blood=1
+text("Draw $Draw, gain $Energy Energy, discard a card, lose $Blood health, heal $Heal, add a random shadow to your hand, burn a card in hand.")
+trigger(onPlay, do(draw($Draw)));
+trigger(onPlay, do(gainEnergy($Energy)));
+trigger(onPlay, do(discard,((select(Hand,true,"pick a card to discard")))));
+trigger(onPlay, do(unheal($Blood)));
+trigger(onPlay, do(heal($Heal)));
+trigger(onPlay, do(createByMod((shadow),Hand)));
+trigger(onPlay, do(voided,((select(Hand,true,"pick a card to burn")),Hand)));
+removetrigger(endofturn, true, 1)
+modifiers(unique)
+rarity(2)
+
+
 #unceasing top
+#1 cost draw 3

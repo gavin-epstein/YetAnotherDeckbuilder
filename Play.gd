@@ -26,4 +26,10 @@ func updateDisplay():
 			x = startx
 			y += ysep
 			
-
+func cardClicked(card):
+	if get_parent().inputAllowed and card.triggers.has("onTap"):
+		var res = get_parent().Action("tap", [card])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
+	elif card.highlighted:
+		get_parent().cardClicked(card)

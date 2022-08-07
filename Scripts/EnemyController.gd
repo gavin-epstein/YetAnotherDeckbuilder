@@ -299,7 +299,7 @@ func heal(unit, amount):
 	else:
 		units= unit
 	for unit in units:
-		if !unit.has_method("isUnit") and unit.occupants.size() > 0:
+		while !unit.has_method("isUnit") and unit.occupants.size() > 0:
 			unit = unit.occupants[0]
 		amount = min(amount,unit.maxHealth - unit.health )
 		unit.changeHealth(amount)	

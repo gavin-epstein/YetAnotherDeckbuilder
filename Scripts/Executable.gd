@@ -3,7 +3,8 @@ class_name Executable
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	set_physics_process(false)
+
 
 var controller
 var triggers = {}
@@ -13,6 +14,7 @@ var vars = {}
 func Triggered(method, argv):
 	
 	if triggers.has(method):
+		var ret = false;
 		var oldallowed = controller.cardController.inputAllowed
 		controller.cardController.inputAllowed=false
 		for code in triggers[method]:
@@ -23,11 +25,15 @@ func Triggered(method, argv):
 #			if method == "damaged":
 #				print("Method: " + method+"     "+ "code:  " + Utility.NestedListToString(code))
 #				print("Result: "  +str(res))
-			if res and method!="onPlay" and self.has_method("isCard"):
+			if res and method!="onPlay" and method!="onTap" and self.has_method("isCard"):
 				$AnimationPlayer.play("Triggered")
+			if res is bool and res == true:
+				ret = true
 		controller.cardController.inputAllowed = oldallowed or controller.cardController.inputAllowed
 		if not controller.test :
 			self.updateDisplay();
+		return ret
+	return false
 func Interrupts(method, argv) -> bool:
 	if interrupts.has(method):
 		var reslist = []
@@ -202,10 +208,10 @@ func execute(code, argv):
 		if hasVariable("removecount") and vars["$removecount"] is int:
 			vars["$removecount"] = vars["$removecount"]-1 
 			if vars["$removecount"] <= 0:
-				var res = self.Triggered("onRemoveFromPlay",argv)
-				if res is GDScriptFunctionState:
-					yield(res, "completed")
-				res = controller.Action("move",["Play","Discard",self])
+			#	var res = self.Triggered("onRemoveFromPlay",argv)
+			#	if res is GDScriptFunctionState:
+			#		yield(res, "completed")
+				var res = controller.Action("move",["Play","Discard",self])
 				if res is GDScriptFunctionState:
 					yield(res, "completed")
 				vars["$Cost"] = vars["$BaseCost"]

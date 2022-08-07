@@ -164,9 +164,10 @@ cost(1);
 $Status=1
 trigger(startofturn,enemyDo(addStatus((selectTiles((all,(any),"-friendly"),30,Player)),bleed,$Status)));
 text("At the start of your turn, add $Status bleed to all enemies");
-removetrigger(endofturn, false, never)
+removetrigger(never, false, 0)
 rarity(2);
 modifiers(unique, eternal)
 types(knife, mechanical);
+image("res://Images/CardArt/AsmorasBlender.png")
 
 

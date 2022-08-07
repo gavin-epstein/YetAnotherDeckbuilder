@@ -85,6 +85,7 @@ modifiers(permafrost)
 rarity(10);
 removetrigger(endofturn, true, 1)
 text("Freeze a card in your hand. Permafrost");
+image("res://Images/CardArt/Preserve.png")
 
 title("The Frozen Goddess");
 types(ice);
@@ -97,7 +98,7 @@ rarity(1);
 image("res://Images/CardArt/TheFrozenGoddess.png")
 
 title("Ice Fortress");
-types(ice);
+types(ice, shield);
 $Block=2
 trigger(endofturn, do (block((* ,$Block ,(do(countModifiers(Hand, frozen)))))))
 rarity(4)

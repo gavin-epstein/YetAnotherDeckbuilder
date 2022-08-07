@@ -1,7 +1,7 @@
 title("Golden Blades")
 types(loot,knife)
 cost(0)
-trigger(play, if((hastype(argv[0], loot)),(do(createByMod,(("kitchenknife"), Hand,self)))))
+trigger(play, if    ((hastype(argv[0], loot)),(do(createByMod,(("kitchenknife"), Hand,self)))))
 removetrigger(play,(hastype(argv[0], loot)),7)
 text("When you play a loot card add a random kitchen knife to your hand")
 rarity(2)
@@ -65,5 +65,6 @@ text("Lose $Blood health. Choose 1 of 3 cards to add to your hand.");
 trigger(onPlay,do(unheal($Blood)))
 trigger(onPlay, do(cardreward,( 15,3),false));
 removetrigger(endofturn, true, 1);
+image("res://Images/CardArt/BlackMarket.png")
 
 #when you play a loot card, draw 1

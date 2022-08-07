@@ -5,7 +5,7 @@ $Increment=3
 trigger(onPlay,do(block($Block)));
 trigger(death,do(addVar(self,Block,$Increment)));
 rarity(2);
-types(fungal, death);
+types(fungal, death, shield);
 text("Gain $Block block. When a unit dies while this is in play, increase its block by $Increment");
 removetrigger(endofturn, true, 2);
 image("res://Images/CardArt/DetritovorousFlesh.png");

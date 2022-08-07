@@ -21,6 +21,9 @@ var doTutorial
 var trashbin=[]
 var isPlayerTurn=true
 var reportsubmitted=false
+#status -> { card->[ [amount, target] ,], }
+var maintained={}
+
 class_name CardController
 #func _process(delta: float) -> void:
 #	var r = 0
@@ -63,8 +66,9 @@ func Load(parent)-> void:
 		Deck.add_card(Library.getCardByName("Lunge"))
 
 #		#Test Cards#
-#		Hand.add_card(Library.getCardByName("Evasive Shadow"))
-#		Hand.add_card(Library.getCardByName("Preserve"))
+#		$Battery.visible=true
+#		Hand.add_card(Library.getCardByName("Pentaract"))
+#		Hand.add_card(Library.getCardByName("Henhouse"))
 #		Hand.add_card(Library.getCardByName("Ice Fortress"))
 #		Hand.add_card(Library.getCardByName("Diamond"))
 #		Hand.add_card(Library.getCardByName("Permafrost"))
@@ -177,6 +181,15 @@ func play(card)->bool:
 	#print("Input on in play")
 	return true
 	
+func tap(card)->bool:
+	var res = card.Triggered("onTap", [card]);
+	if res is GDScriptFunctionState:
+		res = yield(res,"completed")
+	if  res:
+		return true
+	return false
+		
+		
 
 #location must be capitalized	 
 
@@ -201,11 +214,16 @@ func move(loc1, loc2, card, pos=null):
 		return false
 	loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
+	if loc1 == Play and card in Play.cards:
+		var res = triggerCard("onRemoveFromPlay", card)
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
 	if loc1.remove_card(card):
 		if loc1 == Hand and card.modifiers.has("frozen") and not card.modifiers.has("permafrost"):
 			var res = Action("removeModifier",[card, "frozen"])
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
+		
 		if card.hasModifier("temporary") and (loc1 in [Hand, Play]) and (not loc2 in [Hand, Play]):
 			loc2.add_card(card)
 			var res = Action("purge",[card])
@@ -667,6 +685,8 @@ func addStatus(stat, amount, tiles ="Player"):
 	for tile in tiles:
 		for unit in tile.occupants:
 			unit.addStatus(stat, amount)	
+
+	return true
 func setStatus(stat, amount, tiles = "Player"):
 	if tiles is String and tiles  == "Player":
 		tiles = [enemyController.Player.tile]
@@ -708,7 +728,8 @@ func save()->Dictionary:
 		"voided":$Voided.save(),
 		"energy": self.Energy,
 		"consumed":map.nodes.find(consumed),
-		"cardchoicereport":Choice.choicereport
+		"cardchoicereport":Choice.choicereport,
+		"maintained":maintained
 	}
 func loadFromSave(save:Dictionary,parent):
 	cardController = self
@@ -736,7 +757,8 @@ func loadFromSave(save:Dictionary,parent):
 	$Energy.updateDisplay()
 	consumed = map.nodes[int(save.consumed)]
 	Choice.choicereport = save.cardchoicereport
-	print(Hand.cards.size())
+	maintained = save.maintained
+	#print(Hand.cards.size())
 	print("AllDone")
 func addhandsize(amount):
 	if not amount is int:
@@ -758,7 +780,9 @@ func removeModifier(card, mod):
 func triggerCard(trigger, card, argv=[]):
 	if card == null:
 		return false
-	card.Triggered(trigger, argv)
+	var res = card.Triggered(trigger, argv)
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
 func charge(amount):
 
 	$Battery.charge = min( $Battery.capacity, $Battery.charge + amount);
@@ -787,4 +811,76 @@ func dream(loc, temporary=true):
 	onieromancy.generateCard(card, temporary);
 	loc.add_card(card)
 	card.updateDisplay();
+func maintain(card:Executable, status:String, amount:int, target= enemyController.Player):
+	if target == null or (target is Array and target == []):
+		return false
+	if not target is Array:
+		target = [target]
+	var newtargets = []
+	for thing  in target:
+		newtargets+=thing.occupants
+	target = newtargets
+	if not status in maintained.keys():
+		maintained[status] = {}
+	if not card in maintained[status].keys():
+		maintained[status][card] = []
+	for unit in target:
+		maintained[status][card].append([amount, unit])
+		print(maintained)
+		var res = Action("addStatus", [status, amount, target])
+		if res is GDScriptFunctionState:
+			res = yield(res, "completed")
+	return true
+func unmaintain(card:Executable, status:String, amount:int, target= enemyController.Player):
+	if card == null or target == null or (target is Array and target == []):
+		return false
+	if not target is Array:
+		target = [target]	
+	var newtargets = []
+	for thing  in target:
+		newtargets+=thing.occupants
+	target = newtargets
+	if not status in maintained.keys():
+		print("status not found to unmaintain")
+		return false
+	if not card in maintained[status].keys():
+		print("card not found to unmaintain")
+		return false
+	for i in range( maintained[status][card].size()):
+		var pair = maintained[status][card][i]
+		if pair[1] in target:
+			var newtotal = int(pair[0] - amount)
+			if newtotal >0:
+				pair[0] = newtotal
+				
+			else:
+				maintained[status][card].remove(i)
+				
+	for unit in target:
+		if unit !=null:
+			var res = Action("addStatus", [status, -1*amount, target])
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
+	return true
+#{status -> { card->[ [amount, target] ,], }}
+func getMaintain(status, target):
 	
+	#could keep a set of all units that have maintain targeting them, then check that first if theres a gagillion maintains
+	#bc we call this function per unit per turn, and twice per attack
+	if not status in maintained.keys():
+		return 0
+	
+	if not target is Array:
+		target = [target]
+	var total = 0
+	for card in maintained[status].keys():
+		if card == null:
+			maintained[status].erase(card)
+			continue
+		for pair in maintained[status][card]:
+			if pair[1] in target:
+				total += pair[0]
+	return total
+	
+func puzzle(scene, args=[]):
+	pass

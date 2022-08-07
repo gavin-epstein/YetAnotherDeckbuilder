@@ -42,3 +42,5 @@ trigger(onPlay,do(move,0))
 removetrigger(endofturn,true,1)
 rarity(5);
 image("res://Images/CardArt/SneakUp.png")
+
+#right timing, tap attack

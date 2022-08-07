@@ -23,7 +23,7 @@ cost(1);
 text("when you would block, heal instead");
 rarity(3)
 interrupt(block,do(heal(argv[0])))
-types(food);
+types(food, shield);
 removetrigger(endofturn,true,5);
 image("res://Images/CardArt/butter.png")
 

@@ -9,12 +9,16 @@ rarity(2);
 image("res://Images/CardArt/Fly.png");
 
 title(Feather Cloak);
-types(cloud,avian);
+types(cloud,avian,steel);
 cost(2);
 $Armor=1
-trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), (+,2,$Armor))));
+trigger(onPlay,do(maintain(self, "armor",(+,2,$Armor),(do(selectTiles((all,(any),"friendly&-Player"),40,Player))))))
+trigger(onRemoveFromPlay,do(unmaintain(self, "armor",(+,2,$Armor),(do(selectTiles((all,(any),"friendly&-Player"),40,Player))))))
+trigger(summon,do(unmaintain(self, "armor",(+,2,$Armor),(do(selectTiles((all,(any),"friendly&-Player"),40,Player))))))
+trigger(summon,do(maintain(self, "armor",(+,2,$Armor),(do(selectTiles((all,(any),"friendly&-Player"),40,Player))))))
+#trigger(onPlay,enemyDo(addArmor( (do(selectTiles((all,(any),"friendly&-Player"),40,Player)) ), (+,2,$Armor))));
 trigger(onDiscard,do(armor,($Armor),false));
-text("On Discard: gain $Armor armor. On Play: give (+,2,$Armor) armor to all allies");
+text("On Discard: gain $Armor armor. While in play: maintain (+,2,$Armor) armor on all allies");
 rarity(5);
 removetrigger(endofturn,true,3);
 image("res://Images/CardArt/FeatherCloak.png");
