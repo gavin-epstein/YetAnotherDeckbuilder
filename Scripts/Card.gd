@@ -27,9 +27,10 @@ var base_z = 0
 
 	
 func _process(delta: float) -> void: 
-	#normal movement 
-	if self.visible==false:
+	if self.visible ==false and targetvis == false:
+		set_process(false)
 		return
+	#normal movement 
 	if target_position != null:
 		self.position = self.position.linear_interpolate(target_position, min(1,speed*delta))
 		if (position-target_position).length_squared() < 9:
@@ -215,6 +216,7 @@ func deepcopy(other)-> Card:
 	return other
 		
 func moveTo(pos:Vector2, size = null, vis = true):
+	set_process(true)
 	if target_position == null:
 		self.position = pos
 		self.target_position = pos
@@ -225,7 +227,7 @@ func moveTo(pos:Vector2, size = null, vis = true):
 		self.target_scale = size
 		self.target_position = pos
 	targetvis = vis
-	set_process(vis)
+
 	
 func highlight():
 	self.highlighted = true

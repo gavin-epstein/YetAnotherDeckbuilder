@@ -108,6 +108,15 @@ removetrigger(endofturn, true, 1)
 modifiers(unique)
 rarity(2)
 
+title(Zephyr);
+types(wind);
+cost(1);
+$Draw=3;
+trigger(onPlay, do(draw($Draw)));
+text("Draw $Draw");
+rarity(7);
+removetrigger(endofturn, true,1);
+     
 
 #unceasing top
 #1 cost draw 3

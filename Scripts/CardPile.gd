@@ -5,10 +5,17 @@ var ondisplay =false
 const xsep = 150
 const ysep = 220
 var dispcards = []
+var tempthings = []
+const fancyfont =preload("res://Fonts/AlMadiri.tres")
+const plainfont =preload("res://Fonts/Mada.tres")
+var frontofdisplay:CanvasLayer
 
 func _ready() -> void:
 	self.base_z=106
-
+	frontofdisplay = CanvasLayer.new()
+	frontofdisplay.layer = 2
+	frontofdisplay.scale=self.scale
+	add_child(frontofdisplay)
 func add_card_at(card, i)->void:
 	cards.insert(i, card)
 	if card.get_parent()!=null:
@@ -26,6 +33,9 @@ func _input(event: InputEvent) -> void:
 			get_node("../CardPileDisplay").undisplay()
 
 func updateDisplay():
+	for thing in frontofdisplay.get_children():
+		thing.queue_free()
+	tempthings = []
 	if not ondisplay:
 		for card in cards:
 			card.moveTo($AnimatedSprite.position , Vector2(.15,.15), false)
@@ -36,12 +46,30 @@ func updateDisplay():
 		var y = 20-get_node("../CardPileDisplay/Panel/VScrollBar").value 
 		var dispcards = cards.duplicate()
 		dispcards.sort_custom(self,"alphabetize")
-		for card in dispcards:
+		dispcards = removeDuplicates(dispcards)
+		for pair in dispcards:
+			var card = pair[0]
+			card.set_process(true)
 			card.moveTo(Vector2(x,y), Vector2(.2,.2))
 			card.visible = true
-			card.set_process(true)
 			card.updateDisplay()
 			x+=xsep
+			if pair[1] > 1:
+				var text = RichTextLabel.new()
+				frontofdisplay.add_child(text)
+				tempthings.append(text)
+				text.bbcode_enabled = true
+				print(str(pair[1]))
+				text.bbcode_text = "[center]x " + str(pair[1] )+ " [/center]"
+				text.rect_size = Vector2(xsep*2,ysep*2)
+				text.rect_scale = Vector2(.4,.4)
+				text.rect_position = Vector2(x,y+ysep*.25)
+				text.visible = true
+				text.scroll_active = false
+				text.add_color_override("Default", Color(1,1,1) )
+				text.add_font_override("normal_font",fancyfont)
+				x+=xsep
+				
 			if x > startx + xsep*7:
 				x = startx
 				y += ysep
@@ -53,8 +81,7 @@ func display():
 		self.ondisplay = true
 		self.updateDisplay()
 	#get_parent().releaseFocus(self)
-func undisplay():
-	#get_parent().releaseFocus(self)
+func undisplay():		
 	get_node("../CardPileDisplay").undisplay()
 	self.ondisplay = false
 	self.updateDisplay()
@@ -86,6 +113,6 @@ func removeDuplicates(array):
 				break
 		if not found:
 			ret.append([card, 1])
-	
+	return ret
 				
 		
