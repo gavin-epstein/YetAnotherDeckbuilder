@@ -68,7 +68,7 @@ func Load(parent)-> void:
 #		#Test Cards#
 #		$Battery.visible=true
 #			Voided.add_card(Library.getCardByName("Coal"))
-#		Hand.add_card(Library.getCardByName("Henhouse"))
+		Hand.add_card(Library.getCardByName("Sledgehammer"))
 #		Hand.add_card(Library.getCardByName("Ice Fortress"))
 #		Hand.add_card(Library.getCardByName("Diamond"))
 #		Hand.add_card(Library.getCardByName("Permafrost"))

@@ -105,6 +105,8 @@ rarity(4)
 text("At the end of your turn, gain $Block block per frozen card in hand. (* ,$Block ,(do(countModifiers(Hand, frozen))))");
 removetrigger(endofturn, true, 6)
 cost(1);
+rarity(10);
+image("res://Images/CardArt/IcicleFortress.png")
 
 title("Dagger of Returning");
 types(ice, shadow, attack);
@@ -119,10 +121,18 @@ rarity(3);
 modifiers(unique);
 text("Deal $Damage piercing damage range $Range. Gain $Status Frost and return this to your hand")
 removetrigger(endofturn, true,0);
+image("res://Images/CardArt/DaggerOfReturning.png")
 
-
-
-
+title("Winter Growth");
+types(ice, fungal, attack)
+$Increment=3
+$Damage=1
+$Range=3
+trigger(onPlay,do(damage, ($Damage,(fungal,ice),(any),$Range)));
+text("Deal $Damage frost damage range $Range. If in hand at end of turn increase this cards damage by $Increment");
+rarity(4);
+trigger(onRetain, do(addVar(self, Damage, $Increment)));
+removetrigger(endofturn,true,1);
 
 
 #frozen , convert a tile to ice

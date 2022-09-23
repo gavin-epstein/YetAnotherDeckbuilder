@@ -175,21 +175,33 @@ func getVar(card, varname):
 	if varname=="title":
 		return card.title
 	return card.vars["$"+varname];
-func selectCards(loc, predicate,message,num = 1,random=false):
+func selectCards(locs, predicate,message,num = 1,random=false):
 	#print("Select input allowed " +str( cardController.inputAllowed))
 	#print("Select " + loc + "  "  + str(predicate))
-	loc = cardController.get_node(loc)
+	if locs is String and locs == "all":
+		locs = ["Deck","Hand", "Play", "Discard", "Burn"]
+	elif locs is String:
+		locs = [locs]
 	var selectcount = 0
-	for card in loc.cards:
-		if card.processArgs(predicate, []):
-			card.highlight()
-			selectcount+=1
+	var newlocs = []
+	for loc in locs:
+		if loc == "Burn":
+			loc = "Voided"
+		print("looking at " + loc)
+		loc = cardController.get_node(loc)
+		newlocs.append(loc)
+		for card in loc.cards:
+			if card.processArgs(predicate, []):
+				card.highlight()
+				selectcount+=1
+	locs = newlocs
 	#print("selectcount: " + str(selectcount))	
 	if random and num is int: #random
 		var possible = []
-		for card in loc.cards:
-			if card.highlighted:
-				possible.append(card)
+		for loc in locs:
+			for card in loc.cards:
+				if card.highlighted:
+					possible.append(card)
 		
 		var cards  = Utility.choosex(possible,num)
 		if cards.size()==1:
@@ -200,20 +212,22 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 		return cards
 	if num is String and num == "all": #all
 		var possible = []
-		for card in loc.cards:
-			if card.highlighted:
-				possible.append(card)
-		if possible.size()>0:
-			cardClicked(possible[0])
-		#print(possible)
-		return possible
+		for loc in locs:
+			for card in loc.cards:
+				if card.highlighted:
+					possible.append(card)
+			if possible.size()>0:
+				cardClicked(possible[0])
+			#print(possible)
+			return possible
 	#otherwise select 1.
 	#if only 1 is available return it
 	if selectcount == 1:
-		for card in loc.cards:
-			if card.highlighted:
-				cardClicked(card)
-				return card
+		for loc in locs:
+			for card in loc.cards:
+				if card.highlighted:
+					cardClicked(card)
+					return card
 		print("Selectable Card has Moved?")
 	#if none available, null
 	elif selectcount == 0:
@@ -222,14 +236,17 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	else:
 		var prototype = null
 		var alltheSame = true
-		for card in loc.cards:
-			if card.highlighted:
-				if prototype == null:
-					prototype = card
-				else:
-					if not prototype.isIdentical(card):
-						alltheSame = false
-						break
+		for loc in locs:
+			for card in loc.cards:
+				if card.highlighted:
+					if prototype == null:
+						prototype = card
+					else:
+						if not prototype.isIdentical(card):
+							alltheSame = false
+							break
+			if not alltheSame:
+				break
 		if alltheSame:
 			cardClicked(prototype)
 			return prototype
@@ -240,15 +257,19 @@ func selectCards(loc, predicate,message,num = 1,random=false):
 	selectedCard = null
 	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
 	Message.visible = true
-	if loc is CardPile:
-		loc.display()
+	if locs.size() == 1:
+		if locs[0] is CardPile:
+			locs[0].display()
+	else:
+		cardController.get_node("CardPileDisplay").multidisplay(locs)
 	cardController.updateDisplay()
 	#print("Select input allowed " +str( cardController.inputAllowed))
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
-	if loc is CardPile:
-		loc.undisplay()
+	for loc in locs:
+		if loc is CardPile:
+			loc.undisplay()
 	#print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 

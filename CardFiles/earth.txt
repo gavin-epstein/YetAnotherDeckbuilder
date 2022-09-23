@@ -154,3 +154,4 @@ trigger(onPlay,do(move(Hand, Deck,(select(Hand,true,"pick a card to topdeck")), 
 text("Draw $Draw, then put a card from your hand on top of your deck")
 rarity(10);
 removetrigger(endofturn, true, 1);
+image("res://Images/CardArt/Plow.png")

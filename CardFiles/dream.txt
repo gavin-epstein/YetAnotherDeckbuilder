@@ -5,6 +5,7 @@ trigger(onPlay,do(dream(Hand)));
 removetrigger(endofturn, true,1);
 types(dream);
 rarity(7);
+image("res://Images/CardArt/VividDream.png")
 
 title("Intransience");
 cost(0)

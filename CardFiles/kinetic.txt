@@ -63,6 +63,7 @@ trigger(onPlay, do(heal($Heal)));
 text("Pull all units $MoveOther towards you. Heal $Heal");
 rarity(7)
 removetrigger(endofturn, true, 1);
+image("res://Images/CardArt/Ingest.png");
 
 title(Moths to a Flame);
 cost(0);
@@ -82,13 +83,14 @@ cost(2)
 $Move=3
 $MoveOther=2
 $Range=1
-trigger(onPlay, do(move($Move)))
+trigger(onPlay, do(move($Move)));
 trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range),false));
 trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 removetrigger(endofturn, true, 1)
 text("Move $Move, deal $Damage crush damage range $Range, and push the attacked unit $MoveOther")
 rarity(7)
 types(kinetic, attack, movement)
+image("res://Images/CardArt/Trample.png")
 
 #unique - immune to knockback, knockback deals 2 extra damage (possibly 2 cards)
 #summon a boulder(or a force wave or bowling ball or something) and push it 10 times/ until it dies

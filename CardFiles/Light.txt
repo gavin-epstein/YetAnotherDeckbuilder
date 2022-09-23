@@ -163,5 +163,6 @@ interrupt(play, if( ((do(getVar(argv[0], Cost)))="X"),(do (gainEnergy($Energy)))
 text("When you play an X cost card, first gain $Energy energy")
 removetrigger(never, true, 0)
 rarity(2);
+image("res://Images/CardArt/ExaltedExpansion.png");
 
 

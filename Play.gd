@@ -1,6 +1,6 @@
 extends CardLocation
-var xsep = 100
-var ysep = 150
+var playxsep = 100
+var playysep = 150
 
 # Declare member variables here. Examples:
 # var a: int = 2
@@ -12,19 +12,22 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func updateDisplay():
-	var startx= 300
-	var x = startx
-	var rows = int((cards.size()-1)/11)
-	var y = 700 - ysep*rows
-	for card in cards:
-		card.moveTo(Vector2(x,y), Vector2(.15,.15))
-		card.visible = true
-		card.z_index = 0
-		card.updateDisplay()
-		x+=xsep
-		if x > startx + xsep*10:
-			x = startx
-			y += ysep
+	if not ondisplay:
+		var startx= 300
+		var x = startx
+		var rows = int((cards.size()-1)/11)
+		var y = 700 - playysep*rows
+		for card in cards:
+			card.moveTo(Vector2(x,y), Vector2(.15,.15))
+			card.visible = true
+			card.z_index = 0
+			card.updateDisplay()
+			x+=playxsep
+			if x > startx + playxsep*10:
+				x = startx
+				y += playysep
+	else:
+		return displayAsPile()
 			
 func cardClicked(card):
 	if get_parent().inputAllowed and card.triggers.has("onTap"):

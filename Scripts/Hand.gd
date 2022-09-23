@@ -13,17 +13,20 @@ func is_full() -> bool:
 	return self.size() >= maxHandSize
 
 func updateDisplay():
-	if cards.size() == 0:
-		return
-	var pos = Vector2(300,840)
-	var xsep = min(1000/cards.size(), 160)
-	for card in cards:
-		card.visible = true
-		card.z_index = 0
-		card.updateDisplay()
-		card.moveTo(pos, Vector2(.2,.2))
-		move_child(card, get_child_count()-1)
-		pos += Vector2(xsep,0)
+	if not ondisplay:
+		if cards.size() == 0:
+			return
+		var pos = Vector2(300,840)
+		var xsep = min(1000/cards.size(), 160)
+		for card in cards:
+			card.visible = true
+			card.z_index = 0
+			card.updateDisplay()
+			card.moveTo(pos, Vector2(.2,.2))
+			move_child(card, get_child_count()-1)
+			pos += Vector2(xsep,0)
+	else:
+		return displayAsPile()
 		
 		
 func returnCard(target):
@@ -34,7 +37,6 @@ func returnCard(target):
 			card.moveTo(pos, Vector2(.2,.2))
 		pos += Vector2(xsep,0)
 func cardClicked(card):
-	
 	if get_parent().inputAllowed:
 		var res = get_parent().Action("play", [card])
 		if res is GDScriptFunctionState:

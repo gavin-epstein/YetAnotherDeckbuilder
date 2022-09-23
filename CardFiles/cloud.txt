@@ -110,6 +110,7 @@ text("When played: burn a card from your hand and increase this cards movement b
 removetrigger(endofturn, true,1);
 rarity(3);
 types(cloud,fire,movement);
+image("res://Images/CardArt/HotAirBalloon.png");
 
 #title("Cirrus")
 #cost(1);
@@ -158,6 +159,7 @@ trigger(onPlay, do(gainEnergy($Energy)));
 trigger(onPlay, do(block($Block)));
 removetrigger(endofturn, true, 1);
 text("Draw $Draw, gain $Energy energy. If discarded or burned, play this")
+image("res://Images/CardArt/Smoke.png");
 
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded
 #Dust: earth cloud, wind?:  on discard draw 2 unplayable

@@ -55,6 +55,7 @@ removetrigger(never, true, 0)
 lore("A busted crown which has since been repaired");
 rarity(2)
 text("Card rewards contain 1 extra card choice")
+image("res://Images/CardArt/KintsugiCrown.png")
 
 title("Black Market")
 types(blood, loot);

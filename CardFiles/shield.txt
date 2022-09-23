@@ -7,5 +7,5 @@ removetrigger(endofturn, true, 6)
 text("When you gain at least (+,$Block,$BaseBlock) block from a card, gain $Block extra");
 types(shield)
 rarity(6);
-
+image("res://Images/CardArt/Aegis.png")
 

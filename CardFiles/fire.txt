@@ -193,6 +193,7 @@ trigger(onPlay, do( create(self,Discard)));
 trigger(onVoided, do(draw($Draw)))
 removetrigger(endofturn, true, 0);
 rarity(7);
+image("res://Images/CardArt/Wyldfire.png")
 
 #when you burn a card, 3 block and 1 flaming
 
