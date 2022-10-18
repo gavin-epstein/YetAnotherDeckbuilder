@@ -25,7 +25,7 @@ image("res://Images/CardArt/PowerHammer.png")
 
 title("Sledgehammer")
 types(hammer)
-trigger(onPlay,do(purge((select(all,true,"Pick a card to purge")))))
+trigger(onPlay,do(purge((select(Hand,true,"Pick a card to purge")))))
 trigger(onPlay,do(purge(self)));
 text("Purge a card in your hand.\nPurge");
 removetrigger(endofturn, true, 0);

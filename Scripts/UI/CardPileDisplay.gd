@@ -10,6 +10,8 @@ var tempthings
 
 # Called when the node enters the scene tree for the first time.
 func display(caller):
+	for child in $Panel/frontofdisplay.get_children():
+		child.queue_free()
 	if self.caller!=null:
 		undisplay()
 	self.caller = caller
@@ -74,7 +76,7 @@ func clear():
 	
 func undisplay():
 	$Panel.visible = false
-	
+
 	if self.caller!=null:
 		if self.caller is Array:
 			var temp =caller

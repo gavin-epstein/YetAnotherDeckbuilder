@@ -493,7 +493,7 @@ transform = Transform2D( 1, 0, 0, 1, 960, 410 )
 script = ExtResource( 277 )
 
 [node name="Sprite" type="Sprite" parent="Center/MapLayer"]
-position = Vector2( -2.11157, 2.41721 )
+position = Vector2( -3.20691, 1.32181 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 278 )
 
@@ -648,7 +648,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 12
+frame = 56
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -719,7 +719,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 11
+frame = 55
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -783,10 +783,10 @@ hotkey = "Voided"
 
 [node name="Label" type="ColorRect" parent="CardController/Voided"]
 visible = false
-margin_left = 1639.38
-margin_top = 880.293
-margin_right = 1748.38
-margin_bottom = 906.293
+margin_left = 1623.38
+margin_top = 904.293
+margin_right = 1732.38
+margin_bottom = 930.293
 mouse_filter = 2
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -804,7 +804,7 @@ custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Burn(Z)[/center]"
-text = "Burn(Z)"
+text = "Burn(C)"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -814,6 +814,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 4 )
+frame = 22
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -846,7 +847,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 101
+frame = 19
 playing = true
 script = ExtResource( 264 )
 

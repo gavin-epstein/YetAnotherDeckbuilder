@@ -259,7 +259,7 @@ func selectCards(locs, predicate,message,num = 1,random=false):
 	Message.visible = true
 	if locs.size() == 1:
 		if locs[0] is CardPile:
-			locs[0].display()
+			locs[0].display(50,50 )
 	else:
 		cardController.get_node("CardPileDisplay").multidisplay(locs)
 	cardController.updateDisplay()

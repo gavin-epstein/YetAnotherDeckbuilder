@@ -75,9 +75,12 @@ func displayAsPile():
 			text.bbcode_enabled = true
 			print(str(pair[1]))
 			text.bbcode_text = "[center]x " + str(pair[1] )+ " [/center]"
-			text.rect_size = Vector2(xsep*3/self.scale.x,ysep*3/self.scale.y)
-			text.rect_scale = Vector2(.6/self.scale.x,.6/self.scale.y)
-			text.rect_position = Vector2(x*1.5/self.scale.x,(y+ysep*.25)*1.5/self.scale.y)
+			#text.rect_size = Vector2(xsep*3/self.scale.x,ysep*3/self.scale.y)
+			#text.rect_scale = Vector2(.6/self.scale.x,.6/self.scale.y)
+			#text.rect_position = Vector2(x*1.5/self.scale.x,(y+ysep*.25)*1.5/self.scale.y)
+			text.rect_size = Vector2(xsep*3,ysep*3)
+			text.rect_scale = Vector2(.6,.6)
+			text.rect_position = Vector2(x*1.5,(y+ysep*.25)*1.5)
 			text.visible = true
 			text.scroll_active = false
 			text.add_color_override("Default", Color(1,1,1) )
