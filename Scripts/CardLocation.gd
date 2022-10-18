@@ -7,7 +7,7 @@ const xsep = 150
 const ysep = 220
 var tempthings = []
 var dispcards = []
-
+var frontofdisplay
 const fancyfont =preload("res://Fonts/AlMadiri.tres")
 const plainfont =preload("res://Fonts/Mada.tres")
 # Declare member variables here. Examples:
@@ -17,7 +17,11 @@ var base_z = 0
 var cards = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	self.base_z=106
+	frontofdisplay = CanvasLayer.new()
+	frontofdisplay.layer = 2
+	frontofdisplay.scale=self.scale
+	add_child(frontofdisplay)
 func size()->int:
 	return cards.size()
 func add_card(card) -> void:
@@ -49,6 +53,8 @@ func updateDisplay() -> void:
 	pass
 	#assert(false, "Abstract Method")
 func displayAsPile():
+	base_z = 106
+	ondisplay = true
 	var startx= ondisplaystartx
 	var x = startx
 	var y = ondisplaystarty-get_node("../CardPileDisplay/Panel/VScrollBar").value 
@@ -58,7 +64,7 @@ func displayAsPile():
 	for pair in dispcards:
 		var card = pair[0]
 		card.set_process(true)
-		card.moveTo(Vector2(x,y), Vector2(.2,.2))
+		card.moveTo(Vector2(x*1.5/self.scale.x,y*1.5/self.scale.y), Vector2(.3/self.scale.x, .3/self.scale.y))
 		card.visible = true
 		card.updateDisplay()
 		x+=xsep
@@ -69,9 +75,9 @@ func displayAsPile():
 			text.bbcode_enabled = true
 			print(str(pair[1]))
 			text.bbcode_text = "[center]x " + str(pair[1] )+ " [/center]"
-			text.rect_size = Vector2(xsep*2,ysep*2)
-			text.rect_scale = Vector2(.4,.4)
-			text.rect_position = Vector2(x,y+ysep*.25)
+			text.rect_size = Vector2(xsep*3/self.scale.x,ysep*3/self.scale.y)
+			text.rect_scale = Vector2(.6/self.scale.x,.6/self.scale.y)
+			text.rect_position = Vector2(x*1.5/self.scale.x,(y+ysep*.25)*1.5/self.scale.y)
 			text.visible = true
 			text.scroll_active = false
 			text.add_color_override("Default", Color(1,1,1) )
@@ -122,4 +128,7 @@ func removeDuplicates(array):
 		if not found:
 			ret.append([card, 1])
 	return ret
-				
+func undisplay():		
+	get_node("../CardPileDisplay").undisplay()
+	self.ondisplay = false
+	self.updateDisplay()		

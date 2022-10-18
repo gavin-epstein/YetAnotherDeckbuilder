@@ -32,22 +32,26 @@ func _input(event: InputEvent) -> void:
 		self.undisplay()
 	
 func multidisplay(members):
+	caller = members
 	var x = 30;
-	var y = 20;
+	var y = 60;
 	for pile in members:
-		pass
-		pile.ondisplaystarty = y
-		y = pile.displayAsPile();
+		if pile.cards.size() == 0:
+			continue
+		
 		var text = RichTextLabel.new()
 		text.bbcode_enabled = true
 		text.bbcode_text = "[center] " + pile.name+ " [/center]"
 		text.rect_size = Vector2(4* CardPile.xsep, CardPile.ysep )
-		text.rect_scale = Vector2(.4,.4)
+		text.rect_scale = Vector2(.3,.3)
 		text.rect_position = Vector2(x,y)
-		y += CardPile.ysep*2
+		y += CardLocation.ysep*1.5
+		pile.ondisplaystarty = y
+		pile.ondisplaystartx = x
+		y = pile.displayAsPile();
 		text.visible = true
 		text.scroll_active = false
-		text.add_color_override("Default", Color(1,1,1) )
+		text.add_color_override("Default", Color(1,1,1))
 		text.add_font_override("normal_font",CardPile.fancyfont)
 		$Panel/frontofdisplay.add_child(text)
 
@@ -70,9 +74,16 @@ func clear():
 	
 func undisplay():
 	$Panel.visible = false
+	
 	if self.caller!=null:
-		var temp = caller
-		caller= null
-		temp.undisplay()
+		if self.caller is Array:
+			var temp =caller
+			caller = null
+			for pile in caller:
+				pile.undisplay()
+		else:
+			var temp = caller
+			caller= null
+			temp.undisplay()
 	get_parent().inputAllowed = oldinputallowed
 	

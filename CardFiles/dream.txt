@@ -24,3 +24,4 @@ text("At the start of your turn, add a randomly generated temporary card to your
 trigger(startofturn,do(dream(Hand)));
 removetrigger(endofturn,true, 6);
 rarity(3);
+image("res://Images/CardArt/MindFactory.png")

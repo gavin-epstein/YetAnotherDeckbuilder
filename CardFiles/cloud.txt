@@ -161,5 +161,12 @@ removetrigger(endofturn, true, 1);
 text("Draw $Draw, gain $Energy energy. If discarded or burned, play this")
 image("res://Images/CardArt/Smoke.png");
 
+title("Gambler's fallacy");
+cost(1);
+removetrigger(onTap, true, 9);
+trigger(onTap, do(discard,((select(Hand,true,"pick a card to discard (Sift)"))),false));
+trigger(onPlay, do(draw($Draw)));
+
+
 #cloud earth food : Bite the Dust: discard hand, heal per unplayable card discarded
 #Dust: earth cloud, wind?:  on discard draw 2 unplayable

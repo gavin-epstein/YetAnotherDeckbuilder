@@ -648,7 +648,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 105
+frame = 12
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -719,7 +719,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 104
+frame = 11
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -814,7 +814,6 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 4 )
-frame = 47
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -847,7 +846,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 68
+frame = 101
 playing = true
 script = ExtResource( 264 )
 

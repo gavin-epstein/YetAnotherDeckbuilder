@@ -5,7 +5,8 @@ export var maxHandSize = 10
 # var a: int = 2
 # var b: String = "text"
 func _ready() -> void:
-	base_z=50
+	pass	
+	
 
 # Called when the node enters the scene tree for the first time.
 
@@ -14,6 +15,7 @@ func is_full() -> bool:
 
 func updateDisplay():
 	if not ondisplay:
+		base_z=50
 		if cards.size() == 0:
 			return
 		var pos = Vector2(300,840)

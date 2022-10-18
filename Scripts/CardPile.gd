@@ -4,14 +4,6 @@ export var hotkey = ""
 
 
 
-var frontofdisplay:CanvasLayer
-
-func _ready() -> void:
-	self.base_z=106
-	frontofdisplay = CanvasLayer.new()
-	frontofdisplay.layer = 2
-	frontofdisplay.scale=self.scale
-	add_child(frontofdisplay)
 func add_card_at(card, i)->void:
 	cards.insert(i, card)
 	if card.get_parent()!=null:
@@ -50,10 +42,7 @@ func display(x,y):
 		return self.updateDisplay()
 
 	#get_parent().releaseFocus(self)
-func undisplay():		
-	get_node("../CardPileDisplay").undisplay()
-	self.ondisplay = false
-	self.updateDisplay()
+
 
 func alphabetize(card1,card2):
 	if card1.highlighted and not card2.highlighted:
