@@ -9,6 +9,7 @@ func _ready() -> void:
 	global.loadSettings()
 	$Settings.Load()
 	onieromancy.Load()
+	global.openLog()
 
 
 func savefound()-> bool:
@@ -18,6 +19,7 @@ func savefound()-> bool:
 func _on_NewGameButton_gui_input(event: InputEvent) -> void:
 	$Menu/NewGameButton.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "newgame")
 		if savefound():
 			$OverwriteSavePopup.check()
 		else:
@@ -31,6 +33,7 @@ func newGame():
 func _on_ContinueButton_gui_input(event: InputEvent) -> void:
 	$Menu/ContinueButton.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "continue")
 		if savefound():
 			get_tree().change_scene_to(mainscene)
 		else:
@@ -39,6 +42,8 @@ func _on_ContinueButton_gui_input(event: InputEvent) -> void:
 func _on_QuitButton_gui_input(event: InputEvent) -> void:
 	$Menu/QuitButton.modulate = Color(.7,.7,.7)
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "quit")
+		global.closeLog()
 		get_tree().quit()
 
 
@@ -60,6 +65,7 @@ func _on_NewGameButton_mouse_exited() -> void:
 func _on_SettingsButton_gui_input(event: InputEvent) -> void:
 	$Menu/SettingsButton.modulate = Color(.7,.7,.7)
 	if (event.is_action_pressed("left_click")):
+		global.addLog("click", "settingsbutton")
 		$Settings.visible=true
 
 func _on_SettingsButton_mouse_exited() -> void:

@@ -81,7 +81,7 @@ types(fungal, earth, food);
 trigger(onPlay, do(heal($Heal)));
 removetrigger(endofturn, true, 4);
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(addVar(self,Heal,$Increment)))));
-text("Heal $Heal . While in play, when you draw an unplayable card increase this card heal by $Increment");
+text("Heal $Heal . While in play, when you draw an unplayable card increase this card's heal amount by $Increment");
 rarity(2);
 image("res://Images/CardArt/Mycorhizome.png");
 

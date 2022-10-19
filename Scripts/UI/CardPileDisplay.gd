@@ -28,9 +28,11 @@ func display(caller):
 	
 func _on_Resume_gui_input(event: InputEvent) -> void:
 	if (event.is_action_pressed("left_click")):
+		global.addLog("click", "hide_card_panel")
 		undisplay()
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel"):
+		global.addLog("keypress", "hide_card_panel")
 		self.undisplay()
 	
 func multidisplay(members):

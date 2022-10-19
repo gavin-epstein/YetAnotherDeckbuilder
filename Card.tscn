@@ -240,4 +240,5 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="gui_input" from="Resizer/ColorRect" to="." method="_on_ColorRect_gui_input"]
+[connection signal="mouse_entered" from="Resizer/ColorRect" to="." method="_on_ColorRect_mouse_entered"]
 [connection signal="mouse_exited" from="Resizer/ColorRect" to="." method="_on_ColorRect_mouse_exited"]

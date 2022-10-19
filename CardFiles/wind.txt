@@ -96,6 +96,7 @@ $Draw=1
 $Heal=1
 $Energy=1
 $Blood=1
+cost(1);
 text("Draw $Draw, gain $Energy Energy, discard a card, lose $Blood health, heal $Heal, add a random shadow to your hand, burn a card in hand.")
 trigger(onPlay, do(draw($Draw)));
 trigger(onPlay, do(gainEnergy($Energy)));

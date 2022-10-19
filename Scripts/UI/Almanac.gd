@@ -129,12 +129,14 @@ func loadTypeDescriptions(fname):
 
 func _on_X_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "almanac_close")
 		emit_signal("Closed")
 		self.queue_free()
 
 
 func _on_back_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "almanac_back")
 		print("back", stackindex)
 		if stackindex > 0:
 			displayPage(stack[stackindex-1],true)
@@ -142,6 +144,7 @@ func _on_back_gui_input(event: InputEvent) -> void:
 
 func _on_next_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "almanac_forward")
 		print("next", stackindex, stack)
 		if stackindex < stack.size()-1:
 			stackindex+=1

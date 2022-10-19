@@ -12,6 +12,7 @@ func startloading():
 
 func _on_Panel_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "tutorial_yes")
 		get_node("/root/Scene").doTutorial = true
 		startloading()
 	
@@ -19,4 +20,5 @@ func _on_Panel_gui_input(event: InputEvent) -> void:
 
 func _on_Panel2_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "tutorial_no")
 		startloading()

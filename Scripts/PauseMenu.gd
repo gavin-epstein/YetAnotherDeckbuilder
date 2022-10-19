@@ -7,11 +7,13 @@ signal unpaused
 func _input(event: InputEvent) -> void:
 	if get_parent().loaded:		
 		if event.is_action_pressed("escape"):
+			global.addLog("keypress", "escape")
 			if $Back.visible:
 				hide()
 			else:
 				show()
 		elif event.is_action_pressed("error_report"):
+			global.addLog("keypress", "error_report")
 			var error = errortemplate.instance()
 			add_child(error)
 			get_tree().paused = true
@@ -43,11 +45,13 @@ func _ResignButton(event: InputEvent) -> void:
 
 func _on_Settings_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "pausemenu_settingsbutton")
 		$Settings.visible=true
 
 
 func _on_Almanac_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "pausemenu_almanac")
 		var almanac = almanactemplate.instance()
 		almanac.Load(get_node("/root/Scene"))
 		add_child(almanac)

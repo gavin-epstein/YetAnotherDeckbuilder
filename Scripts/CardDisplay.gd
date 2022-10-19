@@ -62,4 +62,5 @@ func undisplay():
 
 func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") or event.is_action_pressed("right_click"):
+		global.addLog("click", "cardDisplay_hide")
 		undisplay()

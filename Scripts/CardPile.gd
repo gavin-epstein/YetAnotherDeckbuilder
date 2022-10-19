@@ -15,6 +15,7 @@ func add_card_at(card, i)->void:
 #		updateDisplay()
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed(hotkey):
+		global.addLog("keypress", self.name+ "_toggledisplay")
 		if not ondisplay:
 			display(30,20)
 		else:

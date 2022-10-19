@@ -648,7 +648,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 56
+frame = 17
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -719,7 +719,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 55
+frame = 16
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -804,7 +804,7 @@ custom_fonts/normal_font = ExtResource( 133 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "[center]Burn(Z)[/center]"
-text = "Burn(C)"
+text = "Burn(Z)"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -814,7 +814,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 4 )
-frame = 22
+frame = 2
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -847,7 +847,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 19
+frame = 106
 playing = true
 script = ExtResource( 264 )
 
@@ -1445,11 +1445,14 @@ __meta__ = {
 [connection signal="gui_input" from="Center/MapLayer/Map/MeshInstance2D/MapArea2" to="Center/MapLayer/Map/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="Center/MapLayer/Tutorial/MeshInstance2D/MapArea2" to="Center/MapLayer/Tutorial/MeshInstance2D" method="on_MapArea_input_event"]
 [connection signal="gui_input" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_gui_input"]
+[connection signal="mouse_entered" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="CardController/Deck/Area" to="CardController/Deck" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
+[connection signal="mouse_entered" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
 [connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
+[connection signal="mouse_entered" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_mouse_exited"]
 [connection signal="mouse_entered" from="CardController/Energy/Area" to="CardController/Energy" method="_on_Area_mouse_entered"]
 [connection signal="mouse_exited" from="CardController/Energy/Area" to="CardController/Energy" method="_on_Area_mouse_exited"]

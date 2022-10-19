@@ -2,9 +2,26 @@ extends Node
 const SETTINGS = "user://settings.json"
 var lossImage = preload("res://Images/UIArt/EmptyLantern.png")
 var animationspeed = 1.6
-
+var logData;
 
 signal animspeedchanged(animationspeed)
+
+func openLog():
+	print(OS.get_user_data_dir())
+	logData =  File.new()
+	logData.open("user://logData"+str(OS.get_unix_time())+ ".txt", File.WRITE)
+func closeLog():
+	logData.close()
+func addLog(action,label ):
+	if logData == null:
+		return
+	var time = OS.get_ticks_msec()
+	logData.store_string(action+";"+label+";"+ str(time)+ "\n")
+	
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
+		closeLog()
+
 
 func saveSettings():
 	var save = {
@@ -16,6 +33,7 @@ func saveSettings():
 	file.open(SETTINGS, File.WRITE)
 	file.store_string(to_json(save))
 	file.close()
+
 
 func loadSettings():
 	print("loading settings")
@@ -60,3 +78,4 @@ func endGameReport(state:String, bodyjson:String):
 func _onResponse(result, response_code, headers, body):
 	print("Response:   ")
 	print(body.get_string_from_utf8())
+

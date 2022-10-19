@@ -11,11 +11,13 @@ func setEnemy(image) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
+		global.addLog("click", "tomainmenu")
 		toMainMenu()
 
 func _on_ColorRect2_gui_input(event: InputEvent) -> void:
 	$MapBackground2/ColorRect2.modulate = Color(.7,.7,.7);
 	if (event.is_action_pressed("left_click")):
+		global.addLog("keypress", "tomainmenu")
 		toMainMenu()
 	
 	

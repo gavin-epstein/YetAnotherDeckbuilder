@@ -12,4 +12,5 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("leftClick"):
+		global.addLog("click", "map")
 		emit_signal("onClick", event.position-(get_viewport_rect().size/2))

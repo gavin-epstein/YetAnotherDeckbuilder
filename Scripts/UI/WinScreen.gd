@@ -8,11 +8,13 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
+		global.addLog("keypress", "tomainmenu")
 		toMainMenu()
 
 func _on_ColorRect2_gui_input(event: InputEvent) -> void:
 	$ColorRect2.modulate = Color(.7,.7,.7);
 	if (event.is_action_pressed("left_click")):
+		global.addLog("click", "tomainmenu")
 		toMainMenu()
 	
 	

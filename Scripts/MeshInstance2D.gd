@@ -217,7 +217,7 @@ func getTerrainColor(terrain:int) -> Vector2:
 
 func on_MapArea_input_event( event: InputEvent) -> void:
 	if acceptinput and event.is_action_pressed("left_click"):
-		
+			global.addLog("click", "map")
 		#if cardController.takeFocus(self):
 			var pos = get_global_mouse_position() -  self.get_global_transform().get_origin() 
 			print(selectableNodes.size())

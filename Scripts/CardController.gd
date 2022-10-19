@@ -477,6 +477,7 @@ func startofturn():
 
 func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and takeFocus(self) and inputAllowed:
+		global.addLog("click", "endturn")
 		inputAllowed = false
 		#print("Input off in endturn")
 		releaseFocus(self)

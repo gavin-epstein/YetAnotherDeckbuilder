@@ -9,21 +9,30 @@ var targetpos= Vector2(960,410)
 # var a: int = 2
 # var b: String = "text"
 func _input(event: InputEvent) -> void:
+	#global.addLog("keypress", event.as_text())
 	if event.is_action("zoom_in"):
+		global.addLog("keypress", "zoom_in")
 		zoom(zoomamount)
 	elif event.is_action("zoom_out"):
+		global.addLog("keypress", "zoom_out")
 		zoom(1.0/zoomamount)
 	elif event is InputEventMagnifyGesture:
+		global.addLog("scrollgesture", "zoom")
 		zoom(event.factor)
 	elif event.is_action("ui_right"):
+		global.addLog("keypress", "right")
 		scroll(Vector2(-1*scrollspeed,0))
 	elif event.is_action("ui_down"):
+		global.addLog("keypress", "down")
 		scroll(Vector2(0,-1*scrollspeed))
 	elif event.is_action("ui_left"):
+		global.addLog("keypress", "up")
 		scroll(Vector2(scrollspeed,0))
 	elif event.is_action("ui_up"):
+		global.addLog("keypress", "left")
 		scroll(Vector2(0,scrollspeed))
 	elif event is InputEventPanGesture:
+		global.addLog("scrollgesture", "pan")
 		scroll(-2.5*event.delta)
 func _process(delta: float) -> void:
 	var _sc = lerp(self.scale.x,zoomfactor,delta*zoomspeed)

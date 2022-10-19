@@ -21,6 +21,7 @@ func Load():
 func _on_Panel_gui_input(event: InputEvent) -> void:
 	$Panel/Panel.modulate = Color(1,1,1)
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "savesettings")
 		global.saveSettings()
 		self.visible = false
 

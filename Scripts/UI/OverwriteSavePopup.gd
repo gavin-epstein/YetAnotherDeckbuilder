@@ -14,6 +14,7 @@ func check():
 func _on_Yes_gui_input(event: InputEvent) -> void:
 	$Yes.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click") and self.visible:
+		global.addLog("click", "overwritesave_yes")
 		get_parent().newGame()
 
 
@@ -25,6 +26,7 @@ func _on_Yes_mouse_exited() -> void:
 func _on_No_gui_input(event: InputEvent) -> void:
 	$No.modulate=Color(.8,.8,.8)
 	if event.is_action_pressed("left_click") and self.visible:
+		global.addLog("click", "overwritesave_no")
 		self.visible=false
 
 

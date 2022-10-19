@@ -109,6 +109,7 @@ func generateReward(rarity, count = 3):
 #skip button
 func _on_Area2D_input_event( event: InputEvent) -> void:
 	if event.is_action_pressed("left_click") and cheston:
+		global.addLog("click", "cardreward_skip")
 		var cardlist = []
 		for card in cards:
 			cardlist.append(card.title)
@@ -118,6 +119,7 @@ func _on_Area2D_input_event( event: InputEvent) -> void:
 
 func _on_Panel2_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "cardreward_hideshow")
 		toggleChest()
 		
 func toggleChest():

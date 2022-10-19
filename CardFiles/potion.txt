@@ -52,7 +52,7 @@ $Draw=1
 trigger(onPlay,do(draw($Draw)));
 trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick a card to cost 0 (Shadow Phial)",1)),Cost,0)))
 trigger(onPlay, do(setVar( (select(Hand,(if(($Cost>0),true)),"Pick another card to cost 0 (Shadow Phial)",1)),Cost,0)))
-text("Draw $Draw, Set the cost of $Repeat cards in hand to 0 until played .Retain. Purge")
+text("Draw $Draw, Set the cost of $Repeat cards in hand to 0 until played .Frozen. Purge")
 trigger(onPlay, do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(potion,frozen);

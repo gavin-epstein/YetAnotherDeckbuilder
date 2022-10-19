@@ -26,11 +26,12 @@ func _on_TextEdit_gui_input(event: InputEvent) -> void:
 
 func _on_CancelButton_pressed() -> void:
 	get_tree().paused=false
+	global.addLog("click", "error_report_cancel")
 	self.queue_free()
 
 
 func _on_SubmitButton_pressed() -> void:
-	
+	global.addLog("click", "error_report_submit")
 	print("Submitting")
 	var type = getType($OptionButton.get_selected_id())
 	var http_request = HTTPRequest.new()

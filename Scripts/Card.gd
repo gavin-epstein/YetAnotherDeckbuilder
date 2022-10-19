@@ -288,27 +288,30 @@ func loadFromSave(save:Dictionary):
 	self.removetype = save.removetype
 	self.text = save.text
 	self.updateDisplay()
-		
-	
 
 
-
+func _on_ColorRect_mouse_entered() -> void:
+	global.addLog("beginhover", "card "+self.title)
 func _on_ColorRect_mouse_exited() -> void:
 	mouseon = false
 	controller.releaseFocus(self)
+	global.addLog("endhover", "card "+self.title)
 
 
 func _on_ColorRect_gui_input(event: InputEvent) -> void:
 	if controller.takeFocus(self):
 		controller.releaseFocus(self)
 		if not get_parent() is CardPile:
+			
 			mouseon = true
 	if event.is_action_pressed("left_click") and controller.takeFocus(self):
+		global.addLog("click", "card "+self.title)
 		controller.releaseFocus(self)
 		if get_parent().has_method("cardClicked"):
 	#		print("click on " + self.title)
 			get_parent().cardClicked(self)
 	if event.is_action_pressed("right_click"):
+		global.addLog("rightclick", "card "+self.title)
 		controller.get_node("CardDisplay").display(self)
 		mouseon=false
 func processText(text):
@@ -363,3 +366,6 @@ func processText(text):
 				codeon = false
 			ind+=1
 	return out
+
+
+

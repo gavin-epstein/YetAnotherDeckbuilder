@@ -720,6 +720,7 @@ func facing(angle):
 
 
 func _on_HoverRect_mouse_entered() -> void:
+	global.addLog("beginhover", "unit "+self.title)
 	if head!=self and head!=null:
 		return head._on_HoverRect_mouse_entered()
 	mouseon = true
@@ -729,6 +730,7 @@ func _on_HoverRect_mouse_entered() -> void:
 		
 
 func _on_HoverRect_mouse_exited() -> void:
+	global.addLog("endhover", "unit "+self.title)
 	if head!=self:
 		return head._on_HoverRect_mouse_exited()
 	mouseon = false
@@ -796,6 +798,7 @@ func loadFromSave(save:Dictionary):
 
 func _on_HoverRect_gui_input(event: InputEvent) -> void:
 	if event.is_action_pressed("left_click"):
+		global.addLog("click", "unit_"+self.title)
 		controller.map.on_MapArea_input_event(event) #pass input to map click
 
 func say(text:String, time = 2):
