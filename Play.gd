@@ -16,7 +16,7 @@ func updateDisplay():
 		var startx= 300
 		var x = startx
 		var rows = int((cards.size()-1)/11)
-		var y = 700 - playysep*rows
+		var y = 675 - playysep*rows
 		for card in cards:
 			card.moveTo(Vector2(x,y), Vector2(.15,.15))
 			card.visible = true

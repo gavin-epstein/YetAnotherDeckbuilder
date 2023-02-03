@@ -286,11 +286,11 @@ func addBlock(unit,amount):
 	for unit in units:
 		if !unit.has_method("isUnit") and unit.occupants.size() > 0:
 			unit = unit.occupants[0]
-		unit.block+=amount
+		unit.block=max(unit.block+amount, 0);
 		unit.Triggered("blockchanged",[amount])
 		unit.get_node("Audio").playsound("block")
 		unit.updateDisplay()
-func heal(unit, amount):
+func heal(unit, amount, attacker = null):
 	if unit ==null:
 		return false
 	var units
@@ -304,7 +304,7 @@ func heal(unit, amount):
 		amount = min(amount,unit.maxHealth - unit.health )
 		unit.changeHealth(amount)	
 		if unit.health <=0:
-			unit.die(null)
+			unit.die(attacker)
 func countNames(loc, name) -> int:
 	var count = 0
 	for unit in units:

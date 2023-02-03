@@ -34,7 +34,6 @@ image("res://Images/CardArt/Flee.png")
 title("Autovampirism")
 types(blood, food)
 $Heal=2
-trigger(unheal, if(true,false))
 trigger(unheal, do(heal($Heal)))
 text("Whenever you lose health, heal $Heal afterwards")
 cost(2)
@@ -52,6 +51,7 @@ trigger(onPlay, do(addStatus(bleed,$Status, (do(selectTiles( (any,(any),any),$Ra
 text("Lose $Blood health. Apply $Status Bleed to any unit range $Range")
 removetrigger(endofturn, true, 1)
 rarity(5)
+image("res://Images/CardArt/DoubleEdgedSword.png")
 
 title("Bleeding Tooth Fungus")
 types(blood,fungal,attack);

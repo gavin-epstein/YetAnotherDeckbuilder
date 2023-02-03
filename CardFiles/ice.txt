@@ -51,7 +51,7 @@ $Move=2
 types(ice, kinetic, shadow, movement)
 trigger(onPlay, do(movePlayer($Move)))
 trigger(onRetain, do(moveUnits((all,(any),-Player),1,Player,away,(+, -1, $Move))))
-text("Move $Move. If this card is frozen, when it is retained push all adjacent enemies away (+, -1, $Move) tiles")
+text("Move $Move. If in hand at end of turn all adjacent enemies away (+, -1, $Move) tiles")
 removetrigger(endofturn, true, 1)
 rarity(6);
 
@@ -124,6 +124,7 @@ removetrigger(endofturn, true,0);
 image("res://Images/CardArt/DaggerOfReturning.png")
 
 title("Winter Growth");
+cost(1);
 types(ice, fungal, attack)
 $Increment=3
 $Damage=1
@@ -133,6 +134,7 @@ text("Deal $Damage frost damage range $Range. If in hand at end of turn increase
 rarity(4);
 trigger(onRetain, do(addVar(self, Damage, $Increment)));
 removetrigger(endofturn,true,1);
+image("res://Images/CardArt/WinterGrowth.png")
 
 
 #frozen , convert a tile to ice

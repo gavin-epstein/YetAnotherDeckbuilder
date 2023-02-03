@@ -125,7 +125,7 @@ def main():
     printedcombo = False
     while not (printedimage and printedcombo):
         types, cards = pickrandom(trie,alltypes)
-        if len(cards) == 0 and not printedcombo:
+        if len(cards) == 0 and not printedcombo :#and "light" in types:
             print(types)
             printedcombo = True
     print(random.choice(trie.noimages))
@@ -136,7 +136,6 @@ def main():
     sorttypes = sorted(sorttypes, key = lambda x: x[1])
     for i in range(3):
         print (sorttypes[i])
-   
 noimages=[]
 main()
 

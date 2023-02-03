@@ -6,3 +6,4 @@ Debuff: apply a negative effect to its enemies
 Move: move
 Summon: summon another unit
 MakeCard: Create a card
+Stunned: do nothing

@@ -458,9 +458,9 @@ health(56);
 $turncount=1
 status(boss, true);
 trigger(turn,if( ($turncount=0), (do(addBlock( tile, 5)))))
-trigger(turn,if( ($turncount=1), (do(gainStrength( tile, 2)))))
 trigger(turn,if( ($turncount=0), (do(MoveAndAttack(self,friendly)))))
 trigger(turn,if( ($turncount=1), (do(MoveAndAttack(self,friendly)))))
+trigger(turn,if( ($turncount=1), (do(gainStrength( tile, 2)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount>1), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/SwampLord.png")
@@ -676,7 +676,7 @@ trigger(turn, do(Attack(self, player)))
 trigger(turn,( do(gainStrength(tile,2))))
 image("res://Images/UnitArt/DeathWorm.png")
 
-name("Void Alcolyte")
+name("Void Alcolyte");
 spawnable(any)
 damagetypes(beam)
 difficulty(5)
@@ -690,4 +690,24 @@ trigger(turn,if(($turncount=1),(do(MoveAndAttack(self, friendly)))))
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount=2), (do(setVar(self, turncount,0)))))
 animation("idle","res://Images/UnitArt/AlcolyteSprite.png",(0,1,2,3,4),(1000,1000),(5,1),10)
+
+name("Eyebeast");
+spawnable(any);
+difficulty(15);
+health(10);
+range(40);
+speed(2);
+damagetypes(beam);
+strength(20);
+$turncount=0
+trigger(onSummon,do(addBlock(self, -999)))
+trigger(onSummon,do(addBlock(self, 4)));
+trigger(turn,do(move(self,(select((1,(any),empty),speed, tile)))))
+trigger(turn, if($turncount=0),(do(addBlock(self,3))))
+trigger(turn, if($turncount=1),(do(addBlock(self,2))))
+trigger(turn, if($turncount=2),(do(addBlock(self,1))))
+trigger(turn,if(($turncount=3),(do(Attack(self, (do(select((all,(any),any),40, tile))))))));
+trigger(turn,do(addVar(self,turncount,1)))
+trigger(turn,if( ($turncount=4), (do(setVar(self, turncount,0)))))
+image("res://Images/UnitArt/Eyebeast.png")
 

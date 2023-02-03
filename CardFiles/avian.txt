@@ -57,13 +57,13 @@ types(avian, summon)
 image("res://Images/CardArt/BirdsOfAFeather.png");
 
 title(Peck);
-cost(0)
+cost(1)
 $Damage=2
 $Draw=2
 $Range=1
-trigger(onPlay, do(damage, ($Damage,(stab),(any),$Range),false));
+trigger(onPlay, do(damage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))),(stab),(any),$Range),false));
 trigger(onPlay, do(draw($Draw)));
-text("Deal $Damage stab damage, range $Range. \n Draw $Draw");
+text("Deal (getDamage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))))) stab damage, range $Range. \n Draw $Draw. Damage is equal to the number of allies");
 removetrigger(endofturn, true, 1);
 types(avian,wind);
 rarity(9);
@@ -149,3 +149,13 @@ trigger(death, if((random(0,0,1)>0),(do(summon("Vulture",(1),$Range)))))
 rarity(3);
 text("When a unit dies, theres a 1/3 chance to summon a vulture on a random tile in range $Range")
 image("res://Images/CardArt/Buzzard.png");
+
+title("Defend the Flock")
+types(avian, shield)
+cost(1)
+removetrigger(endofturn, true, 1)
+$Count=0;
+trigger(onPlay, do(setVar, self, Count, (do(countSelect(do(selectTiles( (all,(any),"friendly"),40,Player)))))))
+trigger(onPlay, do(addStatus(block,$Count, (do(selectTiles( (all,(any),"friendly"),40,Player))))))
+text("All friendly units - including Mora - gain block equal to the number of friendly units. [ (do(countSelect(do(selectTiles( (all,(any),friendly),40,Player))))) Block]")
+rarity(4);

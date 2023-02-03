@@ -60,3 +60,4 @@ text(When you are attacked, first gain $Thorns thorns)
 trigger(onReaction, do(addStatus(thorns,$Thorns)))
 removetrigger(endofturn, true, 5);
 rarity(7);
+image("res://Images/CardArt/Reactus.png")

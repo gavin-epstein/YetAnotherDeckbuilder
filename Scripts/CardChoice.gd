@@ -59,6 +59,8 @@ func generateReward(rarity, count = 3):
 		self.visible = true
 		self.updateDisplay()
 		return
+	if rarity is float:
+		rarity = int(rarity)
 	if rarity is int:
 		var types = []
 		for card in get_parent().Play.cards:

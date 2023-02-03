@@ -8,6 +8,16 @@ removetrigger(movePlayer,true,5);
 text("When you move, gain $Status dodge");
 image("res://Images/CardArt/DancingMaster.png")
 
+title("Lightfooted");
+cost(1);
+types(dodge, light);
+rarity(8)
+$Status=20
+$Energy=2
+trigger(onPlay,do(addStatus(dodge,$Status)));
+trigger(onPlay,do(gainEnergy($Energy)));
+text("Gain $Status dodge and $Energy energy");
+removetrigger(endofturn, true, 1);
 
 ###when you dodge heal 2
 ## when dodge push, move

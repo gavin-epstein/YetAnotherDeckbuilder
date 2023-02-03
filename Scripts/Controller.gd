@@ -259,7 +259,7 @@ func selectCards(locs, predicate,message,num = 1,random=false):
 	Message.visible = true
 	if locs.size() == 1:
 		if locs[0] is CardPile:
-			locs[0].display()
+			locs[0].display(0,0)
 	else:
 		cardController.get_node("CardPileDisplay").multidisplay(locs)
 	cardController.updateDisplay()
@@ -367,3 +367,9 @@ func countTypes(loc, type) ->  int:
 		if card.hasType(type):
 			count+=1	
 	return count
+func countSelect(results)->int:
+	if results ==null:
+		return 0
+	if results is Array:
+		return results.size()
+	return 1;

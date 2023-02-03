@@ -207,6 +207,7 @@ func deepcopy(other)-> Card:
 	
 	other.image = self.image
 	other.imageloaded=false
+	other.iconsdone = false
 	other.controller = self.controller
 	if other.modifiers.has("void"):
 		other.get_node("Resizer/FrameSprite").modulate = Color(.7,.7,.7)
@@ -282,6 +283,7 @@ func loadFromSave(save:Dictionary):
 			vars[key] = int(vars[key])
 	self.modifiers = save.modifiers
 	self.visible = save.visible
+	#parse through save.triggers and integerize everything
 	self.triggers = save.triggers
 	self.interrupts = save.interrupts
 	self.types = save.types

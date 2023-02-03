@@ -23,6 +23,7 @@ removetrigger(endofturn, true, 3)
 types(electric)
 rarity(10);
 cost(0);
+image("res://Images/CardArt/Overcharge.png");
 
 title("Laser Barrage");
 $Damage=7
@@ -72,7 +73,7 @@ rarity(8);
 types(electric, light)
 image("res://Images/CardArt/Flashlight.png");
 
-title("Generator")
+title("Dynamo")
 cost(1)
 $Charge=1
 removetrigger(endofturn, true, 8);
@@ -80,6 +81,25 @@ trigger(startofturn, do(charge($Charge)));
 rarity(6);
 text("At the start of your turn, charge $Charge");
 types(electric, mechanical)
+
+title("Jacob's Ladder");
+cost(0);
+types(electric, fire)
+$Deplete=4
+trigger(onPlay, do(setVar(self, Times, (+,(do (gethandsize())), (*, -1, (do(countModifiers(Hand, any))))))))
+trigger(onPlay, if((do(deplete($Deplete))), repeat( (do(create("Spark",Hand))),$Times)))
+text("Deplete 4. If you do, fill your hand with sparks")
+rarity(3);
+removetrigger(endofturn, true, 1);
+
+title("Steam Generator")
+cost(1);
+types(electric, water, fire)
+$Charge=1
+trigger(shuffle, do(charge($Charge)));
+trigger(voided, do(charge($Charge)));
+removetrigger(endofturn, true, 7);
+text("whenever you shuffle or burn a card, charge $Charge");
 
 #hologram (create temp copy of card assigned to it)
 #magnetism discharge 3, put a card from anywhere into hand

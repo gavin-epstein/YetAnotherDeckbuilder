@@ -30,7 +30,7 @@ $Damage=10
 text("When this is discarded from play, deal $Damage backstab damage at range $Range.")
 removetrigger(endofturn,true,3)
 trigger(onRemoveFromPlay,do(damage, ($Damage,(backstab),(any),$Range),true))
-rarity(6)
+rarity(6);
 image("res://Images/CardArt/SlowPoison.png")
 
 title("Sneak up")
@@ -43,4 +43,13 @@ removetrigger(endofturn,true,1)
 rarity(5);
 image("res://Images/CardArt/SneakUp.png")
 
-#right timing, tap attack
+title("Right Timing")
+cost(1);
+types(assassin, attack);
+$Damage=7
+$Range=1
+trigger(onTap,do(damage, ($Damage,(backstab),(any),$Range)))
+text("Tap: deal $Damage backstab damage range $Range")
+removetrigger(onTap,true,3);
+rarity(3);
+

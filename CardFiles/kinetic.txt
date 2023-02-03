@@ -83,8 +83,9 @@ cost(2)
 $Move=3
 $MoveOther=2
 $Range=1
+$Damage=6
 trigger(onPlay, do(move($Move)));
-trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range),false));
+trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)));
 trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 removetrigger(endofturn, true, 1)
 text("Move $Move, deal $Damage crush damage range $Range, and push the attacked unit $MoveOther")

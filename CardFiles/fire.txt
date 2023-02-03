@@ -90,7 +90,7 @@ trigger(onRemoveFromPlay, do(setVar(self,X,X)));
 trigger(onPlay, do(block((*,$Block,$X))));
 trigger(onPlay,repeat( (do(move(Voided, Deck,(select(Voided,true,"-",1,true)),0))),$X))
 trigger(onPlay,do(voided((select(Play,(! hasModifier(self,"eternal")),"Pick a card to burn")),Play)))
-text(Gain $Block X block.\n Topdeck X random cards from your burn pile. Burn a card from Play);
+text(Gain $Block X block. Topdeck X random cards from your burn pile. Burn a card from Play);
 rarity(4);
 removetrigger(endofturn, true, 3);
 image("res://Images/CardArt/Ashes.png");

@@ -30,6 +30,7 @@ cost(2);
 image("res://Images/CardArt/RitualOfCreation.png");
 modifiers(unique)
 
+#change aremor to vigor
 title(Pentaract);
 types(ritual, movement);
 text("When this leaves play, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and burn this card. Cannot be upgraded.");
@@ -37,7 +38,6 @@ removetrigger(endofturn, true, 5);
 trigger(onRemoveFromPlay, do(heal(5)))
 trigger(onRemoveFromPlay, do(block(5)))
 trigger(onRemoveFromPlay, do(armor(5)))
-#change to vigor^
 trigger(onRemoveFromPlay, do(damage(5,(ritual),(1),40)))
 trigger(onRemoveFromPlay, do(movePlayer(5)))
 trigger(onRemoveFromPlay, do(voided(self, Play)))
@@ -150,7 +150,7 @@ trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, put all cards from your burn pile into your discard, then burn this");
 rarity(3);
-cost(1);
+cost(0);
 image("res://Images/CardArt/RitualOfUnburning.png")
 
 title("Ritual of the Earth Mother")

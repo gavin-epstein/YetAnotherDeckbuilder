@@ -146,8 +146,10 @@ func hasProperty(prop:String):
 	else:
 		return ret
 func takeDamage(amount,types, attacker):
+	
 	var armorlost = 0
 	if attacker!=null:
+		print(attacker.title)
 		controller.animationController.Damage(types, attacker, self)
 	if amount is GDScriptFunctionState:
 		yield(amount, "completed")
@@ -250,7 +252,7 @@ func takeDamage(amount,types, attacker):
 		$Audio.playsound("defaultAttack")
 	if self == controller.Player and amount  > 0:
 		
-		var res = controller.cardController.Action("unheal", [floor(amount)])
+		var res = controller.cardController.Action("unheal", [floor(amount),attacker])
 		if res is GDScriptFunctionState:
 			yield(res, "completed")
 	else:
@@ -269,7 +271,7 @@ func takeDamage(amount,types, attacker):
 			for unit in get_parent().units:
 				if unit!=null:
 					if unit.title == self.title and unit != self:
-						unit.die(null)
+						unit.die(null,["lifelink"])
 		die(attacker, types)
 		return [amount,"kill"]
 	else:
@@ -291,19 +293,20 @@ func startOfTurn():
 	if status.has("bleed"):
 		takeDamage( status.get("bleed"), ["piercing", "bleed"],null);
 		if self.health <=0:
-			die(null)
+			die(null, ["bleed"])
 	if status.has("stunned"):
 		skipturn = true
 	else:
 		skipturn = false
+	if status.has("dodgebroken"):
+		addStatus("dodge",-99)
+		setStatus("dodgebroken", false)
 	if self == controller.Player:
 		statusTickDown()
 	var res = self.Triggered("startofturn",[]);
 	if res is GDScriptFunctionState:
 		res= yield(res,"completed")
-	if status.has("dodgebroken"):
-		addStatus("dodge",-99)
-		setStatus("dodgebroken", false)
+	
 func endOfTurn():
 	var res = self.Triggered("endofturn",[]);
 	if res is GDScriptFunctionState:
@@ -371,7 +374,9 @@ func die(attacker, types = []):
 	if head !=self:
 		head.die(attacker, types)
 	if self == controller.Player:
-			print("Intended loss")
+			for i in types:
+				print(i)
+			print(attacker.title)
 			controller.Lose(attacker)
 			return
 	if self == controller.theVoid:

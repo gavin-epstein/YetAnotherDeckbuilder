@@ -67,9 +67,9 @@ func Load(parent)-> void:
 
 #		#Test Cards#
 #		$Battery.visible=true
-#			Voided.add_card(Library.getCardByName("Coal"))
+#		Hand.add_card(Library.getCardByName("Trample"))
 		Hand.add_card(Library.getCardByName("Sledgehammer"))
-#		Hand.add_card(Library.getCardByName("Ice Fortress"))
+#		Han.add_card(Library.getCardByName("Ice Fortress"))
 #		Hand.add_card(Library.getCardByName("Diamond"))
 #		Hand.add_card(Library.getCardByName("Permafrost"))
 #		Deck.add_card(Library.getCardByName("Blinding Flash"))
@@ -612,8 +612,8 @@ func heal(amount):
 	return true
 func gainMaxHealth(amount):
 	enemyController.gainMaxHealth(enemyController.Player,amount)
-func unheal(amount):
-	enemyController.heal(enemyController.Player,-1*amount)
+func unheal(amount, attacker = null):
+	enemyController.heal(enemyController.Player,-1*amount, attacker)
 	return true
 func summon(unitName, targets, distance,tile="Player") :
 	print("summon Called")
@@ -765,6 +765,8 @@ func addhandsize(amount):
 		return false
 	Hand.maxHandSize+=amount
 	return true
+func gethandsize():
+	return Hand.maxHandSize
 func addModifier(card, mod):
 	if card == null:
 		return false

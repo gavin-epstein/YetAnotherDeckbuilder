@@ -106,6 +106,7 @@ trigger(onPlay, do(createByMod((shadow),Hand)));
 trigger(onPlay, do(voided,((select(Hand,true,"pick a card to burn")),Hand)));
 removetrigger(endofturn, true, 1)
 modifiers(unique)
+image("res://Images/CardArt/DimensionalKey.png")
 rarity(2)
 
 title(Zephyr);
@@ -116,6 +117,7 @@ trigger(onPlay, do(draw($Draw)));
 text("Draw $Draw");
 rarity(7);
 removetrigger(endofturn, true,1);
+image("res://Images/CardArt/Zephyr.png")
      
 
 #unceasing top
