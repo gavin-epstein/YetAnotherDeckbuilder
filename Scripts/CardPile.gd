@@ -18,27 +18,19 @@ func _input(event: InputEvent) -> void:
 		if not ondisplay:
 			display(30,20)
 		else:
-			get_node("../CardPileDisplay").undisplay()
+			undisplay()
 
 func updateDisplay():
-	for thing in frontofdisplay.get_children():
-		thing.queue_free()
-	tempthings = []
 	if not ondisplay:
 		for card in cards:
 			card.moveTo($AnimatedSprite.position , Vector2(.15,.15), false)
 		get_node("Count").bbcode_text = "[center]"+str(cards.size())+"[/center]"
-	else:
-		return displayAsPile()
+
 		
 
 func display(x,y):
 		$Label.visible=false
-		ondisplaystartx = x
-		ondisplaystarty = y
-	#if get_parent().takeFocus(self):
 		get_node("../CardPileDisplay").display(self)
-		self.ondisplay = true
 		return self.updateDisplay()
 
 	#get_parent().releaseFocus(self)

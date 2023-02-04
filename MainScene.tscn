@@ -589,9 +589,9 @@ __meta__ = {
 }
 
 [node name="Message" type="RichTextLabel" parent="BottomMessage"]
-margin_left = 10.0
+margin_left = 18.0
 margin_top = -8.0
-margin_right = 3638.0
+margin_right = 3646.0
 margin_bottom = 176.0
 rect_scale = Vector2( 0.2, 0.2 )
 mouse_filter = 2
@@ -600,6 +600,7 @@ custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "Pre-release Version 0.0.11. Press ~ to leave feedback"
 text = "Pre-release Version 0.0.11. Press ~ to leave feedback"
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -648,7 +649,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 113
+frame = 125
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -719,7 +720,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 112
+frame = 124
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -814,7 +815,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 4 )
-frame = 50
+frame = 56
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -847,7 +848,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 76
+frame = 88
 playing = true
 script = ExtResource( 264 )
 

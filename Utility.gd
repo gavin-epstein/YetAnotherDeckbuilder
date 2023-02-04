@@ -183,6 +183,10 @@ static func turnOn(o:Node):
 	o.set_process(true)
 	o.set_process_input(false)
 	o.set_physics_process(false)
-#comparator object, comparator
 
+
+static func cardMoveToAbsolute(card, pos: Vector2, scale:Vector2):
+	var sc = card.get_parent().get_global_transform().get_scale().x;
+	card.moveTo(1/sc * pos, 1/sc *scale)
+	
 	

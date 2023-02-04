@@ -26,8 +26,7 @@ func updateDisplay():
 			if x > startx + playxsep*10:
 				x = startx
 				y += playysep
-	else:
-		return displayAsPile()
+
 			
 func cardClicked(card):
 	if get_parent().inputAllowed and card.triggers.has("onTap"):
