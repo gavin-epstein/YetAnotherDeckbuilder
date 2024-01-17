@@ -80,10 +80,12 @@ static func aa(a,b) -> int:
 func imagerot(angle = null):
 	
 	if angle == null:
-		$image.material.set_shader_param("angle",self.facing*PI/180)
+	#	$image.material.set_shader_param("angle",self.facing*PI/180)
 		$image2.rotation_degrees = self.facing
+		$image.rotation_degrees = self.facing
 	else:
-		$image.material.set_shader_param("angle",angle*PI/180)
+	#	$image.material.set_shader_param("angle",angle*PI/180)
+		$image.rotation_degrees = angle
 		$image2.rotation_degrees = angle
 
 
@@ -102,10 +104,10 @@ func setRect(topleft, topright, bottomleft, bottomright):
 				sc = val
 		sc=sc/150
 		self.scale =Vector2(sc, sc)
-		$image.material.set_shader_param("topright",(topright -top)/sc)
-		$image.material.set_shader_param("topleft",(topleft - top)/sc)
-		$image.material.set_shader_param("bottomleft",(bottomleft - top)/sc)
-		$image.material.set_shader_param("bottomright",(bottomright-top)/sc)
+	#	$image.material.set_shader_param("topright",(topright -top)/sc)
+	#	$image.material.set_shader_param("topleft",(topleft - top)/sc)
+	#	$image.material.set_shader_param("bottomleft",(bottomleft - top)/sc)
+	#	$image.material.set_shader_param("bottomright",(bottomright-top)/sc)
 		var sum = Vector2(0,0)
 		var corners = [topleft, topright, bottomleft, bottomright]
 		for thing in corners:

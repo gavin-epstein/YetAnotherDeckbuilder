@@ -135,8 +135,9 @@ func move(unit, node):
 		unit = unit.occupants[0]
 	unit.facing((node.position - unit.position).angle())
 	if not node.sentinel and not (unit.status.has("immovable") or unit.status.has("entangled")):
-		unit.tile.occupants.erase(unit)
-		unit.tile =  node
+		if unit in unit.tile.occupants and unit !=null:
+			unit.tile.occupants.erase(unit)
+			unit.tile =  node
 		if not unit.trap:
 			node.occupants.append(unit)
 
@@ -538,6 +539,15 @@ func kill(unit,attacker=null):
 				return false
 			unit = unit.occupants[0]
 		unit.die(attacker)
+func countUnits(status):
+	var count =0
+	for unit in units:
+		if unit.hasProperty(status):
+			count+=1
+	if Player!=null and Player.hasProperty(status):
+		count+=1
+	return count
+
 func testAllUnits():
 	Summon( map.getRandomEmptyNode(["any"]), "Suspicious Mound")
 	Summon( map.getRandomEmptyNode(["any"]), "Death Worm")

@@ -10,7 +10,9 @@ var lastscroll=0
 # var a: int = 2
 # var b: String = "text"
 func _process(delta:float) -> void:
-	if $Panel/VScrollBar.visible and abs(lastscroll - $Panel/VScrollBar.value) > .1:
+	if caller == null:
+		return
+	if  abs(lastscroll - $Panel/VScrollBar.value) > .1:
 		var diff = $Panel/VScrollBar.value - lastscroll;
 		lastscroll =  $Panel/VScrollBar.value
 		curx= startx;
@@ -44,13 +46,14 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept") or event.is_action_pressed("ui_cancel"):
 		self.undisplay()
 	elif event is InputEventPanGesture:
-		$Panel/VScrollBar.value += -2.5*event.delta
+		$Panel/VScrollBar.value += -2.5*event.delta.y
 	elif event.is_action_pressed("ui_down"):
 		$Panel/VScrollBar.value +=CardPile.ysep *.5
 	elif event.is_action_pressed("ui_up"):
 		$Panel/VScrollBar.value -=CardPile.ysep *.5
 
 func multidisplay(members):
+	oldinputallowed = get_parent().inputAllowed
 	clear()
 	caller = members
 	curx= startx;
@@ -62,7 +65,7 @@ func multidisplay(members):
 		cury +=CardPile.ysep*1.3
 
 	$Panel.visible=true
-	oldinputallowed = get_parent().inputAllowed
+	
 	get_parent().inputAllowed = false
 
 	$Panel/VScrollBar.value = 0
@@ -128,10 +131,13 @@ func clear():
 		
 	
 func undisplay():
+	if caller ==null:
+		return false #already closed
 	$Panel.visible = false
 	for pile in caller:
 		pile.ondisplay=false
 		pile.updateDisplay()
+	caller=null
 	get_parent().inputAllowed = oldinputallowed
 	
 func removeDuplicates(array):

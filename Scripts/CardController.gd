@@ -33,7 +33,7 @@ class_name CardController
 #		r = 1
 #	if focus !=null:
 #		b=1
-func Load(parent)-> void: 
+func Load(parent)-> void:
 	cardController = self
 	Deck = get_node("Deck")
 	Hand = get_node("Hand")
@@ -47,7 +47,7 @@ func Load(parent)-> void:
 	if step is GDScriptFunctionState:
 		step = yield(step,"completed")
 	print("Cards loaded")
-	Energy = 3
+	Energy = 5
 	map = parent.map
 	enemyController = parent.enemyController
 	animationController = parent.animationController
@@ -67,8 +67,8 @@ func Load(parent)-> void:
 
 #		#Test Cards#
 #		$Battery.visible=true
-#		Hand.add_card(Library.getCardByName("Trample"))
-		Hand.add_card(Library.getCardByName("Sledgehammer"))
+#		Hand.add_card(Library.getCardByName("Enchanter's Key"))
+#		Hand.add_card(Library.getCardByName("Henhouse"))
 #		Han.add_card(Library.getCardByName("Ice Fortress"))
 #		Hand.add_card(Library.getCardByName("Diamond"))
 #		Hand.add_card(Library.getCardByName("Permafrost"))
@@ -125,25 +125,35 @@ func draw(x)->bool:
 		if card in Hand.cards:
 			var res = card.Triggered("onDraw",[x])
 			if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+				res = yield(res, "completed")
 			res = self.triggerAll("cardDrawn",[card])
 			if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+				res = yield(res, "completed")
 	return true
 
 func reshuffle()->bool:
 	if Discard.size()==0:
 		return false
 	Deck.cards +=Discard.cards
+	Discard.cards = []
 	var res = Action("shuffle",[])
 	if res is GDScriptFunctionState:
 		yield(res, "completed")
-	Discard.cards = []
+	
 	return true
 func shuffle()->bool:
 	if Deck.size()==0:
 		return false
 	Deck.cards.shuffle()
+	var i =0
+	var floaties = []
+	while i < Deck.cards.size():
+		if Deck.cards[i].hasModifier("buoyant"):
+			floaties.append(i)
+			Deck.cards.remove_at(i)
+		else:
+			i+=1
+	Deck.cards = floaties+Deck.cards
 	return true
 
 func play(card)->bool:
@@ -212,9 +222,18 @@ func move(loc1, loc2, card, pos=null):
 		return card
 	if card == null:
 		return false
-	loc1 = get_node(loc1)
+	if loc1 == "any":
+		for pile in ["Play", "Hand", "Deck", "Discard","Voided"]:
+			pile = get_node(pile)
+			if card in pile.cards:
+				loc1 = pile
+				break
+	else:
+		loc1 = get_node(loc1)
 	loc2 = get_node(loc2)
+	var leftPlay = false
 	if loc1 == Play and card in Play.cards:
+		leftPlay = true
 		var res = triggerCard("onRemoveFromPlay", card)
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
@@ -234,6 +253,10 @@ func move(loc1, loc2, card, pos=null):
 			loc2.add_card(card)
 		else:
 			loc2.add_card_at(card,pos)
+		if leftPlay:
+			var res = triggerCard("afterRemoveFromPlay", card)
+			if res is GDScriptFunctionState:
+				res = yield(res, "completed")
 		return true
 	return false
 func setEnergy(num):
@@ -250,7 +273,7 @@ func discardAll(silent = false):
 		
 		var res =Action("discard", [card, silent], silent);
 		if res is GDScriptFunctionState:
-				yield(res, "completed")
+			yield(res, "completed")
 			#Dealing with altostratus
 			
 		backind-=1
@@ -274,7 +297,7 @@ func endofturndiscard():
 		else:
 			var res = card.Triggered("onRetain",[card])
 			if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+				res = yield(res, "completed")
 			res = triggerAll("retained",[card])
 			if res is GDScriptFunctionState:
 				res = yield(res, "completed")
@@ -314,11 +337,11 @@ func updateDisplay():
 			thing.queue_free()
 		trashbin  = []
 func cardreward(rarity, count):
-		Choice.generateReward(rarity, count)
-		var res = yield(Choice,"cardchosen")
-		if res is GDScriptFunctionState:
-			yield(res, "completed")
-		return true
+	Choice.generateReward(rarity, count)
+	var res = yield(Choice,"cardchosen")
+	if res is GDScriptFunctionState:
+		yield(res, "completed")
+	return true
 func purge(card):
 	if card == null:
 		return false
@@ -372,7 +395,7 @@ func printFocus():
 	if focus != null:
 		print("Focus is on ", focus.get("name"),": ", focus.get("title")," ", focus.get_parent().get("name"))
 	else:
-		print("Focus is null")	
+		print("Focus is null")
 	if focusStack.size() >0:
 		print("FocusStack: ", str(focusStack))
 	lastfocus = focus
@@ -397,7 +420,7 @@ func create(card, loc,spawner=null,silent=false):
 	if not silent:
 		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+			res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
 		if res is GDScriptFunctionState:
 			res = yield(res, "completed")
@@ -423,10 +446,10 @@ func createAt(card, loc, pos, spawner=null,silent=false):
 	if not silent:
 		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+			res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
 		if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+			res = yield(res, "completed")
 	return added
 func createByMod(modifiers, loc,spawner=null,silent=false):
 	loc = get_node(loc)
@@ -437,10 +460,10 @@ func createByMod(modifiers, loc,spawner=null,silent=false):
 	if not silent:
 		var res = added.Triggered("created",[added,loc])
 		if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+			res = yield(res, "completed")
 		res = triggerAll("onCreate",[added,loc])
 		if res is GDScriptFunctionState:
-					res = yield(res, "completed")
+			res = yield(res, "completed")
 	return added
 	
 func gainEnergy(num):
@@ -454,6 +477,11 @@ func voided(card, loc):
 		var res = card.Triggered("onVoided",[self])
 		if res is GDScriptFunctionState:
 			yield(res,"completed")
+		for unit in enemyController.units:
+			if unit.hasProperty("flaming"):
+				unit.takeDamage(unit.getStatus("flaming"), "fire", null)
+			if enemyController.Player.hasProperty("flaming"):
+				enemyController.Player.takeDamage( enemyController.Player.getStatus("flaming"), "fire", null)
 		return true
 	return false
 
@@ -498,7 +526,7 @@ func _on_EndTurnButton_input_event(event: InputEvent) -> void:
 			yield(res,"completed")
 		inputAllowed = true
 	#	print("Input on in endturn")
-	releaseFocus(self)	
+	releaseFocus(self)
 		
 
 	
@@ -540,7 +568,7 @@ func damage(amount, types, targets,distance, tile =null):
 	for node in enemies:
 		var unit
 		if node != null and node.has_method("isUnit"):
-			unit = node		
+			unit = node
 		elif node == null or node.occupants.size() == 0:
 			#Enemy has been removed by another effect
 			continue
@@ -590,7 +618,7 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 			if direction is String and direction == "away":
 				dir = enemy.position - tile.position
 			elif direction is String and direction == "towards":
-				dir = tile.position-enemy.position 
+				dir = tile.position-enemy.position
 			else:
 				dir = Vector2(direction[0],direction[1])
 			var dest = enemy
@@ -598,7 +626,7 @@ func moveUnits(targets,distance,tile="Player",direction="any",movedist="1"):
 				var nextDest = map.getTileInDirection(dest,dir)
 				if !nextDest.sentinel and nextDest.occupants.size() ==0:
 					dest = nextDest
-				else:		
+				else:
 					if enemy.occupants.size()==0:
 						continue		#might already be dead
 					enemy.occupants[0].takeDamage(knockbackdamage, "knockback", null)
@@ -684,7 +712,7 @@ func addStatus(stat, amount, tiles ="Player"):
 		return false
 	for tile in tiles:
 		for unit in tile.occupants:
-			unit.addStatus(stat, amount)	
+			unit.addStatus(stat, amount)
 
 	return true
 func setStatus(stat, amount, tiles = "Player"):
@@ -718,7 +746,7 @@ func voidshift():
 	#Action("devoidAll",[])
 func cardAt(loc,index):
 	loc = get_node(loc)
-	return loc.getCard(index)	
+	return loc.getCard(index)
 func save()->Dictionary:
 	return{
 		"hand": Hand.save(),
@@ -837,7 +865,7 @@ func unmaintain(card:Executable, status:String, amount:int, target= enemyControl
 	if card == null or target == null or (target is Array and target == []):
 		return false
 	if not target is Array:
-		target = [target]	
+		target = [target]
 	var newtargets = []
 	for thing  in target:
 		newtargets+=thing.occupants
@@ -880,9 +908,12 @@ func getMaintain(status, target):
 			maintained[status].erase(card)
 			continue
 		for pair in maintained[status][card]:
-			if pair[1] in target:
+			if pair[1] !=null and pair[1] in target:
 				total += pair[0]
 	return total
 	
-func puzzle(scene, args=[]):
-	pass
+func puzzle(scenename, args=[]):
+	var sceneload  = load("res://Dreams/"+scenename+".tscn");
+	var scene = sceneload.instance();
+	scene.z_index = 1000;
+	add_child(scene);

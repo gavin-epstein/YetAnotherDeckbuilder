@@ -1,5 +1,5 @@
 title("Knife Block");
-cost("1");
+cost("2");
 types(knife);
 text("When you gain block add a random kitchen knife to your hand");
 rarity(4);
@@ -63,8 +63,8 @@ rarity(0);
 image("res://Images/CardArt/steakknife.png")
 
 title("Cutting Board");
-cost("0");
-$Block=4
+cost("1");
+$Block=5
 types(knife)
 trigger(onPlay,do(block($Block)));
 trigger(onPlay,do(createByMod,(("kitchenknife"), Hand,self)));
@@ -74,7 +74,7 @@ rarity(7);
 image("res://Images/CardArt/CuttingBoard.png")
 
 title("Cheese Grater");
-cost("1")
+cost("3")
 types(knife,attack,rage);
 $Times=10
 $Damage=1
@@ -102,11 +102,11 @@ $Increment=3;
 text("While this in play all kitchen knives you create gain $Increment damage")
 trigger(onCreate,if((hasModifier(argv[0],kitchenknife)), (do(addVar(argv[0],Damage,$Increment)))))
 removetrigger(endofturn,true,5);
-rarity(2);
+rarity(4);
 image("res://Images/CardArt/KnifeSharperner.png")
 
 title(Polished Blades);
-cost("1")
+cost("2")
 types(knife, light);
 $Energy=1
 trigger(play, if((hasname(argv[0],knife)),(do(gainEnergy($Energy)))));
@@ -116,7 +116,7 @@ rarity(3)
 image("res://Images/CardArt/PolishedBlades.png")
 
 title(Swift Cleave);
-cost(1)
+cost(2)
 types(knife, movement);
 $Move=2
 $Times=2
@@ -128,7 +128,7 @@ rarity(4)
 image("res://Images/CardArt/SwiftCleave.png")
 
 title(Knife Forge);
-cost(1)
+cost(2)
 text("When you burn a card, add a random kitchen knife to your hand")
 trigger(voided, do(createByMod,(("kitchenknife"), Hand,self)))
 removetrigger(endofturn, true,6);
@@ -137,7 +137,7 @@ types(knife, fire)
 image("res://Images/CardArt/KnifeForge.png")
 
 title("Grill Tongs");
-cost(1);
+cost(2);
 text("Move any unit to a random tile next to Mora, then add a Spark and a Steak Knife to your hand");
 types(knife, kinetic, fire);
 removetrigger(endofturn, true, 2)
@@ -148,7 +148,7 @@ trigger(onPlay,do(create("Steak Knife", Hand)));
 rarity(3);
 
 title("Bladespore");
-cost(1);
+cost(2);
 $Times=0
 $Increment=1
 types(knife, fungal)
@@ -160,7 +160,7 @@ rarity(2);
 image("res://Images/CardArt/BladeSpore.png")
 
 title("Asmora's Blender");
-cost(1);
+cost(3);
 $Status=1
 trigger(startofturn,enemyDo(addStatus((selectTiles((all,(any),"-friendly"),30,Player)),bleed,$Status)));
 text("At the start of your turn, add $Status bleed to all enemies");

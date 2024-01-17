@@ -1,4 +1,4 @@
-[gd_scene load_steps=378 format=2]
+[gd_scene load_steps=379 format=2]
 
 [ext_resource path="res://Scripts/CardController.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Deck.gd" type="Script" id=2]
@@ -274,7 +274,7 @@
 [ext_resource path="res://Scripts/UnitLibrary.gd" type="Script" id=272]
 [ext_resource path="res://Scripts/EnemyController.gd" type="Script" id=273]
 [ext_resource path="res://Images/MapArt/Water.png" type="Texture" id=274]
-[ext_resource path="res://Dreams/ViewButton.tscn" type="PackedScene" id=275]
+[ext_resource path="res://Images/UIArt/Eye.png" type="Texture" id=275]
 [ext_resource path="res://Scripts/MainScene.gd" type="Script" id=276]
 [ext_resource path="res://Scripts/MapZoom.gd" type="Script" id=277]
 [ext_resource path="res://Images/MapArt/MapBackground.png" type="Texture" id=278]
@@ -379,6 +379,13 @@ animations = [ {
 "name": "default",
 "speed": 30.0
 } ]
+
+[sub_resource type="StyleBoxFlat" id=18]
+bg_color = Color( 0.396, 0.396, 0.45, 1 )
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
@@ -649,7 +656,7 @@ __meta__ = {
 position = Vector2( 70.106, 639.443 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 125
+frame = 11
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Deck"]
@@ -720,7 +727,7 @@ __meta__ = {
 position = Vector2( 1009.88, 656.135 )
 scale = Vector2( 0.0873401, 0.0873401 )
 frames = SubResource( 3 )
-frame = 124
+frame = 10
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Discard"]
@@ -750,7 +757,6 @@ __meta__ = {
 }
 
 [node name="Choice" type="Node2D" parent="CardController"]
-visible = false
 z_index = 100
 script = ExtResource( 134 )
 
@@ -776,7 +782,32 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" parent="CardController/Choice" instance=ExtResource( 275 )]
+[node name="Panel" type="Panel" parent="CardController/Choice"]
+self_modulate = Color( 0.64, 0.64, 0.64, 1 )
+margin_left = 176.0
+margin_top = 476.0
+margin_right = 339.0
+margin_bottom = 572.0
+custom_styles/panel = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="CardController/Choice/Panel"]
+margin_left = -6.0
+margin_top = -8.0
+margin_right = 154.0
+margin_bottom = 88.0
+custom_styles/panel = SubResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CardController/Choice/Panel/Panel2"]
+modulate = Color( 1, 0.682353, 0, 1 )
+position = Vector2( 78.3187, 47.0569 )
+scale = Vector2( 0.150903, 0.150903 )
+texture = ExtResource( 275 )
 
 [node name="Voided" type="Node2D" parent="CardController"]
 script = ExtResource( 137 )
@@ -815,7 +846,7 @@ __meta__ = {
 position = Vector2( 1665.92, 846.224 )
 scale = Vector2( 0.111131, 0.111131 )
 frames = SubResource( 4 )
-frame = 56
+frame = 62
 playing = true
 
 [node name="Count" type="RichTextLabel" parent="CardController/Voided"]
@@ -848,7 +879,7 @@ __meta__ = {
 position = Vector2( 110.145, 804.516 )
 scale = Vector2( 0.1, 0.1 )
 frames = SubResource( 5 )
-frame = 88
+frame = 100
 playing = true
 script = ExtResource( 264 )
 
@@ -1450,6 +1481,7 @@ __meta__ = {
 [connection signal="gui_input" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_gui_input"]
 [connection signal="mouse_exited" from="CardController/Discard/Area" to="CardController/Discard" method="_on_Area_mouse_exited"]
 [connection signal="gui_input" from="CardController/Choice/SkipButton/Area2D" to="CardController/Choice" method="_on_Area2D_input_event"]
+[connection signal="gui_input" from="CardController/Choice/Panel/Panel2" to="CardController/Choice" method="_on_Panel2_gui_input"]
 [connection signal="gui_input" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_gui_input"]
 [connection signal="mouse_exited" from="CardController/Voided/Area" to="CardController/Voided" method="_on_Area_mouse_exited"]
 [connection signal="mouse_entered" from="CardController/Energy/Area" to="CardController/Energy" method="_on_Area_mouse_entered"]

@@ -22,7 +22,7 @@ text("Charge $Charge .\n While in play gain $Charge max battery")
 removetrigger(endofturn, true, 3)
 types(electric)
 rarity(10);
-cost(0);
+cost(1);
 image("res://Images/CardArt/Overcharge.png");
 
 title("Laser Barrage");
@@ -33,11 +33,11 @@ trigger(onPlay, do(setVar(self,CurrentBattery, (count("Battery","Battery")))));
 trigger(onPlay, do(deplete($CurrentBattery)));
 trigger(onPlay, if( ($CurrentBattery>0),(do(damage($Damage,(beam),(any),$Range)))))
 trigger(onPlay, if( ($CurrentBattery>1),(repeat( (do(damage($Damage,(beam),(lastTargets),$Range ))),(+,-1,$CurrentBattery)))))
-cost(1);
+cost(2);
 types(electric, attack);
 rarity(5);
 removetrigger(endofturn, true, 1);
-text(Deplete all, deal $Damage damage at any range for each battery depleted);
+text(Deplete all , deal $Damage damage at any range for each battery depleted);
 image("res://Images/CardArt/LaserBarrage.png");
 
 title("Repower");
@@ -51,7 +51,7 @@ types(electric);
 text("Fill your battery. Set your energy to $Energy");
 
 title("Nanoarmor")
-cost(1)
+cost(2)
 removetrigger(endofturn, true, 5)
 $Armor=2
 $EternalDeplete=1
@@ -74,7 +74,7 @@ types(electric, light)
 image("res://Images/CardArt/Flashlight.png");
 
 title("Dynamo")
-cost(1)
+cost(2)
 $Charge=1
 removetrigger(endofturn, true, 8);
 trigger(startofturn, do(charge($Charge)));
@@ -83,24 +83,44 @@ text("At the start of your turn, charge $Charge");
 types(electric, mechanical)
 
 title("Jacob's Ladder");
-cost(0);
+cost(1);
 types(electric, fire)
 $Deplete=4
 trigger(onPlay, do(setVar(self, Times, (+,(do (gethandsize())), (*, -1, (do(countModifiers(Hand, any))))))))
-trigger(onPlay, if((do(deplete($Deplete))), repeat( (do(create("Spark",Hand))),$Times)))
-text("Deplete 4. If you do, fill your hand with sparks")
+trigger(onPlay, if((do(deplete($Deplete))), (repeat( (do(create("Spark",Hand))),$Times))))
+text("Deplete $Deplete. If you do, fill your hand with sparks")
 rarity(3);
 removetrigger(endofturn, true, 1);
 
 title("Steam Generator")
-cost(1);
+cost(2);
 types(electric, water, fire)
 $Charge=1
 trigger(shuffle, do(charge($Charge)));
 trigger(voided, do(charge($Charge)));
 removetrigger(endofturn, true, 7);
 text("whenever you shuffle or burn a card, charge $Charge");
+rarity(5)
+
+title("Electromagnet")
+cost(0);
+types(electric)
+$Deplete=3
+trigger(onPlay, if( (do(deplete($Deplete))),(do(move( any, Hand, (select(all,(!hasModifier(self,"eternal")))))))))
+removetrigger(endofturn,true,1);
+text(Deplete $Deplete to put a card from anywhere into your hand)
+rarity(5)
+
+title("Spare Battery")
+cost(1);
+types(electric)
+$EternalCharge=1;
+trigger(onPlay,do(overcharge($EternalCharge)))
+removetrigger(never, true, 1)
+rarity(2)
+modifiers(eternal)
+text("Increase your max battery by $EternalCharge")
 
 #hologram (create temp copy of card assigned to it)
-#magnetism discharge 3, put a card from anywhere into hand
+
 

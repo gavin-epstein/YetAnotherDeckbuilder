@@ -1,5 +1,5 @@
 title("Vivid Dream");
-cost(0);
+cost(1);
 text("Add a randomly generated temporary card to your hand")
 trigger(onPlay,do(dream(Hand)));
 removetrigger(endofturn, true,1);
@@ -18,7 +18,7 @@ removetrigger(endofturn, true,1);
 image("res://Images/CardArt/Intransience.png")
 
 title("Mind Factory");
-cost(1);
+cost(2);
 types(dream, mechanical);
 text("At the start of your turn, add a randomly generated temporary card to your hand")
 trigger(startofturn,do(dream(Hand)));

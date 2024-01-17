@@ -74,3 +74,20 @@ trigger(onPlay, enemyDo(kill( (do(selectTiles( (1,(any),"name:Potion Seller"),40
 removetrigger(endofturn, true,1);
 image("res://Images/CardArt/PotionPurchase.png")
 
+title("Enchanter's Key")
+types(loot);
+rarity(0);
+cost(1);
+text("Craft a custom enchantment card. Purge");
+trigger(onPlay, do(puzzle("EnchantersWorkshop")));
+trigger(onPlay, do(purge(self)));
+removetrigger(endofturn, true, 0);
+
+title("Strange Fruit")
+types(food);
+rarity(0);
+cost(2);
+$Status=3;
+text(gain $Status regen. Purge);
+trigger(onPlay, do(addStatus(regen, $Status)));
+removetrigger(endofturn, true, 0);

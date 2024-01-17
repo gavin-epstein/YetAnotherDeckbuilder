@@ -29,21 +29,21 @@ rarity(1);
 modifiers(unique);
 types(ritual,avian,meme);
 removetrigger(never, true,0);
-cost(1);
+cost(0);
 image("res://Images/CardArt/BirdMask.png");
 
 title(Flock Together);
 text("Summon a swallow for each avian card in play. Burn")
 rarity(2)
 types(summon, avian)
-cost(1);
+cost(2);
 trigger(onPlay, repeat((do(summon("Barn Swallow",(any),2))) , ( count(Play,avian)) ));  
 trigger(onPlay, do(voided,(self, Play)));
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/FlockTogether.png");
 
 title("Birds of a Feather");
-cost(2);
+cost(3);
 $CreateCount=0
 $TotalUses=2
 text("Give all friendly units +2/+2. The first $TotalUses times you play this, also add a Flock Together to your hand");
@@ -61,16 +61,19 @@ cost(1)
 $Damage=2
 $Draw=2
 $Range=1
-trigger(onPlay, do(damage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))),(stab),(any),$Range),false));
+#trigger(onPlay, do(damage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))),(stab),(any),$Range),false));
+#text("Deal (getDamage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player)))))))) stab damage, range $Range. \n Draw $Draw. Damage is equal to the number of allies");
+text("Draw $Draw. \n Deal (getDamage((enemyDo(countUnits("friendly&-Player"))))) stab damage, range $Range. Damage is equal to the number of allies");
 trigger(onPlay, do(draw($Draw)));
-text("Deal (getDamage((do(countSelect(do(selectTiles( (all,(any),"friendly&-Player"),40,Player))))))) stab damage, range $Range. \n Draw $Draw. Damage is equal to the number of allies");
+trigger(onPlay, do(setVar(self, Damage, (enemyDo(countUnits("friendly&-Player"))))))
+trigger(onPlay, do(damage($Damage, (stab),(any),$Range)))
 removetrigger(endofturn, true, 1);
 types(avian,wind);
 rarity(9);
 image("res://Images/CardArt/Peck.png");
 
 title("Henhouse")
-cost(1);
+cost(2);
 trigger(onPlay, do(summon("Mother Hen",(any),1)));
 text("Summon a hen on an adjacent tile");
 removetrigger(endofturn, true, 3);
@@ -79,7 +82,7 @@ rarity(6);
 image("res://Images/CardArt/Henhouse.png");
 
 title("Cactus Wren")
-cost(2)
+cost(3)
 $Range=3
 trigger(onPlay, do(summon("Cactus Wren",(any),$Range)));
 trigger(onPlay, do(voided,(self, Play)));
@@ -110,7 +113,7 @@ rarity(2)
 image("res://Images/CardArt/Firebird.png");
 
 title("Incubator")
-cost(2)
+cost(3)
 trigger(startofturn, do(summon("Barn Swallow",(1,(any),any),1)))
 text(At the start of your next $removecount turns, summon a Swallow on a random adjacent tile)
 types(avian,mechanical,summon)
@@ -130,7 +133,7 @@ image("res://Images/CardArt/AngryBirds.png");
 
 title("Blood Bird")
 types(blood, avian, summon)
-cost(0)
+cost(1)
 $Range=3
 $Blood=2
 trigger(onPlay, do(unheal($Blood)))
@@ -142,7 +145,7 @@ image("res://Images/CardArt/BloodBird.png");
 
 title("Buzzards")
 types(avian, summon, death)
-cost(1)
+cost(2)
 removetrigger(endofturn, true, 5);
 $Range=3
 trigger(death, if((random(0,0,1)>0),(do(summon("Vulture",(1),$Range)))))
@@ -152,10 +155,10 @@ image("res://Images/CardArt/Buzzard.png");
 
 title("Defend the Flock")
 types(avian, shield)
-cost(1)
+cost(2)
 removetrigger(endofturn, true, 1)
 $Count=0;
-trigger(onPlay, do(setVar, self, Count, (do(countSelect(do(selectTiles( (all,(any),"friendly"),40,Player)))))))
+trigger(onPlay, do(setVar( self, Count, (enemyDo(countUnits("friendly"))))))
 trigger(onPlay, do(addStatus(block,$Count, (do(selectTiles( (all,(any),"friendly"),40,Player))))))
-text("All friendly units - including Mora - gain block equal to the number of friendly units. [ (do(countSelect(do(selectTiles( (all,(any),friendly),40,Player))))) Block]")
+text("All friendly units - including Mora - gain block equal to the number of friendly units. [ (enemyDo(countUnits("friendly"))) Block]")
 rarity(4);

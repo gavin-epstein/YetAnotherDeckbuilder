@@ -134,7 +134,7 @@ def main():
     for key in alltypes.keys():
         sorttypes.append((key, alltypes[key]))
     sorttypes = sorted(sorttypes, key = lambda x: x[1])
-    for i in range(3):
+    for i in range(7):
         print (sorttypes[i])
 noimages=[]
 main()

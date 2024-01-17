@@ -160,7 +160,7 @@ func takeDamage(amount,types, attacker):
 	if status.has("dodge") and attacker!=null:
 		if (randf()*100  < status["dodge"]):
 			setStatus("dodgebroken", true)
-			say("Dodged!");
+			say("Dodged!     ");
 			if self == controller.Player:
 				controller.cardController.triggerAll("dodged", [amount, types, attacker])
 			return [0]
@@ -283,8 +283,8 @@ func takeDamage(amount,types, attacker):
 func startOfTurn():
 	if status.has("regen"):
 		controller.heal(self, status.get("regen"))
-	if status.has("flaming"):
-		takeDamage(3,["fire"],null)
+	#if status.has("flaming"):
+#		takeDamage(3,["fire"],null)
 	if not status.has("stoneskin"):
 		#reset block
 		block = controller.cardController.getMaintain("block", self);
@@ -376,7 +376,7 @@ func die(attacker, types = []):
 	if self == controller.Player:
 			for i in types:
 				print(i)
-			print(attacker.title)
+			#print(attacker.title)
 			controller.Lose(attacker)
 			return
 	if self == controller.theVoid:
@@ -451,7 +451,7 @@ func addStatus(stat, val):
 	if val <=0:
 		print("removing "+ str(val)+" " + stat)
 		#maintain
-		if getStatus(stat) + val <  controller.cardController.getMaintain(stat, self):
+		if  max(0,getStatus(stat) + val) <  controller.cardController.getMaintain(stat, self):
 			return false
 	if self.head != self:
 		return head.addStatus(stat,val)
@@ -474,6 +474,11 @@ func addStatus(stat, val):
 		return true
 	elif stat == "strength":
 		var res = controller.Action("gainStrength",[self, val])
+		if res is GDScriptFunctionState:
+			yield(res, "completed")
+		return res
+	elif stat == "block":
+		var res = controller.Action("addBlock",[self, val])
 		if res is GDScriptFunctionState:
 			yield(res, "completed")
 		return res
@@ -645,8 +650,8 @@ func getStrength(amount = 0):
 	var ret = amount+  self.strength
 	if status.has("frost"):
 		ret -= status.frost
-	if status.has("flaming"):
-		ret += 2*status.flaming
+	if status.has("feral"):
+		ret += status.feral
 	if status.has("rage"):
 		ret+=status.rage
 	if status.has("dazzled"):

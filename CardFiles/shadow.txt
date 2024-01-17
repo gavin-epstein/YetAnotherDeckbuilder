@@ -129,7 +129,7 @@ rarity(0)
 image("res://Images/CardArt/evasiveshadow.png");
 
 title(After Image);
-cost(1)
+cost(2)
 types(shadow)
 $Block=1
 text("When you play a card, gain $Block block")
@@ -140,7 +140,7 @@ image("res://Images/CardArt/Afterimage.png");
 
 title(Midnight Breeze);
 types(wind,shadow)
-cost(1)
+cost(2)
 $Count=4
 $Draw=1
 $currentCount=0
@@ -163,7 +163,7 @@ image("res://Images/CardArt/SleightOfHand.png");
 
 title(Wheel of Darkness);
 types(shadow,mechanical)
-cost(1);
+cost(2);
 trigger(startofturn, do(createByMod((shadow),Hand)))
 text("At the start of your turn, add a shadow to your hand")
 rarity(6);
@@ -172,7 +172,7 @@ image("res://Images/CardArt/WheelOfDarkness.png");
 
 title(Knives in the Dark)
 types(knife,shadow)
-cost(1)
+cost(2)
 trigger(onCreate,if((hasModifier(argv[0],kitchenknife)),(do(createByMod((shadow),Hand,self,true)))));
 trigger(onCreate,if((hasModifier(argv[0],shadow)),(do(createByMod((kitchenknife),Hand,self,true)))));
 text("When you create a shadow, also get a kitchen knife, and vice versa")
@@ -219,7 +219,7 @@ rarity(6);
 image("res://Images/CardArt/DarkCoin.png");
 
 title("Spreading Corruption")
-cost(1);
+cost(2);
 types(shadow)
 $Status=1
 trigger(play, do(addStatus(corruption,1,(do( selectTiles((1, (any), "-friendly"),40, Player))))))

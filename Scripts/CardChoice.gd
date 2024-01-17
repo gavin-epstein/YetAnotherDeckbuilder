@@ -138,3 +138,4 @@ func toggleChest():
 			card.modulate = Color(1,1,1,1)
 			card.visible =true
 	cheston = !cheston
+

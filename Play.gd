@@ -13,6 +13,7 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func updateDisplay():
 	if not ondisplay:
+		base_z=1
 		var startx= 300
 		var x = startx
 		var rows = int((cards.size()-1)/11)

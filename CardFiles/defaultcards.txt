@@ -7,7 +7,7 @@ trigger(startofturn, do(draw, ($EternalDraw), (true,false)));
 removetrigger(never, true,0);
 modifiers(eternal,unique);
 lore("Why me?");
-$EternalEnergy=3;
+$EternalEnergy=5;
 $EternalDraw=5;
 rarity(0);
 image("res://Images/CardArt/Adventurer2.png");
@@ -46,7 +46,7 @@ removetrigger(endofturn, true, 0)
 title(Boss Loot);
 types(loot);
 rarity(0)
-cost(0)
+cost(1)
 text("Choose 1 of 3 boss rewards to add to your hand \n purge");
 trigger(onPlay, do(cardreward,("bossReward",3),false));
 trigger(onPlay, do(purge,(self),false));
@@ -54,7 +54,7 @@ removetrigger(endofturn, true, 0)
 image("res://Images/CardArt/bossLoot.png");
 
 title("Dash");
-cost(1);
+cost(2);
 types(starter,movement)
 text("Move $Move")
 $Move=3
@@ -76,7 +76,7 @@ image("res://Images/CardArt/Defend.png")
 title("Smack")
 cost(1)
 types(starter,attack)
-$Damage=5
+$Damage=4
 $Range=2
 text("Deal $Damage crush damage, range of $Range")
 trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)))
@@ -85,9 +85,9 @@ image("res://Images/CardArt/Smack.png")
 rarity(0)
 
 title("Crossbow")
-cost(1)
+cost(2)
 types(starter,attack)
-$Damage=5
+$Damage=6
 text("Deal $Damage stab damage, at any range")
 trigger(onPlay, do(damage, ($Damage,(stab),(any),40)))
 removetrigger(endofturn,true,2)

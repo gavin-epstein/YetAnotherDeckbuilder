@@ -1,5 +1,5 @@
 title("Detritovorous Flesh");
-cost(1);
+cost(2);
 $Block=3
 $Increment=3
 trigger(onPlay,do(block($Block)));
@@ -24,7 +24,7 @@ modifiers(unique);
 image("res://Images/CardArt/Parasite.png");
 
 title(Infest);
-cost(1);
+cost(2);
 types(fungal, attack);
 $Damage=4
 $Increment=4
@@ -37,7 +37,7 @@ removetrigger(endofturn,true,3);
 image("res://Images/CardArt/Infest.png");
 
 title(Overgrown Machinery)
-cost(2)
+cost(3)
 types(fungal,mechanical,attack)
 $Damage=0
 $Increment=1
@@ -64,7 +64,7 @@ title("Bioluminescence");
 cost(2);
 $Increment=1
 $Energy=0
-$Maximum=7
+$Maximum=10
 trigger(onPlay,do(gainEnergy($Energy)))
 trigger(onPlay, if(($Energy<$Maximum),(do(addVar(self, Energy,$Increment)))));
 text("Gain $Energy energy. If this card's energy gain is less than $Maximum, increase it by by $Increment")
@@ -74,7 +74,7 @@ rarity(6)
 image("res://Images/CardArt/Bioluminescence.png");
 
 title("Mycorhizome");
-cost(1);
+cost(2);
 $Increment=1
 $Heal=1
 types(fungal, earth, food);
@@ -86,7 +86,7 @@ rarity(2);
 image("res://Images/CardArt/Mycorhizome.png");
 
 title("Pore Fungus");
-cost(1)
+cost(2)
 $Increment=1
 $Strength=5
 $MaxHealth=5
@@ -106,7 +106,7 @@ rarity(2)
 image("res://Images/CardArt/PoreFungus.png");
 
 title("Death Cap");
-cost(1)
+cost(2)
 $Status=0
 $Count=4
 $currentCount=0

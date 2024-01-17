@@ -1,7 +1,7 @@
 extends Node
 var markov={}
 var images=[]
-const TriggerOptions = ["burn","attack", "burnself", "permafrost","block","thorns", "freeze", "blood","heal", "gainEnergy", "draw", "sigil", "armor","discard","discardall"]
+const TriggerOptions = ["burn","attack","attack2", "burnself", "permafrost","block","thorns", "freeze", "blood","heal", "gainEnergy", "draw", "sigil", "armor","discard","discardall"]
 
 func Load():
 	var f = File.new()
@@ -52,6 +52,7 @@ func generateCard(card:Card, temporary= true):
 		Utility.extendDict(vars, list[2])
 		Utility.extendDict(types, list[3])
 		Utility.extendDict(modifiers, list[4])
+		Utility.extendDict(modifiers,{"onieromancy":true})
 		
 	var cardtext = ""
 	
@@ -116,7 +117,7 @@ func generateTrigger(opt):
 		text.append("Burn this card")
 		triggers.append("trigger(onPlay,do(voided(self, Play)))")
 		types["fire"] = true;
-	elif opt =="attack":
+	elif opt =="attack" or opt == "attack2": #TODO target randomize
 		vars["Damage"] = ceil(2*randomPositiveFloat()+randomPositiveFloat());
 		vars["Range"] = r()
 		var damagetype = Utility.choice(["fire","crush","slash","stab", "piercing", "storm", "hail", "shadow"])
@@ -133,8 +134,9 @@ func generateTrigger(opt):
 		text.append("Block $Block");
 	elif opt == "thorns":
 		vars["Thorns"] = r()
-		text.append("Gain $Thorns thorns")
-		triggers.append("trigger(onPlay,do(addStatus(thorns,$Thorns)))")
+		text.append("While in play, maintain $Thorns thorns")
+		triggers.append('trigger(onPlay,do(maintain(self, "thorns",$Thorns)))')
+		triggers.append('trigger(onRemoveFromPlay,do(unmaintain(self, "thorns",$Thorns)))')
 		types["cactus"]=true
 	elif opt == "freeze":
 		triggers.append('trigger(onPlay,do(addModifier( (select(Hand,true,"pick a card to freeze")),frozen)))');
@@ -142,10 +144,10 @@ func generateTrigger(opt):
 		types["ice"]=true
 	elif opt == "ritual":
 		types["ritual"]==true
-	elif opt == "bleed":
+	elif opt == "blood":
 		vars["Blood"] = r()
 		triggers.append('trigger(onPlay,do(unheal($Blood)))')
-		text.append("Lose $Bleed health")
+		text.append("Lose $Blood health")
 		types["blood"]= true
 	elif opt == "heal":
 		vars["Heal"] = r()

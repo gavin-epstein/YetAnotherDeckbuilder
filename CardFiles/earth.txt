@@ -10,17 +10,17 @@ modifiers(unplayable)
 image("res://Images/CardArt/Stone.png")
 
 title(Bountiful Soil);
-cost(1);
+cost(2);
 types(earth, wind);
 $Draw=1
 text("when you draw an unplayable card, draw $Draw more");
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(draw($Draw)))));
-removetrigger(endofturn, true, 6)
+removetrigger(endofturn, true, 7)
 rarity(2);
 image("res://Images/CardArt/BountifulSoil.png")
 
 title(Stonewall);
-cost(0);
+cost(1);
 types(earth, shield);
 $Block=12
 text("Gain $Block block. Add 2 stones to your hand. Insert into your deck when you draw any card containing 'Stone'");
@@ -31,10 +31,10 @@ removetrigger(cardDrawn, (hasName(argv[0],"Stone")),1)
 rarity(4)
 image("res://Images/CardArt/Stonewall.png")
 
-title(Mine);
-cost(2);
+title(Old Mine);
+cost(3);
 $Block=2
-types(earth,mechanical, shield)
+types(earth, shield)
 text("When you draw an unplayable card, gain $Block block. Add a random unplayable card to each of your deck, hand, and discard")
 removetrigger(endofturn,true,10);
 trigger(cardDrawn,if((hasModifier(argv[0],unplayable)),(do(block($Block)))));
@@ -42,6 +42,16 @@ trigger(onPlay,do(createByMod,(("unplayable"), Deck)));
 trigger(onPlay,do(createByMod,(("unplayable"), Hand)));
 trigger(onPlay,do(createByMod,(("unplayable"), Discard)));
 rarity(2)
+
+title(Mine)
+cost(2)
+types(mechanical, earth)
+$Draw=1
+trigger(onPlay,do(createByMod,(("unplayable"), Deck)));
+trigger(startofturn, do(draw($Draw)))
+text("At the start of your turn, add a random unplayable card into your deck, then draw $Draw.")
+removetrigger(endofturn, true, 7)
+rarity(4)
 image("res://Images/CardArt/Mine.png")
 
 title(Diamond);
@@ -78,9 +88,9 @@ lore("It's really ugly")
 image("res://Images/CardArt/DodgyLookingRock.png")
 
 title("Stoneskin")
-cost(1)
+cost(2)
 types(earth, steel, shield)
-$Block=5
+$Block=7
 $Armor=1
 $Status=1
 text("Gain $Block block and keep your block at the start of next turn. While in play maintain $Armor armor. Add a dazed to your deck")
@@ -94,7 +104,7 @@ rarity(3);
 image("res://Images/CardArt/Stoneskin.png")
 
 title(Barrage)
-cost(1)
+cost(2)
 types(earth, attack)
 $Damage=5
 $Range=3
@@ -109,7 +119,7 @@ rarity(7);
 image("res://Images/CardArt/Barrage.png")
 
 title(Pyroclastic Flow)
-cost(1)
+cost(2)
 types(earth,fire, attack)
 $Damage=7
 $Range=1
@@ -134,7 +144,7 @@ modifiers(unplayable);
 image("res://Images/CardArt/DustDevil.png")
 
 title("Coal Smoke");
-cost(0);
+cost(1);
 types(earth,fire,assassin);
 $Repeat=5
 $Status=1

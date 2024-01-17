@@ -444,6 +444,8 @@ func processArgs(arg, argv):
 			return self.get("speed")
 		return arg
 	elif arg is Array:
+		if len(arg) == 0:
+			return arg
 		var ret = execute(arg, argv)
 		if ret is GDScriptFunctionState:
 			ret = yield(ret, "completed");
@@ -465,7 +467,7 @@ func foreach(varname,list,action,argv):
 		list = [list]
 	var reslist = []
 	for item in list:
-		print("list item ", item.title)
+	#	print("list item ", item.title)
 		vars["$"+varname] = item
 		var res = execute(action,argv)
 		if res is GDScriptFunctionState:

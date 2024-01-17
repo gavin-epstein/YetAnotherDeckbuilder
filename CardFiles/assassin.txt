@@ -7,7 +7,7 @@ trigger(startofturn,if(($currentCount=$Count),(do(addStatus,stealth,1))))
 trigger(startofturn,if(($currentCount=$Count),(do(setVar(self,currentCount,0)))))
 text("Every $Count turns gain 1 stealth. (+, $Count, (*,-1,$currentCount)) remaining.");
 removetrigger(endofturn,true,24);
-cost(2)
+cost(3)
 rarity(2)
 image("res://Images/CardArt/Machinations.png")
 
@@ -24,7 +24,7 @@ image("res://Images/CardArt/Stiletto.png")
 
 title("Slow Poison")
 types(attack,assassin)
-cost(0)
+cost(1)
 $Range=3
 $Damage=10
 text("When this is discarded from play, deal $Damage backstab damage at range $Range.")
@@ -34,7 +34,7 @@ rarity(6);
 image("res://Images/CardArt/SlowPoison.png")
 
 title("Sneak up")
-cost(1);
+cost(2);
 types(assassin, movement)
 text("Move to a random empty tile adjacent to any enemy you choose")
 trigger(onPlay, enemyDo(move(Player, (do(selectTiles( (splash,(any),empty,((any,(any),-friendly),40,Player)),1, Player )))),true))
@@ -44,9 +44,9 @@ rarity(5);
 image("res://Images/CardArt/SneakUp.png")
 
 title("Right Timing")
-cost(1);
+cost(3);
 types(assassin, attack);
-$Damage=7
+$Damage=8
 $Range=1
 trigger(onTap,do(damage, ($Damage,(backstab),(any),$Range)))
 text("Tap: deal $Damage backstab damage range $Range")

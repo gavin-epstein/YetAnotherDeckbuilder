@@ -1,5 +1,5 @@
 title("Gust");
-cost(1)
+cost(2)
 $Damage=6
 $MoveOther=1
 $Range=2
@@ -14,7 +14,7 @@ types(kinetic,wind);
 image("res://Images/CardArt/Gust.png");
 
 title("Lure");
-cost(1)
+cost(2)
 $Block=6
 $MoveOther=1
 text("Now and at the start of next turn, gain $Block block and pull a unit $MoveOther towards you");
@@ -36,7 +36,7 @@ trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 removetrigger(endofturn, true, 1);
 types(attack, kinetic);
 rarity(3)
-cost(1)
+cost(2)
 image("res://Images/CardArt/KineticBlast.png");
 
 title(Earthquake);
@@ -66,7 +66,7 @@ removetrigger(endofturn, true, 1);
 image("res://Images/CardArt/Ingest.png");
 
 title(Moths to a Flame);
-cost(0);
+cost(1);
 $Range=40
 $MoveOther=1
 trigger(onPlay, do(setVar(self, TILE, (do(selectTiles((any,(any),empty),$Range,Player,"Pick a place to summon"))))))
@@ -79,12 +79,12 @@ types(fire, kinetic, summon)
 image("res://Images/CardArt/MothsToAFlame.png")
 
 title(Trample);
-cost(2)
+cost(3)
 $Move=3
 $MoveOther=2
 $Range=1
 $Damage=6
-trigger(onPlay, do(move($Move)));
+trigger(onPlay, do(movePlayer($Move)));
 trigger(onPlay, do(damage, ($Damage,(crush),(any),$Range)));
 trigger(onPlay, do(moveUnits((lastTargets),0,Player,away,$MoveOther)));
 removetrigger(endofturn, true, 1)

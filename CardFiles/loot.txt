@@ -1,6 +1,6 @@
 title("Golden Blades")
 types(loot,knife)
-cost(0)
+cost(1)
 trigger(play, if    ((hastype(argv[0], loot)),(do(createByMod,(("kitchenknife"), Hand,self)))))
 removetrigger(play,(hastype(argv[0], loot)),7)
 text("When you play a loot card add a random kitchen knife to your hand")
@@ -9,7 +9,7 @@ image("res://Images/CardArt/GoldenBlades.png")
 
 title("Toolbox")
 types(loot,hammer)
-cost(0)
+cost(1)
 trigger(onPlay, do(cardreward,("hammer",3)))
 trigger(onPlay, do(cardreward,("hammer",3)))
 trigger(onPlay,do(purge(self)));
@@ -38,17 +38,17 @@ image("res://Images/CardArt/Mercenaries.png")
 title("Golden Glow")
 types(loot, light)
 text("When you recieve a card reward, gain $Energy energy")
-$Energy=2
+$Energy=3
 trigger(cardreward,do(gainEnergy($Energy)))
 removetrigger(cardreward,true,5)
 rarity(4)
-cost(1)
+cost(2)
 image("res://Images/CardArt/GoldenGlow.png")
 
 title("Kintsugi Crown")
 types(loot)
 modifiers(unique,eternal);
-cost(0);
+cost(1);
 $rewards=0
 interrupt(cardreward,do(cardreward(argv[0], (+,1,argv[1])),(false,true)));
 removetrigger(never, true, 0)
@@ -59,7 +59,7 @@ image("res://Images/CardArt/KintsugiCrown.png")
 
 title("Black Market")
 types(blood, loot);
-cost(0)
+cost(1)
 rarity(4);
 $Blood=1
 text("Lose $Blood health. Choose 1 of 3 cards to add to your hand.");

@@ -52,6 +52,8 @@ __meta__ = {
 }
 
 [node name="NewGame" type="RichTextLabel" parent="Menu/NewGameButton"]
+anchor_left = 0.0043097
+anchor_right = 0.0043097
 margin_top = 6.0
 margin_right = 1182.0
 margin_bottom = 266.0

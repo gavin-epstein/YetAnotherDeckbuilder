@@ -1,5 +1,7 @@
 extends Node2D
 const WorkshopTile = preload("res://Dreams/WorkshopTile.tscn")
+var startypes = ["rage", "water", "attack", "fire", "blood", "cloud", "cactus", "knife", "avian", "light", "starter", "food", "shadow", "dodge", "dream", "shield", "ice", "earth", "electric", "mechanical", "death", "loot", "wind", "movement"]
+var endtypes = ["kinetic", "rage", "attack", "fire", "blood", "cloud", "ritual", "cactus", "knife", "avian", "light", "food", "shadow", "dodge", "dream", "shield", "ice", "steel", "electric", "loot", "wind", "movement"]
 var starts = []
 var ends = []
 var grid = []
@@ -21,8 +23,8 @@ func _ready():
 func Load():
 	loadIcons()
 	loadImages()
-	self.cardController = self
-	self.Library = self
+	self.cardController = get_parent()
+	self.Library = cardController.Library
 	#$Map/Clickbox.rect_size = Vector2(1920,1080)
 	for type in ["bent", "3way", "4way", "straight", "doublediagonal", "inputplatform", "outputplatform"]:
 		images[type] = load("res://Images/Puzzles/EnchantersPipes/" + type + ".png")
@@ -72,12 +74,16 @@ func Load():
 			col.append(tiles)
 		grid.append(col)
 	#make starts and ends
-	var startypes = cardController.Library.icons.keys().duplicate()
-	var endtypes = startypes.duplicate()
-	for thing in ["assassin", "summon", "fungal", "ritual", "hammer", "kinetic", "potion", "steel"]:
-		startypes.erase(thing)
-	for thing in ["assassin", "hammer", "mechanical", "potion", "starter", "summon", "water", "earth", "fungal"]:
-		endtypes.erase(thing)
+#	var startypes = cardController.Library.icons.keys().duplicate()
+#	var endtypes = startypes.duplicate()
+#	for thing in ["assassin", "summon", "fungal", "ritual", "hammer", "kinetic", "potion", "steel"]:
+#		startypes.erase(thing)
+#	for thing in ["assassin", "hammer", "mechanical", "potion", "starter", "summon", "water", "earth", "fungal", "death"]:
+#		endtypes.erase(thing)
+
+
+#	print(startypes)
+#	print(endtypes)
 	for i in range (3):
 		var x = randi()%grid.size()
 		var y = randi()%grid[0].size()
@@ -231,12 +237,12 @@ static func generateEnchant(intype, outype, cost, duration):
 	var vars = {}
 	var text = []
 	var triggers = []
-	var titlestart
-	var titleend
+	var titlestart=""
+	var titleend=""
 	var endtriggers = []
-	var triggerkey
+	var triggerkey=""
 	var condition=true
-	var result
+	var result=""
 	if intype  == "attack":
 		text.append("When you play an attack")
 		triggerkey = "play"
@@ -276,6 +282,11 @@ static func generateEnchant(intype, outype, cost, duration):
 		triggerkey = "dream"
 		condition = "true"
 		titleend = "Dream"
+	elif intype == "death":
+		text.append("When a unit dies")
+		triggerkey = "death"
+		condition = "true"
+		titleend = "Mortality"
 	elif intype == "earth":
 		text.append("When you draw an unplayable card")
 		triggerkey = "cardDrawn"
@@ -449,7 +460,7 @@ static func generateEnchant(intype, outype, cost, duration):
 	elif outype == "movement":
 		vars["Move"] = 2
 		text.append("move $Move")
-		result = 'do(move($Move))'
+		result = 'do(movePlayer($Move))'
 		titlestart = "Nimble"
 	elif outype =="rage":
 		vars["Status"] = 1
@@ -495,6 +506,7 @@ static func generateEnchant(intype, outype, cost, duration):
 	cardtext+='rarity(0);'
 	cardtext+='title(' + titlestart + " " + titleend +');'
 	cardtext += 'text("' + Utility.join(" ",text) + '");'
+	cardtext += 'modifiers(enchanters);'
 	
 	return cardtext
 	
@@ -522,3 +534,22 @@ func getEllipse(x, y):
 	var outy =(p+1)*h/2  -yoff*( abs(p)/p *sqrt(p*p - p*p*wx*wx ))
 	outy = (outy-h/2)*1.25 + h/2
 	return Vector2(x-20,outy)
+
+
+func createcards():
+	for card in $CardBox.cards:
+		cardController.create(card, "Hand")
+	cardController.updateDisplay()
+	get_parent().remove_child(self)
+	self.queue_free()
+
+
+func recoverImage(card):
+	
+	for t1 in card.types:
+		for t2 in card.types:
+			var text = generateEnchant(t1,t2,0,0)
+			if text.find(card.title)!=-1:
+				generateImage(t1,t2,card)
+				return
+	

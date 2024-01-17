@@ -33,7 +33,7 @@ rarity(6);
 image("res://Images/CardArt/FlashFreeze.png")
 
 title("Icicle")
-cost(2)
+cost(3)
 $Damage=8
 $Range=3
 trigger(onRetain,if(($Cost>0),(do(addVar(self,Cost,-1)))))
@@ -46,9 +46,9 @@ rarity(10);
 image("res://Images/CardArt/Icicle.png")
 
 title("Slide")
-cost(0)
+cost(1)
 $Move=2
-types(ice, kinetic, shadow, movement)
+types(ice, kinetic, movement)
 trigger(onPlay, do(movePlayer($Move)))
 trigger(onRetain, do(moveUnits((all,(any),-Player),1,Player,away,(+, -1, $Move))))
 text("Move $Move. If in hand at end of turn all adjacent enemies away (+, -1, $Move) tiles")
@@ -56,7 +56,7 @@ removetrigger(endofturn, true, 1)
 rarity(6);
 
 title("Refrigerator")
-cost(1)
+cost(2)
 types(ice, mechanical)
 trigger(startofturn, do(addModifier( (select(Hand,true,"pick a card to freeze (Refrigerator)")),frozen)))
 text("At the start of your turn, freeze a card")
@@ -65,7 +65,7 @@ rarity(4)
 image("res://Images/CardArt/Refridgerator.png")
 
 title("Hailstorm!")
-cost(1)
+cost(2)
 $Damage=2
 $Range=40
 $cardnumber=0
@@ -76,9 +76,10 @@ removetrigger(endofturn, true, 1)
 trigger(onPlay, if( ($cardnumber>0),(repeat( (do(damage($Damage,(ice,storm),(all, (any), "-friendly"),$Range ))),$cardnumber))))
 rarity(1)
 text("Discard your hand, deal $Damage ice storm damage to all enemies for each card discarded")
+image("res://Images/CardArt/hailstorm.png")
 
 title("Preserve")
-cost(0)
+cost(1)
 types(ice);
 trigger(onPlay,do(addModifier( (select(Hand,true,"pick a card to freeze")),frozen)));
 modifiers(permafrost)
@@ -104,9 +105,9 @@ trigger(endofturn, do (block((* ,$Block ,(do(countModifiers(Hand, frozen)))))))
 rarity(4)
 text("At the end of your turn, gain $Block block per frozen card in hand. (* ,$Block ,(do(countModifiers(Hand, frozen))))");
 removetrigger(endofturn, true, 6)
-cost(1);
+cost(2);
 rarity(10);
-image("res://Images/CardArt/IcicleFortress.png")
+image("res://Images/CardArt/IceFortress.png")
 
 title("Dagger of Returning");
 types(ice, shadow, attack);
@@ -124,7 +125,7 @@ removetrigger(endofturn, true,0);
 image("res://Images/CardArt/DaggerOfReturning.png")
 
 title("Winter Growth");
-cost(1);
+cost(2);
 types(ice, fungal, attack)
 $Increment=3
 $Damage=1

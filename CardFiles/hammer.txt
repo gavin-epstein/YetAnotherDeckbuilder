@@ -5,18 +5,18 @@ $Damage=2
 $Increment=3
 rarity(1);
 trigger(onPlay,do(damage,($Damage,(crush),(1),40)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Damage)),"Pick a card to upgrade")),Damage,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Damage)),"Pick a card to upgrade")),Damage,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Deal $Damage damage to a random enemy, then permanently add $Increment damage to an attack in play.\nPurge");
+text("Deal $Damage damage to a random enemy, then permanently add $Increment damage to any attack .\nPurge");
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/Blacksmith'sHammer.png")
 
 title("Power Hammer")
 types(light,hammer)
 $Increment=2
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Energy)),"Pick a card to upgrade")),Energy,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Energy)),"Pick a card to upgrade")),Energy,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Permanently add $Increment energy to the energy gain of a non eternal card in play.\nPurge");
+text("Permanently add $Increment energy to the energy gain of a non eternal card anywhere.\nPurge");
 removetrigger(endofturn, true, 0);
 cost(2);
 modifiers(hammer)
@@ -25,9 +25,9 @@ image("res://Images/CardArt/PowerHammer.png")
 
 title("Sledgehammer")
 types(hammer)
-trigger(onPlay,do(purge((select(all,true,"Pick a card to purge")))))
+trigger(onPlay,do(purge((select(all,(!hasModifier(self,"eternal")),"Pick a card to purge")))))
 trigger(onPlay,do(purge(self)));
-text("Purge a card in your hand.\nPurge");
+text("Purge any non-eternal card.\nPurge");
 removetrigger(endofturn, true, 0);
 rarity(5)
 cost(1)
@@ -41,9 +41,9 @@ $Draw=1
 $Increment=1
 rarity(1);
 trigger(onPlay,do(draw,($Draw)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Draw)),"Pick a card to upgrade")),Draw,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card in play.\nPurge");
+text("Draw $Draw, then permanently add $Increment draw to a draw number of a non eternal card anywhere.\nPurge");
 removetrigger(endofturn, true, 0);
 image("res://Images/CardArt/WindHammer.png")
 modifiers(hammer);
@@ -51,9 +51,9 @@ modifiers(hammer);
 title("Fungal Hammer")
 types(fungal,hammer)
 $Increment=1
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Increment)),"Pick a card to upgrade")),Increment,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Increment)),"Pick a card to upgrade")),Increment,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Permanently add $Increment to the amount a card in play permantently increases any value.\nPurge");
+text("Permanently add $Increment to the amount a by which a fungal card scales itself. \nPurge");
 removetrigger(endofturn, true, 0);
 cost(1);
 modifiers(hammer)
@@ -67,9 +67,9 @@ $Armor=1
 $Increment=1
 rarity(1);
 trigger(onPlay,do(armor($Armor)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Armor)),"Pick a card to upgrade")),Armor,$Increment)))
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Armor)),"Pick a card to upgrade")),Armor,$Increment)))
 trigger(onPlay,do(purge(self)));
-text("Gain $Armor armor, then permanently add $Increment armor to an steel card in play.\nPurge");
+text("Gain $Armor armor, then permanently add $Increment armor to any steel card. \nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 image("res://Images/CardArt/armorershammer.png")
@@ -80,11 +80,11 @@ types(hammer,shadow);
 $Increment=1
 rarity(4)
 $Card=null
-trigger(onPlay,do(setVar(self,Card,(select(Play,(if(($Cost>0),true)),"Pick a card to upgrade")))))
+trigger(onPlay,do(setVar(self,Card,(select(all,(if(($Cost>0),true)),"Pick a card to upgrade")))))
 trigger(onPlay,do(addVar($Card,BaseCost,(*,-1,$Increment))))
 trigger(onPlay,do(addVar($Card,Cost,(*,-1,$Increment))))
 trigger(onPlay,do(purge(self)));
-text("Decrease the cost of a card in play by 1.\nPurge");
+text("Permanently decrease the cost of any card by 1.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 image("res://Images/CardArt/shadowhammer.png")
@@ -96,19 +96,19 @@ $Block=2
 $Increment=3
 rarity(3);
 trigger(onPlay,do(block($Block)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Block)),"Pick a card to upgrade")),Block,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Block)),"Pick a card to upgrade")),Block,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Gain $Block block, then permanently add $Increment block to a block card play.\nPurge");
+text("Gain $Block block, then permanently add $Increment block to any shield card.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 
 title("Double-headed Hammer")
-cost(1);
+cost(2);
 types(hammer);
 lore(Very impractical)
 rarity(2);
-text("Copy a card in your hand. Purge")
-trigger(onPlay, do(create( (select(Hand,true,"Pick a card to copy")),Hand  )))
+text("Copy any non-unique card, and put the copy in your hand. Purge")
+trigger(onPlay, do(create( (select(all,(! hasModifier(self,"unique")),"Pick a card to copy")),Hand  )))
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
@@ -172,9 +172,9 @@ $Move=1
 $Increment=1
 rarity(4);
 trigger(onPlay,do(movePlayer($Move)));
-trigger(onPlay,do(addVar((select(Play,(hasVariable(self,Move)),"Pick a card to upgrade")),Move,$Increment)));
+trigger(onPlay,do(addVar((select(all,(hasVariable(self,Move)),"Pick a card to upgrade")),Move,$Increment)));
 trigger(onPlay,do(purge(self)));
-text("Move $Move, then permanently add $Increment tiles to a movement card play.\nPurge");
+text("Move $Move, then permanently add $Increment tiles to any movement card.\nPurge");
 removetrigger(endofturn, true, 0);
 modifiers(hammer)
 image("res://Images/CardArt/SpeedHammer.png")
@@ -183,10 +183,10 @@ title("Icepick")
 cost(1);
 types(hammer, ice);
 rarity(4);
-trigger(onPlay,do(setVar(self, Card, (select(Hand,true,"Pick a card to gain permafrost")))))
+trigger(onPlay,do(setVar(self, Card, (select(all,true,"Pick a card to gain permafrost")))))
 trigger(onPlay,do(addModifier( $Card,permafrost)));
 trigger(onPlay,do(addModifier( $Card,frozen)));
-text("Add permafrost to a card in your hand. Purge")
+text("Add permafrost to any of your cards. Purge")
 trigger(onPlay,do(purge(self)));
 removetrigger(endofturn, true, 0);
 modifiers(hammer);

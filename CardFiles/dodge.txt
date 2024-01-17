@@ -1,5 +1,5 @@
 title("Dancing Master");
-cost(1);
+cost(2);
 types(dodge,movement)
 rarity(2)
 $Status=30
@@ -9,11 +9,11 @@ text("When you move, gain $Status dodge");
 image("res://Images/CardArt/DancingMaster.png")
 
 title("Lightfooted");
-cost(1);
+cost(2);
 types(dodge, light);
 rarity(8)
 $Status=20
-$Energy=2
+$Energy=3
 trigger(onPlay,do(addStatus(dodge,$Status)));
 trigger(onPlay,do(gainEnergy($Energy)));
 text("Gain $Status dodge and $Energy energy");

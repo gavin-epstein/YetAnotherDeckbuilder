@@ -5,12 +5,12 @@ types(wind);
 removetrigger(play,(hastype(argv[0],wind)),6);
 image("res://Images/CardArt/WindWalk.png");
 rarity(1);
-cost(1);
+cost(2);
 
 title(Whirlwind);
 $Draw=5
 text("Discard your hand, draw $Draw cards");
-cost(1);
+cost(2);
 trigger(onPlay, do(discardAll(false)));
 trigger(onPlay, do(draw($Draw)));
 types(wind, cloud);
@@ -36,7 +36,7 @@ $Draw=1
 text("At the start of your turn, draw $Draw");
 trigger(startofturn,do(draw($Draw)));
 removetrigger(endofturn,true,7);
-cost(2);
+cost(3);
 rarity(3);
 image("res://Images/CardArt/Windmill.png")
 
@@ -48,7 +48,7 @@ text("Deal damage equal to (+,$Damage,0) times the number of cards in your hand,
 trigger(onPlay, do(damage((* ,$Damage,(countModifier(Hand,any))),(wind),(any),$Range)))
 removetrigger(endofturn,true,1);
 image("res://Images/CardArt/WindBlast.png")
-cost(1);
+cost(3);
 rarity(5);
 
 title("Sacred Breath");
@@ -84,7 +84,7 @@ trigger(onPlay, do(damage, ($Damage,(slash),(any),$Range)));
 trigger(draw,do(addVar(self, Drawn, argv[0])));
 trigger(draw,if(($Drawn > $DrawTotal),(do(move(Play,Hand,self,0)))));
 trigger(draw,if(($Drawn > $DrawTotal),(do(setVar(self, Drawn, 1)))));
-trigger(draw, do(setVar(self, removecount, (+, -1, (+,(*,-1,Drawn),$DrawTotal)))))
+trigger(draw, do(setVar(self, removecount, (+, -1, (+,(*,-1,$Drawn),$DrawTotal)))))
 text("Deal $Damage slash damage at any range. When you draw $removecount more cards, put this in your hand")
 removetrigger(draw, false, 6)
 image("res://Images/CardArt/Boomerang.png")
@@ -96,6 +96,7 @@ $Draw=1
 $Heal=1
 $Energy=1
 $Blood=1
+cost(1)
 text("Draw $Draw, gain $Energy Energy, discard a card, lose $Blood health, heal $Heal, add a random shadow to your hand, burn a card in hand.")
 trigger(onPlay, do(draw($Draw)));
 trigger(onPlay, do(gainEnergy($Energy)));
@@ -121,4 +122,3 @@ image("res://Images/CardArt/Zephyr.png")
      
 
 #unceasing top
-#1 cost draw 3

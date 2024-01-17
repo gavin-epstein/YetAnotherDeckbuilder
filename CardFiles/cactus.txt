@@ -1,13 +1,14 @@
 title(Prickly Pear)
 types(cactus,food)
-cost(1)
+cost(2)
 $Heal=4
-$Thorns=2
+$Thorns=3
 trigger(onPlay,do(heal($Heal)))
-trigger(onPlay,do(addStatus(thorns,$Thorns)))
-text("Heal $Heal . gain $Thorns thorns")
+trigger(onPlay,do(maintain(self, "thorns", $Thorns)))
+trigger(onRemoveFromPlay,do(unmaintain(self, "thorns",$Thorns))))
+text("Heal $Heal . While in play maintain $Thorns thorns")
 rarity(7)
-removetrigger(endofturn,true,1)
+removetrigger(endofturn,true,2)
 image("res://Images/CardArt/PricklyPear.png")
 
 title(Barrel Cactus)
@@ -21,7 +22,7 @@ image("res://Images/CardArt/BarrelCactus.png")
 
 title(Blood of the Nopal)
 types(cactus, blood)
-cost(2)
+cost(3)
 $Thorns=4
 trigger(unheal,do(addStatus(thorns,$Thorns)))
 text("When you lose health, gain $Thorns thorns")
@@ -30,7 +31,7 @@ removetrigger(unheal,true,7)
 
 title(Firestick Cactus);
 types(cactus, fire)
-cost(1)
+cost(2)
 $Thorns=1
 trigger(voided,do(addStatus(thorns,$Thorns)))
 rarity(6)
@@ -53,7 +54,7 @@ rarity(5)
 image("res://Images/CardArt/Thornburst.png")
 
 title(Reactus)
-cost(1)
+cost(2)
 types(cactus)
 $Thorns=1
 text(When you are attacked, first gain $Thorns thorns)

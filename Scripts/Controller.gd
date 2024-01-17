@@ -255,7 +255,7 @@ func selectCards(locs, predicate,message,num = 1,random=false):
 	#forceFocus(null)
 	
 	selectedCard = null
-	Message.get_node("Message").bbcode_text = "[center]"+message+"[/center]"
+	Message.get_node("Message").bbcode_text = "[center]"+str(message)+"[/center]"
 	Message.visible = true
 	if locs.size() == 1:
 		if locs[0] is CardPile:
@@ -267,9 +267,7 @@ func selectCards(locs, predicate,message,num = 1,random=false):
 	yield(self, "resumeExecution")
 	#releaseFocus(selectedCard)
 	Message.visible = false
-	for loc in locs:
-		if loc is CardPile:
-			loc.undisplay()
+	cardController.get_node("CardPileDisplay").undisplay()
 	#print("Select input allowed post undisplay " +str( cardController.inputAllowed))
 	return selectedCard
 

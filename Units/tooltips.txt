@@ -1,6 +1,6 @@
 bleed|Bleed| At the start of turn, take [number] damage.
 hardenedcarapace|Hardened Carapace| When losing armor, gain 2 block per armor lost.
-flaming|Flaming| At the start of turn, take 3 damage. Gain strength equal to twice flaming.
+flaming|Flaming| When a card in burned, take [number] damage.
 lifelink|Life Link| This unit shares health with all other units of the same name.
 friendly|Friendly| You and your allies.
 sting|Sting| Unit cannot heal.
@@ -31,3 +31,6 @@ immune:fire|Immune to fire| Takes no damage from fire attacks and flaming.
 dodge|Dodge|Unit has a [number]% chance to avoid damage from all attacks. If an attack is dodged, 100 dodge is removed at the start of next turn.
 dodgebroken|Dodge Broken|100 dodge will be removed at the start of next turn.
 immune:knockback|Immune to knockback|Immune to collision damage from being pushed or pulled, or other units being pushed or pulled into it.
+poison|Poison|lose 3 health at the start of turn.
+feral|Feral|deal [number] extra damage the next time you deal damage
+specialloot|Unique Drop|This unit will give you a special card instead of normal loot when killed

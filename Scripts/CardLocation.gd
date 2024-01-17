@@ -1,5 +1,6 @@
 extends Node2D
 class_name CardLocation
+var EnchantersWorkshop;
 var ondisplay =false
 #var ondisplaystartx = 0;
 #var ondisplaystarty = 0;
@@ -65,12 +66,18 @@ func loadFromSave(save:Dictionary):
 	self.cards = []
 	for savecard in save.cards:
 		var card = get_parent().Library.getCardByName(savecard.title)
-		if card== null: #onieromancy
+		if card== null: #onieromancy or enchanter
 			card =get_parent().Library.cardtemplate.instance()
 			card.title = savecard.title
 			card.controller = get_parent().cardController
 			card.loadFromSave(savecard)
-			onieromancy.generateImage(card)
+			if savecard.modifiers.has("onieromancy"):
+				onieromancy.generateImage(card)
+			elif savecard.modifiers.has("enchanters"):
+				if EnchantersWorkshop == null:
+					EnchantersWorkshop = load("res://Scripts/Puzzles/EnchantersWorkshop.gd").new()
+					EnchantersWorkshop.loadImages()
+				EnchantersWorkshop.recoverImage(card)
 		else:
 			card.loadFromSave(savecard)
 		add_child(card)

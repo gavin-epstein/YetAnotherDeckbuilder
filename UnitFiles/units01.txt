@@ -617,9 +617,10 @@ difficulty(2)
 image("res://Images/UnitArt/FlamingSkull.png")
 $Intent=Buff
 trigger(turn,if( ($Intent=Attack),(do(MoveAndAttack(self,friendly)))));
-trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,flaming,3)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,flaming,2)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,rage,3)))));
+trigger(turn,if( ($Intent=Buff),(do(addStatus(tile,regen,3)))));
 trigger(turn,do(setVar(self,Intent,(random(Attack,Buff)))));
-trigger(turn,do(heal(self, 4)));
 
 name("Glowing Skull")
 spawnable(ice, stone)
@@ -655,6 +656,7 @@ image("res://Images/UnitArt/ToxicSkull.png")
 
 name("Strange Plant")
 spawnable(grass)
+status(specialloot,true)
 health(6)
 difficulty(1)
 strength(0)
@@ -662,6 +664,7 @@ status(thorns,6)
 trigger(turn, do(addStatus(tile, thorns, 1)))
 trigger(turn,do(addStatus( (do(select( (1,(any),"-friendly"),40, tile))), regen, 3)))
 image("res://Images/UnitArt/FruitPlant.png")
+trigger(onDeath, cardDo(create("Strange Fruit", "Hand")));
 
 name("Death Worm")
 spawnable(sand, stone)
@@ -672,7 +675,7 @@ strength(10)
 range(2)
 speed(30)
 trigger(turn, do(trigger(onPlay, do(move(self, (do(selectTiles((1, (grass,stone,sand),any) ,2, Player ))))))))
-trigger(turn, do(Attack(self, player)))
+trigger(turn, do(Attack(self, Player)))
 trigger(turn,( do(gainStrength(tile,2))))
 image("res://Images/UnitArt/DeathWorm.png")
 
@@ -710,4 +713,17 @@ trigger(turn,if(($turncount=3),(do(Attack(self, (do(select((all,(any),any),40, t
 trigger(turn,do(addVar(self,turncount,1)))
 trigger(turn,if( ($turncount=4), (do(setVar(self, turncount,0)))))
 image("res://Images/UnitArt/Eyebeast.png")
+
+name("Rogue Golem");
+spawnable(any);
+difficulty(4);
+health(7);
+strength(4);
+speed(2);
+status(stoneskin,true)
+status(specialloot,true)
+trigger(turn,do(addBlock(self, 3)));
+trigger(turn, do(MoveAndAttack(self,friendly)));
+trigger(onDeath, cardDo(create("Enchanter's Key", "Hand")));
+image("res://Images/UnitArt/rogueGolem.png")
 

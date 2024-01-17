@@ -25,15 +25,15 @@ image("res://Images/CardArt/WindPower.png");
 
 title(Floating Turbine);
 types(mechanical,cloud);
-cost(1);
+cost(2);
 trigger(startofturn, do(create,("Wind Power",Hand),false));
-removetrigger(endofturn,true,6);
+removetrigger(endofturn,true,7);
 text("At the start of your turn, add a Wind Power to your hand");
 rarity(2);
 image("res://Images/CardArt/FloatingTurbine.png");
 
 title(Obscuring Mist);
-cost(0);
+cost(1);
 types(dodge,cloud)
 rarity(4)
 $Status=10
@@ -46,7 +46,7 @@ image("res://Images/CardArt/obscuringmist.png");
 
 title("Storm");
 types(cloud,attack)
-cost(4);
+cost(6);
 rarity(2);
 $Damage=20
 trigger(onDiscard,do(move(Discard,Hand,self)));
@@ -59,7 +59,7 @@ removetrigger(endofturn, true,1);
 image("res://Images/CardArt/Storm.png");
 
 title("Altostratus");
-cost(3)
+cost(5)
 types(cloud,attack, shield)
 rarity(5)
 $Block=9
@@ -75,7 +75,7 @@ removetrigger(endofturn,true,1);
 image("res://Images/CardArt/Altostratus.png");
 
 title(Sifting Breath);
-cost(1);
+cost(2);
 types(wind,cloud);
 rarity(2);
 $Draw=1
@@ -86,7 +86,7 @@ trigger(draw, do(discard,((select(Hand,true,"pick a card to discard (Sifting Bre
 image("res://Images/CardArt/SiftingBreath.png");
 
 title("Thunderclap");
-cost(2);
+cost(3);
 $Damage=4
 $Repeat=3
 $Draw=4
@@ -129,7 +129,7 @@ image("res://Images/CardArt/HotAirBalloon.png");
 title("Mushroom Cloud")
 types(cloud,fungal,fire,attack)
 cost(0)
-$Damage=2
+$Damage=0
 $Increment=2
 $Range=2
 text("Deal $Damage fire storm damage range $Range, then burn. On discard add a copy with + $Increment Damage to your hand")
@@ -162,7 +162,7 @@ text("Draw $Draw, gain $Energy energy. If discarded or burned, play this")
 image("res://Images/CardArt/Smoke.png");
 
 title("Gambler's fallacy");
-cost(2);
+cost(4);
 $Draw=1
 removetrigger(onTap, true, 11);
 trigger(onTap, do(discard,((select(Hand,true,"pick a card to discard"))),false));

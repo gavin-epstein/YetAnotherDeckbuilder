@@ -1,5 +1,5 @@
 title(Carrot Seeds);
-cost(1);
+cost(2);
 types(food, summon)
 rarity(4);
 removetrigger(endofturn,true,0);
@@ -9,7 +9,7 @@ trigger(onPlay, do(summon,("Carrot",(1,("grass")),40),false));
 image("res://Images/CardArt/CarrotSeeds.png")
 
 title(Fire Eater);
-cost(1);
+cost(2);
 $Heal=2
 types(food,fire);
 trigger(voided,do(heal($Heal)));
@@ -28,7 +28,7 @@ removetrigger(endofturn,true,5);
 image("res://Images/CardArt/butter.png")
 
 title(Fast Food);
-cost(1);
+cost(2);
 text("When you move, heal the same amount");
 types(food,movement);
 removetrigger(movePlayer,true,5);
@@ -37,7 +37,7 @@ rarity(4);
 image("res://Images/CardArt/FastFood.png")
 
 title(Feast);
-cost(2);
+cost(3);
 $Damage=9
 types(food, attack);
 text("Deal $Damage damage to all adjacent units, heal equal to damage dealt")
@@ -49,7 +49,7 @@ image("res://Images/CardArt/Feast.png")
 
 title(Sausage)
 types(food,blood)
-cost(1);
+cost(2);
 $Blood=4
 $dothething=0
 $MaxHealth=1
@@ -68,7 +68,7 @@ text("At the start of your turn, heal $Heal");
 trigger(startofturn, do(heal($Heal)));
 removetrigger(endofturn, true, 10);
 rarity(3);
-cost(1);
+cost(2);
 image("res://Images/CardArt/VendingMachine.png")
 
 title("Nettle Tea")
@@ -79,14 +79,14 @@ trigger(onPlay, do(gainMaxHealth($MaxHealth)))
 trigger(onPlay, do(addStatus(sting,$Status)))
 text("Gain $MaxHealth max health. You cannot heal for $Status turns")
 lore("This would be more relaxing if I wasn't busy saving the multiverse");
-cost(0)
+cost(1)
 removetrigger(endofturn,true,3)
 rarity(2);
 image("res://Images/CardArt/NettleTea.png")
 
 title("Cloudberries")
 $Heal=5
-cost(1)
+cost(2)
 types(food,cloud)
 trigger(onDiscard,do(move(Discard,Hand,self)));
 trigger(onDiscard,do(setVar(self,Cost,0)))
@@ -102,7 +102,7 @@ image("res://Images/CardArt/CloudBerries.png");
 title("Shiitake Smash")
 $MaxHealth=1
 $Range=2
-cost(3)
+cost(4)
 types(food, attack, fungal)
 trigger(onPlay, do(gainMaxHealth($MaxHealth)))
 trigger(onPlay, do(setVar(self, Damage, (do(getStatus(Player, "maxHealth"))))))

@@ -30,7 +30,7 @@ image("res://Images/CardArt/Dam.png")
 title("Bird Bath")
 types(water, food,avian)
 text("When you shuffle, heal $Heal, and all allies gain $MaxHealth max health")
-cost(1)
+cost(2)
 removetrigger(endofturn, true, 5)
 rarity(2)
 trigger(shuffle, do(heal($Heal)))
@@ -75,7 +75,7 @@ title("Abyssal Currents");
 types(water,shadow);
 trigger(play,do(move( Deck, Discard,(do(cardAt(Deck,0 ))))))
 text("When you play a card, move the top card of your deck to your discard. Discard from play after $removecount shuffles");
-rarity(2)
+rarity(5)
 cost(0)
 removetrigger(shuffle,true,5);
 image("res://Images/CardArt/AbyssalCurrents.png")
@@ -104,7 +104,36 @@ trigger(onPlay, if((countModifier(Deck,any)=0),(do(draw($Draw)))));
 rarity(8);
 image("res://Images/CardArt/Mist.png")
 
+title("Rising Tide");
+types(water);
+cost(2);
+$Draw=1
+text("Shuffle your discard into your deck. Draw $Draw")
+trigger(onPlay,do(reshuffle()));
+trigger(onPlay,do(draw($Draw)));
+removetrigger(endofturn,true,1);
+rarity(10)
+
+title("Falling Tide");
+types(water);
+cost(2);
+$Draw=1
+text("Put your deck into your discard pile. Draw $Draw")
+trigger(onPlay,do(draw($Draw)));
+trigger(onPlay,repeat((do (move( Deck, Discard,(do(cardAt(Deck,0 ) ) ) )) ), ( count(Deck,"any")  )))
+removetrigger(endofturn,true,1);
+rarity(10)
+
+title("Buoy");
+types(water, shield)
+cost(1);
+$Block=6
+text("Gain $Block block. Buoyant")
+trigger(onPlay, do(block($Block)))
+modifiers(buoyant)
+removetrigger(endifturn, true, 1);
+rarity(8);
+    
 #Deluge: shuffle all cards into deck
-#bouy: block, buoyant
 #inflatable hammer: add buoyant to a card
 #when you shuffle, topdeck a card

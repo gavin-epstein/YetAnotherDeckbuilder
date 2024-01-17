@@ -5,7 +5,7 @@ trigger(onPlay,foreach(Card,(select(Play,(hasVariable(self,removecount)),"-",all
 text("All cards in play stay in play for 2 more turns/triggers")
 removetrigger(endofturn,true,1)
 rarity(4)
-cost(0)
+cost(1)
 image("res://Images/CardArt/GrandfatherClock.png");
 
 title("Time Machine")
@@ -27,11 +27,11 @@ image("res://Images/CardArt/TimeMachine.png")
 #rename and/or re-art? clockwork shield
 title("Defense Mechanism")
 types(mechanical, shield)
-cost(2)
+cost(3)
 rarity(5)
 $Block=4
 trigger(startofturn, do(block($Block)))
 text("At the start of your turn, gain $Block block")
 rarity(7)
-removetrigger(endofturn, true,8);
+removetrigger(endofturn, true,9);
 image("res://Images/CardArt/DefenseMechanism.png");

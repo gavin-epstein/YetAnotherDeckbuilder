@@ -7,7 +7,7 @@ rarity(4);
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(heal,($Heal),false))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 image("res://Images/CardArt/DarkRecipe.png");
-cost(2);
+cost(4);
 
 title(Ritual Components);
 types(ritual);
@@ -30,19 +30,18 @@ cost(2);
 image("res://Images/CardArt/RitualOfCreation.png");
 modifiers(unique)
 
-#change aremor to vigor
 title(Pentaract);
 types(ritual, movement);
-text("When this leaves play, heal 5, gain 5 block, gain 5 armor, deal 5 damage to a random enemy, move 5, and burn this card. Cannot be upgraded.");
+text("When this leaves play, heal 5, gain 5 block, deal 5 damage to a random enemy, gain 5 feral, move 5, and burn this card. Cannot be upgraded.");
 removetrigger(endofturn, true, 5);
+trigger(afterRemoveFromPlay, do(voided(self, Discard)))
 trigger(onRemoveFromPlay, do(heal(5)))
 trigger(onRemoveFromPlay, do(block(5)))
-trigger(onRemoveFromPlay, do(armor(5)))
 trigger(onRemoveFromPlay, do(damage(5,(ritual),(1),40)))
+trigger(onRemoveFromPlay, do(addStatus,"feral", 5))
 trigger(onRemoveFromPlay, do(movePlayer(5)))
-trigger(onRemoveFromPlay, do(voided(self, Play)))
 image("res://Images/CardArt/Pentaract.png")
-cost(1);
+cost(2);
 rarity(5);
 
 title(Ritual Dagger);
@@ -54,7 +53,7 @@ $Range=1
 trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 rarity(2)
-text(Deal $Damage damage, Range $Range. If this kills a unit add a broken blade to your hand);
+text(Deal $Damage damage, Range $Range. Slay: add a broken blade to your hand);
 image("res://Images/CardArt/RitualDagger.png")
 
 title(Broken Blade)
@@ -63,7 +62,7 @@ cost(0)
 rarity(0)
 $Damage=5
 $Range=5
-text("Deal $Damage damage, at a range of $Range. If this kills a unit add another broken blade to your hand. On remove from play, purge")
+text("Deal $Damage damage, at a range of $Range. Slay: add another broken blade to your hand. On remove from play, purge")
 trigger(onPlay, do(damage, ($Damage,(ritual,stab),(any),$Range)))
 trigger(slay,do(create("Broken Blade",Hand)))
 trigger(onRemoveFromPlay, do(purge(self)))
@@ -71,7 +70,7 @@ removetrigger(endofturn, true, 2);
 image("res://Images/CardArt/BrokenBlade.png")
 
 title("Witch's Cauldron")
-cost(1)
+cost(2)
 types(ritual,potion)
 rarity(1)
 $RitualCount=6
@@ -105,7 +104,7 @@ image("res://Images/CardArt/Secrecy.png")
 
 title("Dark Deeds")
 types(ritual, attack, shadow)
-cost(2)
+cost(3)
 $Damage=12
 $Range=2
 trigger(onPlay, if( (countNames(Play,"Light Whispers")=1),(do(setVar( (select(Hand,(if(($Cost>0),true)),"-",1,true)),Cost,0)))))
@@ -119,9 +118,9 @@ text("Deal $Damage damage at $Range range. If there is exactly one Light Whisper
 
 title("Light Whispers")
 types(ritual,light)
-cost(1)
+cost(2)
 $Block=9
-$Energy=2
+$Energy=4
 trigger(onPlay, do(block($Block)))
 removetrigger(endofturn,true,3)
 trigger(onPlay, if( (countNames(Play,"Dark Deeds")=1),(do(gainEnergy($Energy)))))
@@ -133,12 +132,12 @@ text("Gain $Block block. If there is exactly one Dark Deeds in play, also gain $
 
 title("Black Candle")
 $Energy=1
-cost(3)
+cost(4)
 trigger(onPlay,do(gainEnergy($Energy)))
 trigger(startofturn,do(gainEnergy($Energy)))
 text("Now and at the start of your next $removecount turns gain $Energy energy")
 rarity(6)
-removetrigger(endofturn,true,4)
+removetrigger(endofturn,true,6)
 types(ritual, light)
 image("res://Images/CardArt/BlackCandle.png")
 
@@ -162,7 +161,7 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Dust 
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Luminous Earths and $CreateCount Dust Devils in your draw pile, and burn this card");
-cost(2);
+cost(3);
 rarity(2);
 image("res://Images/CardArt/RitualOfTheEarthMother.png")
 
@@ -174,7 +173,7 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (repeat( (do(create("Flutt
 trigger(play,if((count(Play, ritual) > $RitualCount),(do(voided(self, Play)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, create $CreateCount Fluttering Shadows in your hand, then burn this card");
-cost(1);
+cost(2);
 rarity(4);
 image("res://Images/CardArt/DemonWings.png")
 
@@ -185,7 +184,7 @@ $Status=3
 trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(rage, $Status)))));
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have (+, 1, $RitualCount) ritual cards in play, gain $Status rage and discard this card from play")
-cost(1);
+cost(2);
 rarity(7);
 image("res://Images/CardArt/WrathRite.png")
 
@@ -197,7 +196,7 @@ trigger(play,if((count(Play, ritual) > $RitualCount), (do(addStatus(stealth, $St
 removetrigger(play, (count(Play, ritual) > $RitualCount), 1);
 text("When you have $RitualCount ritual cards in play, gain $Status stealth and discard this card from play")
 lore("When the Alcolytes opened the Void Rift, it must have been well hidden to go so unopposed");
-cost(2);
+cost(3);
 rarity(4);
 image("res://Images/CardArt/HiddenCeremony.png")
 
@@ -208,7 +207,7 @@ $Damage=4
 $CreateCount=3
 $Range=1
 trigger(onPlay, do(damage, ($Damage,(backstab,ritual),(any),$Range)))
-trigger(slay, do(repeat( (do(createByMod(("sigil"), Play ))),$CreateCount)))
+trigger(slay, repeat( (do(createByMod(("sigil"), Play ))),$CreateCount))
 removetrigger(endofturn, true, 1)
 rarity(5)
 text("Deal $Damage backstab damage range $Range. Slay: create $CreateCount sigils in play")

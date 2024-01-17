@@ -5,15 +5,15 @@ $Armor=1
 text(While in play, maintain $Armor armor (take $Armor less damage from all attacks))
 trigger(onPlay,do(maintain(self, "armor", $Armor)))
 trigger(onRemoveFromPlay,do(unmaintain(self, "armor",$Armor))))
-removeTrigger(endofturn, true, 4);
+removetrigger(endofturn, true, 4);
 rarity(10);
 
 title("Cuirass");
-cost(2);
+cost(3);
 types(steel)
 $Armor=5
 text(While in play, maintain $Armor armor (take $Armor less damage from all attacks))
 trigger(onPlay,do(maintain(self, "armor", $Armor)))
 trigger(onRemoveFromPlay,do(unmaintain(self, "armor",$Armor))))
-removeTrigger(endofturn, true, 10);
-rarity(1);
+removetrigger(endofturn, true, 10);
+rarity(2);
