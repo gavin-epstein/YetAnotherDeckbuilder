@@ -101,6 +101,7 @@ func endGameReport(state:String):
 		var body = {}
 		body['cardchoices'] = Choice.choicereport
 		body['enemies'] = enemyController.allunitsspawned
+		body['version'] = "0.0.13"
 		var bodyjson = to_json(body)
 		global.endGameReport(state, bodyjson)
 	

@@ -66,5 +66,6 @@ trigger(onPlay,repeat(  (enemyDo(heal( (do(selectTiles((all,(any),"-friendly"),4
 trigger(onPlay, do(addVar(self, Repeat, $Increment)))
 removetrigger(endofturn, true, 2)
 rarity(3)
+image("res://Images/CardArt/BleedingToothFungus.png")
 
 #end of turn, if at exactly 1 health, heal 20

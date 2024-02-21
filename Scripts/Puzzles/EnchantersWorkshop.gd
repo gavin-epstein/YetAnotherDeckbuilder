@@ -241,7 +241,7 @@ static func generateEnchant(intype, outype, cost, duration):
 	var titleend=""
 	var endtriggers = []
 	var triggerkey=""
-	var condition=true
+	var condition="true"
 	var result=""
 	if intype  == "attack":
 		text.append("When you play an attack")
